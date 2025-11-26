@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Prata&display=swap');
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+
+@import "tailwindcss";
+
+
+a.active hr{
+    display: block ;
+}
+
+*{
+    font-family: Outfit;
+}
+
+:root{
+  --adlm-primary: #1d4ed8;   /* adjust to your "Primary 600" */
+  --adlm-primary-700:#1e40af;
+  --adlm-navy:#0f172a;
+}
+
+/* src/index.css (or your global CSS where .btn is defined) */
+.btn {
+  @apply inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium
+         bg-blue-600 text-white transition duration-150
+         hover:bg-blue-700 hover:shadow-md
+         active:scale-[.98]                        /* micro press */
+         focus:outline-none focus:ring-2 focus:ring-blue-500/50
+         cursor-pointer select-none;               /* cursor effect */
+}
+
+.btn-sm { @apply px-3 py-1 text-xs; }
+
+.input { @apply w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500; }
+.card { @apply rounded-2xl bg-white p-6 shadow-sm border; }
+
+.prata-regular {
+    font-family: "Prata", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  @media (max-width:640px){
+    a.active{
+        background-color: black;
+        color: white;
+    }
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .no-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  @layer utilities {
+    .form-label {
+      @apply block mb-1 text-sm font-medium text-gray-900;
+    }
+    .input {
+      @apply w-full rounded border border-gray-300 bg-white
+             px-3 py-2 text-sm placeholder:text-gray-400
+             outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500;
+    }
+  }
+  
+
+/* Sticky helpers / responsive widths */
+.table-sticky {
+  --sn: 56px;
+  --name: 200px;
+}
+
+/* Two-line clamp for long names (wrap + truncate) */
+.name-cell{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;  /* wrap to 2 lines then ellipsis */
+  overflow: hidden;
+  line-height: 1.25rem;
+}
+
+/* Make sticky edges look crisp */
+.table-sticky th.sticky,
+.table-sticky td.sticky {
+  box-shadow: 1px 0 0 rgba(0,0,0,0.06);
+}
+
+/* Smaller name column on narrow screens to reveal more zone prices */
+@media (max-width: 768px){
+  .table-sticky{ --name: 170px; }
+}
+
+/* Sticky helpers + defaults */
+.table-sticky { --sn: 56px; --name: 200px; }
+
+/* Two-line clamp for long names */
+.name-cell{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  line-height: 1.25rem;
+}
+
+/* Hide the resize handle on small screens */
+.name-resizer { display: none; }
+@media (min-width: 640px){ /* sm: */
+  .name-resizer { display: inline-block; }
+}
+
+/* Clean edge for sticky columns */
+.table-sticky th.sticky, .table-sticky td.sticky { box-shadow: 1px 0 0 rgba(0,0,0,0.06); }
+
+/* Mobile tweaks: narrower S/N, a bit narrower Name by default */
+@media (max-width: 640px){
+  .table-sticky{ --sn: 44px; --name: 170px; }
+  /* slightly smaller inputs inside table for compactness */
+  .table-sticky input.input{ padding: 0.375rem 0.5rem; font-size: 0.9rem; }
+}
+
+/* Make horizontal scrolling feel natural on touch */
+.table-sticky{
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+}
+
+/* Optional: slimmer scrollbar when visible */
+.table-sticky::-webkit-scrollbar{ height: 8px; }
+.table-sticky::-webkit-scrollbar-thumb{ background: rgba(0,0,0,0.15); border-radius: 9999px; }
+
+
+/* Segmented tabs */
+.tabbar {
+  display: flex;
+  gap: .25rem;
+  padding: .25rem;
+  border: 1px solid #e5e7eb;           /* slate-200 */
+  border-radius: .75rem;                /* rounded-lg */
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,.03);
+}
+
+/* default/idle tab */
+.tab {
+  flex: 1 1 0%;
+  padding: .5rem 1rem;
+  border-radius: .5rem;
+  font-weight: 600;
+  color: #374151;                       /* slate-700 */
+  background: transparent;
+  transition: background .2s, color .2s, transform .05s;
+  cursor: pointer;
+  border: 0;
+}
+.tab:hover { background: #f3f4f6; }     /* slate-100 */
+.tab:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
+
+/* ACTIVE appearance */
+.tab-active {
+  color: #fff;
+  background: #2563eb;                  /* blue-600 */
+  box-shadow: 0 2px 10px rgba(37,99,235,.18),
+              inset 0 0 0 1px rgba(255,255,255,.15);
+}
+
+/* Mobile: make each tab full-width */
+@media (max-width: 640px) {
+  .tabbar { gap: .375rem; }
+  .tab { flex: 1 1 auto; }
+}
+
+
+/* Smooth momentum scroll on iOS inside the table card */
+.mobile-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* On small screens, disable sticky/transform to avoid iOS touch quirks */
+@media (max-width: 640px) {
+  .table-sticky {
+    --sn: 0px; /* neutralize left offset for frozen columns */
+  }
+  /* anything we mark as .freeze will behave like a normal cell on mobile */
+  .table-sticky .freeze {
+    position: static !important;
+    left: auto !important;
+    transform: none !important;
+    z-index: auto !important;
+    background: transparent !important;
+  }
+  /* hide the tiny name-resize handle on phones so it doesn't steal swipes */
+  .table-sticky .name-resizer {
+    display: none !important;
+  }
+}
+
+/* Make sure the page itself can scroll */
+html, body, #root {
+  height: auto;
+  min-height: 100%;
+}
+body {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
