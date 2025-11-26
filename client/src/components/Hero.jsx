@@ -28,7 +28,7 @@ const Hero = () => {
         >
           Crafting Stunning Experiences,
           <br className="hidden sm:block" />
-          One Pixel at a Time.
+          One Pixel at a Time
         </h1>
 
         {/* Subtext */}
