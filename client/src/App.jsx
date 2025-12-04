@@ -6,7 +6,8 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col bg-[#0B0B0B]">
       <Nav />
-      <main className="max-w-full mx-auto w-full px-4 py-8 flex-1">
+      {/* full width + 4px horizontal padding */}
+      <main className="w-full px-[4px] pt-28 pb-8 flex-1">
         <Outlet />
       </main>
       <Footer />
