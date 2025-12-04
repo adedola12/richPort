@@ -1,0 +1,110 @@
+// src/components/Project/ProjectHero.jsx
+import React from "react";
+import { Link } from "react-router-dom";
+import ProjHero from "../../assets/ProjectHero.png";
+
+// Adjust this to move the background image up/down/left/right
+// e.g. "center top", "center 20%", "center bottom", "50% 40%", etc.
+const BG_POSITION = "center top";
+
+const ProjectHero = () => {
+  return (
+    <section className="relative w-full bg-[#050505] pt-24 sm:pt-28 pb-12 sm:pb-16">
+      {/* BACKGROUND IMAGE (full width) */}
+      <div className="absolute inset-0 overflow-hidden">
+        <img
+          src={ProjHero}
+          alt="Recent works background"
+          className="
+            h-full w-full
+            object-cover
+            brightness-[0.45] contrast-[1.05] saturate-[0.9]
+          "
+          style={{ objectPosition: BG_POSITION }}
+        />
+
+        {/* Dark vignette gradient over image */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/80 to-black/95" />
+
+        {/* Soft green glows at bottom corners */}
+        <div className="pointer-events-none absolute -left-40 bottom-0 h-72 w-72 rounded-full bg-lime-500/18 blur-[140px]" />
+        <div className="pointer-events-none absolute -right-40 bottom-0 h-72 w-72 rounded-full bg-lime-500/14 blur-[140px]" />
+      </div>
+
+      {/* CONTENT */}
+      <div className="relative z-10 mx-auto flex h-[460px] sm:h-[520px] lg:h-[560px] max-w-[1200px] items-center justify-center px-4 lg:px-6">
+        <div className="flex w-full flex-col items-center gap-9 text-center">
+          {/* Pill */}
+          <div className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-1.5 backdrop-blur">
+            <span className="font-['Mont'] text-xs font-semibold tracking-tight text-white">
+              Open for Projects
+            </span>
+          </div>
+
+          {/* Heading + subtext */}
+          <div className="flex max-w-[980px] flex-col items-center gap-5">
+            <h1
+              className="
+                font-['Outfit'] font-semibold
+                text-3xl sm:text-4xl md:text-5xl lg:text-[52px]
+                leading-tight lg:leading-[1.1]
+                bg-gradient-to-b from-white via-white to-neutral-300
+                bg-clip-text text-transparent
+                drop-shadow-[0_0_16px_rgba(0,0,0,0.75)]
+              "
+            >
+              Explore curated designs
+              <br className="hidden sm:block" />
+              crafted with passion.
+            </h1>
+
+            <p
+              className="
+                max-w-[560px]
+                font-['Mont'] text-sm sm:text-base lg:text-lg
+                font-semibold leading-6
+                text-white
+              "
+            >
+              Here’s a collection of my recent work, showcasing my ability to
+              merge creativity with functionality.
+            </p>
+          </div>
+
+          {/* Buttons */}
+          <div className="flex w-full max-w-[340px] sm:max-w-[380px] items-center justify-center gap-4">
+            <button
+              type="button"
+              className="
+                flex-1 h-10
+                rounded-lg border border-white/80 bg-white/5
+                px-5
+                font-['Lexend'] text-sm font-normal leading-5 text-white
+                hover:bg-white/10 transition
+              "
+            >
+              View Works
+            </button>
+
+            <Link
+              to="/about"
+              className="
+                flex-1 inline-flex h-10 items-center justify-center
+                rounded-lg
+                bg-gradient-to-b from-lime-500 to-lime-700
+                px-5
+                font-['Lexend'] text-xs sm:text-sm font-bold leading-5 text-black
+                shadow-[0_0_18px_rgba(132,204,22,0.6)]
+                hover:from-lime-400 hover:to-lime-600 transition
+              "
+            >
+              About Me
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default ProjectHero;
