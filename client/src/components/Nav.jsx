@@ -22,21 +22,25 @@ const Nav = () => {
 
   return (
     <>
+      {/* TOP NAVBAR */}
       <header
         className="
           fixed top-0 left-0 z-50 w-full
-          bg-gradient-to-b from-black/90 via-black/70 to-black/0
-          backdrop-blur-xl
-          px-[6px]
+          px-[6px] pt-3 pb-2
         "
       >
-        <div className="w-full pt-4 pb-3">
+        <div className="w-full">
           <div
             className="
               flex items-center justify-between
-              rounded-full border border-white/10
-              bg-black/40 bg-gradient-to-b from-black/70 to-black/40
-              backdrop-blur-xl
+              rounded-[24px]
+              border border-white/18
+              bg-gradient-to-r
+                from-emerald-500/18
+                via-white/14
+                to-sky-500/18
+              backdrop-blur-2xl
+              shadow-[0_0_40px_rgba(0,0,0,0.7)]
               px-4 sm:px-8 lg:px-12 py-3
             "
           >
@@ -45,7 +49,7 @@ const Nav = () => {
               to="/"
               className="
                 text-white text-2xl sm:text-3xl font-normal
-               whitespace-nowrap
+                whitespace-nowrap
               "
               style={{ fontFamily: "Zialothus, 'Great Vibes', cursive" }}
               onClick={closeMenu}
@@ -70,7 +74,7 @@ const Nav = () => {
 
             {/* Right buttons – desktop */}
             <div className="hidden sm:flex items-center gap-3 w-auto">
-              <button className="px-4 py-2 rounded-lg border border-white/60 bg-white/5 text-[11px] sm:text-xs font-normal font-['Lexend'] text-white hover:bg-white/10 transition">
+              <button className="px-4 py-2 rounded-lg border border-white/60 bg-white/10 text-[11px] sm:text-xs font-normal font-['Lexend'] text-white hover:bg-white/15 transition">
                 View Works
               </button>
 
@@ -90,31 +94,35 @@ const Nav = () => {
 
             {/* Mobile: Contact + Hamburger */}
             <div className="flex items-center gap-3 md:hidden">
-              <Link
-                to="/contact"
-                onClick={closeMenu}
-                className="
-                  px-3 py-1.5 rounded-lg
-                  bg-gradient-to-b from-lime-400 to-lime-600
-                  text-[11px] font-semibold font-['Lexend'] text-black
-                  shadow-[0_0_14px_rgba(132,204,22,0.55)]
-                "
-              >
-                Contact
-              </Link>
+              {/* Hide Contact when menu is open */}
+              {!menuOpen && (
+                <Link
+                  to="/contact"
+                  onClick={closeMenu}
+                  className="
+                    px-3 py-1.5 rounded-lg
+                    bg-gradient-to-b from-lime-400 to-lime-600
+                    text-[11px] font-semibold font-['Lexend'] text-black
+                    shadow-[0_0_14px_rgba(132,204,22,0.55)]
+                  "
+                >
+                  Contact
+                </Link>
+              )}
 
               <button
                 type="button"
                 onClick={() => setMenuOpen((prev) => !prev)}
-                aria-label="Open menu"
+                aria-label="Toggle menu"
                 aria-expanded={menuOpen}
                 className="
                   relative flex h-9 w-9 items-center justify-center
-                  rounded-full border border-white/25 bg-white/5
+                  rounded-full border border-white/25 bg-white/10
                   text-white
                   focus:outline-none focus:ring-2 focus:ring-lime-400/70
                 "
               >
+                {/* 3-line -> X icon */}
                 <span
                   className={`block h-[2px] w-4 rounded-full bg-white transition-transform duration-200 ${
                     menuOpen
@@ -160,7 +168,7 @@ const Nav = () => {
         <div
           className={`
             absolute right-0 top-0 h-full w-[78%] max-w-xs
-            bg-black/60 bg-gradient-to-b from-black/80 to-black/60
+            bg-gradient-to-b from-black/80 via-black/70 to-black/60
             backdrop-blur-2xl border-l border-white/10
             shadow-[0_0_45px_rgba(0,0,0,0.9)]
             px-6 pt-20 pb-10
@@ -189,7 +197,7 @@ const Nav = () => {
 
           {/* CTA inside drawer */}
           <div className="mt-auto flex flex-col gap-3">
-            <button className="w-full px-4 py-2 rounded-lg border border-white/40 bg-white/5 text-xs font-normal font-['Lexend'] text-white hover:bg-white/10 transition">
+            <button className="w-full px-4 py-2 rounded-lg border border-white/40 bg-white/10 text-xs font-normal font-['Lexend'] text-white hover:bg-white/15 transition">
               View Works
             </button>
 
