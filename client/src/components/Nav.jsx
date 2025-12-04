@@ -45,8 +45,9 @@ const Nav = () => {
               to="/"
               className="
                 text-white text-2xl sm:text-3xl font-normal
-                font-['Zialothus'] whitespace-nowrap
+               whitespace-nowrap
               "
+              style={{ fontFamily: "Zialothus, 'Great Vibes', cursive" }}
               onClick={closeMenu}
             >
               Richard Enoch

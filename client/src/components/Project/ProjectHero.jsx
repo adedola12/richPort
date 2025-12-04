@@ -24,7 +24,7 @@ const ProjectHero = () => {
         />
 
         {/* Dark vignette gradient over image */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/80 to-black/95" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/82 to-black/95" />
 
         {/* Soft green glows at bottom corners */}
         <div className="pointer-events-none absolute -left-40 bottom-0 h-72 w-72 rounded-full bg-lime-500/18 blur-[140px]" />
@@ -43,12 +43,13 @@ const ProjectHero = () => {
 
           {/* Heading + subtext */}
           <div className="flex max-w-[980px] flex-col items-center gap-5">
+            {/* SILVER GRADIENT HEADING */}
             <h1
               className="
                 font-['Outfit'] font-semibold
-                text-3xl sm:text-4xl md:text-5xl lg:text-[52px]
-                leading-tight lg:leading-[1.1]
-                bg-gradient-to-b from-white via-white to-neutral-300
+                text-4xl sm:text-5xl md:text-6xl lg:text-[64px]
+                leading-tight lg:leading-[1.05]
+                bg-gradient-to-b from-[#FCFCFC] via-[#E4E4E4] to-[#8E8E8E]
                 bg-clip-text text-transparent
                 drop-shadow-[0_0_16px_rgba(0,0,0,0.75)]
               "
@@ -58,12 +59,15 @@ const ProjectHero = () => {
               crafted with passion.
             </h1>
 
+            {/* BODY TEXT – larger like Figma */}
             <p
               className="
-                max-w-[560px]
-                font-['Mont'] text-sm sm:text-base lg:text-lg
-                font-semibold leading-6
-                text-white
+                max-w-[620px]
+                font-['Mont']
+                text-[15px] sm:text-[16px] md:text-[17px] lg:text-[18px]
+                font-medium
+                leading-relaxed
+                text-white/95
               "
             >
               Here’s a collection of my recent work, showcasing my ability to
