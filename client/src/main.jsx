@@ -9,6 +9,7 @@ import BrandIdentity from "./pages/BrandIdentity.jsx";
 import Projects from "./pages/Projects.jsx";
 import RateDetails from "./pages/RateDetails.jsx";
 import AdminAddPage from "./pages/AdminAddPage.jsx";
+import ProjectPage from "./components/ProjectPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
         path: "admin/add",
         element: <AdminAddPage />,
       },
+      {path: "projects/:slug", element: <ProjectPage /> },
     ],
   },
 ]);
