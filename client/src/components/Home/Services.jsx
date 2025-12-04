@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const projects = [
   {
@@ -63,6 +64,12 @@ const Services = () => {
   const filteredProjects = projects.filter((p) =>
     p.categories?.includes(activeTab)
   );
+
+  const navigate = useNavigate();
+
+  const handleViewClick = () => {
+    navigate("/projects");
+  };
 
   return (
     <section className="relative w-full bg-[#050505] py-20 lg:py-24">
@@ -215,6 +222,8 @@ const Services = () => {
           {/* VIEW ALL BUTTON */}
           <div className="mt-10 flex justify-center">
             <button
+              type="button"
+              onClick={handleViewClick}
               className="
                 inline-flex h-12 items-center justify-center
                 rounded-xl border border-white/80
