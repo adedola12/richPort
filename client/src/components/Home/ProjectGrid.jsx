@@ -1,3 +1,4 @@
+// src/components/Home/ProjectGrid.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -58,21 +59,32 @@ const tabs = [
   "Graphic Designs",
 ];
 
-const ProjectGrid = () => {
+/**
+ * contained = true:
+ *   - adds max-width 1200px
+ *   - centers the block
+ *   - wraps grid in a rounded glass card (like the Projects page Figma)
+ *
+ * contained = false:
+ *   - only renders the tabs + grid + button (for use inside another card,
+ *     e.g. in Services)
+ */
+const ProjectGrid = ({ contained = true }) => {
   const [activeTab, setActiveTab] = useState(tabs[0]);
+  const navigate = useNavigate();
 
   const filteredProjects = projects.filter((p) =>
     p.categories?.includes(activeTab)
   );
 
-  const navigate = useNavigate();
-
   const handleViewClick = () => {
     navigate("/projects");
   };
-  return (
-    <div>
-      {/* FILTER TABS (functional) */}
+
+  // --- inner content (tabs + cards + CTA) ---
+  const content = (
+    <>
+      {/* FILTER TABS */}
       <div className="mt-8 flex justify-center">
         <div className="inline-flex flex-wrap items-center gap-2 rounded-xl border border-white/30 bg-gradient-to-br from-neutral-700/30 via-neutral-800/30 to-neutral-900/60 p-2 backdrop-blur">
           {tabs.map((tab) => {
@@ -81,15 +93,11 @@ const ProjectGrid = () => {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`
-                      rounded-xl px-4 py-2 text-xs font-medium font-['Lexend']
-                      transition
-                      ${
-                        isActive
-                          ? "bg-white/10 text-white shadow border border-white/40"
-                          : "text-stone-300 hover:bg-white/5"
-                      }
-                    `}
+                className={`rounded-xl px-4 py-2 text-xs font-medium font-['Lexend'] transition ${
+                  isActive
+                    ? "bg-white/10 text-white shadow border border-white/40"
+                    : "text-stone-300 hover:bg-white/5"
+                }`}
               >
                 {tab}
               </button>
@@ -104,15 +112,15 @@ const ProjectGrid = () => {
           <article
             key={project.name + index}
             className="
-                  group flex flex-col justify-between
-                  rounded-2xl border border-lime-500/40
-                  bg-gradient-to-br from-neutral-700/35 via-neutral-800/60 to-neutral-900/90
-                  px-5 py-6 sm:px-8 sm:py-8
-                  shadow-[0_0_25px_rgba(0,0,0,0.7)]
-                  transition
-                  hover:-translate-y-1 hover:border-lime-400
-                  hover:shadow-[0_0_35px_rgba(190,242,100,0.2)]
-                "
+              group flex flex-col justify-between
+              rounded-2xl border border-lime-500/40
+              bg-gradient-to-br from-neutral-700/35 via-neutral-800/60 to-neutral-900/90
+              px-5 py-6 sm:px-8 sm:py-8
+              shadow-[0_0_25px_rgba(0,0,0,0.7)]
+              transition
+              hover:-translate-y-1 hover:border-lime-400
+              hover:shadow-[0_0_35px_rgba(190,242,100,0.2)]
+            "
           >
             {/* TOP TEXT CONTENT */}
             <div className="flex flex-col gap-4">
@@ -123,11 +131,11 @@ const ProjectGrid = () => {
                 </h3>
                 <button
                   className="
-                        whitespace-nowrap rounded-md border border-white/70
-                        bg-white/10 px-4 py-2
-                        text-xs font-medium text-white font-['Lexend']
-                        hover:bg-white/20
-                      "
+                    whitespace-nowrap rounded-md border border-white/70
+                    bg-white/10 px-4 py-2
+                    text-xs font-medium text-white font-['Lexend']
+                    hover:bg-white/20
+                  "
                 >
                   View Project
                 </button>
@@ -146,9 +154,9 @@ const ProjectGrid = () => {
                   <span
                     key={tag}
                     className="
-                          rounded-md border border-lime-500/70 px-2 py-1
-                          text-[10px] font-bold uppercase tracking-tight text-lime-400 font-['Mont']
-                        "
+                      rounded-md border border-lime-500/70 px-2 py-1
+                      text-[10px] font-bold uppercase tracking-tight text-lime-400 font-['Mont']
+                    "
                   >
                     {tag}
                   </span>
@@ -167,10 +175,10 @@ const ProjectGrid = () => {
                 src="https://placehold.co/800x450"
                 alt={`${project.name} preview`}
                 className="
-                      h-44 w-full object-cover
-                      transition duration-500
-                      group-hover:scale-[1.03]
-                    "
+                  h-44 w-full object-cover
+                  transition duration-500
+                  group-hover:scale-[1.03]
+                "
               />
             </div>
           </article>
@@ -183,19 +191,41 @@ const ProjectGrid = () => {
           type="button"
           onClick={handleViewClick}
           className="
-                inline-flex h-12 items-center justify-center
-                rounded-xl border border-white/80
-                px-8
-                text-sm sm:text-base font-normal text-white font-['Lexend']
-                hover:bg-white hover:text-black
-                transition
-              "
+            inline-flex h-12 items-center justify-center
+            rounded-xl border border-white/80
+            px-8
+            text-sm sm:text-base font-normal text-white font-['Lexend']
+            hover:bg-white hover:text-black
+            transition
+          "
         >
           View All
         </button>
       </div>
-    </div>
+    </>
   );
+
+  // --- when used as a standalone section (Projects page) ---
+  if (contained) {
+    return (
+      <section className="relative w-full bg-[#050505] py-16 lg:py-20">
+        {/* subtle background glow */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute left-1/2 top-[18%] h-80 w-80 -translate-x-1/2 rounded-full bg-lime-500/15 blur-[200px]" />
+        </div>
+
+        <div className="relative mx-auto max-w-[1200px] px-4 lg:px-6">
+          {/* card wrapper like the Figma shot */}
+          <div className="rounded-3xl border border-neutral-800 bg-gradient-to-b from-neutral-900/80 to-black/95 px-4 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-14 shadow-[0_0_40px_rgba(0,0,0,0.85)]">
+            {content}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // --- when the parent already handles layout/card (Services) ---
+  return <>{content}</>;
 };
 
 export default ProjectGrid;

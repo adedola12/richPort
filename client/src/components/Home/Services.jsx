@@ -1,10 +1,8 @@
-
+// src/components/Home/Services.jsx
+import React from "react";
 import ProjectGrid from "./ProjectGrid";
 
-
 const Services = () => {
-
-
   return (
     <section className="relative w-full bg-[#050505] py-20 lg:py-24">
       {/* subtle glow behind the whole block */}
@@ -48,7 +46,8 @@ const Services = () => {
             </div>
           </div>
 
-          <ProjectGrid />
+          {/* Grid only; parent controls layout/card */}
+          <ProjectGrid contained={false} />
         </div>
       </div>
     </section>
