@@ -9,6 +9,8 @@ import ProjectWriteUp from "./ProjectPage/ProjectWriteUp";
 import ProjectImg from "./ProjectPage/ProjectImg";
 import OtherProj from "./ProjectPage/OtherProj";
 import BuildSection from "./Home/BuildSection";
+import ProjectConc from "./ProjectPage/ProjectConc";
+import DiscoverImg from "./ProjectPage/DiscoverImg";
 
 const ProjectPage = () => {
   const { slug } = useParams();
@@ -29,6 +31,8 @@ const ProjectPage = () => {
       <MainImg project={project} />
       <ProjectWriteUp project={project} />
       <ProjectImg project={project} />
+      <ProjectConc project={project} />
+      <DiscoverImg project={project} />
       <OtherProj currentSlug={project.slug} />
       <BuildSection />
     </div>

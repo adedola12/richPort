@@ -58,7 +58,7 @@ const Nav = () => {
             </Link>
 
             {/* Center links – desktop */}
-            <nav className="hidden md:flex items-center gap-10 text-[11px] sm:text-xs font-medium font-['Gabarito'] text-white/80">
+            <nav className="hidden md:flex items-center gap-10 text-[20px] sm:text-xs font-medium font-['Gabarito'] text-white/80">
               {navLinks.map((link) => (
                 <Link
                   key={link.to}
