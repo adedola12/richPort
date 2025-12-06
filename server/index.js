@@ -1,17 +1,15 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import dotenv from "dotenv";
-import bodyParser from "body-parser";
 
 import authRoutes from "./routes/authRoutes.js";
+import projectRoutes from "./routes/projectRoutes.js";
 import { connectToDatabase } from "./db.js";
 import { requireAuth, requireAdmin } from "./middleware/authMiddleware.js";
-
-dotenv.config();
 
 const app = express();
 app.get("/__debug/db", (_req, res) => {
@@ -49,8 +47,8 @@ app.use(cors(corsOptions));
 app.options(/.*/, cors(corsOptions));
 
 // Api Routes
-// Auth routes
 app.use("/api/auth", authRoutes);
+app.use("/api/projects", projectRoutes);
 
 // Simple health check
 app.get("/", (req, res) => {

@@ -6,7 +6,7 @@ import App from "./App.jsx";
 import "./index.css";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
-import BrandIdentity from "./pages/BrandIdentity.jsx";
+
 import Projects from "./pages/Projects.jsx";
 import RateDetails from "./pages/RateDetails.jsx";
 import ProjectPage from "./components/ProjectPage.jsx";
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "about", element: <About /> },
-      { path: "brand-identity", element: <BrandIdentity /> },
+
       { path: "projects", element: <Projects /> },
       { path: "rate-details", element: <RateDetails /> },
       { path: "projects/:slug", element: <ProjectPage /> },

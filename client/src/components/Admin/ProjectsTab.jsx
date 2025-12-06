@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { uploadImage } from "../../utils/uploadImage";
 import { useAuth } from "../../context/AuthContext";
 
-const PROJECTS_API = import.meta.env.VITE_ADMIN_PROJECTS_ENDPOINT || "";
+const PROJECTS_API = import.meta.env.VITE_AUTH_ENDPOINT || "";
 
 // simple slug helper
 const slugify = (str) =>
@@ -74,7 +74,7 @@ const ProjectsTab = () => {
       }
 
       try {
-        const res = await authFetch(PROJECTS_API);
+        const res = await authFetch(`${PROJECTS_API}/api/projects/admin`);
         if (!res.ok) throw new Error("Failed to fetch projects");
         const data = await res.json();
         setExistingProjects(Array.isArray(data) ? data : []);
@@ -241,7 +241,9 @@ const ProjectsTab = () => {
       }
 
       const method = editingId ? "PUT" : "POST";
-      const url = editingId ? `${PROJECTS_API}/${editingId}` : PROJECTS_API;
+      const url = editingId
+        ? `${PROJECTS_API}/api/projects/admin/${editingId}`
+        : `${PROJECTS_API}/api/projects/admin`;
 
       const res = await authFetch(url, {
         method,
@@ -257,7 +259,8 @@ const ProjectsTab = () => {
       });
 
       // reload list
-      const listRes = await fetch(PROJECTS_API);
+      // ✅ use authFetch so token/cookie is sent
+      const listRes = await authFetch(`${PROJECTS_API}/api/projects/admin`);
       const listData = await listRes.json();
       setExistingProjects(Array.isArray(listData) ? listData : []);
 
