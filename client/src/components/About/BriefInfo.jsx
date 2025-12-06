@@ -15,9 +15,9 @@ import ownImg2 from "../../assets/ownImg2.png";
 /* --- CARD STACK --------------------------------------------------------- */
 
 const cardData = [
-  { src: ownImg, name: "Samson Faboyo", role: "Design Lead" },
-  { src: ownImg1, name: "Samson Agbeke", role: "Design Manager" },
-  { src: ownImg2, name: "Adebayo Faboyo", role: "Design Ideator" },
+  { src: ownImg, name: "", role: "" },
+  { src: ownImg1, name: "", role: "" },
+  { src: ownImg2, name: "", role: "" },
 ];
 
 function CardStack() {
@@ -106,8 +106,8 @@ function CardStack() {
 
             {/* name / role label */}
             <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/35 to-transparent p-3 sm:p-4 text-center text-[11px] sm:text-xs text-gray-200">
-              <div className="font-semibold">{name}</div>
-              <div className="opacity-80">{role}</div>
+              {/* <div className="font-semibold">{name}</div>
+              <div className="opacity-80">{role}</div> */}
             </figcaption>
           </figure>
         );
