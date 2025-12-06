@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { FiCheck } from "react-icons/fi";
 
-const API_URL = import.meta.env.VITE_RATE_FORM_ENDPOINT || "";
+const API_URL = import.meta.env.VITE_AUTH_ENDPOINT || "";
 
 const RateForm = () => {
   const [form, setForm] = useState({
@@ -57,7 +57,7 @@ const RateForm = () => {
     };
 
     try {
-      if (!API_URL) {
+      if (!`${API_URL}/api/rates/enquiries`) {
         console.log("Rate form submission payload:", payload);
         await new Promise((res) => setTimeout(res, 700));
         setStatus({
@@ -68,7 +68,7 @@ const RateForm = () => {
         return;
       }
 
-      const res = await fetch(API_URL, {
+      const res = await fetch(`${API_URL}/api/rates/enquiries`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

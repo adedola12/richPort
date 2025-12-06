@@ -6,6 +6,8 @@ import {
   createRateCategory,
   updateRateCategory,
   deleteRateCategory,
+  createRateEnquiry,
+  listRateEnquiries,
 } from "../controllers/rateController.js";
 import { requireAuth, requireAdmin } from "../middleware/authMiddleware.js";
 
@@ -32,5 +34,26 @@ router.put("/admin/:id", requireAuth, requireAdmin, updateRateCategory);
 
 // DELETE /api/rates/admin/:id → delete by Mongo ObjectId
 router.delete("/admin/:id", requireAuth, requireAdmin, deleteRateCategory);
+
+/**
+ * POST /api/rates/enquiries
+ * Used by the public rate form
+ */
+router.post("/enquiries", createRateEnquiry);
+
+/**
+ * GET /api/rates/enquiries
+ * Used by admin CustomersTab
+ * If you already have auth cookies working, you can protect it like:
+ *
+ * router.get(
+ *   "/enquiries",
+ *   requireAuth,
+ *   requireAdmin,
+ *   listRateEnquiries
+ * );
+ */
+router.get("/enquiries", listRateEnquiries);
+
 
 export default router;

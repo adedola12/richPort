@@ -1,7 +1,7 @@
 // src/components/admin/CustomersTab.jsx
 import React, { useEffect, useState } from "react";
 
-const CUSTOMERS_API = import.meta.env.VITE_ADMIN_RATE_CUSTOMERS_ENDPOINT || "";
+const CUSTOMERS_API = import.meta.env.VITE_AUTH_ENDPOINT || "";
 
 const CustomersTab = () => {
   const [customers, setCustomers] = useState([]);
@@ -12,7 +12,7 @@ const CustomersTab = () => {
       setStatus({ type: "loading", message: "Loading customers..." });
 
       try {
-        if (!CUSTOMERS_API) {
+        if (!`${CUSTOMERS_API}/api/rates/enquiries`) {
           // placeholder data
           setCustomers([
             {
@@ -33,7 +33,7 @@ const CustomersTab = () => {
           return;
         }
 
-        const res = await fetch(CUSTOMERS_API);
+        const res = await fetch(`${CUSTOMERS_API}/api/rates/enquiries`);
         if (!res.ok) throw new Error("Failed to fetch customers");
         const data = await res.json();
         setCustomers(data);

@@ -1,5 +1,7 @@
 // server/controllers/rateController.js
 import RateCategory from "../models/RateModel.js";
+import RateEnquiry from "../models/RateEnquiry.js";
+
 
 /**
  * Normalize incoming body into a clean payload for RateCategory
@@ -251,5 +253,78 @@ export const deleteRateCategory = async (req, res) => {
   } catch (err) {
     console.error("deleteRateCategory error:", err);
     return res.status(500).json({ message: "Failed to delete rate category." });
+  }
+};
+
+/* POST /api/rates/enquiries
+ * Public endpoint used by the RateForm
+ */
+export const createRateEnquiry = async (req, res) => {
+  try {
+    let {
+      fullName,
+      email,
+      services = [],
+      budget,
+      message = "",
+      submittedAt,
+    } = req.body || {};
+
+    if (!fullName || !email || budget === undefined || budget === null) {
+      return res.status(400).json({
+        error: "fullName, email and budget are required",
+      });
+    }
+
+    // normalise / clean inputs
+    fullName = String(fullName).trim();
+    email = String(email).trim().toLowerCase();
+    message = String(message || "").trim();
+    const numericBudget = Number(budget);
+
+    if (Number.isNaN(numericBudget)) {
+      return res.status(400).json({ error: "budget must be a number" });
+    }
+
+    const servicesArray = Array.isArray(services)
+      ? services.map((s) => String(s))
+      : [];
+
+    const submittedDate = submittedAt ? new Date(submittedAt) : new Date();
+
+    const enquiry = await RateEnquiry.create({
+      fullName,
+      email,
+      services: servicesArray,
+      budget: numericBudget,
+      message,
+      submittedAt: submittedDate,
+    });
+
+    return res.status(201).json(enquiry); // toJSON runs automatically
+  } catch (err) {
+    console.error("createRateEnquiry error:", err);
+    return res
+      .status(500)
+      .json({ error: "Could not save enquiry. Please try again." });
+  }
+};
+
+/**
+ * GET /api/rates/enquiries
+ * Admin endpoint to list all submissions (for CustomersTab)
+ */
+export const listRateEnquiries = async (_req, res) => {
+  try {
+    const enquiries = await RateEnquiry.find({})
+      .sort({ createdAt: -1 }) // newest first
+      .exec();
+
+    return res.json(enquiries);
+  } catch (err) {
+    console.error("listRateEnquiries error:", err);
+    return res
+      .status(500)
+      .json({ error: "Could not load enquiries. Please try again." });
   }
 };

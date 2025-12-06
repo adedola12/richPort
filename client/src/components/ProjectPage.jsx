@@ -11,6 +11,7 @@ import OtherProj from "./ProjectPage/OtherProj";
 import BuildSection from "./Home/BuildSection";
 import ProjectConc from "./ProjectPage/ProjectConc";
 import DiscoverImg from "./ProjectPage/DiscoverImg";
+import SectionReveal from "./common/SectionReveal";
 
 const API_BASE = import.meta.env.VITE_AUTH_ENDPOINT || "";
 
@@ -76,15 +77,38 @@ const ProjectPage = () => {
   }
 
   return (
-    <div className="text-white bg-[#050505]">
-      <ProjectDetailsHero project={project} />
-      <MainImg project={project} />
-      <ProjectWriteUp project={project} />
-      <ProjectImg project={project} />
-      <ProjectConc project={project} />
-      <DiscoverImg project={project} />
-      <OtherProj currentSlug={project.slug} />
-      <BuildSection />
+    <div className="text-white bg-[#050505]" key={project.slug}>
+      <SectionReveal>
+        <ProjectDetailsHero project={project} />
+      </SectionReveal>
+
+      <SectionReveal delay={0.05}>
+        <MainImg project={project} />
+      </SectionReveal>
+
+      <SectionReveal delay={0.1}>
+        <ProjectWriteUp project={project} />
+      </SectionReveal>
+
+      <SectionReveal delay={0.15}>
+        <ProjectImg project={project} />
+      </SectionReveal>
+
+      <SectionReveal delay={0.2}>
+        <ProjectConc project={project} />
+      </SectionReveal>
+
+      <SectionReveal delay={0.25}>
+        <DiscoverImg project={project} />
+      </SectionReveal>
+
+      <SectionReveal delay={0.3}>
+        <OtherProj currentSlug={project.slug} />
+      </SectionReveal>
+
+      <SectionReveal delay={0.35}>
+        <BuildSection />
+      </SectionReveal>
     </div>
   );
 };
