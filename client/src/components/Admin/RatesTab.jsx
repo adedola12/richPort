@@ -1,5 +1,5 @@
 // src/components/admin/RatesTab.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const RATES_API = import.meta.env.VITE_ADMIN_RATES_ENDPOINT || "";
 
@@ -11,6 +11,9 @@ const slugify = (str) =>
 
 const RatesTab = () => {
   const [status, setStatus] = useState({ type: "idle", message: "" });
+  const [editingId, setEditingId] = useState(null);
+  const [existingCategories, setExistingCategories] = useState([]);
+
   const [category, setCategory] = useState({
     categoryId: "",
     label: "",
@@ -18,10 +21,34 @@ const RatesTab = () => {
     description: "",
     tags: "",
   });
+
   const [plans, setPlans] = useState([
     { id: "plan-1", name: "", price: "", currency: "USD", description: "" },
   ]);
+
+  // deliverables: perPlan now boolean => { [planId]: true/false }
   const [deliverables, setDeliverables] = useState([]);
+
+  // Load existing rate categories
+  useEffect(() => {
+    const fetchRates = async () => {
+      if (!RATES_API) {
+        setExistingCategories([]);
+        return;
+      }
+
+      try {
+        const res = await fetch(RATES_API);
+        if (!res.ok) throw new Error("Failed to fetch rates");
+        const data = await res.json();
+        setExistingCategories(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchRates();
+  }, []);
 
   const handleCatChange = (e) => {
     const { name, value } = e.target;
@@ -49,12 +76,14 @@ const RatesTab = () => {
 
   const removePlan = (index) => {
     setPlans((prev) => prev.filter((_, i) => i !== index));
+
+    // remove this plan from all deliverables
     setDeliverables((prev) =>
       prev.map((d) => {
-        const updated = { ...d.perPlan };
+        const updatedPerPlan = { ...d.perPlan };
         const removedPlanId = plans[index]?.id;
-        if (removedPlanId) delete updated[removedPlanId];
-        return { ...d, perPlan: updated };
+        if (removedPlanId) delete updatedPerPlan[removedPlanId];
+        return { ...d, perPlan: updatedPerPlan };
       })
     );
   };
@@ -72,10 +101,13 @@ const RatesTab = () => {
     );
   };
 
-  const updateDeliverableValue = (dIndex, planId, value) => {
+  // Checkbox toggle
+  const toggleDeliverablePlan = (dIndex, planId, checked) => {
     setDeliverables((prev) =>
       prev.map((d, i) =>
-        i === dIndex ? { ...d, perPlan: { ...d.perPlan, [planId]: value } } : d
+        i === dIndex
+          ? { ...d, perPlan: { ...d.perPlan, [planId]: checked } }
+          : d
       )
     );
   };
@@ -85,7 +117,9 @@ const RatesTab = () => {
     setStatus({ type: "loading", message: "Saving rate category..." });
 
     const payload = {
-      id: category.categoryId || slugify(category.label || category.heading),
+      id:
+        category.categoryId ||
+        slugify(category.label || category.heading || "category"),
       label: category.label || category.heading,
       heading: category.heading,
       description: category.description,
@@ -96,12 +130,12 @@ const RatesTab = () => {
       plans: plans.map((p) => ({
         ...p,
         price: Number(p.price || 0),
-        isFeatured: false, // you can add this to the UI later
+        isFeatured: false,
       })),
       deliverables: deliverables.map((d) => ({
         id: d.id || slugify(d.label),
         label: d.label,
-        perPlan: d.perPlan,
+        perPlan: d.perPlan, // { [planId]: true/false }
       })),
     };
 
@@ -112,13 +146,16 @@ const RatesTab = () => {
         setStatus({
           type: "success",
           message:
-            "Rates saved locally. Once RATES_API is set, they’ll sync to backend.",
+            "Rates saved locally (no RATES_API set). Check console payload.",
         });
         return;
       }
 
-      const res = await fetch(RATES_API, {
-        method: "POST",
+      const method = editingId ? "PUT" : "POST";
+      const url = editingId ? `${RATES_API}/${editingId}` : RATES_API;
+
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
@@ -128,6 +165,32 @@ const RatesTab = () => {
         type: "success",
         message: "Rate category saved successfully ✅",
       });
+
+      // reload list
+      const listRes = await fetch(RATES_API);
+      const listData = await listRes.json();
+      setExistingCategories(Array.isArray(listData) ? listData : []);
+
+      if (!editingId) {
+        setCategory({
+          categoryId: "",
+          label: "",
+          heading: "",
+          description: "",
+          tags: "",
+        });
+        setPlans([
+          {
+            id: "plan-1",
+            name: "",
+            price: "",
+            currency: "USD",
+            description: "",
+          },
+        ]);
+        setDeliverables([]);
+      }
+      setEditingId(null);
     } catch (err) {
       console.error(err);
       setStatus({
@@ -137,14 +200,62 @@ const RatesTab = () => {
     }
   };
 
-  return (
-    <div className="space-y-6">
-      <h2 className="text-lg font-semibold font-['Mont']">Rate & Plans</h2>
-      <p className="text-sm text-neutral-300 font-['Lexend'] max-w-2xl">
-        Configure rate categories, plans and deliverables. This data feeds the
-        Rate Card page (categories, plans and the comparison table).
-      </p>
+  const startEditing = (cat) => {
+    setEditingId(cat.id || cat._id || null);
 
+    setCategory({
+      categoryId: cat.id || "",
+      label: cat.label || "",
+      heading: cat.heading || "",
+      description: cat.description || "",
+      tags: Array.isArray(cat.tags) ? cat.tags.join(", ") : "",
+    });
+
+    setPlans(
+      Array.isArray(cat.plans) && cat.plans.length > 0
+        ? cat.plans.map((p) => ({
+            id: p.id || slugify(p.name || "plan"),
+            name: p.name || "",
+            price: p.price?.toString?.() || "",
+            currency: p.currency || "USD",
+            description: p.description || "",
+          }))
+        : [
+            {
+              id: "plan-1",
+              name: "",
+              price: "",
+              currency: "USD",
+              description: "",
+            },
+          ]
+    );
+
+    setDeliverables(
+      Array.isArray(cat.deliverables)
+        ? cat.deliverables.map((d, idx) => ({
+            id: d.id || `deliv-${idx + 1}`,
+            label: d.label || "",
+            perPlan: d.perPlan || {},
+          }))
+        : []
+    );
+
+    setStatus({ type: "idle", message: "" });
+  };
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-lg font-semibold font-['Mont']">Rate & Plans</h2>
+        <p className="text-sm text-neutral-300 font-['Lexend'] max-w-2xl">
+          Configure rate categories, plans and deliverables. This data feeds the
+          Rate Card page (categories, plans and the comparison table). Use the
+          checkboxes to mark which deliverables belong to each plan.
+        </p>
+      </div>
+
+      {/* FORM */}
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Category meta */}
         <div className="space-y-3">
@@ -284,7 +395,7 @@ const RatesTab = () => {
           </div>
         </div>
 
-        {/* Deliverables */}
+        {/* Deliverables with checkboxes */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-semibold font-['Mont']">
@@ -333,18 +444,21 @@ const RatesTab = () => {
                         <tr>
                           {plans.map((p) => (
                             <td key={p.id} className="pr-2">
-                              <input
-                                value={d.perPlan[p.id] || ""}
-                                onChange={(e) =>
-                                  updateDeliverableValue(
-                                    dIndex,
-                                    p.id,
-                                    e.target.value
-                                  )
-                                }
-                                className="w-full rounded-md bg-black/70 border border-white/10 px-2 py-1.5 text-[11px] focus:outline-none focus:ring-1 focus:ring-lime-400/70"
-                                placeholder="check, -, 2, etc."
-                              />
+                              <label className="inline-flex items-center gap-1 text-[11px] text-neutral-200">
+                                <input
+                                  type="checkbox"
+                                  className="h-3 w-3 rounded border-white/40 bg-black/80"
+                                  checked={!!d.perPlan[p.id]}
+                                  onChange={(e) =>
+                                    toggleDeliverablePlan(
+                                      dIndex,
+                                      p.id,
+                                      e.target.checked
+                                    )
+                                  }
+                                />
+                                <span>Included</span>
+                              </label>
                             </td>
                           ))}
                         </tr>
@@ -368,7 +482,11 @@ const RatesTab = () => {
             hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed
           "
         >
-          {status.type === "loading" ? "Saving..." : "Save Rate Category"}
+          {status.type === "loading"
+            ? "Saving..."
+            : editingId
+            ? "Update Rate Category"
+            : "Save Rate Category"}
         </button>
 
         {status.type !== "idle" && (
@@ -385,6 +503,70 @@ const RatesTab = () => {
           </p>
         )}
       </form>
+
+      {/* EXISTING RATE CATEGORIES */}
+      <div className="pt-4 border-t border-white/10">
+        <h3 className="text-sm font-semibold font-['Mont'] mb-3">
+          Existing Rate Categories
+        </h3>
+        {existingCategories.length === 0 ? (
+          <p className="text-xs text-neutral-400 font-['Lexend']">
+            No rate categories found yet.
+          </p>
+        ) : (
+          <div className="overflow-x-auto rounded-xl border border-white/10 bg-black/40">
+            <table className="min-w-full text-left text-xs font-['Lexend']">
+              <thead className="bg-white/5">
+                <tr>
+                  <th className="px-3 py-2 font-semibold text-neutral-200">
+                    Label
+                  </th>
+                  <th className="px-3 py-2 font-semibold text-neutral-200">
+                    Heading
+                  </th>
+                  <th className="px-3 py-2 font-semibold text-neutral-200">
+                    Plans
+                  </th>
+                  <th className="px-3 py-2 font-semibold text-neutral-200">
+                    Deliverables
+                  </th>
+                  <th className="px-3 py-2 font-semibold text-neutral-200">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {existingCategories.map((cat) => (
+                  <tr
+                    key={cat.id || cat._id || cat.heading}
+                    className="border-t border-white/5 hover:bg-white/5 transition"
+                  >
+                    <td className="px-3 py-2">{cat.label}</td>
+                    <td className="px-3 py-2">{cat.heading}</td>
+                    <td className="px-3 py-2">
+                      {Array.isArray(cat.plans) ? cat.plans.length : 0}
+                    </td>
+                    <td className="px-3 py-2">
+                      {Array.isArray(cat.deliverables)
+                        ? cat.deliverables.length
+                        : 0}
+                    </td>
+                    <td className="px-3 py-2">
+                      <button
+                        type="button"
+                        onClick={() => startEditing(cat)}
+                        className="text-[11px] px-3 py-1 rounded-md bg-white/10 border border-white/20 hover:bg-white/20"
+                      >
+                        Edit
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
