@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/authRoutes.js";
 import projectRoutes from "./routes/projectRoutes.js";
+import journeyRoutes from "./routes/journeyRoutes.js";
 import { connectToDatabase } from "./db.js";
 import { requireAuth, requireAdmin } from "./middleware/authMiddleware.js";
 
@@ -49,6 +50,7 @@ app.options(/.*/, cors(corsOptions));
 // Api Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/projects", projectRoutes);
+app.use("/api/journey", journeyRoutes);
 
 // Simple health check
 app.get("/", (req, res) => {

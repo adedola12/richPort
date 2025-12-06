@@ -1,7 +1,8 @@
 // src/components/admin/ProjectsTab.jsx
 import React, { useEffect, useState } from "react";
-import { uploadImage } from "../../utils/uploadImage";
+import { uploadImage, MAX_IMAGE_MB } from "../../utils/uploadImage";
 import { useAuth } from "../../context/AuthContext";
+import { FaTrash } from "react-icons/fa";
 
 const PROJECTS_API = import.meta.env.VITE_AUTH_ENDPOINT || "";
 
@@ -68,7 +69,6 @@ const ProjectsTab = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       if (!PROJECTS_API) {
-        // demo data while backend not ready
         setExistingProjects([]);
         return;
       }
@@ -84,7 +84,7 @@ const ProjectsTab = () => {
     };
 
     fetchProjects();
-  }, []);
+  }, [authFetch]);
 
   const handleTextChange = (e) => {
     const { name, value } = e.target;
@@ -103,10 +103,17 @@ const ProjectsTab = () => {
     const progressKey =
       galleryIndex !== null ? `${fieldKey}-${galleryIndex}` : fieldKey;
 
+    // show empty bar immediately
     setUploadProgress((prev) => ({ ...prev, [progressKey]: 0 }));
 
-    uploadImage(file, (p) =>
-      setUploadProgress((prev) => ({ ...prev, [progressKey]: p }))
+    uploadImage(
+      file,
+      (p) =>
+        setUploadProgress((prev) => ({
+          ...prev,
+          [progressKey]: p,
+        }))
+      // endpoint left as default: /api/projects/admin/upload
     )
       .then((url) => {
         setForm((prev) => {
@@ -129,7 +136,12 @@ const ProjectsTab = () => {
         console.error(err);
         setStatus({
           type: "error",
-          message: "Image upload failed. Please try again.",
+          message: err.message || "Image upload failed. Please try again.",
+        });
+        setUploadProgress((prev) => {
+          const copy = { ...prev };
+          delete copy[progressKey];
+          return copy;
         });
       });
   };
@@ -175,7 +187,6 @@ const ProjectsTab = () => {
       },
     ];
 
-    // only keep steps that have at least a title or body
     const caseStudySteps = caseStudyStepsRaw.filter((s) => s.title || s.body);
 
     const payload = {
@@ -192,7 +203,6 @@ const ProjectsTab = () => {
         .map((c) => c.trim())
         .filter(Boolean),
 
-      // hero / details
       clientName: form.clientName.trim() || "",
       heroMeta: {
         categories: heroCategoriesArray,
@@ -201,17 +211,14 @@ const ProjectsTab = () => {
         teamInitials: teamInitialsArray,
       },
 
-      // process steps
       caseStudySteps,
       caseStudyNotes: form.caseStudyNotes.trim(),
 
-      // conclusion section
       conclusionTitle: form.conclusionTitle.trim(),
       conclusionBody: form.conclusionBody.trim(),
       conclusionCtaLabel: form.conclusionCtaLabel.trim(),
       conclusionCtaUrl: form.conclusionCtaUrl.trim(),
 
-      // images
       images: {
         main: form.mainImageUrl || null,
         mid: form.midImageUrl || null,
@@ -220,11 +227,8 @@ const ProjectsTab = () => {
         gallery: (form.galleryImageUrls || []).filter(Boolean),
       },
 
-      // backward compatibility
       pageImg: form.mainImageUrl || null,
       galleryImages: (form.galleryImageUrls || []).filter(Boolean),
-
-      // for ProjectWriteUp image
       caseStudyImage: form.inlineImageUrl || null,
     };
 
@@ -258,13 +262,10 @@ const ProjectsTab = () => {
         message: "Project saved successfully ✅",
       });
 
-      // reload list
-      // ✅ use authFetch so token/cookie is sent
       const listRes = await authFetch(`${PROJECTS_API}/api/projects/admin`);
       const listData = await listRes.json();
       setExistingProjects(Array.isArray(listData) ? listData : []);
 
-      // reset form only if it was a "create"
       if (!editingId) {
         setForm({
           name: "",
@@ -308,6 +309,73 @@ const ProjectsTab = () => {
       setStatus({
         type: "error",
         message: "Failed to save project. Please try again.",
+      });
+    }
+  };
+
+  const handleDeleteProject = async (projectId) => {
+    if (!PROJECTS_API) return;
+
+    const id = projectId;
+    const confirm = window.confirm("Delete this project?");
+    if (!confirm) return;
+
+    try {
+      const res = await authFetch(`${PROJECTS_API}/api/projects/admin/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Failed to delete project");
+
+      setExistingProjects((prev) => prev.filter((p) => (p.id || p._id) !== id));
+
+      if (editingId === id) {
+        setEditingId(null);
+        setForm({
+          name: "",
+          slug: "",
+          url: "",
+          shortDescription: "",
+          tags: "",
+          categories: "",
+          caseStudyNotes: "",
+
+          clientName: "",
+          heroCategories: "",
+          heroDeliverables: "",
+          heroTimeline: "",
+          heroTeamInitials: "",
+
+          discoverTitle: "",
+          discoverBody: "",
+          ideateTitle: "",
+          ideateBody: "",
+          designTitle: "",
+          designBody: "",
+          testTitle: "",
+          testBody: "",
+
+          conclusionTitle: "",
+          conclusionBody: "",
+          conclusionCtaLabel: "",
+          conclusionCtaUrl: "",
+
+          mainImageUrl: "",
+          midImageUrl: "",
+          conclusionImageUrl: "",
+          inlineImageUrl: "",
+          galleryImageUrls: emptyGallery,
+        });
+      }
+
+      setStatus({
+        type: "success",
+        message: "Project deleted ✅",
+      });
+    } catch (err) {
+      console.error(err);
+      setStatus({
+        type: "error",
+        message: "Failed to delete project. Please try again.",
       });
     }
   };
@@ -386,9 +454,74 @@ const ProjectsTab = () => {
     setUploadProgress({});
   };
 
+  // Delete image from Cloudinary and clear it from the form
+  const handleRemoveImage = async (fieldKey, galleryIndex = null) => {
+    let imageUrl = "";
+
+    if (fieldKey === "mainImage") imageUrl = form.mainImageUrl;
+    if (fieldKey === "midImage") imageUrl = form.midImageUrl;
+    if (fieldKey === "conclusionImage") imageUrl = form.conclusionImageUrl;
+    if (fieldKey === "inlineImage") imageUrl = form.inlineImageUrl;
+    if (fieldKey === "gallery" && galleryIndex !== null) {
+      imageUrl = form.galleryImageUrls?.[galleryIndex] || "";
+    }
+
+    if (!imageUrl) return;
+
+    const confirmDelete = window.confirm(
+      "Remove this image? It will also be deleted from Cloudinary."
+    );
+    if (!confirmDelete) return;
+
+    // Try to delete from backend / Cloudinary
+    if (PROJECTS_API) {
+      try {
+        await authFetch(`${PROJECTS_API}/api/projects/admin/delete-image`, {
+          method: "POST", // or DELETE if you prefer
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: imageUrl }),
+        });
+      } catch (err) {
+        console.error(err);
+        setStatus({
+          type: "error",
+          message:
+            "Could not delete image from server. Local reference was removed.",
+        });
+      }
+    }
+
+    // Clear from form state
+    setForm((prev) => {
+      const next = { ...prev };
+
+      if (fieldKey === "mainImage") next.mainImageUrl = "";
+      if (fieldKey === "midImage") next.midImageUrl = "";
+      if (fieldKey === "conclusionImage") next.conclusionImageUrl = "";
+      if (fieldKey === "inlineImage") next.inlineImageUrl = "";
+      if (fieldKey === "gallery" && galleryIndex !== null) {
+        const gallery = [...(prev.galleryImageUrls || emptyGallery)];
+        gallery[galleryIndex] = "";
+        next.galleryImageUrls = gallery;
+      }
+
+      return next;
+    });
+
+    // Clear any upload progress for that field
+    const progressKey =
+      galleryIndex !== null ? `${fieldKey}-${galleryIndex}` : fieldKey;
+    setUploadProgress((prev) => {
+      const copy = { ...prev };
+      delete copy[progressKey];
+      return copy;
+    });
+  };
+
+  // ✅ show bar whenever we have a value for this key
   const renderProgressBar = (progressKey) => {
-    const value = uploadProgress[progressKey] || 0;
-    if (value <= 0 || value >= 100) return null;
+    const value = uploadProgress[progressKey];
+    if (value == null) return null;
 
     return (
       <div className="mt-1 w-full h-1.5 rounded-full bg-black/40 overflow-hidden">
@@ -412,7 +545,6 @@ const ProjectsTab = () => {
           you don’t need to paste URLs manually.
         </p>
       </div>
-
       {/* FORM */}
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic meta */}
@@ -679,6 +811,9 @@ const ProjectsTab = () => {
             <div>
               <label className="block text-xs mb-1 font-semibold font-['Mont']">
                 Main Image (Hero)
+                <span className="ml-1 text-[10px] font-normal text-neutral-400">
+                  (max {MAX_IMAGE_MB}MB)
+                </span>
               </label>
               <input
                 type="file"
@@ -690,12 +825,24 @@ const ProjectsTab = () => {
               />
               {renderProgressBar("mainImage")}
               {form.mainImageUrl && (
-                <div className="mt-2">
+                <div className="mt-2 relative inline-block">
                   <img
                     src={form.mainImageUrl}
                     alt="Main"
                     className="h-32 w-full max-w-xs rounded-md object-cover border border-white/10"
                   />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage("mainImage")}
+                    className="
+        absolute -top-2 -right-2 rounded-full
+        bg-black/80 p-1 text-red-400
+        hover:bg-red-600 hover:text-white transition
+      "
+                    title="Delete image"
+                  >
+                    <FaTrash className="h-3 w-3" />
+                  </button>
                 </div>
               )}
             </div>
@@ -704,6 +851,9 @@ const ProjectsTab = () => {
             <div>
               <label className="block text-xs mb-1 font-semibold font-['Mont']">
                 Mid Section Image
+                <span className="ml-1 text-[10px] font-normal text-neutral-400">
+                  (max {MAX_IMAGE_MB}MB)
+                </span>
               </label>
               <input
                 type="file"
@@ -715,12 +865,24 @@ const ProjectsTab = () => {
               />
               {renderProgressBar("midImage")}
               {form.midImageUrl && (
-                <div className="mt-2">
+                <div className="mt-2 relative inline-block">
                   <img
                     src={form.midImageUrl}
                     alt="Mid"
                     className="h-32 w-full max-w-xs rounded-md object-cover border border-white/10"
                   />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage("midImage")}
+                    className="
+        absolute -top-2 -right-2 rounded-full
+        bg-black/80 p-1 text-red-400
+        hover:bg-red-600 hover:text-white transition
+      "
+                    title="Delete image"
+                  >
+                    <FaTrash className="h-3 w-3" />
+                  </button>
                 </div>
               )}
             </div>
@@ -729,6 +891,9 @@ const ProjectsTab = () => {
             <div>
               <label className="block text-xs mb-1 font-semibold font-['Mont']">
                 Conclusion Image
+                <span className="ml-1 text-[10px] font-normal text-neutral-400">
+                  (max {MAX_IMAGE_MB}MB)
+                </span>
               </label>
               <input
                 type="file"
@@ -743,12 +908,24 @@ const ProjectsTab = () => {
               />
               {renderProgressBar("conclusionImage")}
               {form.conclusionImageUrl && (
-                <div className="mt-2">
+                <div className="mt-2 relative inline-block">
                   <img
                     src={form.conclusionImageUrl}
                     alt="Conclusion"
                     className="h-32 w-full max-w-xs rounded-md object-cover border border-white/10"
                   />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage("conclusionImage")}
+                    className="
+        absolute -top-2 -right-2 rounded-full
+        bg-black/80 p-1 text-red-400
+        hover:bg-red-600 hover:text-white transition
+      "
+                    title="Delete image"
+                  >
+                    <FaTrash className="h-3 w-3" />
+                  </button>
                 </div>
               )}
             </div>
@@ -757,6 +934,9 @@ const ProjectsTab = () => {
             <div>
               <label className="block text-xs mb-1 font-semibold font-['Mont']">
                 In-text / Process Image
+                <span className="ml-1 text-[10px] font-normal text-neutral-400">
+                  (max {MAX_IMAGE_MB}MB)
+                </span>
               </label>
               <input
                 type="file"
@@ -768,12 +948,24 @@ const ProjectsTab = () => {
               />
               {renderProgressBar("inlineImage")}
               {form.inlineImageUrl && (
-                <div className="mt-2">
+                <div className="mt-2 relative inline-block">
                   <img
                     src={form.inlineImageUrl}
                     alt="Inline"
                     className="h-32 w-full max-w-xs rounded-md object-cover border border-white/10"
                   />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage("inlineImage")}
+                    className="
+        absolute -top-2 -right-2 rounded-full
+        bg-black/80 p-1 text-red-400
+        hover:bg-red-600 hover:text-white transition
+      "
+                    title="Delete image"
+                  >
+                    <FaTrash className="h-3 w-3" />
+                  </button>
                 </div>
               )}
             </div>
@@ -783,6 +975,9 @@ const ProjectsTab = () => {
           <div className="space-y-2">
             <p className="text-xs font-semibold font-['Mont']">
               Gallery Images (up to 5)
+              <span className="ml-1 text-[10px] font-normal text-neutral-400">
+                (max {MAX_IMAGE_MB}MB)
+              </span>
             </p>
             <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-5">
               {form.galleryImageUrls.map((url, index) => {
@@ -806,11 +1001,25 @@ const ProjectsTab = () => {
                     />
                     {renderProgressBar(key)}
                     {url && (
-                      <img
-                        src={url}
-                        alt={`Gallery ${index + 1}`}
-                        className="mt-1 h-20 w-full rounded-md object-cover border border-white/10"
-                      />
+                      <div className="relative mt-1">
+                        <img
+                          src={url}
+                          alt={`Gallery ${index + 1}`}
+                          className="h-20 w-full rounded-md object-cover border border-white/10"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveImage("gallery", index)}
+                          className="
+        absolute -top-2 -right-2 rounded-full
+        bg-black/80 p-1 text-red-400
+        hover:bg-red-600 hover:text-white transition
+      "
+                          title="Delete gallery image"
+                        >
+                          <FaTrash className="h-3 w-3" />
+                        </button>
+                      </div>
                     )}
                   </div>
                 );
@@ -975,13 +1184,24 @@ const ProjectsTab = () => {
                       )}
                     </td>
                     <td className="px-3 py-2">
-                      <button
-                        type="button"
-                        onClick={() => startEditing(p)}
-                        className="text-[11px] px-3 py-1 rounded-md bg-white/10 border border-white/20 hover:bg-white/20"
-                      >
-                        Edit
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => startEditing(p)}
+                          className="text-[11px] px-3 py-1 rounded-md bg-white/10 border border-white/20 hover:bg-white/20"
+                        >
+                          Edit
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteProject(p.id || p._id)}
+                          className="p-1.5 rounded-md border border-red-500/40 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition"
+                          title="Delete"
+                        >
+                          <FaTrash className="h-3 w-3" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

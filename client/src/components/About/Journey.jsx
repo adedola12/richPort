@@ -1,69 +1,16 @@
-// src/components/About/Journey.jsx
 import React, { useEffect, useRef, useState } from "react";
-import JImg from "../../assets/journey/JImg.jpg"; // placeholder img for now
+import JImg from "../../assets/journey/JImg.jpg"; // fallback placeholder
 
-// Max number of items to show in the tree
 const MAX_JOURNEY_ITEMS = 5;
 
-// This will eventually come from your server / Cloudinary.
-const JOURNEY_ITEMS = [
-  {
-    id: 1,
-    year: "2020",
-    title: "Matte – Webflow HTML website",
-    description: [
-      "I’ve also worked across different teams, building my soft skills and doing my best to make sure my designs solve real problems—because at the end of the day, isn’t that what design is all about?",
-      "And since I find the construction industry super fascinating (I studied Quantity Surveying, by the way), I like to think I’m discovering my purpose in connecting design and construction…",
-      "…or maybe it’s the other way around.",
-    ],
-    imageUrl: JImg,
-  },
-  {
-    id: 2,
-    year: "2021",
-    title: "Brand identity for a digital studio",
-    description: [
-      "From concept to launch, I’ve helped brands shape a consistent identity across digital and print touchpoints.",
-      "Focusing on clarity and usability, I aim to build visuals that actually work for real users, not just look pretty.",
-    ],
-    imageUrl: JImg,
-  },
-  {
-    id: 3,
-    year: "2022",
-    title: "Product UI for SaaS platforms",
-    description: [
-      "I collaborate closely with product teams to design dashboards, workflows, and interfaces that feel intuitive.",
-      "My process blends wireframes, prototypes, and visual systems into one coherent experience.",
-    ],
-    imageUrl: JImg,
-  },
-  {
-    id: 4,
-    year: "2023",
-    title: "Campaign & social media visuals",
-    description: [
-      "For fast-paced digital campaigns, I design graphics that stay on-brand while being bold enough to stand out.",
-    ],
-    imageUrl: JImg,
-  },
-  {
-    id: 5,
-    year: "2024",
-    title: "Design systems & documentation",
-    description: [
-      "I love creating reusable components and guidelines that make it easier for teams to scale design consistently.",
-    ],
-    imageUrl: JImg,
-  },
-];
+const API_BASE = import.meta.env.VITE_AUTH_ENDPOINT || "";
+const PUBLIC_JOURNEY_URL = API_BASE ? `${API_BASE}/api/journey` : "";
 
-// ===== Single timeline item =====
+/* ===== Single timeline item ===== */
 const JourneyItem = ({ item, index }) => {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
 
-  // alternate layout: even index => image left, text right; odd => swap
   const imageLeft = index % 2 === 0;
 
   useEffect(() => {
@@ -81,6 +28,10 @@ const JourneyItem = ({ item, index }) => {
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
+
+  const imgSrc = item.imageUrl || JImg;
+  const yearLabel =
+    item.year != null ? String(item.year) : item.yearText || "----";
 
   return (
     <div
@@ -103,12 +54,10 @@ const JourneyItem = ({ item, index }) => {
           flex-col items-center z-30
         "
       >
-        {/* 'Year' pill on top of the number */}
         <span className="mb-2 rounded-full border border-white/18 bg-white/6 px-4 py-1 text-[10px] font-semibold tracking-[0.18em] uppercase text-white/85">
           Year
         </span>
 
-        {/* Big gradient year number */}
         <span
           className="
             font-['Outfit']
@@ -119,11 +68,11 @@ const JourneyItem = ({ item, index }) => {
             drop-shadow-[0_0_18px_rgba(0,0,0,0.8)]
           "
         >
-          {item.year}
+          {yearLabel}
         </span>
       </div>
 
-      {/* TIMELINE DOT (under the year) */}
+      {/* TIMELINE DOT */}
       <div className="pointer-events-none hidden md:block absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border border-lime-400 bg-[#050505] shadow-[0_0_12px_rgba(190,242,100,0.6)]" />
 
       {/* IMAGE CARD */}
@@ -146,13 +95,12 @@ const JourneyItem = ({ item, index }) => {
             z-10
           "
         >
-          {/* Title pill inside card */}
           <div className="absolute left-3 top-3 z-20 inline-flex items-center rounded-full border border-white/20 bg-black/70 px-3 py-1 text-[10px] font-medium text-white/85">
             {item.title}
           </div>
 
           <img
-            src={item.imageUrl}
+            src={imgSrc}
             alt={item.title}
             className="h-[230px] w-full object-cover grayscale"
           />
@@ -161,16 +109,14 @@ const JourneyItem = ({ item, index }) => {
 
       {/* TEXT BLOCK + MOBILE YEAR */}
       <div
-        className={`
-          ${
-            imageLeft
-              ? "md:order-2 md:pl-24 md:pr-4 md:text-left" // more padding from center
-              : "md:order-1 md:pr-24 md:pl-4 md:text-right" // more padding from center
-          }
-        `}
+        className={
+          imageLeft
+            ? "md:order-2 md:pl-24 md:pr-4 md:text-left"
+            : "md:order-1 md:pr-24 md:pl-4 md:text-right"
+        }
       >
         <div className="flex flex-col gap-4 max-w-[520px]">
-          {/* Mobile year (stacked) */}
+          {/* Mobile year */}
           <div className="mb-1 flex items-center gap-3 md:hidden">
             <span className="rounded-full border border-white/18 bg-white/6 px-3 py-1 text-[10px] font-semibold tracking-[0.18em] uppercase text-white/85">
               Year
@@ -184,13 +130,12 @@ const JourneyItem = ({ item, index }) => {
                 bg-clip-text text-transparent
               "
             >
-              {item.year}
+              {yearLabel}
             </span>
           </div>
 
-          {/* Description paragraphs */}
           <div className="space-y-3 font-['Lexend'] text-sm leading-6 text-neutral-200 sm:text-[15px]">
-            {item.description.map((para, idx) => (
+            {(item.description || []).map((para, idx) => (
               <p key={idx}>{para}</p>
             ))}
           </div>
@@ -200,28 +145,81 @@ const JourneyItem = ({ item, index }) => {
   );
 };
 
-// ===== Wrapper =====
+/* ===== Wrapper ===== */
 const Journey = () => {
-  const itemsToRender = JOURNEY_ITEMS.slice(0, MAX_JOURNEY_ITEMS);
+  const [items, setItems] = useState([]);
+  const [status, setStatus] = useState({ loading: true, error: "" });
+
+  useEffect(() => {
+    const fetchJourney = async () => {
+      if (!PUBLIC_JOURNEY_URL) {
+        setItems([]);
+        setStatus({ loading: false, error: "" });
+        return;
+      }
+
+      try {
+        setStatus({ loading: true, error: "" });
+        const res = await fetch(PUBLIC_JOURNEY_URL, { credentials: "include" });
+        if (!res.ok) throw new Error("Failed to fetch journey entries");
+        const data = await res.json();
+
+        const normalized = (Array.isArray(data) ? data : []).map((item) => ({
+          id: item.id || item._id,
+          year: item.year,
+          title: item.title,
+          description: Array.isArray(item.description)
+            ? item.description
+            : typeof item.description === "string"
+            ? item.description.split(/\r?\n/).filter(Boolean)
+            : [],
+          imageUrl: item.imageUrl || null,
+        }));
+
+        setItems(normalized.slice(0, MAX_JOURNEY_ITEMS));
+        setStatus({ loading: false, error: "" });
+      } catch (err) {
+        console.error("Journey fetch error:", err);
+        setStatus({
+          loading: false,
+          error: "Unable to load journey timeline at the moment.",
+        });
+      }
+    };
+
+    fetchJourney();
+  }, []);
 
   return (
     <section className="relative w-full bg-[#050505] py-16 lg:py-24">
       <div className="mx-auto max-w-[1200px] px-4 lg:px-6">
-        {/* Section heading */}
         <p className="text-center text-xs font-medium text-white/75 sm:text-sm">
-          Here are a few things I can do...
+          Here are a few things I&apos;ve done over the years...
         </p>
 
         <div className="relative mt-12">
-          {/* Central vertical timeline (desktop / tablet) */}
+          {/* Central vertical timeline */}
           <div className="pointer-events-none absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-gradient-to-b from-white/40 via-white/15 to-transparent md:block" />
 
-          {/* Tree items */}
-          <div className="space-y-16 lg:space-y-20">
-            {itemsToRender.map((item, index) => (
-              <JourneyItem key={item.id} item={item} index={index} />
-            ))}
-          </div>
+          {status.loading ? (
+            <p className="text-center text-sm text-neutral-300 font-['Lexend']">
+              Loading journey…
+            </p>
+          ) : status.error ? (
+            <p className="text-center text-sm text-red-400 font-['Lexend']">
+              {status.error}
+            </p>
+          ) : items.length === 0 ? (
+            <p className="text-center text-sm text-neutral-300 font-['Lexend']">
+              Journey entries coming soon.
+            </p>
+          ) : (
+            <div className="space-y-16 lg:space-y-20">
+              {items.map((item, index) => (
+                <JourneyItem key={item.id || index} item={item} index={index} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>

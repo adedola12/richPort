@@ -7,6 +7,7 @@ import {
   createProject,
   updateProject,
   uploadProjectImage,
+  deleteProjectImage
 } from "../controllers/projectController.js";
 import { requireAuth, requireAdmin } from "../middleware/authMiddleware.js";
 
@@ -33,6 +34,14 @@ router.post(
   requireAdmin,
   upload.single("image"),
   uploadProjectImage
+);
+
+// image delete  👇 this matches `${PROJECTS_API}/api/projects/admin/delete-image`
+router.post(
+  "/admin/delete-image",
+  requireAuth,
+  requireAdmin,
+  deleteProjectImage
 );
 
 export default router;

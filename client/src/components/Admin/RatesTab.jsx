@@ -1,6 +1,7 @@
 // src/components/admin/RatesTab.jsx
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { FaTrash } from "react-icons/fa";
 
 const RATES_API = import.meta.env.VITE_ADMIN_RATES_ENDPOINT || "";
 
@@ -245,6 +246,57 @@ const RatesTab = () => {
     );
 
     setStatus({ type: "idle", message: "" });
+  };
+
+  const handleDeleteRateCategory = async (catId) => {
+    if (!RATES_API) return;
+
+    const id = catId;
+    const confirm = window.confirm("Delete this rate category?");
+    if (!confirm) return;
+
+    try {
+      const res = await authFetch(`${RATES_API}/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Failed to delete rate category");
+
+      setExistingCategories((prev) =>
+        prev.filter((cat) => (cat.id || cat._id) !== id)
+      );
+
+      if (editingId === id) {
+        setEditingId(null);
+        setCategory({
+          categoryId: "",
+          label: "",
+          heading: "",
+          description: "",
+          tags: "",
+        });
+        setPlans([
+          {
+            id: "plan-1",
+            name: "",
+            price: "",
+            currency: "USD",
+            description: "",
+          },
+        ]);
+        setDeliverables([]);
+      }
+
+      setStatus({
+        type: "success",
+        message: "Rate category deleted ✅",
+      });
+    } catch (err) {
+      console.error(err);
+      setStatus({
+        type: "error",
+        message: "Failed to delete rate category. Please try again.",
+      });
+    }
   };
 
   return (
@@ -555,13 +607,26 @@ const RatesTab = () => {
                         : 0}
                     </td>
                     <td className="px-3 py-2">
-                      <button
-                        type="button"
-                        onClick={() => startEditing(cat)}
-                        className="text-[11px] px-3 py-1 rounded-md bg-white/10 border border-white/20 hover:bg-white/20"
-                      >
-                        Edit
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => startEditing(cat)}
+                          className="text-[11px] px-3 py-1 rounded-md bg-white/10 border border-white/20 hover:bg-white/20"
+                        >
+                          Edit
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleDeleteRateCategory(cat.id || cat._id)
+                          }
+                          className="p-1.5 rounded-md border border-red-500/40 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition"
+                          title="Delete"
+                        >
+                          <FaTrash className="h-3 w-3" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

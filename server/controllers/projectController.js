@@ -3,6 +3,40 @@ import Project from "../models/ProjectModel.js";
 import cloudinary from "../cloudinary.js";
 import streamifier from "streamifier";
 
+/** Folder used when uploading project images */
+const PROJECT_FOLDER = "richard_portfolio/projects";
+
+/**
+ * Extract Cloudinary public_id from a secure URL
+ * Example URL:
+ *  https://res.cloudinary.com/<cloud>/image/upload/v1691234567/richard_portfolio/projects/filename.jpg
+ * Returns:
+ *  richard_portfolio/projects/filename
+ */
+const extractProjectPublicIdFromUrl = (url) => {
+  try {
+    const u = new URL(url);
+    const pathname = u.pathname; // "/<cloud>/image/upload/v.../richard_portfolio/projects/filename.jpg"
+    const needle = `/${PROJECT_FOLDER}/`;
+    const idx = pathname.indexOf(needle);
+    if (idx === -1) return null;
+
+    // Get "richard_portfolio/projects/filename.jpg"
+    let publicIdWithExt = pathname.substring(idx + 1); // drop leading "/"
+
+    // Remove file extension
+    const lastDot = publicIdWithExt.lastIndexOf(".");
+    if (lastDot !== -1) {
+      publicIdWithExt = publicIdWithExt.substring(0, lastDot);
+    }
+
+    return publicIdWithExt;
+  } catch (err) {
+    console.error("extractProjectPublicIdFromUrl error:", err);
+    return null;
+  }
+};
+
 /**
  * GET /api/projects
  * Public list of projects
@@ -149,3 +183,43 @@ export const uploadProjectImage = async (req, res) => {
     return res.status(500).json({ message: "Image upload failed." });
   }
 };
+
+/**
+ * POST /api/projects/admin/delete-image
+ * Body: { url: string }
+ * Deletes an image from Cloudinary using its URL.
+ */
+export const deleteProjectImage = async (req, res) => {
+  try {
+    const { url } = req.body;
+    if (!url) {
+      return res.status(400).json({ message: "Image URL is required." });
+    }
+
+    const publicId = extractProjectPublicIdFromUrl(url);
+    if (!publicId) {
+      return res.status(400).json({
+        message: "Could not derive Cloudinary public_id from URL.",
+      });
+    }
+
+    const result = await cloudinary.uploader.destroy(publicId);
+
+    // result = { result: 'ok' | 'not found' | 'error', ... }
+    if (result.result !== "ok" && result.result !== "not found") {
+      console.error("Cloudinary destroy error:", result);
+      return res.status(500).json({ message: "Failed to delete image." });
+    }
+
+    return res.json({
+      message: "Project image deleted.",
+      publicId,
+      cloudinary: result,
+    });
+  } catch (err) {
+    console.error("deleteProjectImage error:", err);
+    return res.status(500).json({ message: "Failed to delete image." });
+  }
+};
+
+
