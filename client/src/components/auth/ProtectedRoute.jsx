@@ -4,12 +4,17 @@ import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 const ProtectedRoute = ({ children }) => {
-  const { isAdmin } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const location = useLocation();
 
-  if (!isAdmin) {
+  // Only allow logged-in admins
+  if (!isAuthenticated || user?.userType !== "admin") {
     return (
-      <Navigate to="/admin-auth" state={{ from: location.pathname }} replace />
+      <Navigate
+        to="/admin-auth" // ✅ this must match your login route
+        replace
+        state={{ from: location.pathname }} // so we can send them back after login
+      />
     );
   }
 

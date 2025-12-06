@@ -7,21 +7,21 @@ export async function connectToDatabase() {
   if (connectPromise) return connectPromise;
 
   const mongoURI =
-    process.env.MONGO_URI || "mongodb://localhost:27017/mydatabase";
-  if (!mongoURI)
+    process.env.MONGO_URI || "mongodb://localhost:27017/richard_portfolio"; // fallback for local dev
+
+  if (!mongoURI) {
     throw new Error("MONGO_URI is not defined in environment variables");
+  }
 
   mongoose.set("strictQuery", true);
 
-  const authDbName = process.env.MONGO_AUTH_DB || "admin";
-
   connectPromise = mongoose
     .connect(mongoURI, {
-      dbName: authDbName,
+      // no dbName here – it will use the one from the URI path
       serverSelectionTimeoutMS: 5000,
     })
     .then((m) => {
-      console.log("Connected to MongoDB");
+      console.log("Connected to MongoDB:", m.connection.name);
       return m;
     })
     .catch((err) => {
@@ -34,5 +34,6 @@ export async function connectToDatabase() {
     console.log("MongoDB disconnected");
     connectPromise = null;
   });
+
   return connectPromise;
 }

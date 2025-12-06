@@ -1,5 +1,6 @@
 // src/components/admin/RatesTab.jsx
 import React, { useEffect, useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 
 const RATES_API = import.meta.env.VITE_ADMIN_RATES_ENDPOINT || "";
 
@@ -10,6 +11,8 @@ const slugify = (str) =>
     .replace(/[\s\W-]+/g, "-");
 
 const RatesTab = () => {
+  const { authFetch } = useAuth();
+
   const [status, setStatus] = useState({ type: "idle", message: "" });
   const [editingId, setEditingId] = useState(null);
   const [existingCategories, setExistingCategories] = useState([]);
@@ -38,7 +41,7 @@ const RatesTab = () => {
       }
 
       try {
-        const res = await fetch(RATES_API);
+        const res = await authFetch(RATES_API);
         if (!res.ok) throw new Error("Failed to fetch rates");
         const data = await res.json();
         setExistingCategories(Array.isArray(data) ? data : []);
@@ -154,7 +157,7 @@ const RatesTab = () => {
       const method = editingId ? "PUT" : "POST";
       const url = editingId ? `${RATES_API}/${editingId}` : RATES_API;
 
-      const res = await fetch(url, {
+      const res = await authFetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

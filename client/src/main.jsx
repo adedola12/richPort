@@ -28,7 +28,11 @@ const router = createBrowserRouter([
       { path: "projects", element: <Projects /> },
       { path: "rate-details", element: <RateDetails /> },
       { path: "projects/:slug", element: <ProjectPage /> },
-      { path: "admin-auth", element: <AdminAuthPage /> },
+
+      {
+        path: "admin-auth",
+        element: <AdminAuthPage />,
+      },
       {
         path: "admin",
         element: (

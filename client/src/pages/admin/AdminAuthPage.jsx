@@ -24,22 +24,29 @@ const AdminAuthPage = () => {
 
     try {
       if (mode === "signin") {
-        await signIn({ email: form.email, password: form.password });
+        const data = await signIn({
+          email: form.email,
+          password: form.password,
+        });
+        console.log("Signin OK:", data);
       } else {
-        await signUp({
+        const data = await signUp({
           name: form.name || form.email.split("@")[0],
           email: form.email,
           password: form.password,
         });
+        console.log("Signup OK:", data);
       }
 
       setStatus({ type: "success", message: "Welcome back 👋" });
-      navigate(redirectTo, { replace: true });
+
+      // 🔥 Always go to admin dashboard after auth
+      navigate("/admin", { replace: true });
     } catch (err) {
       console.error(err);
       setStatus({
         type: "error",
-        message: "Unable to authenticate. Please try again.",
+        message: err.message || "Unable to authenticate. Please try again.",
       });
     }
   };

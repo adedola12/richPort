@@ -1,57 +1,125 @@
-// src/context/AuthContext.jsx
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-const AuthContext = createContext();
+const AUTH_API = import.meta.env.VITE_AUTH_ENDPOINT || "";
 
-const STORAGE_KEY = "re_admin_user";
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
+    const raw = localStorage.getItem("adminUser");
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
       return raw ? JSON.parse(raw) : null;
     } catch {
       return null;
     }
   });
 
-  const isAdmin = !!user; // later you can check user.role === "admin"
+  const [token, setToken] = useState(
+    () => localStorage.getItem("adminToken") || null
+  );
 
+  const [loading, setLoading] = useState(false);
+
+  // Keep localStorage in sync
   useEffect(() => {
-    if (user) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-    } else {
-      localStorage.removeItem(STORAGE_KEY);
+    if (!token || !user) {
+      localStorage.removeItem("adminUser");
+      localStorage.removeItem("adminToken");
+      return;
     }
-  }, [user]);
 
-  // Placeholder auth – later replace with real backend calls
+    localStorage.setItem("adminUser", JSON.stringify(user));
+    localStorage.setItem("adminToken", token);
+  }, [user, token]);
+
   const signIn = async ({ email, password }) => {
-    // TODO: call backend here
-    const fakeUser = {
-      id: "local-admin",
-      email,
-      role: "admin",
-      name: email.split("@")[0],
-    };
-    setUser(fakeUser);
-    return fakeUser;
+    setLoading(true);
+    try {
+      const res = await fetch(`${AUTH_API}/api/auth/signin`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+        credentials: "include",
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data.message || "Signin failed");
+      }
+
+      setUser(data.user);
+      setToken(data.token);
+      return data;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const signUp = async ({ name, email, password }) => {
-    // TODO: call backend here
-    const fakeUser = { id: "local-admin", email, role: "admin", name };
-    setUser(fakeUser);
-    return fakeUser;
+    setLoading(true);
+    try {
+      const res = await fetch(`${AUTH_API}/api/auth/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+        credentials: "include",
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data.message || "Signup failed");
+      }
+
+      setUser(data.user);
+      setToken(data.token);
+      return data;
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const signOut = () => setUser(null);
+  const signOut = () => {
+    setUser(null);
+    setToken(null);
+    localStorage.removeItem("adminUser");
+    localStorage.removeItem("adminToken");
+  };
 
-  return (
-    <AuthContext.Provider value={{ user, isAdmin, signIn, signUp, signOut }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  // Helper to call protected APIs with Authorization header
+  const authFetch = (url, options = {}) => {
+    const headers = {
+      ...(options.headers || {}),
+    };
+
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    return fetch(url, {
+      ...options,
+      headers,
+      credentials: "include",
+    });
+  };
+
+  const value = {
+    user,
+    token,
+    loading,
+    isAuthenticated: !!user && !!token,
+    signIn,
+    signUp,
+    signOut,
+    authFetch,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const ctx = useContext(AuthContext);
+  if (!ctx) {
+    throw new Error("useAuth must be used within AuthProvider");
+  }
+  return ctx;
+};

@@ -1,6 +1,7 @@
 // src/components/admin/ProjectsTab.jsx
 import React, { useEffect, useState } from "react";
 import { uploadImage } from "../../utils/uploadImage";
+import { useAuth } from "../../context/AuthContext";
 
 const PROJECTS_API = import.meta.env.VITE_ADMIN_PROJECTS_ENDPOINT || "";
 
@@ -14,6 +15,7 @@ const slugify = (str) =>
 const emptyGallery = ["", "", "", "", ""];
 
 const ProjectsTab = () => {
+  const { authFetch } = useAuth();
   const [status, setStatus] = useState({ type: "idle", message: "" });
   const [editingId, setEditingId] = useState(null);
   const [existingProjects, setExistingProjects] = useState([]);
@@ -72,7 +74,7 @@ const ProjectsTab = () => {
       }
 
       try {
-        const res = await fetch(PROJECTS_API);
+        const res = await authFetch(PROJECTS_API);
         if (!res.ok) throw new Error("Failed to fetch projects");
         const data = await res.json();
         setExistingProjects(Array.isArray(data) ? data : []);
@@ -241,7 +243,7 @@ const ProjectsTab = () => {
       const method = editingId ? "PUT" : "POST";
       const url = editingId ? `${PROJECTS_API}/${editingId}` : PROJECTS_API;
 
-      const res = await fetch(url, {
+      const res = await authFetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

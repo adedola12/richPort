@@ -10,8 +10,19 @@ const Nav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { isAuthenticated, user } = useAuth();
 
   const closeMenu = () => setMenuOpen(false);
+
+  const handleProfileClick = () => {
+    if (isAuthenticated && user?.userType === "admin") {
+      // 🔐 already admin → go straight to dashboard
+      navigate("/admin");
+    } else {
+      // not logged in → go to admin auth page
+      navigate("/admin-auth");
+    }
+  };
 
   const navLinks = [
     { to: "/", label: "Home" },
@@ -24,14 +35,6 @@ const Nav = () => {
     path === "/"
       ? location.pathname === "/"
       : location.pathname.startsWith(path);
-
-  const handleAdminClick = () => {
-    if (isAdmin) {
-      navigate("/admin");
-    } else {
-      navigate("/admin-auth");
-    }
-  };
 
   return (
     <>
@@ -110,7 +113,7 @@ const Nav = () => {
               {/* Admin icon */}
               <button
                 type="button"
-                onClick={handleAdminClick}
+                onClick={handleProfileClick}
                 className="
                   flex h-8 w-8 items-center justify-center
                   rounded-full border border-white/50
@@ -127,7 +130,7 @@ const Nav = () => {
             <div className="flex items-center gap-3 md:hidden">
               <button
                 type="button"
-                onClick={handleAdminClick}
+                onClick={handleProfileClick}
                 className="
                   flex h-8 w-8 items-center justify-center
                   rounded-full border border-white/40

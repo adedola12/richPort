@@ -1,10 +1,12 @@
 // src/components/admin/JourneyTab.jsx
 import React, { useEffect, useState } from "react";
 import { uploadImage } from "../../utils/uploadImage";
+import { useAuth } from "../../context/AuthContext";
 
 const JOURNEY_API = import.meta.env.VITE_ADMIN_JOURNEY_ENDPOINT || "";
 
 const JourneyTab = () => {
+  const { authFetch } = useAuth();
   const [status, setStatus] = useState({ type: "idle", message: "" });
   const [editingId, setEditingId] = useState(null);
   const [existingItems, setExistingItems] = useState([]);
@@ -27,7 +29,7 @@ const JourneyTab = () => {
       }
 
       try {
-        const res = await fetch(JOURNEY_API);
+        const res = await authFetch(JOURNEY_API);
         if (!res.ok) throw new Error("Failed to fetch journey items");
         const data = await res.json();
         setExistingItems(Array.isArray(data) ? data : []);
@@ -91,7 +93,7 @@ const JourneyTab = () => {
       const method = editingId ? "PUT" : "POST";
       const url = editingId ? `${JOURNEY_API}/${editingId}` : JOURNEY_API;
 
-      const res = await fetch(url, {
+      const res = await authFetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

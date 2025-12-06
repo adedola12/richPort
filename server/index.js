@@ -4,8 +4,14 @@ import helmet from "helmet";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
 import bodyParser from "body-parser";
+
+import authRoutes from "./routes/authRoutes.js";
 import { connectToDatabase } from "./db.js";
+import { requireAuth, requireAdmin } from "./middleware/authMiddleware.js";
+
+dotenv.config();
 
 const app = express();
 app.get("/__debug/db", (_req, res) => {
@@ -41,6 +47,15 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.options(/.*/, cors(corsOptions));
+
+// Api Routes
+// Auth routes
+app.use("/api/auth", authRoutes);
+
+// Simple health check
+app.get("/", (req, res) => {
+  res.json({ status: "ok" });
+});
 
 /* -------- helpful error for bad JSON -------- */
 app.use((err, _req, res, next) => {
