@@ -1,3 +1,4 @@
+// src/main.jsx or src/index.jsx
 import React from "react";
 import ReactDom from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -8,8 +9,13 @@ import About from "./pages/About.jsx";
 import BrandIdentity from "./pages/BrandIdentity.jsx";
 import Projects from "./pages/Projects.jsx";
 import RateDetails from "./pages/RateDetails.jsx";
-import AdminAddPage from "./pages/AdminAddPage.jsx";
 import ProjectPage from "./components/ProjectPage.jsx";
+import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
+import ProtectedRoute from "./components/auth/ProtectedRoute.jsx";
+import AdminAuthPage from "./pages/admin/AdminAuthPage.jsx";
+
+// 🔹 import AuthProvider
+import { AuthProvider } from "./context/AuthContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -21,17 +27,25 @@ const router = createBrowserRouter([
       { path: "brand-identity", element: <BrandIdentity /> },
       { path: "projects", element: <Projects /> },
       { path: "rate-details", element: <RateDetails /> },
+      { path: "projects/:slug", element: <ProjectPage /> },
+      { path: "admin-auth", element: <AdminAuthPage /> },
       {
-        path: "admin/add",
-        element: <AdminAddPage />,
+        path: "admin",
+        element: (
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        ),
       },
-      {path: "projects/:slug", element: <ProjectPage /> },
     ],
   },
 ]);
 
 ReactDom.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    {/* 🔥 wrap the whole router with AuthProvider */}
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>
 );

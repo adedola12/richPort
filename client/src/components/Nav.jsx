@@ -1,8 +1,12 @@
 // src/components/Layout/Nav.jsx
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FiUser } from "react-icons/fi";
+import { useAuth } from "../context/AuthContext";
 
 const Nav = () => {
+  const auth = useAuth() || {};
+  const { isAdmin = false } = auth;
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -21,17 +25,11 @@ const Nav = () => {
       ? location.pathname === "/"
       : location.pathname.startsWith(path);
 
-  // 🔹 Contact CTA: go to RateDetails and scroll to form
-  const handleContactClick = () => {
-    closeMenu();
-
-    if (location.pathname === "/rate-details") {
-      const el = document.getElementById("rate-form");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+  const handleAdminClick = () => {
+    if (isAdmin) {
+      navigate("/admin");
     } else {
-      navigate("/rate-details", { state: { scrollToForm: true } });
+      navigate("/admin-auth");
     }
   };
 
@@ -89,7 +87,6 @@ const Nav = () => {
 
             {/* Right buttons – desktop */}
             <div className="hidden sm:flex items-center gap-3 w-auto">
-              {/* 🔹 View Works → /projects */}
               <Link
                 to="/projects"
                 className="px-4 py-2 rounded-lg border border-white/60 bg-white/10 text-[11px] sm:text-xs font-normal font-['Lexend'] text-white hover:bg-white/15 transition"
@@ -97,10 +94,8 @@ const Nav = () => {
                 View Works
               </Link>
 
-              {/* 🔹 Contact → RateDetails + scroll to form */}
-              <button
-                type="button"
-                onClick={handleContactClick}
+              <Link
+                to="/rate-details"
                 className="
                   px-4 py-2 rounded-lg
                   bg-gradient-to-b from-lime-400 to-lime-600
@@ -110,16 +105,43 @@ const Nav = () => {
                 "
               >
                 Contact
+              </Link>
+
+              {/* Admin icon */}
+              <button
+                type="button"
+                onClick={handleAdminClick}
+                className="
+                  flex h-8 w-8 items-center justify-center
+                  rounded-full border border-white/50
+                  bg-white/5 text-white
+                  hover:bg-white/15 transition
+                "
+                title={isAdmin ? "Go to Admin" : "Admin sign in / sign up"}
+              >
+                <FiUser className="h-4 w-4" />
               </button>
             </div>
 
-            {/* Mobile: Contact + Hamburger */}
+            {/* Mobile: Contact + Hamburger + Admin icon */}
             <div className="flex items-center gap-3 md:hidden">
-              {/* Hide Contact when menu is open */}
+              <button
+                type="button"
+                onClick={handleAdminClick}
+                className="
+                  flex h-8 w-8 items-center justify-center
+                  rounded-full border border-white/40
+                  bg-white/10 text-white
+                  hover:bg-white/20 transition
+                "
+              >
+                <FiUser className="h-4 w-4" />
+              </button>
+
               {!menuOpen && (
-                <button
-                  type="button"
-                  onClick={handleContactClick}
+                <Link
+                  to="/rate-details"
+                  onClick={closeMenu}
                   className="
                     px-3 py-1.5 rounded-lg
                     bg-gradient-to-b from-lime-400 to-lime-600
@@ -128,7 +150,7 @@ const Nav = () => {
                   "
                 >
                   Contact
-                </button>
+                </Link>
               )}
 
               <button
@@ -143,7 +165,6 @@ const Nav = () => {
                   focus:outline-none focus:ring-2 focus:ring-lime-400/70
                 "
               >
-                {/* 3-line -> X icon */}
                 <span
                   className={`block h-[2px] w-4 rounded-full bg-white transition-transform duration-200 ${
                     menuOpen
@@ -182,10 +203,8 @@ const Nav = () => {
           }
         `}
       >
-        {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/60" onClick={closeMenu} />
 
-        {/* Glass side drawer */}
         <div
           className={`
             absolute right-0 top-0 h-full w-[78%] max-w-xs
@@ -198,7 +217,6 @@ const Nav = () => {
             ${menuOpen ? "translate-x-0" : "translate-x-full"}
           `}
         >
-          {/* Links */}
           <nav className="flex flex-col gap-5 text-sm font-['Gabarito'] text-white/85">
             {navLinks.map((link) => (
               <Link
@@ -216,9 +234,7 @@ const Nav = () => {
             ))}
           </nav>
 
-          {/* CTA inside drawer */}
           <div className="mt-auto flex flex-col gap-3">
-            {/* View Works mobile */}
             <Link
               to="/projects"
               onClick={closeMenu}
@@ -227,10 +243,9 @@ const Nav = () => {
               View Works
             </Link>
 
-            {/* Contact mobile */}
-            <button
-              type="button"
-              onClick={handleContactClick}
+            <Link
+              to="/rate-details"
+              onClick={closeMenu}
               className="
                 w-full text-center px-4 py-2 rounded-lg
                 bg-gradient-to-b from-lime-400 to-lime-600
@@ -240,7 +255,7 @@ const Nav = () => {
               "
             >
               Contact
-            </button>
+            </Link>
           </div>
         </div>
       </div>
