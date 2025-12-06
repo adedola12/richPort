@@ -1,10 +1,11 @@
 // src/components/Layout/Nav.jsx
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Nav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -19,6 +20,20 @@ const Nav = () => {
     path === "/"
       ? location.pathname === "/"
       : location.pathname.startsWith(path);
+
+  // 🔹 Contact CTA: go to RateDetails and scroll to form
+  const handleContactClick = () => {
+    closeMenu();
+
+    if (location.pathname === "/rate-details") {
+      const el = document.getElementById("rate-form");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    } else {
+      navigate("/rate-details", { state: { scrollToForm: true } });
+    }
+  };
 
   return (
     <>
@@ -74,12 +89,18 @@ const Nav = () => {
 
             {/* Right buttons – desktop */}
             <div className="hidden sm:flex items-center gap-3 w-auto">
-              <button className="px-4 py-2 rounded-lg border border-white/60 bg-white/10 text-[11px] sm:text-xs font-normal font-['Lexend'] text-white hover:bg-white/15 transition">
-                View Works
-              </button>
-
+              {/* 🔹 View Works → /projects */}
               <Link
-                to="/contact"
+                to="/projects"
+                className="px-4 py-2 rounded-lg border border-white/60 bg-white/10 text-[11px] sm:text-xs font-normal font-['Lexend'] text-white hover:bg-white/15 transition"
+              >
+                View Works
+              </Link>
+
+              {/* 🔹 Contact → RateDetails + scroll to form */}
+              <button
+                type="button"
+                onClick={handleContactClick}
                 className="
                   px-4 py-2 rounded-lg
                   bg-gradient-to-b from-lime-400 to-lime-600
@@ -89,16 +110,16 @@ const Nav = () => {
                 "
               >
                 Contact
-              </Link>
+              </button>
             </div>
 
             {/* Mobile: Contact + Hamburger */}
             <div className="flex items-center gap-3 md:hidden">
               {/* Hide Contact when menu is open */}
               {!menuOpen && (
-                <Link
-                  to="/contact"
-                  onClick={closeMenu}
+                <button
+                  type="button"
+                  onClick={handleContactClick}
                   className="
                     px-3 py-1.5 rounded-lg
                     bg-gradient-to-b from-lime-400 to-lime-600
@@ -107,7 +128,7 @@ const Nav = () => {
                   "
                 >
                   Contact
-                </Link>
+                </button>
               )}
 
               <button
@@ -197,13 +218,19 @@ const Nav = () => {
 
           {/* CTA inside drawer */}
           <div className="mt-auto flex flex-col gap-3">
-            <button className="w-full px-4 py-2 rounded-lg border border-white/40 bg-white/10 text-xs font-normal font-['Lexend'] text-white hover:bg-white/15 transition">
-              View Works
-            </button>
-
+            {/* View Works mobile */}
             <Link
-              to="/contact"
+              to="/projects"
               onClick={closeMenu}
+              className="w-full px-4 py-2 rounded-lg border border-white/40 bg-white/10 text-xs font-normal font-['Lexend'] text-white hover:bg-white/15 transition"
+            >
+              View Works
+            </Link>
+
+            {/* Contact mobile */}
+            <button
+              type="button"
+              onClick={handleContactClick}
               className="
                 w-full text-center px-4 py-2 rounded-lg
                 bg-gradient-to-b from-lime-400 to-lime-600
@@ -213,7 +240,7 @@ const Nav = () => {
               "
             >
               Contact
-            </Link>
+            </button>
           </div>
         </div>
       </div>

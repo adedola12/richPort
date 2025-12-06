@@ -20,12 +20,14 @@ const tabs = [
  *   - only renders the tabs + grid + button (for use inside another card,
  *     e.g. in Services)
  */
-const ProjectGrid = ({ contained = true }) => {
+const ProjectGrid = ({ contained = true, excludeSlug }) => {
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const navigate = useNavigate();
 
-  const filteredProjects = projects.filter((p) =>
-    p.categories?.includes(activeTab)
+  const filteredProjects = projects.filter(
+    (p) =>
+      p.categories?.includes(activeTab) &&
+      (!excludeSlug || p.slug !== excludeSlug)
   );
 
   const handleViewClick = () => {
