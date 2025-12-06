@@ -3,13 +3,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import signImg from "../../assets/Bookrion/mainSign.jpg";
 
-// === Controls for background framing ===
-const HERO_BG_POSITION = "center 60%"; // adjust to move image up/down
-const HERO_BG_ZOOM = 1.2; // >1 = zoom in
-
-// === Controls for CONTENT vertical offset (px) ===
-// Increase this number to push the text block further down.
-const CONTENT_TOP_OFFSET = 200; // px
+const HERO_BG_POSITION = "center 60%";
+const HERO_BG_ZOOM = 1.2;
+const CONTENT_TOP_OFFSET = 200;
 
 const teamPlaceholders = [
   "https://placehold.co/32x33",
@@ -19,9 +15,46 @@ const teamPlaceholders = [
   "https://placehold.co/32x33",
 ];
 
+const defaultCategories = [
+  "Brand Identity Design",
+  "UI/UX Design",
+  "Graphic Design",
+  "Website Design",
+];
+
+const defaultDeliverables =
+  "Art Direction, User Interface, Branding Strategy, Print Design, 3D Render";
+
+const defaultTimeline = "4 weeks";
+
 const ProjectDetailsHero = ({ project }) => {
   const projectName = project?.name || "Book Rion";
-  const clientName = project?.name || "Book Rion";
+  const clientName = project?.clientName || projectName;
+
+  const heroMeta = project?.heroMeta || {};
+  const heroCategories =
+    (Array.isArray(heroMeta.categories) && heroMeta.categories.length
+      ? heroMeta.categories
+      : Array.isArray(project?.categories) && project.categories.length
+      ? project.categories
+      : defaultCategories) || defaultCategories;
+
+  const deliverablesText =
+    heroMeta.deliverables && heroMeta.deliverables.trim().length
+      ? heroMeta.deliverables
+      : defaultDeliverables;
+
+  const timelineText =
+    heroMeta.timeline && heroMeta.timeline.trim().length
+      ? heroMeta.timeline
+      : defaultTimeline;
+
+  const teamInitials =
+    (Array.isArray(heroMeta.teamInitials)
+      ? heroMeta.teamInitials.filter(Boolean)
+      : []) || [];
+
+  const hasInitials = teamInitials.length > 0;
 
   return (
     <section
@@ -32,7 +65,7 @@ const ProjectDetailsHero = ({ project }) => {
         -mt-4 sm:-mt-6
       "
     >
-      {/* === BACKGROUND IMAGE LAYER (fills entire section) === */}
+      {/* BG */}
       <div className="pointer-events-none absolute inset-0">
         <img
           src={signImg}
@@ -44,26 +77,20 @@ const ProjectDetailsHero = ({ project }) => {
             transformOrigin: "center center",
           }}
         />
-
-        {/* Full-height gradient: very light at top so image shows under nav */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-black/80 to-[#050505]" />
-
-        {/* Subtle lime glows sit on top of the dark background */}
         <div className="absolute -left-40 bottom-[-40px] h-72 w-72 rounded-full bg-lime-500/18 blur-[140px]" />
         <div className="absolute -right-40 bottom-[-40px] h-72 w-72 rounded-full bg-lime-500/14 blur-[140px]" />
       </div>
 
-      {/* === CONTENT === */}
+      {/* CONTENT */}
       <div
         className="relative z-10 mx-auto max-w-[1200px] px-4 lg:px-16"
-        style={{ paddingTop: CONTENT_TOP_OFFSET }} // <-- adjust content offset here
+        style={{ paddingTop: CONTENT_TOP_OFFSET }}
       >
-        {/* Center the whole text column like Figma */}
         <div className="mx-auto max-w-[760px] flex flex-col gap-10">
-          {/* Top: back pill + title + intro */}
+          {/* top block */}
           <div className="flex flex-col gap-6">
             <div className="w-full flex flex-col gap-3">
-              {/* Back pill */}
               <Link
                 to="/projects"
                 className="
@@ -79,7 +106,6 @@ const ProjectDetailsHero = ({ project }) => {
                 Back to Portfolio
               </Link>
 
-              {/* Title */}
               <h1
                 className="
                   text-white
@@ -92,7 +118,7 @@ const ProjectDetailsHero = ({ project }) => {
               </h1>
             </div>
 
-            {/* Intro paragraphs */}
+            {/* intro text – still placeholder until you decide to make these dynamic */}
             <div className="flex flex-col gap-6 text-justify">
               <p className="font-['Lexend'] text-[13px] sm:text-sm md:text-[15px] leading-7 md:leading-8 text-white/60">
                 BookRion is redefining how books reach readers. The platform
@@ -119,7 +145,7 @@ const ProjectDetailsHero = ({ project }) => {
             </div>
           </div>
 
-          {/* === DETAILS GRID (CLIENT / CATEGORY / etc.) === */}
+          {/* DETAILS GRID */}
           <div className="mt-1 w-full max-w-[580px] flex flex-col gap-4">
             {/* CLIENT */}
             <div className="flex items-start justify-between gap-8">
@@ -137,12 +163,7 @@ const ProjectDetailsHero = ({ project }) => {
                 Category
               </span>
               <div className="w-72 md:w-96 flex flex-wrap items-center gap-1.5">
-                {[
-                  "Brand Identity Design",
-                  "UI/UX Design",
-                  "Graphic Design",
-                  "Website Design",
-                ].map((cat) => (
+                {heroCategories.map((cat) => (
                   <span
                     key={cat}
                     className="
@@ -163,8 +184,7 @@ const ProjectDetailsHero = ({ project }) => {
                 Deliverables
               </span>
               <span className="w-72 md:w-96 font-['Lexend'] text-sm md:text-base text-white leading-6">
-                Art Direction, User Interface, Branding Strategy, Print Design,
-                3D Render
+                {deliverablesText}
               </span>
             </div>
 
@@ -174,7 +194,7 @@ const ProjectDetailsHero = ({ project }) => {
                 Timeline
               </span>
               <span className="w-72 md:w-96 font-['Lexend'] text-sm md:text-base text-white leading-6">
-                4 weeks
+                {timelineText}
               </span>
             </div>
 
@@ -184,17 +204,27 @@ const ProjectDetailsHero = ({ project }) => {
                 Team
               </span>
               <div className="flex items-center">
-                {teamPlaceholders.map((src, idx) => (
-                  <img
-                    key={idx}
-                    src={src}
-                    alt="Team member"
-                    className={`
-                      w-8 h-8 rounded-2xl border-2 border-white
-                      ${idx === 0 ? "" : "-ml-3"}
-                    `}
-                  />
-                ))}
+                {hasInitials
+                  ? teamInitials.map((initials, idx) => (
+                      <div
+                        key={`${initials}-${idx}`}
+                        className={`w-8 h-8 rounded-2xl border-2 border-white bg-zinc-900 flex items-center justify-center text-[11px] font-['Mont'] font-semibold text-white ${
+                          idx === 0 ? "" : "-ml-3"
+                        }`}
+                      >
+                        {initials}
+                      </div>
+                    ))
+                  : teamPlaceholders.map((src, idx) => (
+                      <img
+                        key={idx}
+                        src={src}
+                        alt="Team member"
+                        className={`w-8 h-8 rounded-2xl border-2 border-white ${
+                          idx === 0 ? "" : "-ml-3"
+                        }`}
+                      />
+                    ))}
               </div>
             </div>
           </div>

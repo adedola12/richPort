@@ -1,9 +1,9 @@
+// src/components/ProjectPage/ProjectConc.jsx
 import React from "react";
 import { LuCheckCheck } from "react-icons/lu";
 import concImg from "../../assets/Bookrion/concImg.jpg";
 
 const ProjectConc = ({ project }) => {
-  // === When backend is ready, these will come from MongoDB ===
   const conclusionTitle = project?.conclusionTitle || "Conclusion";
   const conclusionBody =
     project?.conclusionBody ||
@@ -11,23 +11,21 @@ const ProjectConc = ({ project }) => {
 
 The system now serves as a visual foundation for the team’s ongoing development of BookRion’s digital platform and marketing assets.`;
 
-  const conclusionImage = project?.conclusionImage || concImg;
+  const conclusionImage =
+    project?.conclusionImage || project?.images?.conclusion || concImg;
 
   const ctaLabel = project?.conclusionCtaLabel || "View product case study";
   const ctaUrl = project?.conclusionCtaUrl || project?.caseStudyUrl || "#";
 
   return (
     <section className="relative w-full bg-[#050505] pt-20 pb-24">
-      {/* soft lime glow behind this section */}
       <div className="pointer-events-none absolute left-1/2 top-[15%] h-72 w-72 -translate-x-1/2 rounded-full bg-lime-500/10 blur-[180px]" />
 
       <div className="relative mx-auto max-w-[1224px] px-4 lg:px-6">
-        {/* ROW: text left, image right */}
         <div className="flex flex-col gap-16 lg:flex-row lg:items-center lg:gap-20">
           {/* LEFT: text */}
           <div className="w-full lg:w-[574px] flex flex-col gap-4">
             <div className="flex flex-col gap-1">
-              {/* pill */}
               <div className="inline-flex max-w-max items-center gap-2 rounded-[20.63px] border border-white/60 bg-zinc-900 px-4 py-1">
                 <span className="flex h-4 w-4 items-center justify-center rounded-sm border border-lime-500 text-lime-400">
                   <LuCheckCheck className="h-3 w-3" />
@@ -37,13 +35,11 @@ The system now serves as a visual foundation for the team’s ongoing developmen
                 </span>
               </div>
 
-              {/* heading */}
               <h2 className="font-['Lexend'] text-[24px] sm:text-[26px] font-semibold leading-[1.5] text-white">
                 {conclusionTitle}
               </h2>
             </div>
 
-            {/* body */}
             <p className="font-['Lexend'] text-[13px] sm:text-[14px] lg:text-[15px] leading-7 text-white/60 text-justify whitespace-pre-line">
               {conclusionBody}
             </p>

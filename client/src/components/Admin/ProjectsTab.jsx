@@ -19,6 +19,7 @@ const ProjectsTab = () => {
   const [existingProjects, setExistingProjects] = useState([]);
 
   const [form, setForm] = useState({
+    // basic meta
     name: "",
     slug: "",
     url: "",
@@ -26,6 +27,31 @@ const ProjectsTab = () => {
     tags: "",
     categories: "",
     caseStudyNotes: "",
+
+    // HERO / DETAILS
+    clientName: "",
+    heroCategories: "",
+    heroDeliverables: "",
+    heroTimeline: "",
+    heroTeamInitials: "",
+
+    // PROCESS STEPS (Discover / Ideate / Design / Test)
+    discoverTitle: "",
+    discoverBody: "",
+    ideateTitle: "",
+    ideateBody: "",
+    designTitle: "",
+    designBody: "",
+    testTitle: "",
+    testBody: "",
+
+    // CONCLUSION SECTION
+    conclusionTitle: "",
+    conclusionBody: "",
+    conclusionCtaLabel: "",
+    conclusionCtaUrl: "",
+
+    // IMAGES
     mainImageUrl: "",
     midImageUrl: "",
     conclusionImageUrl: "",
@@ -110,6 +136,46 @@ const ProjectsTab = () => {
     e.preventDefault();
     setStatus({ type: "loading", message: "Saving project..." });
 
+    const heroCategoriesArray = form.heroCategories
+      .split(",")
+      .map((c) => c.trim())
+      .filter(Boolean);
+
+    const teamInitialsArray = form.heroTeamInitials
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
+
+    const caseStudyStepsRaw = [
+      {
+        id: "discover",
+        pillLabel: "Discover",
+        title: form.discoverTitle.trim(),
+        body: form.discoverBody.trim(),
+      },
+      {
+        id: "ideate",
+        pillLabel: "Ideate",
+        title: form.ideateTitle.trim(),
+        body: form.ideateBody.trim(),
+      },
+      {
+        id: "design",
+        pillLabel: "Design",
+        title: form.designTitle.trim(),
+        body: form.designBody.trim(),
+      },
+      {
+        id: "test",
+        pillLabel: "Test & Refine",
+        title: form.testTitle.trim(),
+        body: form.testBody.trim(),
+      },
+    ];
+
+    // only keep steps that have at least a title or body
+    const caseStudySteps = caseStudyStepsRaw.filter((s) => s.title || s.body);
+
     const payload = {
       slug: form.slug || slugify(form.name),
       name: form.name.trim(),
@@ -123,6 +189,27 @@ const ProjectsTab = () => {
         .split(",")
         .map((c) => c.trim())
         .filter(Boolean),
+
+      // hero / details
+      clientName: form.clientName.trim() || "",
+      heroMeta: {
+        categories: heroCategoriesArray,
+        deliverables: form.heroDeliverables.trim(),
+        timeline: form.heroTimeline.trim(),
+        teamInitials: teamInitialsArray,
+      },
+
+      // process steps
+      caseStudySteps,
+      caseStudyNotes: form.caseStudyNotes.trim(),
+
+      // conclusion section
+      conclusionTitle: form.conclusionTitle.trim(),
+      conclusionBody: form.conclusionBody.trim(),
+      conclusionCtaLabel: form.conclusionCtaLabel.trim(),
+      conclusionCtaUrl: form.conclusionCtaUrl.trim(),
+
+      // images
       images: {
         main: form.mainImageUrl || null,
         mid: form.midImageUrl || null,
@@ -130,10 +217,13 @@ const ProjectsTab = () => {
         inline: form.inlineImageUrl || null,
         gallery: (form.galleryImageUrls || []).filter(Boolean),
       },
-      // for compatibility with previous front-end
+
+      // backward compatibility
       pageImg: form.mainImageUrl || null,
       galleryImages: (form.galleryImageUrls || []).filter(Boolean),
-      caseStudyNotes: form.caseStudyNotes.trim(),
+
+      // for ProjectWriteUp image
+      caseStudyImage: form.inlineImageUrl || null,
     };
 
     try {
@@ -179,6 +269,27 @@ const ProjectsTab = () => {
           tags: "",
           categories: "",
           caseStudyNotes: "",
+
+          clientName: "",
+          heroCategories: "",
+          heroDeliverables: "",
+          heroTimeline: "",
+          heroTeamInitials: "",
+
+          discoverTitle: "",
+          discoverBody: "",
+          ideateTitle: "",
+          ideateBody: "",
+          designTitle: "",
+          designBody: "",
+          testTitle: "",
+          testBody: "",
+
+          conclusionTitle: "",
+          conclusionBody: "",
+          conclusionCtaLabel: "",
+          conclusionCtaUrl: "",
+
           mainImageUrl: "",
           midImageUrl: "",
           conclusionImageUrl: "",
@@ -198,11 +309,29 @@ const ProjectsTab = () => {
 
   const startEditing = (project) => {
     const gallery = project.images?.gallery || project.galleryImages || [];
-
     const paddedGallery =
       gallery.length >= 5
         ? gallery.slice(0, 5)
         : [...gallery, ...Array(5 - gallery.length).fill("")];
+
+    const heroMeta = project.heroMeta || {};
+    const heroCats =
+      heroMeta.categories ||
+      (Array.isArray(project.categories) ? project.categories : []);
+
+    const heroTeamInitials = heroMeta.teamInitials || [];
+
+    const steps = Array.isArray(project.caseStudySteps)
+      ? project.caseStudySteps
+      : [];
+
+    const getStep = (id, indexFallback) =>
+      steps.find((s) => s.id === id) || steps[indexFallback] || {};
+
+    const discover = getStep("discover", 0);
+    const ideate = getStep("ideate", 1);
+    const design = getStep("design", 2);
+    const test = getStep("test", 3);
 
     setEditingId(project._id || project.id || null);
 
@@ -216,11 +345,35 @@ const ProjectsTab = () => {
         ? project.categories.join(", ")
         : "",
       caseStudyNotes: project.caseStudyNotes || "",
+
+      clientName: project.clientName || "",
+      heroCategories: Array.isArray(heroCats) ? heroCats.join(", ") : "",
+      heroDeliverables: heroMeta.deliverables || "",
+      heroTimeline: heroMeta.timeline || "",
+      heroTeamInitials: Array.isArray(heroTeamInitials)
+        ? heroTeamInitials.join(", ")
+        : "",
+
+      discoverTitle: discover.title || "",
+      discoverBody: discover.body || "",
+      ideateTitle: ideate.title || "",
+      ideateBody: ideate.body || "",
+      designTitle: design.title || "",
+      designBody: design.body || "",
+      testTitle: test.title || "",
+      testBody: test.body || "",
+
+      conclusionTitle: project.conclusionTitle || "",
+      conclusionBody: project.conclusionBody || "",
+      conclusionCtaLabel: project.conclusionCtaLabel || "",
+      conclusionCtaUrl: project.conclusionCtaUrl || "",
+
       mainImageUrl:
         project.images?.main || project.pageImg || project.heroImageUrl || "",
-      midImageUrl: project.images?.mid || "",
-      conclusionImageUrl: project.images?.conclusion || "",
-      inlineImageUrl: project.images?.inline || "",
+      midImageUrl: project.images?.mid || project.midImgUrl || "",
+      conclusionImageUrl:
+        project.images?.conclusion || project.conclusionImage || "",
+      inlineImageUrl: project.images?.inline || project.caseStudyImage || "",
       galleryImageUrls: paddedGallery,
     });
 
@@ -340,8 +493,179 @@ const ProjectsTab = () => {
           </div>
         </div>
 
+        {/* HERO DETAILS SECTION */}
+        <div className="space-y-3 pt-4 border-t border-white/10">
+          <h3 className="text-sm font-semibold font-['Mont']">
+            Project details (hero section)
+          </h3>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <div>
+              <label className="block text-xs mb-1 font-semibold font-['Mont']">
+                Client Name
+              </label>
+              <input
+                name="clientName"
+                value={form.clientName}
+                onChange={handleTextChange}
+                className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
+                placeholder="Book Rion"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs mb-1 font-semibold font-['Mont']">
+                Timeline
+              </label>
+              <input
+                name="heroTimeline"
+                value={form.heroTimeline}
+                onChange={handleTextChange}
+                className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
+                placeholder="4 weeks"
+              />
+            </div>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <div>
+              <label className="block text-xs mb-1 font-semibold font-['Mont']">
+                Categories shown in hero (comma separated)
+              </label>
+              <input
+                name="heroCategories"
+                value={form.heroCategories}
+                onChange={handleTextChange}
+                className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
+                placeholder="Brand Identity Design, UI/UX Design, Graphic Design, Website Design"
+              />
+            </div>
+            <div>
+              <label className="block text-xs mb-1 font-semibold font-['Mont']">
+                Deliverables (hero row)
+              </label>
+              <textarea
+                name="heroDeliverables"
+                value={form.heroDeliverables}
+                onChange={handleTextChange}
+                rows={2}
+                className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
+                placeholder="Art Direction, User Interface, Branding Strategy, Print Design, 3D Render"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs mb-1 font-semibold font-['Mont']">
+              Team members initials (comma separated)
+            </label>
+            <input
+              name="heroTeamInitials"
+              value={form.heroTeamInitials}
+              onChange={handleTextChange}
+              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
+              placeholder="AQ, JS, MK, ..."
+            />
+          </div>
+        </div>
+
+        {/* PROCESS STEPS SECTION */}
+        <div className="space-y-3 pt-4 border-t border-white/10">
+          <h3 className="text-sm font-semibold font-['Mont']">
+            Process steps (Discover / Ideate / Design / Test)
+          </h3>
+
+          {/* Discover */}
+          <div className="space-y-2">
+            <p className="text-[11px] font-['Mont'] text-neutral-300 uppercase tracking-[0.18em]">
+              Discover
+            </p>
+            <input
+              name="discoverTitle"
+              value={form.discoverTitle}
+              onChange={handleTextChange}
+              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm mb-1 focus:outline-none focus:ring-2 focus:ring-lime-400/70"
+              placeholder="Understanding the Problem"
+            />
+            <textarea
+              name="discoverBody"
+              value={form.discoverBody}
+              onChange={handleTextChange}
+              rows={3}
+              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
+              placeholder="Body text for the Discover step..."
+            />
+          </div>
+
+          {/* Ideate */}
+          <div className="space-y-2">
+            <p className="text-[11px] font-['Mont'] text-neutral-300 uppercase tracking-[0.18em]">
+              Ideate
+            </p>
+            <input
+              name="ideateTitle"
+              value={form.ideateTitle}
+              onChange={handleTextChange}
+              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm mb-1 focus:outline-none focus:ring-2 focus:ring-lime-400/70"
+              placeholder="Exploring Concepts"
+            />
+            <textarea
+              name="ideateBody"
+              value={form.ideateBody}
+              onChange={handleTextChange}
+              rows={3}
+              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
+              placeholder="Body text for the Ideate step..."
+            />
+          </div>
+
+          {/* Design */}
+          <div className="space-y-2">
+            <p className="text-[11px] font-['Mont'] text-neutral-300 uppercase tracking-[0.18em]">
+              Design
+            </p>
+            <input
+              name="designTitle"
+              value={form.designTitle}
+              onChange={handleTextChange}
+              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm mb-1 focus:outline-none focus:ring-2 focus:ring-lime-400/70"
+              placeholder="Bringing the Concept to Life"
+            />
+            <textarea
+              name="designBody"
+              value={form.designBody}
+              onChange={handleTextChange}
+              rows={3}
+              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
+              placeholder="Body text for the Design step..."
+            />
+          </div>
+
+          {/* Test & Refine */}
+          <div className="space-y-2">
+            <p className="text-[11px] font-['Mont'] text-neutral-300 uppercase tracking-[0.18em]">
+              Test &amp; Refine
+            </p>
+            <input
+              name="testTitle"
+              value={form.testTitle}
+              onChange={handleTextChange}
+              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm mb-1 focus:outline-none focus:ring-2 focus:ring-lime-400/70"
+              placeholder="Perfecting the Details"
+            />
+            <textarea
+              name="testBody"
+              value={form.testBody}
+              onChange={handleTextChange}
+              rows={3}
+              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
+              placeholder="Body text for the Test & Refine step..."
+            />
+          </div>
+        </div>
+
         {/* IMAGES SECTION */}
-        <div className="space-y-4">
+        <div className="space-y-4 pt-4 border-t border-white/10">
           <h3 className="text-sm font-semibold font-['Mont']">Images</h3>
 
           {/* Main / mid / conclusion / inline */}
@@ -424,10 +748,10 @@ const ProjectsTab = () => {
               )}
             </div>
 
-            {/* Inline image */}
+            {/* Inline / case-study image */}
             <div>
               <label className="block text-xs mb-1 font-semibold font-['Mont']">
-                In-text Image (for case study content)
+                In-text / Process Image
               </label>
               <input
                 type="file"
@@ -490,8 +814,69 @@ const ProjectsTab = () => {
           </div>
         </div>
 
+        {/* CONCLUSION FIELDS */}
+        <div className="space-y-3 pt-4 border-t border-white/10">
+          <h3 className="text-sm font-semibold font-['Mont']">
+            Conclusion section
+          </h3>
+
+          <div>
+            <label className="block text-xs mb-1 font-semibold font-['Mont']">
+              Conclusion Heading
+            </label>
+            <input
+              name="conclusionTitle"
+              value={form.conclusionTitle}
+              onChange={handleTextChange}
+              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
+              placeholder="Conclusion"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs mb-1 font-semibold font-['Mont']">
+              Conclusion Body
+            </label>
+            <textarea
+              name="conclusionBody"
+              value={form.conclusionBody}
+              onChange={handleTextChange}
+              rows={4}
+              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
+              placeholder="Final summary of results and impact..."
+            />
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <div>
+              <label className="block text-xs mb-1 font-semibold font-['Mont']">
+                CTA Label
+              </label>
+              <input
+                name="conclusionCtaLabel"
+                value={form.conclusionCtaLabel}
+                onChange={handleTextChange}
+                className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
+                placeholder="View product case study"
+              />
+            </div>
+            <div>
+              <label className="block text-xs mb-1 font-semibold font-['Mont']">
+                CTA URL
+              </label>
+              <input
+                name="conclusionCtaUrl"
+                value={form.conclusionCtaUrl}
+                onChange={handleTextChange}
+                className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
+                placeholder="https://..."
+              />
+            </div>
+          </div>
+        </div>
+
         {/* Case study notes */}
-        <div>
+        <div className="pt-4 border-t border-white/10">
           <label className="block text-xs mb-1 font-semibold font-['Mont']">
             Case Study Notes (optional)
           </label>
@@ -501,7 +886,7 @@ const ProjectsTab = () => {
             onChange={handleTextChange}
             rows={4}
             className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
-            placeholder="Notes about steps, process, etc. You can later map this into caseStudySteps."
+            placeholder="Internal notes about steps, process, etc. (not necessarily shown on the public page)."
           />
         </div>
 
