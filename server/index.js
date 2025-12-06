@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes.js";
 import projectRoutes from "./routes/projectRoutes.js";
 import journeyRoutes from "./routes/journeyRoutes.js";
+import rateRoutes from "./routes/rateRoutes.js";
 import { connectToDatabase } from "./db.js";
 import { requireAuth, requireAdmin } from "./middleware/authMiddleware.js";
 
@@ -51,6 +52,7 @@ app.options(/.*/, cors(corsOptions));
 app.use("/api/auth", authRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/journey", journeyRoutes);
+app.use("/api/rates", rateRoutes);
 
 // Simple health check
 app.get("/", (req, res) => {

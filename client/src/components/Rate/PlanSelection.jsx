@@ -1,13 +1,44 @@
-// src/components/Rate/PlanSelection.jsx
 import React from "react";
 import { Link } from "react-router-dom";
+import { HiFire } from "react-icons/hi";
 import diaImg from "../../assets/PlanDia.png";
+
+// Smooth scroll to RateForm
+const scrollToRateForm = () => {
+  const formSection = document.getElementById("rate-form");
+  if (formSection) {
+    formSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+};
+
+// Decide which index is the featured (center) plan
+const getFeaturedIndex = (plans = []) => {
+  if (!plans || plans.length === 0) return -1;
+
+  // Prefer explicit flag from backend
+  const explicit = plans.findIndex((p) => p.isFeatured);
+  if (explicit !== -1) return explicit;
+
+  // Fallback: center when there are 3 plans
+  if (plans.length === 3) return 1;
+
+  // Otherwise first one
+  return 0;
+};
+
+// Approximate 2-line clamp with a character limit + ellipsis
+const truncateDescription = (text, maxChars = 90) => {
+  if (!text) return "";
+  const trimmed = String(text).trim();
+  if (trimmed.length <= maxChars) return trimmed;
+  return `${trimmed.slice(0, maxChars).trim()}…`;
+};
 
 const PlanSelection = ({
   categories,
   activeCategoryId,
   onChangeCategory,
-  plans,
+  plans = [],
 }) => {
   const handleCompareClick = () => {
     const section = document.getElementById("compare-plans");
@@ -15,6 +46,8 @@ const PlanSelection = ({
       section.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
+
+  const featuredIndex = getFeaturedIndex(plans);
 
   return (
     <div className="mt-10">
@@ -52,12 +85,29 @@ const PlanSelection = ({
 
       {/* PRICING CARDS */}
       <div className="mt-12 grid gap-6 md:grid-cols-3">
-        {plans.map((plan) => {
-          const isFeatured = plan.isFeatured;
-          const badgeType = plan.badgeType;
+        {plans.map((plan, index) => {
+          const isFeatured = index === featuredIndex; // centre card
+          const isRightMost = index === 2;
+
+          // Default badges if not provided from backend
+          let badgeType = plan.badgeType || null;
+          let badgeLabel = plan.badgeLabel || "";
+
+          if (!badgeType && isFeatured) {
+            badgeType = "recommended";
+            badgeLabel = "Recommended";
+          } else if (!badgeType && isRightMost) {
+            badgeType = "premium";
+            badgeLabel = "Premium Choice";
+          }
+
+          const desc = truncateDescription(
+            plan.description || plan.tagline,
+            95
+          );
 
           /* =========================
-           * FEATURED (CENTER) CARD
+           * FEATURED CENTER CARD
            * ======================= */
           if (isFeatured) {
             return (
@@ -68,14 +118,15 @@ const PlanSelection = ({
                   rounded-[32px]
                   bg-gradient-to-b from-lime-500 to-lime-600
                   p-[3px]
-                  shadow-[0_22px_90px_rgba(132,204,22,0.5)]
+                  shadow-[0_22px_90px_rgba(132,204,22,0.55)]
                   transition-transform duration-300
+                  md:-mt-6 md:mb-6 md:z-20
                   hover:-translate-y-3
-                  hover:shadow-[0_26px_110px_rgba(132,204,22,0.7)]
+                  hover:shadow-[0_26px_110px_rgba(132,204,22,0.75)]
                 "
               >
                 <div className="flex h-full flex-col rounded-[28px] bg-[#111318] overflow-hidden">
-                  {/* neon header bar */}
+                  {/* lime header bar */}
                   <div className="flex items-center justify-center bg-lime-500 py-3">
                     <span className="font-['Mont'] text-sm font-bold text-white">
                       Most popular
@@ -83,40 +134,35 @@ const PlanSelection = ({
                   </div>
 
                   {/* inner content */}
-                  <div className="flex h-full flex-col px-8 pt-8 pb-9 sm:px-9 sm:pt-9 sm:pb-10">
-                    {/* medal + badge */}
-                    <div className="mb-8 flex items-center justify-between gap-4">
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={diaImg}
-                          alt={`${plan.name} plan`}
-                          className="h-14 w-auto object-contain drop-shadow-[0_0_30px_rgba(56,189,248,0.7)]"
-                        />
-                        <div>
-                          <h3 className="font-['Mont'] text-lg font-extrabold text-white">
-                            {plan.name}
-                          </h3>
-                          <p className="font-['Mont'] text-xs text-neutral-300">
-                            {plan.currency === "USD" ? "$" : ""}
-                            {plan.price} • one-time
-                          </p>
-                        </div>
-                      </div>
+                  <div className="flex h-full flex-col px-8 pt-7 pb-9 sm:px-9 sm:pt-8 sm:pb-10">
+                    {/* icon + pill row */}
+                    <div className="mb-5 flex items-center justify-between gap-3">
+                      <img
+                        src={diaImg}
+                        alt={`${plan.name} plan`}
+                        className="h-14 w-auto object-contain drop-shadow-[0_0_30px_rgba(56,189,248,0.7)]"
+                      />
 
                       {badgeType === "recommended" && (
-                        <div className="inline-flex items-center rounded-full bg-gradient-to-b from-lime-500 to-lime-700 px-3 py-1 text-[11px] font-semibold text-white font-['Mont']">
-                          {plan.badgeLabel}
+                        <div className="inline-flex items-center rounded-full bg-gradient-to-b from-lime-500 to-lime-700 px-3 py-1 text-[11px] font-semibold text-white font-['Mont'] shadow-[0_0_18px_rgba(190,242,100,0.8)]">
+                          <HiFire className="mr-1 h-3 w-3" />
+                          <span>{badgeLabel}</span>
                         </div>
                       )}
                     </div>
 
+                    {/* name */}
+                    <h3 className="mb-2 text-center font-['Mont'] text-[30px] font-extrabold text-white">
+                      {plan.name}
+                    </h3>
+
                     {/* description */}
-                    <p className="mb-8 font-['Mont'] text-sm font-semibold leading-6 text-neutral-200">
-                      {plan.description}
+                    <p className="mb-6 mx-auto max-w-xs text-center font-['Mont'] text-sm font-semibold leading-6 text-neutral-200">
+                      {desc}
                     </p>
 
                     {/* price */}
-                    <div className="mb-8 text-4xl sm:text-5xl font-extrabold text-white font-['Mont']">
+                    <div className="mb-8 text-center text-4xl sm:text-5xl font-extrabold text-white font-['Mont']">
                       {plan.currency === "USD" ? "$" : ""}
                       {plan.price}
                     </div>
@@ -124,6 +170,7 @@ const PlanSelection = ({
                     {/* CTA */}
                     <button
                       type="button"
+                      onClick={scrollToRateForm}
                       className="
                         mt-auto inline-flex w-full items-center justify-center
                         rounded-xl bg-gradient-to-b from-lime-500 to-lime-700
@@ -142,7 +189,7 @@ const PlanSelection = ({
           }
 
           /* =========================
-           * SIDE CARDS (GOLD / PLATINUM)
+           * SIDE CARDS (LEFT / RIGHT)
            * ======================= */
           return (
             <div
@@ -154,38 +201,39 @@ const PlanSelection = ({
                 bg-[radial-gradient(circle_at_top,_rgba(132,204,22,0.22),transparent_55%),_#050505]
                 shadow-[0_20px_80px_rgba(0,0,0,0.85)]
                 transition-transform duration-300
+                md:mt-2 md:z-10
                 hover:-translate-y-2
                 hover:shadow-[0_26px_100px_rgba(0,0,0,1)]
               "
             >
               <div className="flex h-full flex-col px-8 py-9 sm:px-9 sm:py-10">
-                {/* medal + title + optional badge */}
-                <div className="flex items-start gap-3">
+                {/* icon + optional pill row */}
+                <div className="mb-5 flex items-center justify-between gap-3">
                   <img
                     src={diaImg}
                     alt={`${plan.name} plan`}
                     className="h-14 w-auto object-contain drop-shadow-[0_0_30px_rgba(56,189,248,0.7)]"
                   />
 
-                  <div className="flex-1">
-                    <h3 className="font-['Mont'] text-lg font-extrabold text-white">
-                      {plan.name}
-                    </h3>
-                    {badgeType === "premium" && (
-                      <div className="mt-2 inline-flex items-center rounded-full bg-gradient-to-b from-indigo-500 to-indigo-700 px-3 py-1 text-[11px] font-semibold text-white font-['Mont']">
-                        {plan.badgeLabel}
-                      </div>
-                    )}
-                  </div>
+                  {badgeType === "premium" && (
+                    <div className="inline-flex items-center rounded-full bg-gradient-to-b from-indigo-500 to-indigo-700 px-3 py-1 text-[11px] font-semibold text-white font-['Mont']">
+                      {badgeLabel}
+                    </div>
+                  )}
                 </div>
 
+                {/* name */}
+                <h3 className="text-center font-['Mont'] text-[30px] font-extrabold text-white">
+                  {plan.name}
+                </h3>
+
                 {/* description */}
-                <p className="mt-7 mb-8 font-['Mont'] text-sm font-semibold leading-6 text-neutral-200">
-                  {plan.description}
+                <p className="mt-5 mb-7 mx-auto max-w-xs text-center font-['Mont'] text-sm font-semibold leading-6 text-neutral-200">
+                  {desc}
                 </p>
 
                 {/* price */}
-                <div className="mb-7 text-4xl sm:text-5xl font-extrabold text-white font-['Mont']">
+                <div className="mb-7 text-center text-4xl sm:text-5xl font-extrabold text-white font-['Mont']">
                   {plan.currency === "USD" ? "$" : ""}
                   {plan.price}
                 </div>
@@ -193,6 +241,7 @@ const PlanSelection = ({
                 {/* CTA */}
                 <button
                   type="button"
+                  onClick={scrollToRateForm}
                   className="
                     mt-auto inline-flex w-full items-center justify-center
                     rounded-xl bg-gradient-to-b from-slate-500 to-slate-800
@@ -230,7 +279,6 @@ const PlanSelection = ({
           Compare Plans
         </button>
 
-        {/* 🔗 Click to view samples -> /projects */}
         <Link
           to="/projects"
           className="

@@ -3,7 +3,9 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { FaTrash } from "react-icons/fa";
 
-const RATES_API = import.meta.env.VITE_ADMIN_RATES_ENDPOINT || "";
+const API_BASE = import.meta.env.VITE_AUTH_ENDPOINT || "";
+const RATES_API = API_BASE ? `${API_BASE}/api/rates/admin` : "";
+
 
 const slugify = (str) =>
   str
@@ -42,7 +44,7 @@ const RatesTab = () => {
       }
 
       try {
-        const res = await authFetch(RATES_API);
+        const res = await authFetch(RATES_API); // 👈 use authFetch
         if (!res.ok) throw new Error("Failed to fetch rates");
         const data = await res.json();
         setExistingCategories(Array.isArray(data) ? data : []);
@@ -52,7 +54,7 @@ const RatesTab = () => {
     };
 
     fetchRates();
-  }, []);
+  }, [authFetch]); // 👈 include authFetch in deps
 
   const handleCatChange = (e) => {
     const { name, value } = e.target;
@@ -95,26 +97,46 @@ const RatesTab = () => {
   const addDeliverable = () => {
     setDeliverables((prev) => [
       ...prev,
-      { id: `deliv-${prev.length + 1}`, label: "", perPlan: {} },
+      {
+        id: `deliv-${prev.length + 1}`,
+        label: "",
+        mode: "boolean", // 👈 new
+        perPlan: {},
+      },
     ]);
   };
 
-  const updateDeliverableLabel = (index, value) => {
-    setDeliverables((prev) =>
-      prev.map((d, i) => (i === index ? { ...d, label: value } : d))
-    );
-  };
+const updateDeliverableLabel = (index, value) => {
+  setDeliverables((prev) =>
+    prev.map((d, i) => (i === index ? { ...d, label: value } : d))
+  );
+};
 
-  // Checkbox toggle
-  const toggleDeliverablePlan = (dIndex, planId, checked) => {
-    setDeliverables((prev) =>
-      prev.map((d, i) =>
-        i === dIndex
-          ? { ...d, perPlan: { ...d.perPlan, [planId]: checked } }
-          : d
-      )
-    );
-  };
+// NEW: change mode for a row
+const updateDeliverableMode = (index, mode) => {
+  setDeliverables((prev) =>
+    prev.map((d, i) => (i === index ? { ...d, mode } : d))
+  );
+};
+
+// Checkbox toggle for boolean deliverables
+const toggleDeliverablePlan = (dIndex, planId, checked) => {
+  setDeliverables((prev) =>
+    prev.map((d, i) =>
+      i === dIndex ? { ...d, perPlan: { ...d.perPlan, [planId]: checked } } : d
+    )
+  );
+};
+
+// NEW: text value for text deliverables
+const updateDeliverablePlanText = (dIndex, planId, value) => {
+  setDeliverables((prev) =>
+    prev.map((d, i) =>
+      i === dIndex ? { ...d, perPlan: { ...d.perPlan, [planId]: value } } : d
+    )
+  );
+};
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -139,7 +161,8 @@ const RatesTab = () => {
       deliverables: deliverables.map((d) => ({
         id: d.id || slugify(d.label),
         label: d.label,
-        perPlan: d.perPlan, // { [planId]: true/false }
+        mode: d.mode || "boolean", // 👈 new
+        perPlan: d.perPlan,
       })),
     };
 
@@ -171,8 +194,11 @@ const RatesTab = () => {
       });
 
       // reload list
-      const listRes = await fetch(RATES_API);
+      // reload list (protected admin endpoint)
+      const listRes = await authFetch(RATES_API);
+      if (!listRes.ok) throw new Error("Failed to reload rate categories");
       const listData = await listRes.json();
+
       setExistingCategories(Array.isArray(listData) ? listData : []);
 
       if (!editingId) {
@@ -205,7 +231,8 @@ const RatesTab = () => {
   };
 
   const startEditing = (cat) => {
-    setEditingId(cat.id || cat._id || null);
+    // setEditingId(cat.id || cat._id || null);
+    setEditingId(cat.mongoId || cat._id || null); // 👈 use mongoId
 
     setCategory({
       categoryId: cat.id || "",
@@ -235,15 +262,17 @@ const RatesTab = () => {
           ]
     );
 
-    setDeliverables(
-      Array.isArray(cat.deliverables)
-        ? cat.deliverables.map((d, idx) => ({
-            id: d.id || `deliv-${idx + 1}`,
-            label: d.label || "",
-            perPlan: d.perPlan || {},
-          }))
-        : []
-    );
+setDeliverables(
+  Array.isArray(cat.deliverables)
+    ? cat.deliverables.map((d, idx) => ({
+        id: d.id || `deliv-${idx + 1}`,
+        label: d.label || "",
+        mode: d.mode || "boolean", // 👈 new
+        perPlan: d.perPlan || {},
+      }))
+    : []
+);
+
 
     setStatus({ type: "idle", message: "" });
   };
@@ -251,9 +280,9 @@ const RatesTab = () => {
   const handleDeleteRateCategory = async (catId) => {
     if (!RATES_API) return;
 
-    const id = catId;
-    const confirm = window.confirm("Delete this rate category?");
-    if (!confirm) return;
+    const id = catId; // this is mongoId
+    const confirmDelete = window.confirm("Delete this rate category?");
+    if (!confirmDelete) return;
 
     try {
       const res = await authFetch(`${RATES_API}/${id}`, {
@@ -261,12 +290,11 @@ const RatesTab = () => {
       });
       if (!res.ok) throw new Error("Failed to delete rate category");
 
-      setExistingCategories((prev) =>
-        prev.filter((cat) => (cat.id || cat._id) !== id)
-      );
+      setExistingCategories((prev) => prev.filter((cat) => cat.mongoId !== id));
 
       if (editingId === id) {
         setEditingId(null);
+        // reset form...
         setCategory({
           categoryId: "",
           label: "",
@@ -471,6 +499,7 @@ const RatesTab = () => {
                 key={d.id}
                 className="rounded-lg border border-white/10 bg-black/50 px-3 py-3 space-y-2"
               >
+                {/* Deliverable label */}
                 <input
                   value={d.label}
                   onChange={(e) =>
@@ -480,6 +509,24 @@ const RatesTab = () => {
                   placeholder="Deliverable name (e.g. Brand Guideline)"
                 />
 
+                {/* NEW: mode selector */}
+                <div className="mb-2 flex items-center gap-3">
+                  <span className="text-[11px] text-neutral-300 font-['Mont']">
+                    Value type:
+                  </span>
+                  <select
+                    value={d.mode || "boolean"}
+                    onChange={(e) =>
+                      updateDeliverableMode(dIndex, e.target.value)
+                    }
+                    className="rounded-md bg-black/70 border border-white/15 px-2 py-1 text-[11px] focus:outline-none focus:ring-1 focus:ring-lime-400/70"
+                  >
+                    <option value="boolean">Checkbox (included / not)</option>
+                    <option value="text">Text per plan</option>
+                  </select>
+                </div>
+
+                {/* Per-plan values */}
                 {plans.length > 0 && (
                   <div className="overflow-x-auto">
                     <table className="min-w-full border-separate border-spacing-x-2 text-[11px]">
@@ -499,21 +546,39 @@ const RatesTab = () => {
                         <tr>
                           {plans.map((p) => (
                             <td key={p.id} className="pr-2">
-                              <label className="inline-flex items-center gap-1 text-[11px] text-neutral-200">
+                              {(d.mode || "boolean") === "boolean" ? (
+                                // Checkbox mode
+                                <label className="inline-flex items-center gap-1 text-[11px] text-neutral-200">
+                                  <input
+                                    type="checkbox"
+                                    className="h-3 w-3 rounded border-white/40 bg-black/80"
+                                    checked={!!d.perPlan[p.id]}
+                                    onChange={(e) =>
+                                      toggleDeliverablePlan(
+                                        dIndex,
+                                        p.id,
+                                        e.target.checked
+                                      )
+                                    }
+                                  />
+                                  <span>Included</span>
+                                </label>
+                              ) : (
+                                // Text mode
                                 <input
-                                  type="checkbox"
-                                  className="h-3 w-3 rounded border-white/40 bg-black/80"
-                                  checked={!!d.perPlan[p.id]}
+                                  type="text"
+                                  className="w-full rounded-md bg-black/70 border border-white/15 px-2 py-1 text-[11px] focus:outline-none focus:ring-1 focus:ring-lime-400/70"
+                                  placeholder="-"
+                                  value={d.perPlan[p.id] || ""}
                                   onChange={(e) =>
-                                    toggleDeliverablePlan(
+                                    updateDeliverablePlanText(
                                       dIndex,
                                       p.id,
-                                      e.target.checked
+                                      e.target.value
                                     )
                                   }
                                 />
-                                <span>Included</span>
-                              </label>
+                              )}
                             </td>
                           ))}
                         </tr>
@@ -619,7 +684,7 @@ const RatesTab = () => {
                         <button
                           type="button"
                           onClick={() =>
-                            handleDeleteRateCategory(cat.id || cat._id)
+                            handleDeleteRateCategory(cat.mongoId || cat.id)
                           }
                           className="p-1.5 rounded-md border border-red-500/40 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition"
                           title="Delete"

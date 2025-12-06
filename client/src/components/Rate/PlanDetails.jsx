@@ -1,7 +1,6 @@
-// src/components/Rate/PlanDetails.jsx
 import React from "react";
 import diaImg from "../../assets/PlanDia.png";
-import { BsCheckCircle } from "react-icons/bs"; // outline icon
+import { BsCheckCircle } from "react-icons/bs";
 
 // Outline circular check with subtle glow
 const PlanCheck = () => (
@@ -16,7 +15,7 @@ const scrollToRateForm = () => {
   }
 };
 
-// Fallback rows …
+// Fallback rows if no deliverables are defined in DB
 const createFallbackDeliverables = (plans = []) => {
   if (!plans || plans.length === 0) return [];
   const ids = plans.map((p) => p.id);
@@ -57,6 +56,39 @@ const createFallbackDeliverables = (plans = []) => {
   ];
 };
 
+// Normalize DB value → how to render in cell
+const normalizeCell = (raw) => {
+  let displayMode = "dash"; // "check" | "dash" | "text"
+  let displayText = "";
+
+  if (raw === true) {
+    displayMode = "check";
+  } else if (
+    raw === false ||
+    raw === undefined ||
+    raw === null ||
+    raw === "" ||
+    raw === "-"
+  ) {
+    displayMode = "dash";
+  } else if (typeof raw === "string" && raw.toLowerCase() === "check") {
+    displayMode = "check";
+  } else {
+    displayMode = "text";
+    displayText = String(raw);
+  }
+
+  return { displayMode, displayText };
+};
+
+// Still used for mobile where space is tighter
+const truncateDescription = (text, maxChars = 100) => {
+  if (!text) return "";
+  const trimmed = String(text).trim();
+  if (trimmed.length <= maxChars) return trimmed;
+  return `${trimmed.slice(0, maxChars).trim()}…`;
+};
+
 const PlanDetails = ({ plans = [], deliverables = [] }) => {
   if (!plans || plans.length === 0) return null;
 
@@ -93,36 +125,53 @@ const PlanDetails = ({ plans = [], deliverables = [] }) => {
               </h3>
             </div>
 
-            {plans.map((plan) => {
+            {plans.map((plan, index) => {
+              const isFeatured =
+                plan.isFeatured || (plans.length === 3 && index === 1);
               const nameColorClass = plan.accentColorClass || "text-lime-400";
-              const isFeatured = plan.isFeatured;
+              const rawDesc = plan.tagline || plan.description;
 
               return (
                 <div
                   key={plan.id}
-                  className={`flex flex-col items-center border-l border-lime-400/25 px-6 ${
-                    isFeatured
-                      ? "rounded-[28px] -mx-2 bg-gradient-to-b from-lime-500/10 to-lime-500/0 pb-4"
-                      : ""
-                  }`}
+                  className={`relative flex flex-col items-center border-l border-lime-400/25 px-6 py-3
+                    ${
+                      isFeatured
+                        ? "rounded-[24px] bg-gradient-to-b from-lime-500/12 to-lime-500/0 shadow-[0_0_40px_rgba(190,242,100,0.45)]"
+                        : ""
+                    }`}
                 >
+                  {/* icon */}
                   <img
                     src={diaImg}
                     alt={`${plan.name} plan icon`}
-                    className="mb-2 h-14 w-auto object-contain drop-shadow-[0_0_32px_rgba(96,165,250,0.9)]"
+                    className="mb-2 h-12 w-auto object-contain drop-shadow-[0_0_28px_rgba(96,165,250,0.9)]"
                   />
 
+                  {/* name */}
                   <p
-                    className={`font-['Mont'] text-xl font-semibold ${nameColorClass}`}
+                    className={`font-['Mont'] text-base font-semibold ${nameColorClass}`}
                   >
                     {plan.name}
                   </p>
-                  <p className="mt-1 font-['Mont'] text-3xl sm:text-4xl font-extrabold text-white">
+
+                  {/* price */}
+                  <p className="mt-1 font-['Mont'] text-3xl font-extrabold text-white">
                     {plan.currency === "USD" ? "$" : ""}
                     {plan.price}
                   </p>
-                  <p className="mt-1 text-center text-xs font-semibold text-neutral-400">
-                    {plan.tagline || plan.description}
+
+                  {/* short description – CLAMPED TO EXACTLY 2 LINES */}
+                  <p
+                    className="mt-1 mx-auto max-w-[13rem] text-center text-[11px] font-semibold text-neutral-400"
+                    style={{
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {rawDesc}
                   </p>
 
                   {/* CTA with hover + scroll */}
@@ -131,7 +180,7 @@ const PlanDetails = ({ plans = [], deliverables = [] }) => {
                     onClick={scrollToRateForm}
                     className={`
                       mt-4 w-full rounded-xl border px-4 py-2
-                      text-sm font-bold font-['Mont']
+                      text-xs font-bold font-['Mont']
                       transition-all duration-300 transform
                       hover:-translate-y-[2px] hover:brightness-110
                       ${
@@ -169,7 +218,7 @@ const PlanDetails = ({ plans = [], deliverables = [] }) => {
 
                 {plans.map((plan) => {
                   const raw = row.perPlan ? row.perPlan[plan.id] : undefined;
-                  const value = raw === undefined ? "-" : raw;
+                  const { displayMode, displayText } = normalizeCell(raw);
 
                   return (
                     <div
@@ -181,15 +230,15 @@ const PlanDetails = ({ plans = [], deliverables = [] }) => {
                         group-hover:border-lime-300/40
                       "
                     >
-                      {value === "check" ? (
+                      {displayMode === "check" ? (
                         <PlanCheck />
-                      ) : value === "-" || value === "" ? (
+                      ) : displayMode === "dash" ? (
                         <span className="font-['Mont'] text-sm font-semibold text-neutral-500">
                           -
                         </span>
                       ) : (
                         <span className="font-['Mont'] text-sm font-semibold text-[#c7b6ff]">
-                          {value}
+                          {displayText}
                         </span>
                       )}
                     </div>
@@ -202,6 +251,7 @@ const PlanDetails = ({ plans = [], deliverables = [] }) => {
 
         {/* ============ MOBILE & TABLET (< lg) ============ */}
         <div className="block lg:hidden px-4 space-y-6">
+          {/* mobile part unchanged except using truncateDescription */}
           <div className="mb-2">
             <h3 className="font-['Mont'] text-lg sm:text-xl font-semibold text-white">
               Compare plan deliverables
@@ -211,9 +261,14 @@ const PlanDetails = ({ plans = [], deliverables = [] }) => {
             </p>
           </div>
 
-          {plans.map((plan) => {
+          {plans.map((plan, index) => {
+            const isFeatured =
+              plan.isFeatured || (plans.length === 3 && index === 1);
             const nameColorClass = plan.accentColorClass || "text-lime-400";
-            const isFeatured = plan.isFeatured;
+            const desc = truncateDescription(
+              plan.tagline || plan.description,
+              100
+            );
 
             return (
               <div
@@ -226,27 +281,29 @@ const PlanDetails = ({ plans = [], deliverables = [] }) => {
                   shadow-[0_16px_45px_rgba(0,0,0,0.7)]
                 `}
               >
-                {/* Plan header */}
+                {/* icon */}
                 <div className="flex items-center gap-3">
                   <img
                     src={diaImg}
                     alt={`${plan.name} plan icon`}
                     className="h-9 w-auto sm:h-10 object-contain drop-shadow-[0_0_24px_rgba(96,165,250,0.9)]"
                   />
-                  <div>
-                    <p
-                      className={`font-['Mont'] text-sm sm:text-base font-semibold ${nameColorClass}`}
-                    >
-                      {plan.name}
-                    </p>
-                    <p className="font-['Mont'] text-xl sm:text-2xl font-extrabold text-white leading-tight">
-                      {plan.currency === "USD" ? "$" : ""}
-                      {plan.price}
-                    </p>
-                    <p className="mt-1 text-[11px] sm:text-xs text-neutral-400 max-w-xs">
-                      {plan.tagline || plan.description}
-                    </p>
-                  </div>
+                </div>
+
+                {/* name + price + desc */}
+                <div className="mt-2">
+                  <p
+                    className={`font-['Mont'] text-sm sm:text-base font-semibold ${nameColorClass}`}
+                  >
+                    {plan.name}
+                  </p>
+                  <p className="font-['Mont'] text-xl sm:text-2xl font-extrabold text-white leading-tight">
+                    {plan.currency === "USD" ? "$" : ""}
+                    {plan.price}
+                  </p>
+                  <p className="mt-1 text-[11px] sm:text-xs text-neutral-400 max-w-xs">
+                    {desc}
+                  </p>
                 </div>
 
                 {/* CTA */}
@@ -272,7 +329,7 @@ const PlanDetails = ({ plans = [], deliverables = [] }) => {
                 <div className="mt-4 space-y-2">
                   {rows.map((row) => {
                     const raw = row.perPlan ? row.perPlan[plan.id] : undefined;
-                    const value = raw === undefined ? "-" : raw;
+                    const { displayMode, displayText } = normalizeCell(raw);
 
                     return (
                       <div
@@ -283,15 +340,15 @@ const PlanDetails = ({ plans = [], deliverables = [] }) => {
                           {row.label}
                         </span>
                         <span className="flex-shrink-0 min-w-[60px] text-right">
-                          {value === "check" ? (
+                          {displayMode === "check" ? (
                             <PlanCheck />
-                          ) : value === "-" || value === "" ? (
+                          ) : displayMode === "dash" ? (
                             <span className="text-[11px] sm:text-xs font-['Mont'] text-neutral-500">
                               -
                             </span>
                           ) : (
                             <span className="text-[11px] sm:text-xs font-['Mont'] font-semibold text-[#c7b6ff]">
-                              {value}
+                              {displayText}
                             </span>
                           )}
                         </span>

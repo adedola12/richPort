@@ -39,7 +39,7 @@ export const signup = async (req, res) => {
     const user = await User.create({
       email: email.toLowerCase(),
       passwordHash,
-      userType: "admin",
+      userType: "",
     });
 
     const token = jwt.sign(
