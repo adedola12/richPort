@@ -31,6 +31,13 @@ const ProjectDetailsHero = ({ project }) => {
   const projectName = project?.name || "Book Rion";
   const clientName = project?.clientName || projectName;
 
+  // ⬇️ Use server image first, fallback to old fields then local image
+  const heroImageUrl =
+    project?.images?.main ||
+    project?.pageImg ||
+    project?.mainImageUrl ||
+    signImg;
+
   const heroMeta = project?.heroMeta || {};
   const heroCategories =
     (Array.isArray(heroMeta.categories) && heroMeta.categories.length
@@ -56,6 +63,17 @@ const ProjectDetailsHero = ({ project }) => {
 
   const hasInitials = teamInitials.length > 0;
 
+  // ⬇️ Intro text: one string from DB, broken into paragraphs by “Enter”
+  const rawIntro =
+    (typeof project?.introText === "string" && project.introText.trim().length
+      ? project.introText
+      : project?.description || "") || "";
+
+  const introParagraphs = rawIntro
+    .split(/\r?\n/) // split on line breaks
+    .map((p) => p.trim())
+    .filter(Boolean); // remove empty lines
+
   return (
     <section
       className="
@@ -68,7 +86,7 @@ const ProjectDetailsHero = ({ project }) => {
       {/* BG */}
       <div className="pointer-events-none absolute inset-0">
         <img
-          src={signImg}
+          src={heroImageUrl}
           alt={`${projectName} sign`}
           className="h-full w-full object-cover opacity-50"
           style={{
@@ -118,34 +136,20 @@ const ProjectDetailsHero = ({ project }) => {
               </h1>
             </div>
 
-            {/* intro text – still placeholder until you decide to make these dynamic */}
+            {/* intro text from server, split into paragraphs */}
             <div className="flex flex-col gap-6 text-justify">
-              <p className="font-['Lexend'] text-[13px] sm:text-sm md:text-[15px] leading-7 md:leading-8 text-white/60">
-                BookRion is redefining how books reach readers. The platform
-                connects readers directly with verified bookstores and
-                publishers, ensuring that quality literature remains accessible,
-                affordable, and sustainable. Our vision is to build a world
-                where getting the books you love is effortless — by creating a
-                reliable, innovative, and inclusive book distribution network
-                that sets a new standard in the publishing industry.
-              </p>
-
-              <p className="font-['Lexend'] text-[13px] sm:text-sm md:text-[15px] leading-7 md:leading-8 text-white/60">
-                I joined the project as a{" "}
-                <span className="text-lime-500 font-medium">
-                  Creative Designer
-                </span>{" "}
-                while the platform was already in development. At the time,
-                BookRion lacked a cohesive visual direction and clear brand
-                identity. My primary responsibility was to establish these
-                foundations — setting visual guidelines, designing the logo,
-                choosing colors and typography, and crafting a consistent
-                identity system that would unify all design touchpoints.
-              </p>
+              {introParagraphs.map((para, idx) => (
+                <p
+                  key={idx}
+                  className="font-['Lexend'] text-[13px] sm:text-sm md:text-[15px] leading-7 md:leading-8 text-white/60"
+                >
+                  {para}
+                </p>
+              ))}
             </div>
           </div>
 
-          {/* DETAILS GRID */}
+          {/* DETAILS GRID (unchanged) */}
           <div className="mt-1 w-full max-w-[580px] flex flex-col gap-4">
             {/* CLIENT */}
             <div className="flex items-start justify-between gap-8">
