@@ -49,7 +49,7 @@ const Nav = () => {
           <div
             className="
               flex items-center justify-between
-              rounded-[6px]
+           
               border border-white/18
               bg-gradient-to-r
                 from-emerald-500/18
