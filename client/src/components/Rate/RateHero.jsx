@@ -46,7 +46,7 @@ const RateHero = () => {
             <h1
               className="
                 font-semibold
-                text-4xl sm:text-5xl md:text-6xl lg:text-[64px]
+                text-4xl sm:text-5xl md:text-6xl lg:text-[80px]
                 leading-tight lg:leading-[1.05]
                 bg-gradient-to-b from-[#FCFCFC] via-[#E4E4E4] to-[#8E8E8E]
                 bg-clip-text text-transparent

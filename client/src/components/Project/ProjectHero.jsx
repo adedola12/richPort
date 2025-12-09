@@ -74,37 +74,6 @@ const ProjectHero = () => {
               merge creativity with functionality.
             </p>
           </div>
-
-          {/* Buttons */}
-          <div className="flex w-full max-w-[340px] sm:max-w-[380px] items-center justify-center gap-4">
-            <button
-              type="button"
-              className="
-                flex-1 h-10
-                rounded-lg border border-white/80 bg-white/5
-                px-5
-                font-['Lexend'] text-sm font-normal leading-5 text-white
-                hover:bg-white/10 transition
-              "
-            >
-              View Works
-            </button>
-
-            <Link
-              to="/about"
-              className="
-                flex-1 inline-flex h-10 items-center justify-center
-                rounded-lg
-                bg-gradient-to-b from-lime-500 to-lime-700
-                px-5
-                font-['Lexend'] text-xs sm:text-sm font-bold leading-5 text-black
-                shadow-[0_0_18px_rgba(132,204,22,0.6)]
-                hover:from-lime-400 hover:to-lime-600 transition
-              "
-            >
-              About Me
-            </Link>
-          </div>
         </div>
       </div>
     </section>

@@ -201,36 +201,6 @@ const ProjectDetailsHero = ({ project }) => {
                 {timelineText}
               </span>
             </div>
-
-            {/* TEAM */}
-            <div className="flex items-center justify-start gap-20">
-              <span className="font-['Lexend'] text-xs tracking-[0.3em] uppercase text-white">
-                Team
-              </span>
-              <div className="flex items-center">
-                {hasInitials
-                  ? teamInitials.map((initials, idx) => (
-                      <div
-                        key={`${initials}-${idx}`}
-                        className={`w-8 h-8 rounded-2xl border-2 border-white bg-zinc-900 flex items-center justify-center text-[11px] font-['Mont'] font-semibold text-white ${
-                          idx === 0 ? "" : "-ml-3"
-                        }`}
-                      >
-                        {initials}
-                      </div>
-                    ))
-                  : teamPlaceholders.map((src, idx) => (
-                      <img
-                        key={idx}
-                        src={src}
-                        alt="Team member"
-                        className={`w-8 h-8 rounded-2xl border-2 border-white ${
-                          idx === 0 ? "" : "-ml-3"
-                        }`}
-                      />
-                    ))}
-              </div>
-            </div>
           </div>
         </div>
       </div>
