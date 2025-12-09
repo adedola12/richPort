@@ -141,7 +141,7 @@ const ProjectDetailsHero = ({ project }) => {
               {introParagraphs.map((para, idx) => (
                 <p
                   key={idx}
-                  className="font-['Lexend'] text-[13px] sm:text-sm md:text-[15px] leading-7 md:leading-8 text-white/60"
+                  className="font-['Lexend'] text-[17px] sm:text-sm md:text-[15px] leading-7 md:leading-8 text-white/60"
                 >
                   {para}
                 </p>
