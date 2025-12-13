@@ -1,13 +1,28 @@
-// src/components/ProjectPage/ProjectImg.jsx
 import React from "react";
+import { motion } from "framer-motion";
 import midImg from "../../assets/Bookrion/midImg.png";
 
+const imgVariants = {
+  hidden: { opacity: 0, y: 40, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.8, ease: [0.22, 0.61, 0.36, 1] },
+  },
+};
 const ProjectImg = ({ project }) => {
   const mainImageUrl = project?.midImageUrl || project?.images?.mid || midImg;
 
   return (
     <section className="relative w-full bg-[#050505] py-16">
-      <div className="relative mx-auto max-w-[1200px] px-4 lg:px-6">
+      <motion.div
+        className="relative mx-auto max-w-[1200px] px-4 lg:px-6"
+        variants={imgVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.6 }}
+      >
         <div className="relative mx-auto max-w-[1222px] aspect-[1222/631]">
           <div
             className="
@@ -40,7 +55,7 @@ const ProjectImg = ({ project }) => {
             />
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

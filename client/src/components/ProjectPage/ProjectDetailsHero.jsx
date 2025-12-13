@@ -1,19 +1,22 @@
 // src/components/ProjectPage/ProjectDetailsHero.jsx
 import React from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import TypingText from "../common/TypingText";
 import signImg from "../../assets/Bookrion/mainSign.jpg";
 
 const HERO_BG_POSITION = "center 60%";
 const HERO_BG_ZOOM = 1.2;
 const CONTENT_TOP_OFFSET = 200;
 
-const teamPlaceholders = [
-  "https://placehold.co/32x33",
-  "https://placehold.co/32x33",
-  "https://placehold.co/32x33",
-  "https://placehold.co/32x33",
-  "https://placehold.co/32x33",
-];
+const fadeItem = {
+  hidden: { opacity: 0, y: 24 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.22, 0.61, 0.36, 1] },
+  },
+};
 
 const defaultCategories = [
   "Brand Identity Design",
@@ -100,14 +103,24 @@ const ProjectDetailsHero = ({ project }) => {
         <div className="absolute -right-40 bottom-[-40px] h-72 w-72 rounded-full bg-lime-500/14 blur-[140px]" />
       </div>
 
-      {/* CONTENT */}
       <div
         className="relative z-10 mx-auto max-w-[1200px] px-4 lg:px-16"
         style={{ paddingTop: CONTENT_TOP_OFFSET }}
       >
-        <div className="mx-auto max-w-[760px] flex flex-col gap-10">
+        <motion.div
+          className="mx-auto max-w-[760px] flex flex-col gap-10"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.6 }}
+          variants={{
+            hidden: {},
+            visible: {
+              transition: { staggerChildren: 0.18 },
+            },
+          }}
+        >
           {/* top block */}
-          <div className="flex flex-col gap-6">
+          <motion.div className="flex flex-col gap-6" variants={fadeItem}>
             <div className="w-full flex flex-col gap-3">
               <Link
                 to="/projects"
@@ -124,45 +137,61 @@ const ProjectDetailsHero = ({ project }) => {
                 Back to Portfolio
               </Link>
 
-              <h1
+              <TypingText
+                as="h1"
+                text={projectName}
                 className="
                   text-white
                   font-['Outfit'] font-medium
                   text-4xl sm:text-5xl lg:text-[52px]
                   leading-[1.1]
                 "
-              >
-                {projectName}
-              </h1>
+                delay={0.15}
+              />
             </div>
 
             {/* intro text from server, split into paragraphs */}
             <div className="flex flex-col gap-6 text-justify">
               {introParagraphs.map((para, idx) => (
-                <p
+                <TypingText
                   key={idx}
+                  as="p"
+                  text={para}
                   className="font-['Lexend'] text-[17px] sm:text-sm md:text-[15px] leading-7 md:leading-8 text-white/60"
-                >
-                  {para}
-                </p>
+                  delay={0.25 + idx * 0.2}
+                />
               ))}
             </div>
-          </div>
+          </motion.div>
 
-          {/* DETAILS GRID (unchanged) */}
-          <div className="mt-1 w-full max-w-[580px] flex flex-col gap-4">
+          {/* DETAILS GRID */}
+          <motion.div
+            className="mt-1 w-full max-w-[580px] flex flex-col gap-4"
+            variants={{
+              hidden: {},
+              visible: {
+                transition: { staggerChildren: 0.15 },
+              },
+            }}
+          >
             {/* CLIENT */}
-            <div className="flex items-start justify-between gap-8">
+            <motion.div
+              className="flex items-start justify-between gap-8"
+              variants={fadeItem}
+            >
               <span className="font-['Lexend'] text-xs tracking-[0.3em] uppercase text-white">
                 Client
               </span>
               <span className="w-72 md:w-96 font-['Lexend'] text-sm md:text-base text-white leading-6">
                 {clientName}
               </span>
-            </div>
+            </motion.div>
 
             {/* CATEGORY */}
-            <div className="flex items-start justify-between gap-8">
+            <motion.div
+              className="flex items-start justify-between gap-8"
+              variants={fadeItem}
+            >
               <span className="font-['Lexend'] text-xs tracking-[0.3em] uppercase text-white">
                 Category
               </span>
@@ -180,29 +209,35 @@ const ProjectDetailsHero = ({ project }) => {
                   </span>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* DELIVERABLES */}
-            <div className="flex items-start justify-between gap-8">
+            <motion.div
+              className="flex items-start justify-between gap-8"
+              variants={fadeItem}
+            >
               <span className="font-['Lexend'] text-xs tracking-[0.3em] uppercase text-white">
                 Deliverables
               </span>
               <span className="w-72 md:w-96 font-['Lexend'] text-sm md:text-base text-white leading-6">
                 {deliverablesText}
               </span>
-            </div>
+            </motion.div>
 
             {/* TIMELINE */}
-            <div className="flex items-start justify-between gap-8">
+            <motion.div
+              className="flex items-start justify-between gap-8"
+              variants={fadeItem}
+            >
               <span className="font-['Lexend'] text-xs tracking-[0.3em] uppercase text-white">
                 Timeline
               </span>
               <span className="w-72 md:w-96 font-['Lexend'] text-sm md:text-base text-white leading-6">
                 {timelineText}
               </span>
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

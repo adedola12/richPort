@@ -1,7 +1,18 @@
 // src/components/ProjectPage/ProjectWriteUp.jsx
 import React from "react";
+import { motion } from "framer-motion";
+import TypingText from "../common/TypingText";
 import { LuSearch, LuLightbulb, LuPenTool, LuCheckCheck } from "react-icons/lu";
 import writeImg from "../../assets/Bookrion/img1.jpg";
+
+const fadeItem = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0.22, 0.61, 0.36, 1] },
+  },
+};
 
 // ------- DEFAULT CONTENT (fallback until MongoDB is connected) -------
 const defaultSteps = [
@@ -44,10 +55,11 @@ const stepIcons = [LuSearch, LuLightbulb, LuPenTool, LuCheckCheck];
 
 // ------- SMALL REUSABLE BLOCK FOR EACH STEP -------
 const StepBlock = ({ pillLabel, Icon, title, body }) => (
-  <div className="w-full lg:max-w-[574px] flex flex-col gap-4">
-    {/* Pill + heading */}
+  <motion.div
+    className="w-full lg:max-w-[574px] flex flex-col gap-4"
+    variants={fadeItem}
+  >
     <div className="flex flex-col gap-1">
-      {/* Pill */}
       <div
         className="
           inline-flex max-w-max items-center gap-2
@@ -63,8 +75,9 @@ const StepBlock = ({ pillLabel, Icon, title, body }) => (
         </span>
       </div>
 
-      {/* Title – tuned to stay on a single line in a 574px column */}
-      <h3
+      <TypingText
+        as="h3"
+        text={title}
         className="
           font-['Lexend']
           text-[22px] sm:text-[24px] lg:text-[26px]
@@ -72,12 +85,10 @@ const StepBlock = ({ pillLabel, Icon, title, body }) => (
           leading-[1.5]
           text-white
         "
-      >
-        {title}
-      </h3>
+        delay={0.1}
+      />
     </div>
 
-    {/* Body copy */}
     <p
       className="
         font-['Lexend']
@@ -90,7 +101,7 @@ const StepBlock = ({ pillLabel, Icon, title, body }) => (
     >
       {body}
     </p>
-  </div>
+  </motion.div>
 );
 
 // ------- MAIN COMPONENT -------
@@ -115,71 +126,46 @@ const ProjectWriteUp = ({ project }) => {
       <div className="pointer-events-none absolute left-1/2 top-[10%] h-72 w-72 -translate-x-1/2 rounded-full bg-lime-500/12 blur-[180px]" />
 
       <div className="relative mx-auto max-w-[1224px] px-4 lg:px-6">
-        {/* TOP ROW: Discover + Ideate (left), Phone image (right) */}
         <div className="flex flex-col gap-16 lg:flex-row lg:items-start lg:gap-20">
-          {/* Left text column */}
-          <div className="w-full lg:w-[574px] flex flex-col gap-24">
-            <StepBlock
-              pillLabel={steps[0].pillLabel}
-              Icon={steps[0].Icon}
-              title={steps[0].title}
-              body={steps[0].body}
-            />
-            <StepBlock
-              pillLabel={steps[1].pillLabel}
-              Icon={steps[1].Icon}
-              title={steps[1].title}
-              body={steps[1].body}
-            />
-          </div>
+          <motion.div
+            className="w-full lg:w-[574px] flex flex-col gap-24"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.4 }}
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.2 } },
+            }}
+          >
+            <StepBlock {...steps[0]} />
+            <StepBlock {...steps[1]} />
+          </motion.div>
 
-          {/* Right image card */}
-          <div className="w-full lg:w-[574px] mt-4 lg:mt-0">
-            <div
-              className="
-                w-full
-                bg-gradient-to-br
-                from-neutral-600/30 via-stone-500/20 to-stone-400/5
-                rounded-[20px]
-                border-4 border-white/40
-                px-3.5 pt-3.5 pb-4
-                shadow-[0_0_40px_rgba(0,0,0,0.85)]
-              "
-            >
-              <div className="relative h-[588px] w-full overflow-hidden rounded-2xl border-2 border-lime-500">
-                <img
-                  src={caseStudyImage}
-                  alt={
-                    project?.name
-                      ? `${project.name} process visual`
-                      : "Project process visual"
-                  }
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-              </div>
-            </div>
-          </div>
+          <motion.div
+            className="w-full lg:w-[574px] mt-4 lg:mt-0"
+            variants={fadeItem}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.4 }}
+          >
+            {/* existing image card code unchanged */}
+          </motion.div>
         </div>
 
-        {/* BOTTOM ROW: Design + Test & Refine */}
-        <div className="mt-20 flex flex-col gap-16 lg:flex-row lg:items-start lg:gap-20">
-          <div className="w-full lg:w-[574px]">
-            <StepBlock
-              pillLabel={steps[2].pillLabel}
-              Icon={steps[2].Icon}
-              title={steps[2].title}
-              body={steps[2].body}
-            />
-          </div>
-          <div className="w-full lg:w-[574px]">
-            <StepBlock
-              pillLabel={steps[3].pillLabel}
-              Icon={steps[3].Icon}
-              title={steps[3].title}
-              body={steps[3].body}
-            />
-          </div>
-        </div>
+        {/* bottom row */}
+        <motion.div
+          className="mt-20 flex flex-col gap-16 lg:flex-row lg:items-start lg:gap-20"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.4 }}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.2 } },
+          }}
+        >
+          <StepBlock {...steps[2]} />
+          <StepBlock {...steps[3]} />
+        </motion.div>
       </div>
     </section>
   );

@@ -1,7 +1,7 @@
-// src/components/ProjectPage.jsx (or src/pages/ProjectPage.jsx)
+// src/components/ProjectPage.jsx
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import localProjects from "../data/projectsData"; // optional fallback
+import localProjects from "../data/projectsData";
 
 import ProjectDetailsHero from "./ProjectPage/ProjectDetailsHero";
 import MainImg from "./ProjectPage/MainImg";
@@ -11,7 +11,8 @@ import OtherProj from "./ProjectPage/OtherProj";
 import BuildSection from "./Home/BuildSection";
 import ProjectConc from "./ProjectPage/ProjectConc";
 import DiscoverImg from "./ProjectPage/DiscoverImg";
-import SectionReveal from "./common/SectionReveal";
+// ❌ remove SectionReveal import
+// import SectionReveal from "./common/SectionReveal";
 
 const API_BASE = import.meta.env.VITE_AUTH_ENDPOINT || "";
 
@@ -22,7 +23,6 @@ const ProjectPage = () => {
 
   useEffect(() => {
     const loadProject = async () => {
-      // Fallback to local data if API not configured
       if (!API_BASE) {
         const local = localProjects.find((p) => p.slug === slug);
         if (local) {
@@ -78,37 +78,14 @@ const ProjectPage = () => {
 
   return (
     <div className="text-white bg-[#050505]" key={project.slug}>
-      <SectionReveal>
-        <ProjectDetailsHero project={project} />
-      </SectionReveal>
-
-      <SectionReveal delay={0.05}>
-        <MainImg project={project} />
-      </SectionReveal>
-
-      <SectionReveal delay={0.1}>
-        <ProjectWriteUp project={project} />
-      </SectionReveal>
-
-      <SectionReveal delay={0.15}>
-        <ProjectImg project={project} />
-      </SectionReveal>
-
-      <SectionReveal delay={0.2}>
-        <ProjectConc project={project} />
-      </SectionReveal>
-
-      <SectionReveal delay={0.25}>
-        <DiscoverImg project={project} />
-      </SectionReveal>
-
-      <SectionReveal delay={0.3}>
-        <OtherProj currentSlug={project.slug} />
-      </SectionReveal>
-
-      <SectionReveal delay={0.35}>
-        <BuildSection />
-      </SectionReveal>
+      <ProjectDetailsHero project={project} />
+      <MainImg project={project} />
+      <ProjectWriteUp project={project} />
+      <ProjectImg project={project} />
+      <ProjectConc project={project} />
+      <DiscoverImg project={project} />
+      <OtherProj currentSlug={project.slug} />
+      <BuildSection />
     </div>
   );
 };

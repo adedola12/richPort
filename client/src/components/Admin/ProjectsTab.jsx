@@ -13,7 +13,7 @@ const slugify = (str) =>
     .trim()
     .replace(/[\s\W-]+/g, "-");
 
-const emptyGallery = ["", "", "", "", ""];
+const emptyGallery = ["", "", "", "", "", "", ""];
 
 const ProjectsTab = () => {
   const { authFetch } = useAuth();
@@ -383,9 +383,9 @@ const ProjectsTab = () => {
   const startEditing = (project) => {
     const gallery = project.images?.gallery || project.galleryImages || [];
     const paddedGallery =
-      gallery.length >= 5
-        ? gallery.slice(0, 5)
-        : [...gallery, ...Array(5 - gallery.length).fill("")];
+      gallery.length >= 7
+        ? gallery.slice(0, 7)
+        : [...gallery, ...Array(7 - gallery.length).fill("")];
 
     const heroMeta = project.heroMeta || {};
     const heroCats =
@@ -971,12 +971,14 @@ const ProjectsTab = () => {
             </div>
           </div>
 
-          {/* 5 gallery images */}
+          {/* Bento gallery images */}
           <div className="space-y-2">
             <p className="text-xs font-semibold font-['Mont']">
-              Gallery Images (up to 5)
+              Bento Gallery Images (5–7)
               <span className="ml-1 text-[10px] font-normal text-neutral-400">
-                (max {MAX_IMAGE_MB}MB)
+                These map to the bento grid in the case study page. Upload 5, 6
+                or 7 images – they will appear in slots #1–#
+                {form.galleryImageUrls.length}.
               </span>
             </p>
             <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-5">
@@ -985,7 +987,7 @@ const ProjectsTab = () => {
                 return (
                   <div key={key} className="space-y-1">
                     <label className="block text-[10px] mb-0.5 font-semibold font-['Mont']">
-                      Gallery #{index + 1}
+                      Bento Image #{index + 1}
                     </label>
                     <input
                       type="file"
@@ -1011,10 +1013,10 @@ const ProjectsTab = () => {
                           type="button"
                           onClick={() => handleRemoveImage("gallery", index)}
                           className="
-        absolute -top-2 -right-2 rounded-full
-        bg-black/80 p-1 text-red-400
-        hover:bg-red-600 hover:text-white transition
-      "
+                  absolute -top-2 -right-2 rounded-full
+                  bg-black/80 p-1 text-red-400
+                  hover:bg-red-600 hover:text-white transition
+                "
                           title="Delete gallery image"
                         >
                           <FaTrash className="h-3 w-3" />

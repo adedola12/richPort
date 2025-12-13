@@ -2,6 +2,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import containerImg from "../../assets/Container.png";
+import { motion } from "framer-motion";
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 32 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: [0.22, 0.61, 0.36, 1] },
+  },
+};
 
 const BuildSection = () => {
   const navigate = useNavigate();
@@ -14,13 +24,12 @@ const BuildSection = () => {
     <section className="relative w-full bg-[#050505] py-16 lg:py-24">
       <div className="relative mx-auto max-w-[1200px] px-4 lg:px-6">
         {/* Main card */}
-        <div
-          className="
-            relative overflow-hidden
-            rounded-3xl border border-zinc-700
-            bg-[#050505]
-            shadow-[0_0_40px_rgba(0,0,0,0.85)]
-          "
+        <motion.div
+          className="relative overflow-hidden rounded-3xl border border-zinc-700 bg-[#050505] shadow-[0_0_40px_rgba(0,0,0,0.85)]"
+          variants={cardVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.6 }}
         >
           {/* Background swirl image */}
           <img
@@ -103,7 +112,7 @@ const BuildSection = () => {
               Check out my rate card
             </button>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

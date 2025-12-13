@@ -1,19 +1,32 @@
 // src/components/ProjectPage/MainImg.jsx
 import React from "react";
+import { motion } from "framer-motion";
 import signImg from "../../assets/Bookrion/mainSign.jpg";
 
+const imgVariants = {
+  hidden: { opacity: 0, y: 40, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.8, ease: [0.22, 0.61, 0.36, 1] },
+  },
+};
+
 const MainImg = ({ project }) => {
-  // When you plug in MongoDB, keep a main image URL on the project
-  // e.g. project.mainImageUrl or project.images.main
   const mainImageUrl =
     project?.mainImageUrl || project?.images?.main || signImg;
 
   return (
     <section className="relative w-full bg-[#050505] py-16">
-      <div className="relative mx-auto max-w-[1200px] px-4 lg:px-6">
-        {/* Wrapper so the glow hugs the card */}
+      <motion.div
+        className="relative mx-auto max-w-[1200px] px-4 lg:px-6"
+        variants={imgVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.6 }}
+      >
         <div className="relative mx-auto max-w-[1222px] aspect-[1222/631]">
-          {/* Subtle lime glow behind card */}
           <div
             className="
               pointer-events-none
@@ -23,8 +36,6 @@ const MainImg = ({ project }) => {
               blur-3xl
             "
           />
-
-          {/* Actual image card */}
           <div
             className="
               relative
@@ -47,7 +58,7 @@ const MainImg = ({ project }) => {
             />
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };
