@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Richard Enoch Portfolio — UI Kit</title>
+
+  <!-- Splash thumbnail (used while bundle unpacks, and as no-JS fallback) -->
+  <template id="__bundler_thumbnail" data-bg-color="#050505">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1200" height="800" fill="#050505"/>
+      <circle cx="180" cy="200" r="280" fill="#84CC16" fill-opacity="0.18" filter="blur(30px)"/>
+      <circle cx="1020" cy="640" r="320" fill="#84CC16" fill-opacity="0.22" filter="blur(40px)"/>
+      <g transform="translate(280 360)" font-family="Outfit, system-ui, sans-serif">
+        <text x="0" y="0" fill="#FFFFFF" font-size="120" font-weight="600" letter-spacing="-6">Richard</text>
+        <text x="0" y="140" fill="#FFFFFF" font-size="120" font-weight="600" letter-spacing="-6">Enoch</text>
+        <text x="0" y="200" fill="#A3E635" font-size="36" font-weight="500" letter-spacing="-1">Portfolio · UI Kit</text>
+      </g>
+    </svg>
+  </template>
+
+  <!-- ============================================================
+       Asset dependencies referenced as strings inside JSX code.
+       The bundler inlines these and exposes them at
+       window.__resources[<id>] as blob URLs.
+       ============================================================ -->
+  <meta name="ext-resource-dependency" content="assets/bookrion-main.jpg" data-resource-id="imgBookrion" />
+  <meta name="ext-resource-dependency" content="assets/work-2.jpg" data-resource-id="imgWork2" />
+  <meta name="ext-resource-dependency" content="assets/ui-mock-main.jpg" data-resource-id="imgUiMain" />
+  <meta name="ext-resource-dependency" content="assets/ui-mock-hero.png" data-resource-id="imgUiHero" />
+  <meta name="ext-resource-dependency" content="assets/work-1.png" data-resource-id="imgWork1" />
+  <meta name="ext-resource-dependency" content="assets/graphics-hero.png" data-resource-id="imgGraphics" />
+  <meta name="ext-resource-dependency" content="assets/work-3.jpg" data-resource-id="imgWork3" />
+  <meta name="ext-resource-dependency" content="assets/partners/adlm.png" data-resource-id="pAdlm" />
+  <meta name="ext-resource-dependency" content="assets/partners/veridian.png" data-resource-id="pVeridian" />
+  <meta name="ext-resource-dependency" content="assets/partners/tradeflow.png" data-resource-id="pTradeflow" />
+  <meta name="ext-resource-dependency" content="assets/partners/bookrion.png" data-resource-id="pBookrion" />
+  <meta name="ext-resource-dependency" content="assets/partners/niqs-grey.svg" data-resource-id="pNiqsGrey" />
+  <meta name="ext-resource-dependency" content="assets/partners/niqs-color.svg" data-resource-id="pNiqsColor" />
+  <meta name="ext-resource-dependency" content="assets/partners/ydpay-grey.svg" data-resource-id="pYdpayGrey" />
+  <meta name="ext-resource-dependency" content="assets/partners/ydpay-color.svg" data-resource-id="pYdpayColor" />
+  <meta name="ext-resource-dependency" content="assets/portrait.jpg" data-resource-id="portrait" />
+  <meta name="ext-resource-dependency" content="assets/badge-gold.png" data-resource-id="badgeGold" />
+  <meta name="ext-resource-dependency" content="assets/badge-silver.png" data-resource-id="badgeSilver" />
+  <meta name="ext-resource-dependency" content="assets/badge-platinum.png" data-resource-id="badgePlatinum" />
+  <meta name="ext-resource-dependency" content="assets/icons/figma.png" data-resource-id="icoFigma" />
+  <meta name="ext-resource-dependency" content="assets/icons/photoshop.png" data-resource-id="icoPhotoshop" />
+  <meta name="ext-resource-dependency" content="assets/icons/illustrator.png" data-resource-id="icoIllustrator" />
+  <meta name="ext-resource-dependency" content="assets/icons/indesign.png" data-resource-id="icoIndesign" />
+  <meta name="ext-resource-dependency" content="assets/icons/xd.png" data-resource-id="icoXd" />
+  <meta name="ext-resource-dependency" content="assets/icons/notion.png" data-resource-id="icoNotion" />
+  <meta name="ext-resource-dependency" content="assets/icons/slack.png" data-resource-id="icoSlack" />
+  <meta name="ext-resource-dependency" content="assets/icons/zoom.png" data-resource-id="icoZoom" />
+  <meta name="ext-resource-dependency" content="assets/icons/openai.png" data-resource-id="icoOpenai" />
+  <meta name="ext-resource-dependency" content="assets/icons/behance.png" data-resource-id="icoBehance" />
+  <meta name="ext-resource-dependency" content="assets/icons/creative-cloud.png" data-resource-id="icoCC" />
+  <meta name="ext-resource-dependency" content="assets/icons/chrome.svg" data-resource-id="icoChrome" />
+  <meta name="ext-resource-dependency" content="assets/icons/gmail.svg" data-resource-id="icoGmail" />
+  <meta name="ext-resource-dependency" content="assets/icons/meet.svg" data-resource-id="icoMeet" />
+
+  <link rel="stylesheet" href="_build/styles.css" />
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" src="_build/Icons.jsx"></script>
+  <script type="text/babel" src="_build/Data.jsx"></script>
+  <script type="text/babel" src="_build/Nav.jsx"></script>
+  <script type="text/babel" src="_build/Hero.jsx"></script>
+  <script type="text/babel" src="_build/Sections.jsx"></script>
+  <script type="text/babel" src="_build/ProjectGrid.jsx"></script>
+  <script type="text/babel" src="_build/ProjectDetail.jsx"></script>
+  <script type="text/babel" src="_build/RateCard.jsx"></script>
+  <script type="text/babel" src="_build/App.jsx"></script>
+</body>
+</html>

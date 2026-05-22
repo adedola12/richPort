@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  .p-logo { position: relative; display: inline-flex; align-items: center; justify-content: center; height: 30px; }
+  .p-logo img { height: 100%; width: auto; display: block; transition: opacity 220ms cubic-bezier(.22,.61,.36,1), filter 220ms cubic-bezier(.22,.61,.36,1); }
+  /* Single-source logos: filter to grey at rest, drop filter on hover */
+  .p-logo--filtered img { opacity: 0.95; filter: grayscale(1) brightness(1.8); }
+  .p-logo--filtered:hover img { filter: grayscale(0) brightness(1); }
+  /* Two-source logos: stack color over grey, fade color in */
+  .p-logo--swap .img-color { position: absolute; inset: 0; height: 100%; opacity: 0; }
+  .p-logo--swap:hover .img-color { opacity: 1; }
+  .p-logo--swap:hover .img-grey  { opacity: 0; }
+</style>
+</head><body>
+<div class="card">
+  <div class="label-row"><span>Partner logos</span><span class="dot">●</span></div>
+  <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:18px 32px; padding:16px 0; flex:1;">
+
+    <span class="p-logo p-logo--filtered"><img src="../assets/partners/adlm.png" alt="ADLM Studio"></span>
+    <span class="p-logo p-logo--filtered"><img src="../assets/partners/veridian.png" alt="Veridian Arc"></span>
+    <span class="p-logo p-logo--filtered"><img src="../assets/partners/tradeflow.png" alt="TradeFlow"></span>
+    <span class="p-logo p-logo--filtered"><img src="../assets/partners/bookrion.png" alt="BookRion"></span>
+
+    <span class="p-logo p-logo--swap" style="height:32px;">
+      <img class="img-grey"  src="../assets/partners/niqs-grey.svg"  alt="NIQS">
+      <img class="img-color" src="../assets/partners/niqs-color.svg" alt="">
+    </span>
+
+    <span class="p-logo p-logo--swap" style="height:30px;">
+      <img class="img-grey"  src="../assets/partners/ydpay-grey.svg"  alt="YDPay">
+      <img class="img-color" src="../assets/partners/ydpay-color.svg" alt="">
+    </span>
+
+  </div>
+  <p style="font-size:11px; color:#98989A; margin-top:6px; text-align:center; line-height:1.4;">
+    Six client marks · grey at rest, full colour on hover. NIQS &amp; YDPay use SVG crossfades for crisp vector colour transitions; the rest use a CSS <code style="font-size:10px;">grayscale(1)</code> filter swap.
+  </p>
+</div>
+</body></html>

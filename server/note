@@ -1,0 +1,13 @@
+{
+  name: "Book Rion",
+  pageImg: "https://cdn.your-cdn.com/bookrion/phone.png",
+  midImg: "https://cdn.your-cdn.com/bookrion/phone.png",
+
+  caseStudyImage: "https://cdn.your-cdn.com/bookrion/phone.png",
+  caseStudySteps: [
+    { pillLabel: "Discover", title: "Understanding the Problem", body: "..." },
+    { pillLabel: "Ideate",   title: "Exploring Concepts",        body: "..." },
+    { pillLabel: "Design",   title: "Bringing the Concept to Life", body: "..." },
+    { pillLabel: "Test & Refine", title: "Perfecting the Details", body: "..." }
+  ]
+}

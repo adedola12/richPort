@@ -1,0 +1,1083 @@
+# HANDOFF.md
+
+Complete handoff document for the RichPort codebase. Written for a designer inheriting the project.
+
+---
+
+## 1. PROJECT OVERVIEW
+
+### What this is
+
+**RichPort** is a personal portfolio website. It showcases four categories of work:
+- **Projects** — brand/identity case studies with full write-ups
+- **UI/UX Projects** — product design work with personas, flows, and detailed write-ups
+- **Graphic Design** — image-heavy gallery projects
+- **Rate Details** — service pricing tiers with an enquiry form
+
+There is also an admin dashboard (password-protected) for creating, editing, and deleting all content without touching code.
+
+### Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend framework | React 19 |
+| Build tool | Vite 7 |
+| Styling | Tailwind CSS v4 |
+| Animations | Framer Motion |
+| Routing | React Router v7 |
+| Backend framework | Express 5 |
+| Database | MongoDB (via Mongoose 9) |
+| Authentication | JWT (stored in localStorage + httpOnly cookie) |
+| Image storage | Cloudinary |
+| Client hosting | Vercel (`rich-port.vercel.app`) |
+| Server hosting | Render (`https://richport-1oer.onrender.com`) |
+
+### Repo structure
+
+```
+richPort-main/
+├── client/           # React/Vite frontend
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   ├── vite.config.js
+│   ├── tailwind.config.js
+│   └── vercel.json
+├── server/           # Express backend
+│   ├── routes/
+│   ├── controllers/
+│   ├── models/
+│   ├── middleware/
+│   ├── cloudinary.js
+│   ├── db.js
+│   ├── index.js
+│   └── package.json
+├── .claude/          # Claude Code local settings
+│   └── settings.local.json
+├── CLAUDE.md
+└── HANDOFF.md
+```
+
+---
+
+## 2. CLIENT (frontend)
+
+### Framework + build tool
+
+**package.json** (abridged):
+```json
+{
+  "name": "client",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "framer-motion": "^12.23.25",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.9.6"
+  }
+}
+```
+
+**vite.config.js**:
+```js
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+  plugins: [react()],
+})
+```
+
+No proxy is configured. All API calls go directly to the URL set in `VITE_AUTH_ENDPOINT`.
+
+### Routing model
+
+Full router config from `client/src/main.jsx`:
+
+```jsx
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: "about", element: <About /> },
+      { path: "projects", element: <Projects /> },
+      { path: "graphic-design", element: <GraphicDesignPage /> },
+      { path: "rate-details", element: <RateDetails /> },
+      { path: "projects/:slug", element: <ProjectPage /> },
+
+      { path: "ui-projects", element: <UIProjectPage /> },
+      { path: "ui-projects/:slug", element: <UIProjectPage /> },
+
+      // redirects for old URLs
+      { path: "ui-project", element: <Navigate to="/ui-projects" replace /> },
+      { path: "ui-project/:slug", element: <RedirectWithSlug basePath="/ui-projects" /> },
+
+      { path: "admin-auth", element: <AdminAuthPage /> },
+      {
+        path: "admin",
+        element: (
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        ),
+      },
+
+      // 404 catch-all
+      {
+        path: "*",
+        element: (
+          <div className="flex min-h-screen flex-col items-center justify-center bg-[#050505] text-white">
+            <h1 className="text-4xl font-bold">404</h1>
+            <p className="mt-2 text-neutral-400">Page not found</p>
+            <a href="/" className="mt-4 text-lime-400 hover:underline">Go home</a>
+          </div>
+        ),
+      },
+    ],
+  },
+]);
+```
+
+`App.jsx` wraps all routes in an `<AnimatePresence>` with Framer Motion page transitions (opacity + blur + slide). `<Nav />` and `<Footer />` are always visible.
+
+### Folder structure under `src/`
+
+```
+src/
+├── api/              # HTTP client wrappers for each data type
+├── assets/           # Static images, icons, gallery images
+├── components/       # Reusable UI components, grouped by feature
+├── context/          # AuthContext — the only global state store
+├── pages/            # Top-level page components used by the router
+├── App.jsx           # Layout shell (Nav + Footer + Outlet + page transitions)
+├── main.jsx          # Router config + React root mount
+└── index.css         # Tailwind imports
+```
+
+### Page components
+
+| File | What it renders |
+|---|---|
+| `pages/Home.jsx` | Landing page — hero, work grid, services, design process |
+| `pages/About.jsx` | About page — bio, tools, journey timeline, work experience |
+| `pages/Projects.jsx` | Grid of brand/identity case study cards |
+| `pages/GraphicDesignPage.jsx` | Full-width graphic design gallery page |
+| `pages/RateDetails.jsx` | Pricing tiers with plans, deliverables, and enquiry form |
+| `pages/admin/AdminDashboard.jsx` | Protected admin panel with tabbed content editors |
+| `pages/admin/AdminAuthPage.jsx` | Login form for admin access |
+| `components/ProjectPage.jsx` | Single brand project case study (loaded by slug) |
+| `components/UIProjectPage.jsx` | Single UI/UX project page (loaded by slug) |
+
+### Reusable components
+
+**Home/**
+| File | Purpose |
+|---|---|
+| `Hero.jsx` | Main landing hero section |
+| `ProjectGrid.jsx` | Grid of project cards on home page |
+| `Services.jsx` | Services offered section |
+| `DesignProcess.jsx` | Design process steps |
+| `WorkExp.jsx` | Work experience section on home |
+| `AboutMe.jsx` | Short about blurb on home |
+| `BuildSection.jsx` | "What I build" section |
+| `Partners.jsx` | Partner/client logos |
+| `TransImg.jsx` / `WorkImg.jsx` | Image display utilities |
+
+**About/**
+| File | Purpose |
+|---|---|
+| `AboutHero.jsx` | Hero for the About page |
+| `BriefInfo.jsx` | Short info block |
+| `Journey.jsx` | Animated timeline of career milestones |
+| `ShortIntro.jsx` | Short intro text |
+| `Tools.jsx` | Tools/software grid |
+| `WorkExp.jsx` | Work experience list on About page |
+
+**Project/** & **ProjectPage/**
+| File | Purpose |
+|---|---|
+| `ProjectHero.jsx` | Hero for a project detail page |
+| `ProjectDetailsHero.jsx` | Detailed project metadata header |
+| `ProjectWriteUp.jsx` | Case study text sections |
+| `MainImg.jsx` | Primary project image |
+| `DiscoverImg.jsx` / `ProjectImg.jsx` | In-body project images |
+| `ProjectConc.jsx` | Conclusion section with CTA |
+| `OtherProj.jsx` | Related projects at bottom |
+
+**UIProjectPage/**
+| File | Purpose |
+|---|---|
+| `ProjectHero.jsx` | Hero with role, timeline, date |
+| `HeroImg.jsx` / `MainImg.jsx` / `FeatureImg.jsx` | Various image sections |
+| `StrategyImg.jsx` / `FlowImg.jsx` / `UserImg.jsx` | Strategy/flow/user image sections |
+| `ImgGal.jsx` | Image gallery |
+| `WriteUp.jsx` | Full write-up renderer (blocks + personas) |
+
+**GraphicDesignPage/**
+| File | Purpose |
+|---|---|
+| `GraphicHero.jsx` | Hero for graphic design page |
+| `GraphicOverview.jsx` | Overview text |
+| `GraphicGallery.jsx` | Masonry/grid image gallery |
+
+**Rate/**
+| File | Purpose |
+|---|---|
+| `RateHero.jsx` | Hero section |
+| `BrandIdentity.jsx` | Plan cards display |
+| `PlanSelection.jsx` | Plan selector UI |
+| `PlanDetails.jsx` | Deliverables table |
+| `RateForm.jsx` | Contact/enquiry form |
+| `RateCTA.jsx` | Call-to-action button |
+
+**Admin/**
+| File | Purpose |
+|---|---|
+| `ProjectsTab.jsx` | CRUD for brand projects |
+| `UIProjectsTab.jsx` | CRUD for UI/UX projects |
+| `BrandProjectsTab.jsx` | Alternate brand projects tab |
+| `GraphicProjectsTab.jsx` | CRUD for graphic design projects |
+| `JourneyTab.jsx` | CRUD for journey/timeline entries |
+| `RatesTab.jsx` | CRUD for rate categories and plans |
+| `CustomersTab.jsx` | View rate enquiry submissions |
+| `PersonasEditor.jsx` | Editor for user persona cards |
+| `WriteUpBlocksEditor.jsx` | Editor for write-up content blocks |
+
+**Common/**
+| File | Purpose |
+|---|---|
+| `ScrollToTop.jsx` | Scrolls to top on route change |
+| `FontScaler.jsx` | Handles responsive font scaling |
+| `SafeImage.jsx` | Image with fallback |
+| `SectionReveal.jsx` | Scroll-triggered reveal animation |
+| `TypingText.jsx` | Animated typing text effect |
+
+**Root level:**
+- `Nav.jsx` — top navigation bar
+- `Footer.jsx` — site footer
+- `components/auth/ProtectedRoute.jsx` — redirects unauthenticated users away from `/admin`
+
+### State management
+
+**Only React Context API** — no Redux, no Zustand.
+
+The single global store is `context/AuthContext.jsx`. It provides:
+- `user` — current user object (`{ id, email, userType }`)
+- `isAuthenticated` — boolean
+- `isLoading` — true while verifying token on app init
+- `initialized` — true once the init check completes
+- `authFetch(url, options)` — fetch wrapper that auto-injects the JWT Bearer token
+- `authJson(url, options)` — same but auto-parses JSON response
+- `signin({ email, password })` — logs in and stores token
+- `signout()` — clears token and user
+
+Token is persisted in `localStorage` under the key `"token"`. On app init, the context reads it, checks JWT expiry locally, then verifies with `GET /api/auth/me`. If the server returns 401 the user is logged out; if it returns a network error (cold-start on Render), the cached session is preserved.
+
+All child components access auth via:
+```js
+import { useAuth } from "../context/AuthContext";
+const { user, isAuthenticated, authJson } = useAuth();
+```
+
+### API client setup
+
+**`client/src/api/http.js`** — the base fetch wrapper used by all API modules:
+
+```js
+const RAW_BASE = import.meta.env.VITE_AUTH_ENDPOINT || "";
+const API_BASE = String(RAW_BASE).replace(/\/+$/, "");
+
+export const buildUrl = (path) => {
+  const p = String(path || "");
+  const cleanPath = p.startsWith("/") ? p : `/${p}`;
+  if (!API_BASE) return cleanPath;
+  if (API_BASE.endsWith("/api") && cleanPath.startsWith("/api/")) {
+    return `${API_BASE}${cleanPath.slice(4)}`;
+  }
+  return `${API_BASE}${cleanPath}`;
+};
+
+function getToken() {
+  try {
+    return (
+      localStorage.getItem("token") ||
+      localStorage.getItem("authToken") ||
+      localStorage.getItem("accessToken") ||
+      ""
+    );
+  } catch { return ""; }
+}
+
+export async function fetchJson(path, options = {}) {
+  const url = buildUrl(path);
+  const method = (options.method || "GET").toUpperCase();
+  const hasBody = options.body != null && method !== "GET" && method !== "HEAD";
+  const headers = { ...(options.headers || {}) };
+
+  const token = getToken();
+  if (token && !headers.Authorization && !headers.authorization) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  if (hasBody && !isFormData(options.body) && !headers["Content-Type"]) {
+    headers["Content-Type"] = "application/json";
+  }
+
+  const res = await fetch(url, { credentials: "include", ...options, headers });
+  const isJson = res.headers.get("content-type")?.includes("application/json");
+  const data = isJson ? await res.json().catch(() => null) : null;
+
+  if (!res.ok) {
+    const msg = data?.message || data?.error || `Request failed: ${res.status} ${res.statusText}`;
+    const err = new Error(msg);
+    err.status = res.status;
+    err.data = data;
+    throw err;
+  }
+
+  return data;
+}
+```
+
+Entity-specific API modules wrap `fetchJson`:
+- `api/graphicProjectsApi.js` — graphic project CRUD + Cloudinary upload/delete
+- `api/uiProjects.js` — UI project read endpoints (public only; admin uses `authJson` from context directly)
+
+### Design system — Tailwind config
+
+**`client/tailwind.config.js`**:
+```js
+export default {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+};
+```
+
+**There are no custom tokens.** The design is implemented entirely with Tailwind utility classes and hardcoded values in JSX. Key recurring values used directly in components:
+- Background: `bg-[#0B0B0B]`, `bg-[#050505]`
+- Accent: `text-lime-400`, `border-lime-400`
+- Text: `text-white`, `text-neutral-400`, `text-neutral-500`
+- Font: system sans (no custom font configured)
+
+### Client environment variables
+
+```
+VITE_AUTH_ENDPOINT=https://richport-1oer.onrender.com
+```
+
+This is the only env var the client needs. It is currently pointing at the live Render server even in the `.env` file, meaning local dev also hits the production database unless changed.
+
+---
+
+## 3. SERVER (backend)
+
+### Framework
+
+Express 5 (`"express": "^5.2.1"`). ES modules (`"type": "module"`).
+
+### Entry point — `server/index.js` (full)
+
+```js
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import mongoose from "mongoose";
+import morgan from "morgan";
+import cookieParser from "cookie-parser";
+
+import authRoutes from "./routes/authRoutes.js";
+import projectRoutes from "./routes/projectRoutes.js";
+import journeyRoutes from "./routes/journeyRoutes.js";
+import rateRoutes from "./routes/rateRoutes.js";
+import uiProjectRoutes from "./routes/uiProjectRoutes.js";
+import graphicProjectRoutes from "./routes/graphicProjectRoutes.js";
+
+import { connectToDatabase } from "./db.js";
+
+const app = express();
+app.set("trust proxy", 1);
+
+/* -------------------- CORS -------------------- */
+const whitelist = (process.env.CORS_ORIGINS || "")
+  .split(",").map((s) => s.trim()).filter(Boolean);
+
+const allowedOrigins = new Set(whitelist);
+allowedOrigins.add("https://rich-port.vercel.app"); // safety pin
+
+function isAllowedOrigin(origin) {
+  if (!origin) return true;
+  if (/^http:\/\/localhost:\d+$/.test(origin)) return true;
+  try {
+    const u = new URL(origin);
+    if (u.hostname === "rich-port.vercel.app" || u.hostname.endsWith("-rich-port.vercel.app")) return true;
+    if (allowedOrigins.has(origin)) return true;
+    return false;
+  } catch { return false; }
+}
+
+const corsOptions = {
+  origin(origin, cb) {
+    if (isAllowedOrigin(origin)) return cb(null, true);
+    return cb(new Error(`Not allowed by CORS: ${origin}`));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  optionsSuccessStatus: 204,
+};
+
+app.use((req, res, next) => { res.setHeader("Vary", "Origin"); next(); });
+app.use(cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
+
+/* -------------------- debug (dev only) -------------------- */
+if (process.env.NODE_ENV !== "production") {
+  app.get("/__debug/db", (_req, res) => {
+    const c = mongoose?.connection || {};
+    res.json({ dbName: c.name, host: c.host, ok: c.readyState === 1 });
+  });
+}
+
+/* -------------------- security / logs / parsing -------------------- */
+app.use(helmet({ crossOriginResourcePolicy: false }));
+app.use(morgan("dev"));
+app.use(cookieParser());
+
+const JSON_LIMIT = process.env.JSON_LIMIT || "2mb";
+app.use(express.json({ limit: JSON_LIMIT }));
+app.use(express.urlencoded({ extended: false, limit: JSON_LIMIT }));
+
+/* -------------------- routes -------------------- */
+app.use("/api/auth", authRoutes);
+app.use("/api/projects", projectRoutes);
+app.use("/api/ui-projects", uiProjectRoutes);
+app.use("/api/journey", journeyRoutes);
+app.use("/api/rates", rateRoutes);
+app.use("/api/graphic-projects", graphicProjectRoutes);
+
+app.get("/", (_req, res) => res.json({ status: "ok" }));
+
+/* -------------------- errors -------------------- */
+app.use((err, _req, res, next) => {
+  if (err?.type === "entity.parse.failed") {
+    return res.status(400).json({ error: 'Invalid JSON body.' });
+  }
+  if (err?.type === "entity.too.large") {
+    return res.status(413).json({ error: `Request entity too large. Current limit: ${JSON_LIMIT}` });
+  }
+  if (err && /Not allowed by CORS/.test(err.message)) {
+    return res.status(403).json({ error: err.message });
+  }
+  return next(err);
+});
+
+app.use(express.static("client/dist"));
+app.use((req, res) => res.status(404).json({ error: "Not found" }));
+app.use((err, _req, res, _next) => {
+  console.error(err);
+  res.status(500).json({ error: "Server error" });
+});
+
+/* -------------------- boot -------------------- */
+const port = process.env.PORT || 4000;
+
+try {
+  await connectToDatabase(process.env.MONGO_URI);
+  app.listen(port, () => console.log(`Server running on :${port}`));
+} catch (err) {
+  console.error("DB error", err);
+  process.exit(1);
+}
+```
+
+### Database — `server/db.js` (full)
+
+```js
+import mongoose from "mongoose";
+
+let connectPromise = null;
+
+export async function connectToDatabase() {
+  if (mongoose.connection.readyState === 1) return mongoose;
+  if (connectPromise) return connectPromise;
+
+  const mongoURI = process.env.MONGO_URI;
+  if (!mongoURI) throw new Error("MONGO_URI is not defined in environment variables");
+
+  mongoose.set("strictQuery", true);
+
+  connectPromise = mongoose
+    .connect(mongoURI, { serverSelectionTimeoutMS: 5000 })
+    .then((m) => {
+      console.log("Connected to MongoDB:", m.connection.name);
+      return m;
+    })
+    .catch((err) => {
+      console.error("Error connecting to MongoDB:", err);
+      connectPromise = null;
+      throw err;
+    });
+
+  mongoose.connection.on("disconnected", () => {
+    console.log("MongoDB disconnected");
+    connectPromise = null;
+  });
+
+  return connectPromise;
+}
+```
+
+The database name is taken from the URI path — it is not hardcoded anywhere in the application code.
+
+### Cloudinary integration — `server/cloudinary.js` (full)
+
+```js
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+export default cloudinary;
+```
+
+Images are uploaded using `multer` (in-memory buffer) + `streamifier` to pipe the buffer into `cloudinary.uploader.upload_stream`. All images are stored under the folder `richard_portfolio/` with subfolders per content type:
+- `richard_portfolio/projects`
+- `richard_portfolio/ui-projects`
+- `richard_portfolio/graphic-projects`
+- `richard_portfolio/journey`
+
+### Route endpoints
+
+**`/api/auth`** (`authRoutes.js`)
+| Method | Path | Auth required | What it does |
+|---|---|---|---|
+| POST | `/api/auth/signup` | ✅ Admin only | Create a new admin user |
+| POST | `/api/auth/signin` | ❌ | Log in; returns JWT + sets cookie |
+| POST | `/api/auth/signout` | ❌ | Clears the auth cookie |
+| GET | `/api/auth/me` | ✅ | Returns the current user object |
+
+> **Note:** `signup` requires an existing admin JWT. You cannot self-register without already being logged in as admin.
+
+**`/api/projects`** (`projectRoutes.js`)
+| Method | Path | Auth | What it does |
+|---|---|---|---|
+| GET | `/api/projects` | ❌ | All projects |
+| GET | `/api/projects/main-images` | ❌ | Name + slug + main image only (for grids) |
+| GET | `/api/projects/slug/:slug` | ❌ | Single project by slug |
+| GET | `/api/projects/admin` | ✅ Admin | All projects (admin view) |
+| POST | `/api/projects/admin` | ✅ Admin | Create a project |
+| PUT | `/api/projects/admin/:id` | ✅ Admin | Update a project |
+| POST | `/api/projects/admin/upload` | ✅ Admin | Upload image to Cloudinary |
+| POST | `/api/projects/admin/delete-image` | ✅ Admin | Delete image from Cloudinary |
+
+**`/api/ui-projects`** (`uiProjectRoutes.js`)
+| Method | Path | Auth | What it does |
+|---|---|---|---|
+| GET | `/api/ui-projects` | ❌ | All published UI projects |
+| GET | `/api/ui-projects/default` | ❌ | Project marked `isDefault: true` (or newest) |
+| GET | `/api/ui-projects/slug/:slug` | ❌ | Single UI project by slug |
+| GET | `/api/ui-projects/main-images` | ❌ | Name + slug + hero image only |
+| GET | `/api/ui-projects/work-experience` | ❌ | Projects with `showInWorkExperience: true` |
+| GET | `/api/ui-projects/admin` | ✅ Admin | All UI projects (admin view) |
+| POST | `/api/ui-projects/admin` | ✅ Admin | Create a UI project |
+| PUT | `/api/ui-projects/admin/:id` | ✅ Admin | Update a UI project |
+| DELETE | `/api/ui-projects/admin/:id` | ✅ Admin | Delete a UI project |
+| POST | `/api/ui-projects/admin/upload` | ✅ Admin | Upload image |
+| POST | `/api/ui-projects/admin/delete-image` | ✅ Admin | Delete image |
+
+**`/api/graphic-projects`** (`graphicProjectRoutes.js`)
+| Method | Path | Auth | What it does |
+|---|---|---|---|
+| GET | `/api/graphic-projects` | ❌ | All published graphic projects |
+| GET | `/api/graphic-projects/:id` | ❌ | Single graphic project by Mongo ID |
+| GET | `/api/graphic-projects/admin/all` | ✅ Admin | All (including drafts) |
+| POST | `/api/graphic-projects/admin` | ✅ Admin | Create |
+| PUT | `/api/graphic-projects/admin/:id` | ✅ Admin | Update |
+| DELETE | `/api/graphic-projects/admin/:id` | ✅ Admin | Delete (also cleans up Cloudinary) |
+| POST | `/api/graphic-projects/admin/upload` | ✅ Admin | Upload image |
+| POST | `/api/graphic-projects/admin/delete-image` | ✅ Admin | Delete image |
+
+**`/api/journey`** (`journeyRoutes.js`)
+| Method | Path | Auth | What it does |
+|---|---|---|---|
+| GET | `/api/journey` | ❌ | All journey entries, sorted by year desc |
+| GET | `/api/journey/admin` | ✅ Admin | Same, behind auth |
+| POST | `/api/journey/admin` | ✅ Admin | Create entry |
+| PUT | `/api/journey/admin/:id` | ✅ Admin | Update entry |
+| DELETE | `/api/journey/admin/:id` | ✅ Admin | Delete entry |
+| POST | `/api/journey/admin/upload` | ✅ Admin | Upload image |
+| POST | `/api/journey/admin/delete-image` | ✅ Admin | Delete image |
+
+**`/api/rates`** (`rateRoutes.js`)
+| Method | Path | Auth | What it does |
+|---|---|---|---|
+| GET | `/api/rates` | ❌ | All rate categories |
+| GET | `/api/rates/category/:id` | ❌ | Single category by logical id (e.g. `brand-identity`) |
+| GET | `/api/rates/admin` | ✅ Admin | Same, behind auth |
+| POST | `/api/rates/admin` | ✅ Admin | Create rate category |
+| PUT | `/api/rates/admin/:id` | ✅ Admin | Update by Mongo ObjectId |
+| DELETE | `/api/rates/admin/:id` | ✅ Admin | Delete by Mongo ObjectId |
+| POST | `/api/rates/enquiries` | ❌ | Submit contact enquiry from rate form |
+| GET | `/api/rates/enquiries` | ✅ Admin | List all enquiry submissions |
+
+### Controllers
+
+| File | What it handles |
+|---|---|
+| `authController.js` | Signup, signin, signout, session check (`/me`) |
+| `projectController.js` | Brand project CRUD, Cloudinary image upload/delete |
+| `uiProjectController.js` | UI/UX project CRUD, image upload/delete, work experience query |
+| `graphicProjectController.js` | Graphic project CRUD, image upload/delete |
+| `journeyController.js` | Timeline entry CRUD, image upload/delete |
+| `rateController.js` | Rate category CRUD, enquiry submission and listing |
+
+### Models — schema definitions
+
+**`server/models/User.js`**
+```js
+const UserSchema = new mongoose.Schema({
+  email:        { type: String, required: true, unique: true, trim: true, lowercase: true },
+  passwordHash: String,
+  userType:     { type: String, enum: ["admin", "user"], default: "user" },
+}, { timestamps: true });
+```
+
+**`server/models/ProjectModel.js`**
+```js
+// Sub-schemas
+const HeroMetaSchema = {
+  categories: [String],
+  deliverables: String,
+  timeline: String,
+  teamInitials: [String],
+};
+
+const CaseStudyStepSchema = {
+  id: String,
+  pillLabel: String,
+  title: String,
+  body: String,
+  showOnMain: { type: Boolean, default: true },
+};
+
+const ImagesSchema = {
+  main: String,       // primary project image
+  mid: String,        // mid-page image
+  conclusion: String, // conclusion section image
+  inline: String,     // inline body image
+  gallery: [String],  // gallery array
+};
+
+// Main schema
+const ProjectSchema = {
+  name: { type: String, required: true },
+  slug: { type: String, required: true, unique: true, lowercase: true },
+  url: String,
+  description: String,
+  tags: [String],
+  categories: [String],
+  showInWorkExperience: { type: Boolean, default: true },
+  showOnProjectsPage:   { type: Boolean, default: true },
+  workExperience: [String],
+  myRole: String,
+  clientName: String,
+  heroMeta: HeroMetaSchema,
+  projectStartDate: Date,
+  projectEndDate: Date,
+  caseStudySteps: [CaseStudyStepSchema],
+  caseStudyNotes: String,
+  conclusionTitle: String,
+  conclusionBody: String,
+  conclusionCtaLabel: String,
+  conclusionCtaUrl: String,
+  images: ImagesSchema,
+  // backward-compat aliases
+  pageImg: String,
+  galleryImages: [String],
+  caseStudyImage: String,
+};
+```
+
+**`server/models/UIProjectModel.js`** (simplified)
+```js
+// Key fields
+const UIProjectSchema = {
+  projectType: { type: String, default: "uiux" },
+  name:   { type: String, required: true },
+  slug:   { type: String, required: true, unique: true, lowercase: true },
+  isDefault: Boolean,
+  status: { type: String, enum: ["draft", "published"], default: "published" },
+
+  hero: {
+    title: String,
+    subtitle: String,
+    dateLabel: String,
+    roleTitle: String,
+    roleDescription: String,
+    roleBullets: [String],
+    timelineLabel: String,
+  },
+
+  writeUp: {
+    blocks: [{
+      id: String,
+      enabled: Boolean,
+      headlineEnabled: Boolean,
+      bodyEnabled: Boolean,
+      imagesEnabled: Boolean,
+      placement: { enum: ["beforePersonas", "afterPersonas"] },
+      headline: String,
+      body: String,
+      images: [String],
+      layout: { enum: ["wide", "half", "grid"] },
+      textSide: { enum: ["left", "right"] },
+      wideVariant: { enum: ["full", "narrow"] },
+    }],
+    idealUsers: {
+      cards: [{
+        enabled: Boolean,
+        name: String,
+        subtitle: String,
+        about: String,
+        img: String,
+        pos: String,
+      }],
+    },
+    // ...many more structured fields for overview, problem, research, etc.
+  },
+
+  images: { hero: String, gallery: [String] },
+  mainImage: String,
+  showInWorkExperience: Boolean,
+  workExperience: [String],
+  workExperienceMeta: { clientName: String, myRole: String, startDate: Date, endDate: Date },
+};
+```
+
+**`server/models/GraphicProjectModel.js`**
+```js
+const CloudImageSchema = {
+  url:      { type: String, required: true },
+  publicId: { type: String, required: true },
+  width:    Number,
+  height:   Number,
+};
+
+const GraphicProjectSchema = {
+  projectType: { type: String, default: "graphic" },
+  projectName: { type: String, required: true },
+  subtitle:    String,
+  status:      { type: String, enum: ["draft", "published"], default: "published" },
+  headline: {
+    enabled: Boolean,
+    text: String,
+    image: CloudImageSchema,
+  },
+  body: {
+    enabled: Boolean,
+    text: String,
+  },
+  otherImages: {    // MINIMUM 16, MAXIMUM 50 — validated server-side
+    type: [CloudImageSchema],
+    validate: (arr) => arr.length >= 16 && arr.length <= 50,
+  },
+  mainImage: String,
+};
+```
+
+**`server/models/JourneyModel.js`**
+```js
+const JourneySchema = {
+  year:        { type: String, required: true },
+  title:       { type: String, required: true },
+  description: [String],   // array of paragraphs
+  imageUrl:    String,
+};
+```
+
+**`server/models/RateModel.js`**
+```js
+const PlanSchema = {
+  id: String, name: String, price: Number, currency: String,
+  description: String, isFeatured: Boolean,
+};
+
+const DeliverableSchema = {
+  id: String, label: String,
+  mode: { enum: ["boolean", "text"] },
+  perPlan: { type: Map, of: Schema.Types.Mixed },
+};
+
+const RateCategorySchema = {
+  id:           { type: String, required: true, unique: true, lowercase: true },
+  label:        { type: String, required: true },
+  heading:      { type: String, required: true },
+  description:  String,
+  tags:         [String],
+  plans:        [PlanSchema],
+  deliverables: [DeliverableSchema],
+};
+// toJSON adds: mongoId (alias for _id)
+```
+
+**`server/models/RateEnquiry.js`**
+```js
+const RateEnquirySchema = {
+  fullName:    { type: String, required: true },
+  email:       { type: String, required: true, lowercase: true },
+  services:    [String],
+  budget:      { type: Number, required: true },
+  message:     String,
+  submittedAt: { type: Date, required: true },
+};
+```
+
+**`server/models/EnquiriesModel.js`**
+```js
+// Identical shape to RateEnquiry — marked in code comments as "unused — kept for reference"
+// The active model is RateEnquiry.js. This file can be deleted.
+```
+
+### Middleware
+
+**`server/middleware/authMiddleware.js`**
+
+```js
+export const requireAuth = (req, res, next) => {
+  // Reads token from Authorization: Bearer <token> header, OR req.cookies.token
+  // Verifies with JWT_SECRET
+  // Attaches decoded payload to req.user = { userId, email, userType }
+  // Returns 401 if missing/invalid/expired
+};
+
+export const requireAdmin = (req, res, next) => {
+  // Checks req.user.userType === "admin"
+  // Returns 403 if not admin
+};
+```
+
+### Server environment variables (keys only)
+
+```
+MONGO_URI
+JWT_SECRET
+JWT_EXPIRES_IN          # optional, default "48h"
+NODE_ENV                # "production" or "development"
+PORT                    # optional, default 4000
+CORS_ORIGINS            # comma-separated list of allowed origins
+JSON_LIMIT              # optional, default "2mb"
+CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET
+GFX_IMAGE_MAX_MB        # optional, default 10
+UI_IMAGE_MAX_MB         # optional, default 10
+```
+
+---
+
+## 4. HOW THE TWO CONNECT
+
+### In development
+
+There is **no Vite proxy**. The client talks directly to the server via the `VITE_AUTH_ENDPOINT` environment variable.
+
+The current `client/.env` is:
+```
+VITE_AUTH_ENDPOINT=https://richport-1oer.onrender.com
+```
+
+This means **local dev currently hits the live production database on Render**. To use a local server instead, change it to:
+```
+VITE_AUTH_ENDPOINT=http://localhost:4000
+```
+
+The server's CORS config allows any `localhost:<port>` origin, so this works without changes.
+
+### In production
+
+The client (Vercel) and server (Render) are **separate deployments on separate domains**:
+- Client: `https://rich-port.vercel.app`
+- Server: `https://richport-1oer.onrender.com`
+
+The client talks to the server via absolute URL. There are no rewrites or proxies in production — the browser makes cross-origin requests, and the server's CORS whitelist allows `rich-port.vercel.app`.
+
+The `client/vercel.json` only handles client-side routing (SPA fallback):
+```json
+{
+  "version": 2,
+  "builds": [
+    { "src": "package.json", "use": "@vercel/static-build", "config": { "distDir": "dist" } }
+  ],
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/index.html" }
+  ]
+}
+```
+
+### Auth model
+
+1. User visits `/admin-auth` and submits email + password
+2. `POST /api/auth/signin` returns a JWT token in the response body and also sets an httpOnly `token` cookie
+3. Client stores the token in `localStorage` under the key `"token"`
+4. All admin API calls send it as `Authorization: Bearer <token>`
+5. Server middleware (`requireAuth`) accepts the token from either the header or the cookie
+6. `requireAdmin` additionally checks `userType === "admin"` on the decoded payload
+7. Tokens expire after 48 hours
+8. On app init, the client checks expiry locally and verifies with `GET /api/auth/me`
+
+**Creating admin accounts:** The `POST /api/auth/signup` endpoint requires an existing valid admin JWT. There is no open registration. To create the first admin account you would need to temporarily remove the `requireAuth, requireAdmin` middleware from that route, create the account, then put it back — or insert a user directly into MongoDB.
+
+---
+
+## 5. DEPLOYMENT
+
+### `client/vercel.json` (full)
+
+```json
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
+    }
+  ],
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/index.html" }
+  ]
+}
+```
+
+### Where things are deployed
+
+| Part | Platform | URL |
+|---|---|---|
+| Frontend | Vercel | `https://rich-port.vercel.app` |
+| Backend | Render | `https://richport-1oer.onrender.com` |
+| Database | MongoDB Atlas (inferred from MONGO_URI) | — |
+| Images | Cloudinary | folder: `richard_portfolio/` |
+
+The Vercel project deploys from the `client/` subfolder. The Render service runs `node index.js` (or `npm start`) from the `server/` subfolder.
+
+### Debug endpoint
+
+In non-production environments, `GET https://richport-1oer.onrender.com/__debug/db` returns:
+```json
+{ "dbName": "<db name>", "host": "<host>", "ok": true }
+```
+
+---
+
+## 6. WHAT'S DONE vs. WHAT'S MISSING
+
+### What's fully working
+
+- All five public pages (Home, About, Projects, Graphic Design, Rate Details)
+- Individual project detail pages (brand + UI/UX)
+- Admin dashboard with CRUD for all content types
+- Cloudinary image upload and delete
+- JWT authentication with cookie + localStorage dual storage
+- Rate enquiry form submission + admin enquiry viewer
+- Redirect from old `/ui-project` routes to `/ui-projects`
+- CORS, Helmet, Morgan, error handling all configured
+
+### What's stubbed or incomplete
+
+- **`server/models/EnquiriesModel.js`** — explicitly commented "unused — kept for reference." Duplicate of `RateEnquiry.js`. Safe to delete.
+- **Server tests** — `"test": "echo \"Error: no test specified\" && exit 1"` — no tests exist at all
+- **Client tests** — none configured
+- **No seed/migration scripts** — the database has no initial data scripts; content must be entered via the admin dashboard
+
+### Console.log statements left in code (debugging artifacts)
+
+These are in the admin tab components and should be cleaned up before production:
+- `client/src/components/Admin/BrandProjectsTab.jsx` — logs project payloads on submit
+- `client/src/components/Admin/JourneyTab.jsx` — logs journey payloads on submit
+- `client/src/components/Admin/RatesTab.jsx` — logs rate payloads on submit
+- `client/src/components/Admin/UIProjectsTab.jsx` — logs UI project payloads on submit
+- `client/src/components/Rate/RateForm.jsx` — logs rate form submission payload
+
+### No TODO or FIXME comments found in the codebase
+
+---
+
+## 7. RUN COMMANDS
+
+### Install
+
+Run in two separate terminals (they are separate Node projects with separate `node_modules`):
+
+```bash
+# Terminal 1 — client
+cd client
+npm install
+
+# Terminal 2 — server
+cd server
+npm install
+```
+
+### Run dev
+
+```bash
+# Terminal 1 — client (http://localhost:5173)
+cd client
+npm run dev
+
+# Terminal 2 — server (http://localhost:4000)
+cd server
+npm run dev
+```
+
+Remember to set `VITE_AUTH_ENDPOINT=http://localhost:4000` in `client/.env` if you want dev to use the local server instead of production.
+
+### Build for production
+
+```bash
+cd client
+npm run build
+# Output goes to client/dist/
+```
+
+### Seed / migration scripts
+
+None exist. The database starts empty; all content is added through the admin dashboard at `/admin`.
+
+---
+
+## 8. KNOWN GOTCHAS
+
+1. **Dev hits production DB by default.** `client/.env` points `VITE_AUTH_ENDPOINT` at the live Render server. If you run local dev without changing this, any data you create or delete goes to the live database. Change it to `http://localhost:4000` for local work.
+
+2. **Render cold starts.** Render's free tier spins down after inactivity. The first request after sleep takes 30–60 seconds. The `AuthContext` handles this gracefully (keeps the cached session alive on network error), but it can make the site appear broken on first load.
+
+3. **Graphic projects require 16–50 images minimum.** This is a hard validation in both the Mongoose schema and the controller. You cannot create or update a graphic project with fewer than 16 images. There is no way around this from the UI without uploading enough images first.
+
+4. **Creating a new admin account requires an existing admin.** The `/api/auth/signup` endpoint is protected by `requireAuth + requireAdmin`. There is no open registration flow. The first account must be created either by temporarily unprotecting the route or by inserting a document directly into MongoDB.
+
+5. **No Vite proxy.** Unlike many React+Express setups, there is no `server.proxy` in `vite.config.js`. If you change `VITE_AUTH_ENDPOINT` in `.env`, you must restart Vite for the change to take effect.
+
+6. **`VITE_AUTH_ENDPOINT` must not have a trailing slash.** The `buildUrl` function in `http.js` strips it, but it's cleaner to not include one.
+
+7. **Rate category updates use Mongo ObjectId, not the logical `id`.** The logical id (e.g. `"brand-identity"`) is used to look up categories publicly (`GET /api/rates/category/:id`), but admin update and delete routes (`PUT /api/rates/admin/:id`, `DELETE /api/rates/admin/:id`) expect the MongoDB `_id`. The API response includes this as `mongoId` (via `toJSON` transform). The admin UI handles this correctly; keep it in mind if you ever call the API directly.
+
+8. **`EnquiriesModel.js` is dead code.** The file exists in `server/models/` but is not imported anywhere. All enquiry logic uses `RateEnquiry.js`. The dead file can cause confusion; it is safe to delete.

@@ -1,0 +1,71 @@
+/* preview-card.css — shared base for every Design System tab card.
+   Targeted at ~700×variable, dark RichPort canvas. */
+@import url('../colors_and_type.css');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg-deep); color: var(--fg-1); }
+body {
+  font-family: var(--font-body);
+  padding: 24px;
+  min-height: 100vh;
+  overflow: hidden;
+}
+button, input, textarea, select { font: inherit; letter-spacing: inherit; }
+
+.card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  margin-bottom: 14px;
+}
+.label-row .dot { color: var(--lime-neon); }
+
+.swatch-grid {
+  display: grid;
+  gap: 10px;
+  flex: 1;
+}
+.swatch {
+  border-radius: var(--r-lg);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  min-height: 64px;
+  display: flex;
+  align-items: flex-end;
+  padding: 10px 12px;
+}
+.swatch .meta {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: baseline;
+  font-family: var(--font-ui);
+}
+.swatch .name { font-weight: 700; font-size: 12px; }
+.swatch .hex { font-size: 11px; opacity: 0.65; font-feature-settings: 'tnum'; }
+
+.swatch.on-light { color: #050505; }
+.swatch.on-light .hex { opacity: 0.6; }
+.swatch.on-dark { color: #fff; }
+
+/* the section bg fixed glow used as illustrative element */
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+}

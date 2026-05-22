@@ -1,0 +1,524 @@
+/* ============================================================
+   RichPort — Foundations  (v2 · single-font, scalable)
+   ============================================================
+   ONE typeface: Outfit. Weights 100–900 cover every role.
+   Standard modular type scale with tight, visually-compact
+   line-heights and letter-spacing.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+:root {
+  /* === COLOR ============================================== */
+
+  /* Surfaces — near-black canvases */
+  --bg-deep:        #050505;
+  --bg-base:        #0B0B0B;
+  --bg-raised:      #111318;
+  --bg-elev:        #181820;
+  --bg-chip:        #262626;
+  --bg-input:       #141518;
+
+  /* Borders / dividers */
+  --border-strong:  #2b2c30;
+  --border-mid:     #242424;
+  --border-soft:    #202020;
+  --border-faint:   rgba(255,255,255,0.10);
+  --border-glass:   rgba(255,255,255,0.40);
+
+  /* Foreground */
+  --fg-1:           #FFFFFF;
+  --fg-2:           #E5E5E5;
+  --fg-3:           #D4D4D4;
+  --fg-4:           #A3A3A3;
+  --fg-mute:        #98989A;
+  --fg-disabled:    #737373;
+
+  /* Brand lime */
+  --lime-300:       #BEF264;
+  --lime-400:       #A3E635;
+  --lime-500:       #84CC16;
+  --lime-600:       #65A30D;
+  --lime-700:       #4D7C0F;
+  --lime-neon:      #89FF00;
+
+  /* Accent supports */
+  --emerald-tint:   rgba(16,185,129,0.18);
+  --sky-tint:       rgba(56,189,248,0.18);
+  --indigo-500:     #6366F1;
+  --indigo-700:     #4338CA;
+  --slate-500:      #64748B;
+  --slate-800:      #1E293B;
+
+  /* Semantic aliases */
+  --color-primary:    var(--lime-500);
+  --color-on-primary: #000000;
+  --color-bg:         var(--bg-deep);
+  --color-surface:    var(--bg-base);
+  --color-text:       var(--fg-1);
+  --color-muted:      var(--fg-mute);
+  --color-border:     var(--border-strong);
+  --color-success:    var(--lime-400);
+  --color-error:      #F87171;
+
+  /* Signature gradients */
+  --grad-lime:        linear-gradient(to bottom, var(--lime-400), var(--lime-600));
+  --grad-lime-strong: linear-gradient(to bottom, var(--lime-500), var(--lime-700));
+  --grad-text-white:  linear-gradient(180deg, #FFFFFF 5.19%, #767474 102.92%);
+  --grad-text-soft:   linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 50%, #BFBFBF 100%);
+  --grad-card-warm:   linear-gradient(112.73deg, rgba(72,73,77,0.28) 5.73%, rgba(128,97,96,0.224) 50.57%, rgba(166,133,131,0.07) 100.09%);
+  --grad-tab-warm:    linear-gradient(168deg, rgba(72,73,77,0.28) 5.7%, rgba(128,97,96,0.224) 50.6%, rgba(166,133,131,0.07) 100%);
+  --grad-nav-glass:   linear-gradient(to right, rgba(16,185,129,0.18), rgba(255,255,255,0.14), rgba(56,189,248,0.18));
+  --grad-hero-shade:  linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.70) 40%, rgba(0,0,0,0.92) 100%);
+
+  /* Glows */
+  --glow-lime-soft:  0 0 18px rgba(132,204,22,0.50);
+  --glow-lime-mid:   0 0 22px rgba(190,242,100,0.60);
+  --glow-lime-hard:  0 0 30px rgba(190,242,100,0.80);
+  --glow-lime-card:  0 0 24px rgba(190,242,100,0.18);
+  --glow-lime-rim:   0 0 14px rgba(132,204,22,0.70);
+
+  /* Shadows */
+  --shadow-card:    0 0 40px rgba(0,0,0,0.85);
+  --shadow-card-lg: 0 22px 90px rgba(132,204,22,0.55);
+  --shadow-deep:    0 24px 80px rgba(0,0,0,0.90);
+  --shadow-press:   0 18px 60px rgba(132,204,22,0.70);
+  --shadow-nav:     0 0 40px rgba(0,0,0,0.70);
+
+  /* Radii */
+  --r-pill: 9999px;
+  --r-tag:  9px;
+  --r-chip: 6px;
+  --r-sm:   8px;
+  --r-md:   10px;
+  --r-lg:   12px;
+  --r-xl:   14px;
+  --r-2xl:  22px;
+  --r-3xl:  28px;
+  --r-4xl:  32px;
+
+  /* Spacing scale (4-pt grid, tail covers section verticals) */
+  --space-0:   0;
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-7:   28px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-14:  56px;
+  --space-16:  64px;
+  --space-20:  80px;
+  --space-24:  96px;
+  --space-32: 128px;
+
+  /* Motion */
+  --ease-out-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out:   cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast:      150ms;
+  --dur-base:      300ms;
+  --dur-slow:      550ms;
+
+  /* Z-index */
+  --z-nav:     50;
+  --z-overlay: 40;
+  --z-popover: 60;
+
+  /* === TYPE ==============================================
+     ONE family. Every role is Outfit at a different weight,
+     size or tracking. Body sets the default. */
+
+  --font-sans:    "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-sans);
+  --font-body:    var(--font-sans);
+  --font-ui:      var(--font-sans);
+  --font-nav:     var(--font-sans);
+  --font-logo:    var(--font-sans);
+  --font-mono:    "Outfit", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-serif:   var(--font-sans);  /* legacy alias */
+
+  /* --- Type scale — modular, standard ----------------------
+     Maps cleanly to a 4-pt grid. Use the named vars in tokens,
+     the clamp() composites at the call site for responsive
+     displays. */
+  --fs-xs:    12px;   /* meta, tag, fineprint */
+  --fs-sm:    14px;   /* button, eyebrow alt, small label */
+  --fs-base:  16px;   /* body */
+  --fs-md:    18px;   /* body-lg, lead */
+  --fs-lg:    20px;   /* H4 */
+  --fs-xl:    24px;   /* H3 */
+  --fs-2xl:   30px;   /* H2 */
+  --fs-3xl:   36px;   /* H1 small */
+  --fs-4xl:   48px;   /* H1 */
+  --fs-5xl:   60px;   /* Display */
+  --fs-6xl:   72px;   /* Hero display */
+
+  /* Eyebrow caps font size — kept small and constant */
+  --fs-eyebrow: 11px;
+
+  /* Responsive heading sizes — pre-built clamps.
+     "min, fluid, max". Tuned for 320–1440 viewports. */
+  --fs-h1:      clamp(36px, 5.4vw, 64px);
+  --fs-h2:      clamp(28px, 4.0vw, 48px);
+  --fs-h3:      clamp(22px, 2.6vw, 30px);
+  --fs-h4:      clamp(18px, 1.8vw, 22px);
+  --fs-display: clamp(40px, 6vw, 72px);
+  --fs-hero:    clamp(40px, 5.6vw, 64px);
+
+  /* Line heights — tight, visually compact, never airy */
+  --lh-none:     1;        /* hero / display only */
+  --lh-tighter:  0.95;     /* display (silver-outlined two-liners) */
+  --lh-tight:    1.1;      /* H1 */
+  --lh-snug:     1.2;      /* H2 */
+  --lh-normal:   1.35;     /* H3 / H4 / lead */
+  --lh-body:     1.5;      /* paragraphs */
+  --lh-relaxed:  1.6;      /* used sparingly for very long copy */
+
+  /* Letter spacing — tight on display, tightish on UI,
+     zero on long body, wide for caps. */
+  --ls-tightest: -0.05em;
+  --ls-tighter:  -0.04em;
+  --ls-tight:    -0.02em;
+  --ls-normal:   0;
+  --ls-wide:     0.04em;
+  --ls-caps:     0.18em;
+
+  /* Weights — Outfit covers 100-900 */
+  --fw-light:   300;
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-semi:    600;
+  --fw-bold:    700;
+  --fw-black:   800;
+}
+
+/* ============================================================
+   Root reset + body default
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  /* 16px rem base (browser default). We do not bump to 20px
+     anymore — clamps + the modular scale do the work. */
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-body);
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-1);
+  background: var(--bg-deep);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ============================================================
+   Semantic typography classes
+   Use these directly in HTML or pull the tokens via CSS vars.
+   ============================================================ */
+
+.t-eyebrow {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-semi);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--fg-1);
+  line-height: 1;
+}
+
+.t-display {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-semi);
+  font-size: var(--fs-display);
+  line-height: var(--lh-tighter);
+  letter-spacing: var(--ls-tightest);
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 38%, #8A8A8A 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 0.5px rgba(255,255,255,0.55);
+}
+
+.t-h1 {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-semi);
+  font-size: var(--fs-h1);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--ls-tightest);
+  color: var(--fg-1);
+}
+
+.t-h2 {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-semi);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-tighter);
+  color: var(--fg-1);
+}
+
+.t-h3 {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-semi);
+  font-size: var(--fs-h3);
+  line-height: var(--lh-normal);
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-1);
+}
+
+.t-h4 {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-h4);
+  line-height: var(--lh-normal);
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-1);
+}
+
+.t-lead {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-md);
+  line-height: var(--lh-normal);
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-2);
+}
+
+.t-body {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-base);
+  line-height: var(--lh-body);
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-2);
+}
+
+.t-body-sm {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-body);
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-3);
+}
+
+.t-caption {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-light);
+  font-size: 13px;
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-mute);
+}
+
+.t-label {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-semi);
+  font-size: var(--fs-sm);
+  line-height: 1;
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-1);
+}
+
+.t-button {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+  line-height: 1;
+  letter-spacing: var(--ls-tight);
+}
+
+.t-price {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-black);
+  font-size: var(--fs-4xl);
+  line-height: 1;
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-1);
+}
+
+.t-mono {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum';
+}
+
+/* Project / section name with gradient clip (used on the
+   home card heading). */
+.t-project-name {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-medium);
+  font-size: clamp(24px, 3vw, 35px);
+  line-height: var(--lh-none);
+  letter-spacing: -0.06em;
+  background: var(--grad-text-white);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Wordmark — used until a real logo lands. Outfit medium at
+   a generous size reads as a stylized signature in this dark
+   palette. */
+.t-wordmark {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-medium);
+  font-size: clamp(20px, 2.2vw, 28px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--fg-1);
+}
+
+/* ============================================================
+   Tiny utility primitives — small but central to the look
+   ============================================================ */
+
+.eyebrow-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border-faint);
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-family: var(--font-sans);
+  font-weight: var(--fw-semi);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--ls-tight);
+  color: var(--fg-1);
+  white-space: nowrap;
+}
+
+.btn-lime {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 24px;
+  border-radius: var(--r-lg);
+  background: var(--grad-lime);
+  color: #000;
+  font-family: var(--font-sans);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+  letter-spacing: var(--ls-tight);
+  box-shadow: var(--glow-lime-soft);
+  border: 0;
+  cursor: pointer;
+  transition: filter var(--dur-base) var(--ease-out-soft),
+              box-shadow var(--dur-base) var(--ease-out-soft),
+              transform var(--dur-base) var(--ease-out-soft);
+}
+.btn-lime:hover  { filter: brightness(1.1); box-shadow: var(--glow-lime-hard); transform: translateY(-1px); }
+.btn-lime:active { transform: translateY(0) scale(0.98); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 24px;
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(255,255,255,0.80);
+  background: transparent;
+  color: var(--fg-1);
+  font-family: var(--font-sans);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-sm);
+  letter-spacing: var(--ls-tight);
+  cursor: pointer;
+  transition: background var(--dur-base) var(--ease-out-soft);
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.10); }
+
+.btn-lime-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--lime-400);
+  background: transparent;
+  color: var(--lime-400);
+  font-family: var(--font-sans);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-sm);
+  letter-spacing: var(--ls-tight);
+  box-shadow: 0 0 20px rgba(132,255,0,0.20);
+  cursor: pointer;
+  transition: all var(--dur-base) var(--ease-out-soft);
+}
+.btn-lime-outline:hover {
+  background: var(--lime-400);
+  color: #000;
+  box-shadow: 0 0 30px rgba(132,255,0,0.45);
+  transform: translateY(-2px);
+}
+
+.card-project {
+  border-radius: var(--r-3xl);
+  border: 1px solid var(--color-border);
+  background: var(--grad-card-warm);
+  transition: transform var(--dur-base) var(--ease-out-soft),
+              border-color var(--dur-base) var(--ease-out-soft),
+              box-shadow var(--dur-base) var(--ease-out-soft);
+}
+.card-project:hover {
+  transform: translateY(-4px);
+  border-color: var(--lime-neon);
+  box-shadow: 0 0 35px rgba(137,255,0,0.12);
+}
+
+.card-step {
+  border-radius: var(--r-2xl);
+  border: 1px solid var(--border-soft);
+  background: var(--bg-base);
+  padding: 20px 28px;
+  transition: transform var(--dur-base) var(--ease-out-soft),
+              border-color var(--dur-base) var(--ease-out-soft),
+              box-shadow var(--dur-base) var(--ease-out-soft);
+}
+.card-step:hover {
+  transform: translateY(-3px);
+  border-color: var(--lime-400);
+  box-shadow: 0 0 24px rgba(190,242,100,0.18);
+}
+
+/* ============================================================
+   Responsive helpers
+   ============================================================ */
+
+/* Container — clamps width and adapts padding by viewport. */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 48px);
+}
+.container-wide { max-width: 1377px; }
+.container-narrow { max-width: 880px; }
+
+/* Section rhythm — fluid vertical padding. */
+.section-y { padding-block: clamp(48px, 8vw, 96px); }
+.section-y-sm { padding-block: clamp(32px, 5vw, 64px); }
+
+@media (max-width: 640px) {
+  /* Tighten heading clamps' lower bounds a touch on phones. */
+  :root {
+    --fs-h1:      clamp(32px, 9vw, 48px);
+    --fs-h2:      clamp(26px, 7vw, 36px);
+    --fs-display: clamp(36px, 10vw, 56px);
+  }
+}
