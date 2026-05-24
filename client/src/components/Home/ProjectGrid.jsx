@@ -7,7 +7,7 @@ import { fetchJson } from "../../api/http";
 import GraphicHeroImg from "../../assets/Graphics/HeroImg.png";
 import ydpayThumb from "../../assets/YDpay/iphone15pro.png";
 import webHeroImg from "../../assets/workImg/WI1.png";
-import adlmThumb from "../../assets/ADLMStudio/ADLM Studio - Discount.jpg";
+import adlmThumb from "../../assets/ADLMStudio/ADLM Studio -  Discount.jpg";
 import wsThumb from "../../assets/Whitespace/Colours and their meanings - Cover.jpg";
 import ydpayGfxThumb from "../../assets/YDpayDesigns/Card Design 1.png";
 
