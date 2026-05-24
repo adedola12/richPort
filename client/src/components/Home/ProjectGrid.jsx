@@ -336,6 +336,7 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
       if (!applyExclude(item)) return false;
       if (item.kind === "ui") return isAllTab || isUiTab;
       if (item.kind === "gallary") return isAllTab || isGfxTab;
+      if (isGfxTab) return false;
       if (isAllTab) return true;
       if (!matches || !matches.length) return false;
       const cats = Array.isArray(item.categories) ? item.categories : [];
