@@ -24,6 +24,11 @@ import { AuthProvider } from "./context/AuthContext.jsx";
 import UIProjectPage from "./components/UIProjectPage.jsx";
 import WebsiteDesignPage from "./pages/WebsiteDesignPage.jsx";
 import YDpayPage from "./pages/YDpayPage.jsx";
+import SavedupProject from "./pages/SavedupProject.jsx";
+import TabStudioProject from "./pages/TabStudioProject.jsx";
+import VerdeLuxeProject from "./pages/VerdeLuxeProject.jsx";
+import CleansteadProject from "./pages/CleansteadProject.jsx";
+import BookRionProject from "./pages/BookRionProject.jsx";
 import Contact from "./pages/Contact.jsx";
 
 // Redirect component that preserves slug params
@@ -41,6 +46,10 @@ const router = createBrowserRouter([
       { path: "about", element: <About /> },
 
       { path: "projects", element: <Projects /> },
+      { path: "projects/tabstudio", element: <TabStudioProject /> },
+      { path: "projects/verde-luxe", element: <VerdeLuxeProject /> },
+      { path: "projects/cleanstead", element: <CleansteadProject /> },
+      { path: "projects/book-rion", element: <BookRionProject /> },
       { path: "graphic-design", element: <GraphicDesignPage /> },
       { path: "website-design", element: <WebsiteDesignPage /> },
       { path: "rate-details", element: <RateDetails /> },
@@ -50,6 +59,7 @@ const router = createBrowserRouter([
       // ✅ UI Projects (plural) — matches your navigate(`/ui-projects/${slug}`)
       { path: "ui-projects", element: <UIProjectPage /> },
       { path: "ui-projects/ydpay-mobile-redesign", element: <YDpayPage /> },
+      { path: "ui-projects/savedup", element: <SavedupProject /> },
       { path: "ui-projects/:slug", element: <UIProjectPage /> },
 
       // keep old links working by redirecting (preserving slug)

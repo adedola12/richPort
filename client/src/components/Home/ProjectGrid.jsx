@@ -1,6 +1,6 @@
 ﻿// src/components/Home/ProjectGrid.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { fetchJson } from "../../api/http";
 
@@ -195,7 +195,9 @@ function WebsiteDesignHeroCard({ onView }) {
    ProjectGrid
    ================================================================ */
 const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
-  const [activeTab, setActiveTab] = useState(tabs[0]);
+  const [searchParams] = useSearchParams();
+  const initialTab = tabs.includes(searchParams.get("tab")) ? searchParams.get("tab") : tabs[0];
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [tabDropdownOpen, setTabDropdownOpen] = useState(false);
   const tabDropdownRef = useRef(null);
   const [projects, setProjects] = useState([]);

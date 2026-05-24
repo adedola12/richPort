@@ -4,12 +4,16 @@ import { motion } from "framer-motion";
 import signImg from "../../assets/Bookrion/mainSign.jpg";
 
 const imgVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95 },
+  hidden: {
+    opacity: 0,
+    scale: 1.04,
+    clipPath: "inset(6% 3% 6% 3% round 28px)",
+  },
   visible: {
     opacity: 1,
-    y: 0,
     scale: 1,
-    transition: { duration: 0.8, ease: [0.22, 0.61, 0.36, 1] },
+    clipPath: "inset(0% 0% 0% 0% round 28px)",
+    transition: { duration: 1.1, ease: [0.22, 0.61, 0.36, 1] },
   },
 };
 
@@ -18,7 +22,7 @@ const MainImg = ({ project }) => {
     project?.mainImageUrl || project?.images?.main || signImg;
 
   return (
-    <section className="relative w-full bg-[#050505] py-16 overflow-x-hidden">
+    <section className="relative w-full py-16 bg-[#050505]">
       <motion.div
         className="relative mx-auto max-w-[1200px] px-4 lg:px-6"
         variants={imgVariants}
@@ -27,15 +31,6 @@ const MainImg = ({ project }) => {
         viewport={{ once: true, amount: 0.6 }}
       >
         <div className="relative mx-auto max-w-[1222px] aspect-[1222/631]">
-          <div
-            className="
-              pointer-events-none
-              absolute inset-[-16px] sm:inset-[-28px]
-              rounded-[32px] sm:rounded-[46px]
-              bg-lime-400/18
-              blur-3xl
-            "
-          />
           <div
             className="
               relative

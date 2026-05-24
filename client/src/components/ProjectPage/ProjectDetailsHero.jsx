@@ -5,6 +5,14 @@ import { motion } from "framer-motion";
 import TypingText from "../common/TypingText";
 import signImg from "../../assets/Bookrion/mainSign.jpg";
 
+const SILVER_WORD = {
+  background: "linear-gradient(180deg, #ffffff 0%, #b8b8b8 45%, #e0e0e0 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  backgroundClip: "text",
+  WebkitTextStroke: "0.3px rgba(210,210,210,0.4)",
+};
+
 const HERO_BG_POSITION = "center 60%";
 const HERO_BG_ZOOM = 1.2;
 const CONTENT_TOP_OFFSET = 200;
@@ -81,7 +89,7 @@ const ProjectDetailsHero = ({ project }) => {
   return (
     <section
       className="
-        relative w-full bg-[#050505]
+        relative w-full
         pt-4 pb-16
         -mt-4 sm:-mt-6
       "
@@ -102,14 +110,10 @@ const ProjectDetailsHero = ({ project }) => {
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.72) 40%, rgba(5,5,5,0.97) 100%)",
+              "linear-gradient(to bottom, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.95) 40%, rgba(0,0,0,1) 70%)",
           }}
         />
       </div>
-      {/* Glows: outside the overflow-hidden wrapper so they bleed naturally */}
-      <div className="pointer-events-none absolute -left-40 bottom-0 h-80 w-80 rounded-full bg-lime-500/18 blur-[160px]" />
-      <div className="pointer-events-none absolute -right-40 bottom-0 h-80 w-80 rounded-full bg-lime-500/14 blur-[160px]" />
-
       <div
         className="relative z-10 mx-auto max-w-[1200px] px-4 lg:px-16"
         style={{ paddingTop: CONTENT_TOP_OFFSET }}
@@ -147,12 +151,9 @@ const ProjectDetailsHero = ({ project }) => {
               <TypingText
                 as="h1"
                 text={projectName}
-                className="
-                  text-white font-semibold
-                  text-5xl sm:text-6xl lg:text-[72px]
-                  leading-[1.05] tracking-[-0.03em]
-                "
+                className="font-semibold text-5xl sm:text-6xl lg:text-[72px] leading-[1.05] tracking-[-0.03em]"
                 delay={0.15}
+                wordStyle={SILVER_WORD}
                 onComplete={() => setParasReady(true)}
               />
             </div>
@@ -164,7 +165,7 @@ const ProjectDetailsHero = ({ project }) => {
                   key={idx}
                   as="p"
                   text={para}
-                  className="text-[16px] sm:text-[17px] leading-[1.65] tracking-[-0.01em] text-white/65"
+                  className="text-[16px] sm:text-[17px] leading-[1.65] tracking-[-0.01em] text-white/65 text-justify"
                   startWhen={parasReady}
                   delay={idx * 0.15}
                   wordStep={0.03}
@@ -184,35 +185,25 @@ const ProjectDetailsHero = ({ project }) => {
             }}
           >
             {/* CLIENT */}
-            <motion.div
-              className="flex items-start justify-between gap-8"
-              variants={fadeItem}
-            >
-              <span className="text-xs tracking-[0.3em] uppercase text-white">
+            <motion.div className="flex items-start gap-8" variants={fadeItem}>
+              <span className="w-28 shrink-0 text-xs tracking-[0.3em] uppercase text-white">
                 Client
               </span>
-              <span className="flex-1 text-sm md:text-base text-white leading-6">
+              <span className="text-sm md:text-base text-white leading-6">
                 {clientName}
               </span>
             </motion.div>
 
             {/* CATEGORY */}
-            <motion.div
-              className="flex items-start justify-between gap-8"
-              variants={fadeItem}
-            >
-              <span className="text-xs tracking-[0.3em] uppercase text-white">
+            <motion.div className="flex items-start gap-8" variants={fadeItem}>
+              <span className="w-28 shrink-0 text-xs tracking-[0.3em] uppercase text-white">
                 Category
               </span>
-              <div className="flex-1 flex flex-wrap items-center gap-1.5">
+              <div className="flex flex-wrap items-center gap-1.5">
                 {heroCategories.map((cat) => (
                   <span
                     key={cat}
-                    className="
-                      rounded-md border border-lime-500 px-2 py-1.5
-                      text-[10px] font-bold leading-[10px]
-                      uppercase tracking-tight text-lime-500
-                    "
+                    className="rounded-md border border-lime-500 px-2 py-1.5 text-[10px] font-bold leading-[10px] uppercase tracking-tight text-lime-500"
                   >
                     {cat}
                   </span>
@@ -221,27 +212,21 @@ const ProjectDetailsHero = ({ project }) => {
             </motion.div>
 
             {/* DELIVERABLES */}
-            <motion.div
-              className="flex items-start justify-between gap-8"
-              variants={fadeItem}
-            >
-              <span className="text-xs tracking-[0.3em] uppercase text-white">
+            <motion.div className="flex items-start gap-8" variants={fadeItem}>
+              <span className="w-28 shrink-0 text-xs tracking-[0.3em] uppercase text-white">
                 Deliverables
               </span>
-              <span className="flex-1 text-sm md:text-base text-white leading-6">
+              <span className="text-sm md:text-base text-white leading-6">
                 {deliverablesText}
               </span>
             </motion.div>
 
             {/* TIMELINE */}
-            <motion.div
-              className="flex items-start justify-between gap-8"
-              variants={fadeItem}
-            >
-              <span className="text-xs tracking-[0.3em] uppercase text-white">
+            <motion.div className="flex items-start gap-8" variants={fadeItem}>
+              <span className="w-28 shrink-0 text-xs tracking-[0.3em] uppercase text-white">
                 Timeline
               </span>
-              <span className="flex-1 text-sm md:text-base text-white leading-6">
+              <span className="text-sm md:text-base text-white leading-6">
                 {timelineText}
               </span>
             </motion.div>

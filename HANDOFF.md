@@ -1064,7 +1064,82 @@ None exist. The database starts empty; all content is added through the admin da
 
 ---
 
-## 8. KNOWN GOTCHAS
+## 8. DESIGN WORK LOG (session history)
+
+This section tracks UI/design edits made across coding sessions so any Claude session can pick up where the last left off.
+
+### Session — May 2026
+
+**Critical CSS bug fixed (affects all sticky/fixed positioning site-wide)**
+- Root cause: `html { overflow-x: clip }` in `client/src/index.css` caused both axes to compute as `clip`, making `body` the scroll container. This broke `window.scrollY`, `position: sticky`, and `position: fixed` throughout the site.
+- Fix: moved `overflow-x: clip` to `#root` (a plain div) which does NOT create a scroll container.
+- File: `client/src/index.css`
+
+**App.jsx page transitions**
+- Removed `y` translate from page transition (transforms break sticky children).
+- Added `onAnimationComplete` callback to clear `filter` from the motion.div after the enter animation completes. Reason: `filter: blur(0px)` in the `animate` state creates a containing block for `position: fixed` children, causing them to be positioned relative to the motion.div instead of the viewport.
+- Note: with inline animations (not variants), `onAnimationComplete` does NOT receive a string — the `def === "animate"` guard never fires. The callback is unconditional.
+- File: `client/src/App.jsx`
+
+**Testimonials section (Home)**
+- Implemented scroll-locked stacking cards animation. A 320vh outer section holds a `sticky top-0 h-screen` inner div. Five cards scale in from 0.12 to 1.0 as user scrolls. Section releases after all 5 cards have stacked.
+- Uses Framer Motion `useScroll` with `target: wrapperRef, offset: ["start start", "end end"]`.
+- CARD_RANGES end exactly at 1.0 — no dead scroll at the end.
+- File: `client/src/components/Home/Testimonials.jsx`
+
+**Nav — Projects dropdown**
+- Added hover dropdown on desktop "Projects" nav link showing 4 category options.
+- Added expandable sub-menu on mobile.
+- Clicking a category navigates to `/projects?tab=<category>` using `encodeURIComponent`.
+- File: `client/src/components/Nav.jsx`
+
+**ProjectGrid — URL tab filtering**
+- Reads `?tab=` search param on mount to set the initial active tab.
+- Allows Nav dropdown to deep-link directly to a filtered project category.
+- File: `client/src/components/Home/ProjectGrid.jsx`
+
+**DesignProcess spacing fix**
+- `py-2 lg:py-4` was critically too small — caused a blank gap between PickACard and AboutMe.
+- Fixed to `py-16 lg:py-24`.
+- File: `client/src/components/Home/DesignProcess.jsx`
+
+**WorkExp (Home) first-item gap fix**
+- Stray `mt-7` on the company name `<h3>` created an unexpected top gap on the first entry.
+- Removed the margin class.
+- File: `client/src/components/Home/WorkExp.jsx`
+
+### What still needs design review (as of May 2026)
+
+**Home page** — these sections have not been reviewed or polished:
+- `Hero.jsx`
+- `Services.jsx`
+- `Partners.jsx`
+- `BuildSection.jsx`
+- `PickACard.jsx`
+- `AboutMe.jsx`
+
+**About page** — none reviewed:
+- `AboutHero.jsx`, `BriefInfo.jsx`, `Journey.jsx`, `ShortIntro.jsx`, `Tools.jsx`, `WorkExp.jsx`
+
+**Individual project detail pages** — none reviewed:
+- `ProjectPage.jsx` and all sub-components in `components/ProjectPage/`
+- `UIProjectPage.jsx` and all sub-components in `components/UIProjectPage/`
+
+**Graphic Design page** — not reviewed:
+- `GraphicHero.jsx`, `GraphicOverview.jsx`, `GraphicGallery.jsx`
+
+**Rate Details page** — not reviewed:
+- `RateHero.jsx`, `BrandIdentity.jsx`, `PlanSelection.jsx`, `PlanDetails.jsx`, `RateForm.jsx`, `RateCTA.jsx`
+
+**No contact page exists.** The "Contact" button in the Nav links to `/contact` but there is no route or component for it. Needs to be built from scratch.
+
+**Footer** — not reviewed.
+
+**SEO** — no page titles, meta descriptions, or Open Graph tags are set anywhere.
+
+---
+
+## 9. KNOWN GOTCHAS
 
 1. **Dev hits production DB by default.** `client/.env` points `VITE_AUTH_ENDPOINT` at the live Render server. If you run local dev without changing this, any data you create or delete goes to the live database. Change it to `http://localhost:4000` for local work.
 

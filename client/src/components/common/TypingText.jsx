@@ -35,6 +35,7 @@ const TypingText = ({
   wordStep = 0.12,
   startWhen,
   onComplete,
+  wordStyle,
   ...rest
 }) => {
   const MotionTag = motion(Tag);
@@ -117,7 +118,7 @@ const TypingText = ({
             key={`word-${i}`}
             variants={wordVariants}
             custom={wordDelay}
-            style={{ display: "inline-block" }}
+            style={{ display: "inline-block", ...wordStyle }}
           >
             {token}
           </motion.span>

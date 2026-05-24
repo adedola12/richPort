@@ -289,7 +289,7 @@ const WorkExp = () => {
                         <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
                           <div>
                             <h3
-                              className="font-['Outfit'] font-medium text-xl sm:text-2xl lg:text-[31px] leading-[1] tracking-[-1px] mt-7 bg-clip-text text-transparent"
+                              className="font-['Outfit'] font-medium text-xl sm:text-2xl lg:text-[31px] leading-[1] tracking-[-1px] bg-clip-text text-transparent"
                               style={{
                                 backgroundImage:
                                   "linear-gradient(179deg, rgb(255,255,255) 5%, rgb(118,116,116) 103%)",

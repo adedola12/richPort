@@ -102,7 +102,6 @@ const ProjectPage = () => {
       <ProjectImg project={project} />
       <ProjectConc project={project} />
       <DiscoverImg project={project} />
-      {/* OtherProj should handle showOnProjectsPage filtering internally */}
       <OtherProj currentSlug={project?.slug} currentKind="default" />
       <BuildSection />
     </div>

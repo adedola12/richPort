@@ -3,36 +3,32 @@ import { motion } from "framer-motion";
 import midImg from "../../assets/Bookrion/midImg.png";
 
 const imgVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95 },
+  hidden: {
+    opacity: 0,
+    scale: 1.04,
+    clipPath: "inset(6% 3% 6% 3% round 28px)",
+  },
   visible: {
     opacity: 1,
-    y: 0,
     scale: 1,
-    transition: { duration: 0.8, ease: [0.22, 0.61, 0.36, 1] },
+    clipPath: "inset(0% 0% 0% 0% round 28px)",
+    transition: { duration: 1.1, ease: [0.22, 0.61, 0.36, 1] },
   },
 };
+
 const ProjectImg = ({ project }) => {
   const mainImageUrl = project?.midImageUrl || project?.images?.mid || midImg;
 
   return (
-    <section className="relative w-full bg-[#050505] py-16 overflow-x-hidden">
+    <section className="relative w-full py-16">
       <motion.div
         className="relative mx-auto max-w-[1200px] px-4 lg:px-6"
         variants={imgVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.6 }}
+        viewport={{ once: true, amount: 0.4 }}
       >
         <div className="relative mx-auto max-w-[1222px] aspect-[1222/631]">
-          <div
-            className="
-              pointer-events-none
-              absolute inset-[-16px] sm:inset-[-28px]
-              rounded-[32px] sm:rounded-[46px]
-              bg-lime-400/18
-              blur-3xl
-            "
-          />
           <div
             className="
               relative
@@ -48,8 +44,8 @@ const ProjectImg = ({ project }) => {
               src={mainImageUrl}
               alt={
                 project?.name
-                  ? `${project.name} main visual`
-                  : "Project main visual"
+                  ? `${project.name} mid visual`
+                  : "Project visual"
               }
               className="h-full w-full object-cover"
             />

@@ -32,7 +32,7 @@ const steps = [
 
 const DesignProcess = () => {
   return (
-    <section className="relative w-full bg-[#050505] py-2 lg:py-4">
+    <section className="relative w-full bg-[#050505] py-16 lg:py-24">
       {/* soft glow */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-1/3 h-72 w-72 -translate-x-1/2 rounded-full bg-lime-500/12 blur-[200px]" />

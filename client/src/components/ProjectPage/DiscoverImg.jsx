@@ -1,6 +1,11 @@
 // src/components/ProjectPage/DiscoverImg.jsx
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+
+const headerItem = {
+  hidden: { opacity: 0, y: 22 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 0.61, 0.36, 1] } },
+};
 import { LuChevronLeft, LuChevronRight, LuX } from "react-icons/lu";
 
 import gimg1 from "../../assets/Bookrion/g1.jpg";
@@ -147,25 +152,41 @@ const DiscoverImg = ({ project }) => {
   }, [lightboxIndex, closeLightbox, showPrev, showNext]);
 
   return (
-    <section className="relative w-full bg-[#050505]">
-      {/* ambient glows — outside overflow so they don't create scroll */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-24 top-10 h-64 w-64 rounded-full bg-lime-500/18 blur-[180px]" />
-        <div className="absolute right-[-40px] bottom-[-40px] h-64 w-64 rounded-full bg-lime-500/14 blur-[190px]" />
-      </div>
-
+    <section className="relative w-full">
       {/* section header */}
-      <div className="relative mx-auto max-w-[1160px] px-3 sm:px-5 pt-16 pb-10">
-        <p className="text-xs font-bold tracking-[0.3em] uppercase text-lime-400 mb-3">
+      <motion.div
+        className="relative mx-auto max-w-[1160px] px-3 sm:px-5 pt-16 pb-10"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.5 }}
+        variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.14 } } }}
+      >
+        <motion.p
+          className="text-xs font-bold tracking-[0.3em] uppercase text-lime-400 mb-3"
+          variants={headerItem}
+        >
           Visual Overview
-        </p>
-        <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-semibold leading-[1.1] tracking-[-0.02em] text-white">
+        </motion.p>
+        <motion.h2
+          className="text-3xl sm:text-4xl lg:text-[44px] font-semibold leading-[1.1] tracking-[-0.02em]"
+          style={{
+            background: "linear-gradient(180deg, #ffffff 0%, #b8b8b8 45%, #e0e0e0 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            WebkitTextStroke: "0.3px rgba(210,210,210,0.4)",
+          }}
+          variants={headerItem}
+        >
           Project Images
-        </h2>
-        <p className="mt-3 text-[15px] sm:text-[16px] leading-[1.65] text-white/55 max-w-[520px]">
+        </motion.h2>
+        <motion.p
+          className="mt-3 text-[15px] sm:text-[16px] leading-[1.65] text-white/55 max-w-[520px]"
+          variants={headerItem}
+        >
           Scroll through the full gallery — click any image to expand it.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
 
       <div className="relative">
         <StackedGallery images={images} onImageClick={openLightbox} />
