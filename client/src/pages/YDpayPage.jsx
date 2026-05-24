@@ -447,7 +447,7 @@ const YDpayPage = () => (
       {/* ══ IPHONE 15 SPOTLIGHT ══ */}
       <section className="py-10 sm:py-16 px-3 sm:px-6">
         <FadeUp className="max-w-[1100px] mx-auto">
-          <div className="rounded-2xl sm:rounded-3xl overflow-hidden border border-white/8" style={{ height: "55vh" }}>
+          <div className="rounded-2xl sm:rounded-3xl overflow-hidden border border-white/8 aspect-[4/5] sm:aspect-[16/9]">
             <img src={iphone15} alt="YDpay dashboard" className="w-full h-full object-cover object-center" loading="lazy" />
           </div>
         </FadeUp>
@@ -859,7 +859,7 @@ const YDpayPage = () => (
       {/* ══ MOCKUP 13 ══ */}
       <section className="py-10 sm:py-14 px-3 sm:px-6">
         <FadeUp className="max-w-[1100px] mx-auto">
-          <div className="rounded-2xl sm:rounded-3xl overflow-hidden border-2 shadow-[0_0_80px_rgba(1,186,75,0.12)]" style={{ borderColor: `${GR}44`, height: "60vh" }}>
+          <div className="rounded-2xl sm:rounded-3xl overflow-hidden border-2 shadow-[0_0_80px_rgba(1,186,75,0.12)] aspect-[4/5] sm:aspect-[16/9]" style={{ borderColor: `${GR}44` }}>
             <img src={mockup13} alt="YDpay mockup" className="w-full h-full object-cover object-center" loading="lazy" />
           </div>
         </FadeUp>

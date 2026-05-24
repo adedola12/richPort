@@ -534,8 +534,8 @@ const SnotesProject = () => {
         {/* ══ 04 — VISUAL BAND ══ */}
         <section className="py-10 sm:py-16 px-3 sm:px-6">
           <FadeUp className="max-w-[1100px] mx-auto">
-            <div className="rounded-2xl sm:rounded-3xl overflow-hidden border-2 flex items-center justify-center"
-              style={{ borderColor: `${GR}55`, height: "55vh", background: "repeating-linear-gradient(45deg, #0f1318 0px, #0f1318 10px, #111820 10px, #111820 20px)" }}>
+            <div className="rounded-2xl sm:rounded-3xl overflow-hidden border-2 flex items-center justify-center aspect-[4/5] sm:aspect-[16/9]"
+              style={{ borderColor: `${GR}55`, background: "repeating-linear-gradient(45deg, #0f1318 0px, #0f1318 10px, #111820 10px, #111820 20px)" }}>
               <div className="flex flex-col items-center gap-3">
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(163,230,53,0.3)" strokeWidth="1.5" strokeLinecap="round">
                   <rect x="3" y="3" width="18" height="18" rx="3" />
