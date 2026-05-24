@@ -68,6 +68,8 @@ const STATIC_GFX_PROJECTS = [
 
 const SAVEDUP_THUMB = "https://res.cloudinary.com/dirgfivvb/image/upload/v1769320865/richard_portfolio/ui-projects/nhjprdndluq6dbch0j27.jpg";
 
+const SNOTES_THUMB = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450'%3E%3Cdefs%3E%3Cpattern id='sp' patternUnits='userSpaceOnUse' width='20' height='20' patternTransform='rotate(45)'%3E%3Crect width='10' height='20' fill='%230f1318'/%3E%3Crect x='10' width='10' height='20' fill='%23111820'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='800' height='450' fill='url(%23sp)'/%3E%3Crect x='360' y='160' width='80' height='96' rx='4' fill='none' stroke='%23a3e635' stroke-width='1.5' opacity='0.3'/%3E%3Cline x1='376' y1='188' x2='424' y2='188' stroke='%23a3e635' stroke-width='1' opacity='0.2'/%3E%3Cline x1='376' y1='203' x2='424' y2='203' stroke='%23a3e635' stroke-width='1' opacity='0.2'/%3E%3Cline x1='376' y1='218' x2='414' y2='218' stroke='%23a3e635' stroke-width='1' opacity='0.2'/%3E%3Ctext x='400' y='285' text-anchor='middle' font-family='system-ui' font-size='12' fill='%23a3e635' opacity='0.45' letter-spacing='4'%3ESNOTES%3C/text%3E%3Ctext x='400' y='304' text-anchor='middle' font-family='system-ui' font-size='9' fill='%23ffffff' opacity='0.2'%3ESermon Notes App%3C/text%3E%3C/svg%3E";
+
 const STATIC_UI_PROJECTS = [
   {
     kind: "ui",
@@ -100,8 +102,8 @@ const STATIC_UI_PROJECTS = [
     description: "A focused mobile sermon note-taking app — built quietly, for people who want to actually live what they hear.",
     url: "",
     tags: ["UI/UX Design", "Mobile App", "Product Strategy"],
-    images: { main: SAVEDUP_THUMB },
-    pageImg: SAVEDUP_THUMB,
+    images: { main: SNOTES_THUMB },
+    pageImg: SNOTES_THUMB,
     categories: ["Product UI/UX Designs"],
     id: "static-snotes",
   },

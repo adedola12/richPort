@@ -602,7 +602,9 @@ const SnotesProject = () => {
                     </div>
                   </SlideIn>
                   <SlideIn direction={flip ? "left" : "right"} delay={0.15}>
-                    <TiltFrame src={null} caption={caption} className="w-full" style={{ aspectRatio: "16/9" }} />
+                    <div className="w-full aspect-[4/5] sm:aspect-[16/9]">
+                      <TiltFrame src={null} caption={caption} className="w-full h-full" />
+                    </div>
                   </SlideIn>
                 </div>
               ))}

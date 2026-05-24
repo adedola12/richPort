@@ -276,7 +276,7 @@ const YDpayPage = () => (
             </FadeUp>
             <FadeUp delay={0.15}>
               <div className="rounded-2xl overflow-hidden border border-white/8">
-                <img src={mockup13} alt="YDpay billboard" className="w-full object-cover" />
+                <img src={mockup13} alt="YDpay billboard" className="w-full object-cover" loading="lazy" />
               </div>
             </FadeUp>
           </div>
@@ -448,7 +448,7 @@ const YDpayPage = () => (
       <section className="py-10 sm:py-16 px-3 sm:px-6">
         <FadeUp className="max-w-[1100px] mx-auto">
           <div className="rounded-2xl sm:rounded-3xl overflow-hidden border border-white/8" style={{ height: "55vh" }}>
-            <img src={iphone15} alt="YDpay dashboard" className="w-full h-full object-cover object-center" />
+            <img src={iphone15} alt="YDpay dashboard" className="w-full h-full object-cover object-center" loading="lazy" />
           </div>
         </FadeUp>
       </section>
@@ -515,7 +515,7 @@ const YDpayPage = () => (
 
               {/* iPhone 16 Pro — absolutely overlaid on the right */}
               <div className="hidden lg:block absolute -right-24 top-0 w-[480px] pointer-events-none">
-                <img src={iphone16} alt="YDpay screens" className="w-full object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.8)]" />
+                <img src={iphone16} alt="YDpay screens" className="w-full object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.8)]" loading="lazy" />
               </div>
             </div>
           </FadeUp>
@@ -564,7 +564,7 @@ const YDpayPage = () => (
         <FadeUp className="max-w-[1100px] mx-auto">
           <div className="rounded-2xl sm:rounded-3xl overflow-hidden border-2 shadow-[0_0_60px_rgba(1,186,75,0.15)]"
             style={{ borderColor: `${GR}55` }}>
-            <img src={iphone12} alt="YDpay two phones" className="w-full object-cover" />
+            <img src={iphone12} alt="YDpay two phones" className="w-full object-cover" loading="lazy" />
           </div>
         </FadeUp>
       </section>
@@ -608,7 +608,7 @@ const YDpayPage = () => (
             screens={[["O1","Dashboard V1 — Minimal"],["O2","Dashboard V2 — Full Actions"]]}
           >
             <div className="rounded-2xl overflow-hidden border border-white/8">
-              <img src={iphone15} alt="Dashboard" className="w-full object-cover" />
+              <img src={iphone15} alt="Dashboard" className="w-full object-cover" loading="lazy" />
             </div>
           </FlowBlock>
         </div>
@@ -860,7 +860,7 @@ const YDpayPage = () => (
       <section className="py-10 sm:py-14 px-3 sm:px-6">
         <FadeUp className="max-w-[1100px] mx-auto">
           <div className="rounded-2xl sm:rounded-3xl overflow-hidden border-2 shadow-[0_0_80px_rgba(1,186,75,0.12)]" style={{ borderColor: `${GR}44`, height: "60vh" }}>
-            <img src={mockup13} alt="YDpay mockup" className="w-full h-full object-cover object-center" />
+            <img src={mockup13} alt="YDpay mockup" className="w-full h-full object-cover object-center" loading="lazy" />
           </div>
         </FadeUp>
       </section>

@@ -872,14 +872,15 @@ const SavedupProject = () => {
                       </h3>
                       <p className="text-[15px] leading-[1.7] text-white/55">{desc}</p>
                     </div>
-                    {/* image */}
-                    <TiltFrame
-                      src={img}
-                      alt={name}
-                      className="w-full"
-                      style={{ aspectRatio: "16/9" }}
-                      onClick={() => openLightbox(i + 1)}
-                    />
+                    {/* image — 4:5 portrait on mobile → 16:9 on sm+ */}
+                    <div className="w-full aspect-[4/5] sm:aspect-[16/9]">
+                      <TiltFrame
+                        src={img}
+                        alt={name}
+                        className="w-full h-full"
+                        onClick={() => openLightbox(i + 1)}
+                      />
+                    </div>
                   </div>
                 </FadeUp>
               );

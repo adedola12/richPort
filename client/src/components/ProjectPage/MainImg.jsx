@@ -30,7 +30,7 @@ const MainImg = ({ project }) => {
         whileInView="visible"
         viewport={{ once: true, amount: 0.6 }}
       >
-        <div className="relative mx-auto max-w-[1222px] aspect-[1222/631]">
+        <div className="relative mx-auto max-w-[1222px] aspect-[4/5] sm:aspect-[1222/631]">
           <div
             className="
               relative
