@@ -50,7 +50,7 @@ const LogoItem = ({ p }) => {
 
   return (
     <div
-      className="flex items-center justify-center px-10"
+      className="flex items-center justify-center px-5 sm:px-10"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >

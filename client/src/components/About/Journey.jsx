@@ -103,7 +103,7 @@ const JourneyItem = ({ item, index }) => {
           <img
             src={imgSrc}
             alt={item.title}
-            className="h-[230px] w-full object-cover grayscale"
+            className="aspect-[3/2] w-full object-cover grayscale"
           />
         </div>
       </div>

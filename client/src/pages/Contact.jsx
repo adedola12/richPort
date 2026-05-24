@@ -582,7 +582,7 @@ const Contact = () => {
                   </div>
 
                   <Field label="What can I help you with?">
-                    <div className="grid grid-cols-2 gap-2 pt-1">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 pt-1">
                       {SERVICE_OPTIONS.map((s) => {
                         const active = form.service === s;
                         return (

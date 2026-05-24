@@ -334,6 +334,8 @@ const Footer = () => {
                   style={{ width: 36, height: 36, borderRadius: 9, background: "#0e1014", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 6px 18px rgba(0,0,0,0.35)", transition: "background 0.2s, transform 0.15s, box-shadow 0.2s", flexShrink: 0 }}
                   onMouseEnter={(e) => { e.currentTarget.style.background = "#000"; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 10px 28px rgba(0,0,0,0.5)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.background = "#0e1014"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 6px 18px rgba(0,0,0,0.35)"; }}
+                  onTouchStart={(e) => { e.currentTarget.style.background = "#000"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                  onTouchEnd={(e) => { e.currentTarget.style.background = "#0e1014"; e.currentTarget.style.transform = "translateY(0)"; }}
                 >{s.icon}</a>
               ))}
             </div>
@@ -485,6 +487,8 @@ const Footer = () => {
                   style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "13px 28px", background: "#a3e635", color: "#000", fontFamily: "'DM Sans', sans-serif", fontSize: 13.5, fontWeight: 700, borderRadius: 10, textDecoration: "none", boxShadow: "0 6px 20px rgba(132,204,22,0.35)", transition: "background 0.2s, transform 0.15s" }}
                   onMouseEnter={(e) => { e.currentTarget.style.background = "#bef264"; e.currentTarget.style.transform = "translateY(-1px)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.background = "#a3e635"; e.currentTarget.style.transform = "translateY(0)"; }}
+                  onTouchStart={(e) => { e.currentTarget.style.background = "#bef264"; }}
+                  onTouchEnd={(e) => { e.currentTarget.style.background = "#a3e635"; }}
                 >
                   {easterEgg ? "Yes, let's go →" : "Get in Touch"}
                 </Link>

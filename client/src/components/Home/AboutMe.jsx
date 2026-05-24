@@ -106,6 +106,7 @@ I'm a multidisciplinary designer, and I've been on this roller coaster for about
                   grayscale
                   transition duration-500 ease-out
                   group-hover:grayscale-0 group-hover:scale-[1.02]
+                  group-active:grayscale-0 group-active:scale-[1.02]
                 "
               />
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent via-black/70 to-black" />

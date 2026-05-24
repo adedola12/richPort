@@ -7,7 +7,7 @@ const RateCTA = () => {
       <div
         className="
           relative w-full overflow-hidden
-          h-[200px] sm:h-[230px] md:h-[260px] lg:h-[280px]
+          min-h-[200px] sm:min-h-[230px] md:min-h-[260px] lg:min-h-[280px]
         "
       >
         <img
