@@ -315,9 +315,12 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
     );
   }, [projects]);
 
+  const staticUiSlugs = useMemo(() => new Set(STATIC_UI_PROJECTS.map((p) => p.slug)), []);
+
   const mappedUiProjects = useMemo(() => {
     return (uiProjects || [])
       .filter((p) => p.showOnProjectsPage === undefined || p.showOnProjectsPage)
+      .filter((p) => !staticUiSlugs.has(p.slug))
       .map((p) => ({
         kind: "ui",
         slug: p.slug,

@@ -11,10 +11,10 @@ const GR = "#a3e635";
 const FadeUp = ({ children, delay = 0, className = "" }) => (
   <motion.div
     className={className}
-    initial={{ opacity: 0, y: 32 }}
+    initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, amount: 0.1 }}
-    transition={{ duration: 0.7, ease: [0.22, 0.61, 0.36, 1], delay }}
+    viewport={{ once: true, amount: 0, margin: "0px 0px -40px 0px" }}
+    transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1], delay }}
   >
     {children}
   </motion.div>
@@ -23,10 +23,10 @@ const FadeUp = ({ children, delay = 0, className = "" }) => (
 const SlideIn = ({ children, direction = "left", delay = 0, className = "" }) => (
   <motion.div
     className={className}
-    initial={{ opacity: 0, x: direction === "left" ? -40 : 40 }}
+    initial={{ opacity: 0, x: direction === "left" ? -30 : 30 }}
     whileInView={{ opacity: 1, x: 0 }}
-    viewport={{ once: true, amount: 0.1 }}
-    transition={{ duration: 0.75, ease: [0.22, 0.61, 0.36, 1], delay }}
+    viewport={{ once: true, amount: 0, margin: "0px 0px -40px 0px" }}
+    transition={{ duration: 0.65, ease: [0.22, 0.61, 0.36, 1], delay }}
   >
     {children}
   </motion.div>
@@ -37,8 +37,8 @@ const StaggerGrid = ({ children, className = "" }) => (
     className={className}
     initial="hidden"
     whileInView="visible"
-    viewport={{ once: false, amount: 0.1 }}
-    variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
+    viewport={{ once: true, amount: 0, margin: "0px 0px -40px 0px" }}
+    variants={{ visible: { transition: { staggerChildren: 0.07 } } }}
   >
     {children}
   </motion.div>
@@ -107,13 +107,15 @@ const TiltFrame = ({ src, alt = "", caption = "", className = "", style = {}, on
         {src ? (
           <img src={src} alt={alt} className="w-full h-full object-cover" loading="lazy" />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center gap-3 bg-[#0A0D12] p-8">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5" strokeLinecap="round">
+          <div className="w-full h-full flex flex-col items-center justify-center gap-3 p-8"
+            style={{ background: "repeating-linear-gradient(45deg, #0f1318 0px, #0f1318 10px, #111820 10px, #111820 20px)" }}>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(163,230,53,0.3)" strokeWidth="1.5" strokeLinecap="round">
               <rect x="3" y="3" width="18" height="18" rx="3" />
               <circle cx="8.5" cy="8.5" r="1.5" />
               <path d="M21 15l-5-5L5 21" />
             </svg>
-            <p className="text-center text-[12px] leading-[1.5] text-white/25 max-w-[220px]">{caption}</p>
+            <p className="text-center text-[11px] font-semibold leading-[1.5] text-white/40 max-w-[220px]"
+              style={{ color: "rgba(163,230,53,0.5)" }}>{caption}</p>
           </div>
         )}
         {onClick && src && (
@@ -172,13 +174,13 @@ const PersonaSection = () => {
             animate={{ flex: isActive ? 2 : 1 }}
             transition={{ duration: 0.55, ease: [0.22, 0.61, 0.36, 1] }}
             className="relative rounded-2xl overflow-hidden shrink-0 cursor-pointer border border-white/10"
-            style={{ minWidth: 0, background: "#0A0D12" }}
+            style={{ minWidth: 0, background: "repeating-linear-gradient(45deg, #0f1318 0px, #0f1318 10px, #111820 10px, #111820 20px)" }}
             onHoverStart={() => setActive(i)}
           >
             {/* placeholder background */}
             {!p.img && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <p className="text-[11px] text-white/15 text-center px-4 leading-[1.5]">{p.caption}</p>
+              <div className="absolute inset-0 flex items-center justify-center px-4">
+                <p className="text-[10px] font-semibold text-center leading-[1.5]" style={{ color: "rgba(163,230,53,0.35)" }}>{p.caption}</p>
               </div>
             )}
             {p.img && (
@@ -281,15 +283,15 @@ const SnotesProject = () => {
               <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_80px_rgba(163,230,53,0.08)]"
                 style={{ minHeight: 320 }}>
                 <div className="pointer-events-none absolute inset-[-1px] rounded-[inherit] bg-[radial-gradient(ellipse_60%_30%_at_50%_0%,rgba(163,230,53,0.12)_0%,transparent_70%)]" />
-                <div className="w-full bg-[#0A0D12] flex items-center justify-center" style={{ minHeight: 320, maxHeight: "60vh" }}>
+                <div className="w-full flex items-center justify-center" style={{ minHeight: 320, maxHeight: "60vh", background: "repeating-linear-gradient(45deg, #0f1318 0px, #0f1318 10px, #111820 10px, #111820 20px)" }}>
                   <div className="flex flex-col items-center gap-3 p-10">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" strokeLinecap="round">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(163,230,53,0.3)" strokeWidth="1.5" strokeLinecap="round">
                       <rect x="3" y="3" width="18" height="18" rx="3" />
                       <circle cx="8.5" cy="8.5" r="1.5" />
                       <path d="M21 15l-5-5L5 21" />
                     </svg>
-                    <p className="text-[13px] text-white/25 text-center max-w-[300px] leading-[1.5]">
-                      Snotes — Hero composition (Figma TBD)
+                    <p className="text-[12px] font-semibold text-center max-w-[300px] leading-[1.5]" style={{ color: "rgba(163,230,53,0.5)" }}>
+                      Hero composition — Figma TBD
                     </p>
                   </div>
                 </div>
@@ -532,15 +534,15 @@ const SnotesProject = () => {
         {/* ══ 04 — VISUAL BAND ══ */}
         <section className="py-10 sm:py-16 px-3 sm:px-6">
           <FadeUp className="max-w-[1100px] mx-auto">
-            <div className="rounded-2xl sm:rounded-3xl overflow-hidden border-2 flex items-center justify-center bg-[#0A0D12]"
-              style={{ borderColor: `${GR}55`, height: "55vh" }}>
+            <div className="rounded-2xl sm:rounded-3xl overflow-hidden border-2 flex items-center justify-center"
+              style={{ borderColor: `${GR}55`, height: "55vh", background: "repeating-linear-gradient(45deg, #0f1318 0px, #0f1318 10px, #111820 10px, #111820 20px)" }}>
               <div className="flex flex-col items-center gap-3">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" strokeLinecap="round">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(163,230,53,0.3)" strokeWidth="1.5" strokeLinecap="round">
                   <rect x="3" y="3" width="18" height="18" rx="3" />
                   <circle cx="8.5" cy="8.5" r="1.5" />
                   <path d="M21 15l-5-5L5 21" />
                 </svg>
-                <p className="text-[13px] text-white/25 text-center max-w-[300px] leading-[1.5]">Snotes — Visual band (Figma TBD)</p>
+                <p className="text-[12px] font-semibold text-center max-w-[300px] leading-[1.5]" style={{ color: "rgba(163,230,53,0.5)" }}>Visual band — Figma TBD</p>
               </div>
             </div>
           </FadeUp>
