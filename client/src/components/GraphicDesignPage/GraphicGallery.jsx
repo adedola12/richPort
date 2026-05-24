@@ -7,9 +7,9 @@ import { motion } from "framer-motion";
  * ✅ CARD LOOK (keeps your “flat-bottom frame”)
  */
 const CARD_TWEAK = {
-  outerRTop: 22,
-  outerRBottom: 10,
-  innerRTop: 16,
+  outerRTop: 14,
+  outerRBottom: 6,
+  innerRTop: 10,
   innerRBottom: 0,
   padX: 10,
   padTop: 10,
@@ -541,7 +541,7 @@ export default function GraphicGallery({ items = [] }) {
           Gallery
         </motion.h2>
 
-        <div className="grid grid-cols-4 sm:grid-cols-5 gap-4 sm:gap-5 overflow-visible">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5 overflow-visible">
           {galleryItems.map((item, i) => {
             const hiddenOnMobile = i >= 16;
             const isFeatured = i === 0;

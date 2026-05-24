@@ -29,6 +29,9 @@ import TabStudioProject from "./pages/TabStudioProject.jsx";
 import VerdeLuxeProject from "./pages/VerdeLuxeProject.jsx";
 import CleansteadProject from "./pages/CleansteadProject.jsx";
 import BookRionProject from "./pages/BookRionProject.jsx";
+import ADLMStudioPage from "./pages/ADLMStudioPage.jsx";
+import WhitespacePage from "./pages/WhitespacePage.jsx";
+import YDpayDesignPage from "./pages/YDpayDesignPage.jsx";
 import Contact from "./pages/Contact.jsx";
 
 // Redirect component that preserves slug params
@@ -51,6 +54,9 @@ const router = createBrowserRouter([
       { path: "projects/cleanstead", element: <CleansteadProject /> },
       { path: "projects/book-rion", element: <BookRionProject /> },
       { path: "graphic-design", element: <GraphicDesignPage /> },
+      { path: "adlm-studio-designs", element: <ADLMStudioPage /> },
+      { path: "whitespace-designs", element: <WhitespacePage /> },
+      { path: "ydpay-designs", element: <YDpayDesignPage /> },
       { path: "website-design", element: <WebsiteDesignPage /> },
       { path: "rate-details", element: <RateDetails /> },
       { path: "contact", element: <Contact /> },

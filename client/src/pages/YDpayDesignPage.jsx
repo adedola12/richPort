@@ -1,5 +1,5 @@
-// src/pages/GraphicDesignPage.jsx
-// Flyers & Social Media Designs — local assets, no API calls.
+// src/pages/YDpayDesignPage.jsx
+// YDpay Social Media Designs — local assets, no API calls.
 
 import React from "react";
 import GraphicHero from "../components/GraphicDesignPage/GraphicHero";
@@ -8,7 +8,6 @@ import GraphicGallery from "../components/GraphicDesignPage/GraphicGallery";
 import BuildSection from "../components/Home/BuildSection";
 import OtherProj from "../components/ProjectPage/OtherProj";
 
-/* ── hero / overview background ── */
 const GRAPHICS_ASSETS = import.meta.glob(
   "../assets/Graphics/**/*.{png,jpg,jpeg,webp,svg}",
   { eager: true, import: "default" },
@@ -27,54 +26,36 @@ const HERO_BG_TWEAK = {
   translateX: 0, translateY: 0, opacity: 0.99,
 };
 
-/* ── flyer samples gallery ── */
-const FLYER_ASSETS = import.meta.glob(
-  "../assets/FlyerSamples/*.{png,jpg,jpeg,webp}",
+const YDPAY_ASSETS = import.meta.glob(
+  "../assets/YDpayDesigns/*.{png,jpg,jpeg,webp}",
   { eager: true, import: "default" },
 );
 
-// These two always appear first, in this order
-const PRIORITY = [
-  "happy birthday minister olabisi obayomi",
-  "happy birthday pastor tito 1",
-];
-
-function buildGallery() {
-  return Object.entries(FLYER_ASSETS)
-    .map(([path, src], idx) => {
-      const name = path.split("/").pop().toLowerCase().replace(/\.[^.]+$/, "");
-      const pi = PRIORITY.findIndex((p) => name.includes(p));
-      return { id: `flyer-${idx}`, src, pi };
-    })
-    .sort((a, b) => {
-      const ai = a.pi >= 0 ? a.pi : 999;
-      const bi = b.pi >= 0 ? b.pi : 999;
-      return ai - bi;
-    })
-    .map(({ id, src }) => ({ id, src }));
-}
+const GALLERY = Object.entries(YDPAY_ASSETS).map(([path, src], idx) => ({
+  id: `ydpay-${idx}`,
+  src,
+}));
 
 const DATA = {
   backLabel: "Back to Portfolio",
-  titleTop: "Flyers & Social Media",
+  titleTop: "YDpay Social Media",
   titleBottom: "Designs",
   subtitle:
-    "Designing high-impact visual systems that drive engagement, clarity, and brand consistency across digital platforms.",
+    "Brand-consistent social media graphics, card designs, and campaign visuals crafted for YDpay — a modern digital payment platform.",
   heroBg: HeroBg || "",
   heroBgTweak: HERO_BG_TWEAK,
   overviewTitle: "Overview",
   overviewText: [
-    "This project showcases a collection of flyer and social media designs created for brands seeking strong visual presence and meaningful audience engagement. Each design was crafted with a clear strategic intent — balancing aesthetics with communication goals to ensure the message is not just seen, but understood and acted upon.",
-    "Rather than focusing solely on visual appeal, the approach emphasized hierarchy, readability, brand alignment, and conversion-driven layouts. From event promotions to educational campaigns and community activations, every asset was designed to capture attention quickly while maintaining clarity across multiple screen sizes and platforms.",
-    "The result is a cohesive body of work that demonstrates versatility, brand sensitivity, and the ability to translate ideas into compelling visual narratives that perform effectively in real-world contexts.",
+    "YDpay is a digital payment platform operating at the intersection of fintech and everyday commerce. This collection covers the full breadth of their social media design output — from promotional campaign banners and card design mockups to seasonal greetings and community-building posts.",
+    "Every design was created to align with YDpay's brand identity: bold, trustworthy, and forward-looking. The work balances high-energy campaign aesthetics with clear financial messaging, ensuring visual consistency across all digital touchpoints while driving user engagement and product awareness.",
   ],
   overviewImage: OverviewImg || "",
-  gallery: buildGallery(),
-  slug: "graphic-design",
-  _id: "graphic-design",
+  gallery: GALLERY,
+  slug: "ydpay-designs",
+  _id: "ydpay-designs",
 };
 
-export default function GraphicDesignPage() {
+export default function YDpayDesignPage() {
   return (
     <div className="relative min-h-screen bg-[#070707] text-white overflow-x-hidden">
       <div className="pointer-events-none absolute -left-40 -top-40 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle_at_center,#4ade80_0,transparent_65%)] opacity-[0.16] blur-3xl" />
