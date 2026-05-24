@@ -66,6 +66,8 @@ const STATIC_GFX_PROJECTS = [
   },
 ];
 
+const SAVEDUP_THUMB = "https://res.cloudinary.com/dirgfivvb/image/upload/v1769320865/richard_portfolio/ui-projects/nhjprdndluq6dbch0j27.jpg";
+
 const STATIC_UI_PROJECTS = [
   {
     kind: "ui",
@@ -78,6 +80,30 @@ const STATIC_UI_PROJECTS = [
     pageImg: ydpayThumb,
     categories: ["Product UI/UX Designs"],
     id: "static-ydpay",
+  },
+  {
+    kind: "ui",
+    slug: "savedup",
+    name: "SavedUp — Savings App",
+    description: "A mobile savings and budgeting platform for students and recent graduates — goal-based saving, AI-driven budgeting, and peer accountability.",
+    url: "",
+    tags: ["UI/UX Design", "Mobile App", "Fintech"],
+    images: { main: SAVEDUP_THUMB },
+    pageImg: SAVEDUP_THUMB,
+    categories: ["Product UI/UX Designs"],
+    id: "static-savedup",
+  },
+  {
+    kind: "ui",
+    slug: "snotes",
+    name: "Snotes — Sermon Notes App",
+    description: "A focused mobile sermon note-taking app — built quietly, for people who want to actually live what they hear.",
+    url: "",
+    tags: ["UI/UX Design", "Mobile App", "Product Strategy"],
+    images: { main: SAVEDUP_THUMB },
+    pageImg: SAVEDUP_THUMB,
+    categories: ["Product UI/UX Designs"],
+    id: "static-snotes",
   },
 ];
 

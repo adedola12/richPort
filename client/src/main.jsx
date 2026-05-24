@@ -25,6 +25,7 @@ import UIProjectPage from "./components/UIProjectPage.jsx";
 import WebsiteDesignPage from "./pages/WebsiteDesignPage.jsx";
 import YDpayPage from "./pages/YDpayPage.jsx";
 import SavedupProject from "./pages/SavedupProject.jsx";
+import SnotesProject from "./pages/SnotesProject.jsx";
 import TabStudioProject from "./pages/TabStudioProject.jsx";
 import VerdeLuxeProject from "./pages/VerdeLuxeProject.jsx";
 import CleansteadProject from "./pages/CleansteadProject.jsx";
@@ -66,6 +67,7 @@ const router = createBrowserRouter([
       { path: "ui-projects", element: <UIProjectPage /> },
       { path: "ui-projects/ydpay-mobile-redesign", element: <YDpayPage /> },
       { path: "ui-projects/savedup", element: <SavedupProject /> },
+      { path: "ui-projects/snotes", element: <SnotesProject /> },
       { path: "ui-projects/:slug", element: <UIProjectPage /> },
 
       // keep old links working by redirecting (preserving slug)
