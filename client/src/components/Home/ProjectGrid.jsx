@@ -7,6 +7,64 @@ import { fetchJson } from "../../api/http";
 import GraphicHeroImg from "../../assets/Graphics/HeroImg.png";
 import ydpayThumb from "../../assets/YDpay/iphone15pro.png";
 import webHeroImg from "../../assets/workImg/WI1.png";
+import adlmThumb from "../../assets/ADLMStudio/ADLM Studio - Discount.jpg";
+import wsThumb from "../../assets/Whitespace/Colours and their meanings - Cover.jpg";
+import ydpayGfxThumb from "../../assets/YDpayDesigns/Card Design 1.png";
+
+const STATIC_GFX_PROJECTS = [
+  {
+    kind: "gallary",
+    slug: "graphic-design",
+    route: "/graphic-design",
+    name: "Flyers & Social Media",
+    description: "Brand flyers, birthday cards, event graphics, and promotional materials.",
+    url: "",
+    tags: ["Graphic Design"],
+    images: { main: GraphicHeroImg },
+    pageImg: GraphicHeroImg,
+    categories: ["Graphic Designs"],
+    id: "static-gfx-flyers",
+  },
+  {
+    kind: "gallary",
+    slug: "adlm-studio-designs",
+    route: "/adlm-studio-designs",
+    name: "ADLM Studio Designs",
+    description: "Course promotions, enrolment campaigns, and brand content for ADLM Studio.",
+    url: "",
+    tags: ["Graphic Design"],
+    images: { main: adlmThumb },
+    pageImg: adlmThumb,
+    categories: ["Graphic Designs"],
+    id: "static-gfx-adlm",
+  },
+  {
+    kind: "gallary",
+    slug: "whitespace-designs",
+    route: "/whitespace-designs",
+    name: "Whitespace Designs",
+    description: "Educational carousels, event graphics, and brand content for Whitespace.",
+    url: "",
+    tags: ["Graphic Design"],
+    images: { main: wsThumb },
+    pageImg: wsThumb,
+    categories: ["Graphic Designs"],
+    id: "static-gfx-ws",
+  },
+  {
+    kind: "gallary",
+    slug: "ydpay-designs",
+    route: "/ydpay-designs",
+    name: "YDpay Social Media",
+    description: "Campaign banners, card mockups, and social content for YDpay.",
+    url: "",
+    tags: ["Graphic Design"],
+    images: { main: ydpayGfxThumb },
+    pageImg: ydpayGfxThumb,
+    categories: ["Graphic Designs"],
+    id: "static-gfx-ydpay",
+  },
+];
 
 const STATIC_UI_PROJECTS = [
   {
@@ -63,73 +121,6 @@ const cardVariants = {
 /* ---- Figma-style gradient for cards ---- */
 const CARD_BG =
   "linear-gradient(112.73deg, rgba(72,73,77,0.28) 5.73%, rgba(128,97,96,0.224) 50.57%, rgba(166,133,131,0.07) 100.09%)";
-
-/* ---- Figma Graphic Hero Card ---- */
-function GraphicDesignHeroCard({ project, onView }) {
-  const bgSrc = GraphicHeroImg;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
-      transition={{ duration: 0.65, ease: [0.22, 0.61, 0.36, 1] }}
-    >
-      <div
-        role="button"
-        tabIndex={0}
-        onClick={() => onView?.()}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") onView?.();
-        }}
-        className="relative overflow-hidden rounded-[14px] border border-lime-500/25 bg-black/60 shadow-[0_0_40px_rgba(0,0,0,0.85)] cursor-pointer select-none transition hover:border-lime-400/35 hover:shadow-[0_0_55px_rgba(190,242,100,0.16)] focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/35"
-        style={{ minHeight: 380 }}
-      >
-        <img
-          src={bgSrc}
-          alt="Graphic design project"
-          className="absolute inset-0 h-full w-full object-cover"
-          draggable="false"
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.90)_0%,rgba(0,0,0,0.78)_36%,rgba(0,0,0,0.30)_72%,rgba(0,0,0,0.12)_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(120%_140%_at_18%_48%,rgba(0,0,0,0.62)_0%,transparent_58%)]" />
-        <div className="pointer-events-none absolute inset-0 rounded-[14px] ring-1 ring-lime-500/12" />
-        <div className="pointer-events-none absolute -left-12 top-[45%] h-72 w-72 -translate-y-1/2 rounded-full bg-lime-500/10 blur-[130px]" />
-
-        <div className="relative z-10 flex h-full w-full items-start px-6 pt-10 pb-12 sm:px-10 sm:pt-12 sm:pb-14">
-          <div className="max-w-[640px]">
-            <div className="mb-4">
-              <span className="inline-flex items-center rounded-full border border-white/18 bg-white/5 px-3 py-1 text-[10px] font-semibold text-white/75">
-                {project?.pill || "Graphic Design"}
-              </span>
-            </div>
-            <h3 className="font-['Outfit'] text-[36px] leading-[1.03] sm:text-[48px] font-semibold text-white drop-shadow-[0_10px_24px_rgba(0,0,0,0.65)]">
-              {project?.titleTop || "Flyers & Social Media"}
-              <br />
-              <span className="text-white/55">
-                {project?.titleBottom || "Designs"}
-              </span>
-            </h3>
-            <p className="mt-3 max-w-[520px] text-[12px] sm:text-[13px] leading-5 text-white/55">
-              {project?.subtitle ||
-                "Designing a student-focused savings and budgeting platform for life after school"}
-            </p>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                onView?.();
-              }}
-              className="mt-5 inline-flex items-center justify-center h-9 rounded-md px-4 border border-white/40 bg-white/10 text-[11px] font-semibold text-white/85 hover:bg-white/15 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/35"
-            >
-              View Project
-            </button>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
 
 /* ---- Website Design Hero Card ---- */
 function WebsiteDesignHeroCard({ onView }) {
@@ -204,8 +195,6 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
   const [status, setStatus] = useState({ loading: true, error: "" });
   const [uiProjects, setUiProjects] = useState([]);
   const [uiStatus, setUiStatus] = useState({ loading: false, error: "" });
-  const [gfxProjects, setGfxProjects] = useState([]);
-  const [gfxStatus, setGfxStatus] = useState({ loading: false, error: "" });
   const [visibleCount, setVisibleCount] = useState(4);
   const navigate = useNavigate();
 
@@ -219,7 +208,6 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
   const isGfxTab = activeTab === "Graphic Designs";
   const isWebTab = activeTab === "Websites Designs";
   const needsUi = isAllTab || isUiTab;
-  const needsGfx = isAllTab || isGfxTab;
 
   // Close tab dropdown on outside click
   useEffect(() => {
@@ -285,39 +273,12 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
     };
   }, [needsUi]);
 
-  // Fetch Graphic projects
-  useEffect(() => {
-    if (!needsGfx) return;
-    let mounted = true;
-    (async () => {
-      try {
-        setGfxStatus({ loading: true, error: "" });
-        const data = await fetchJson("/api/graphic-projects");
-        if (!mounted) return;
-        setGfxProjects(Array.isArray(data) ? data : []);
-        setGfxStatus({ loading: false, error: "" });
-      } catch (e) {
-        console.error("Graphic projects fetch error:", e);
-        if (!mounted) return;
-        setGfxProjects([]);
-        setGfxStatus({
-          loading: false,
-          error: "Unable to load graphic projects.",
-        });
-      }
-    })();
-    return () => {
-      mounted = false;
-    };
-  }, [needsGfx]);
-
   useEffect(() => {
     setVisibleCount(4);
   }, [
     activeTab,
     projects.length,
     uiProjects.length,
-    gfxProjects.length,
     excludeSlug,
     excludeKind,
   ]);
@@ -349,22 +310,6 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
       }));
   }, [uiProjects]);
 
-  const mappedGraphicProjects = useMemo(() => {
-    return (gfxProjects || []).map((p) => ({
-      kind: "gallary",
-      slug: p.slug || p._id,
-      name: p.projectName || "Graphic Design",
-      description: p.subtitle || "",
-      url: "",
-      tags: ["Graphic Design"],
-      images: { main: p.mainImage || GraphicHeroImg },
-      pageImg: p.mainImage || GraphicHeroImg,
-      categories: ["Graphic Designs"],
-      id: p._id,
-      _raw: p,
-    }));
-  }, [gfxProjects]);
-
   const mappedDefaultProjects = useMemo(() => {
     return visibleDefaultProjects.map((p) => ({ ...p, kind: "default" }));
   }, [visibleDefaultProjects]);
@@ -374,9 +319,9 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
       ...mappedDefaultProjects,
       ...STATIC_UI_PROJECTS,
       ...mappedUiProjects,
-      ...mappedGraphicProjects,
+      ...STATIC_GFX_PROJECTS,
     ];
-  }, [mappedDefaultProjects, mappedUiProjects, mappedGraphicProjects]);
+  }, [mappedDefaultProjects, mappedUiProjects]);
 
   const applyExclude = (item) => {
     if (!excludeSlug) return true;
@@ -402,47 +347,11 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
 
   const handleOpenProject = (item) => {
     if (item.kind === "ui") return navigate(`/ui-projects/${item.slug}`);
-    if (item.kind === "gallary") return navigate(GRAPHIC_GALLERY_ROUTE);
+    if (item.kind === "gallary") return navigate(item.route || GRAPHIC_GALLERY_ROUTE);
     navigate(`/projects/${item.slug}`);
   };
 
-  const gridLoading = isGfxTab
-    ? gfxStatus.loading
-    : status.loading ||
-      (needsUi && uiStatus.loading) ||
-      (needsGfx && gfxStatus.loading);
-
-  const gfxHero = useMemo(() => {
-    const first = mappedGraphicProjects?.[0];
-    if (first) {
-      const fullTitle = String(first.name || "").trim();
-      let titleTop = fullTitle || "Flyers & Social Media";
-      let titleBottom = "Designs";
-      if (/designs$/i.test(fullTitle)) {
-        titleTop = fullTitle.replace(/designs$/i, "").trim() || titleTop;
-        titleBottom = "Designs";
-      }
-      return {
-        pill: "Graphic Design",
-        titleTop,
-        titleBottom,
-        subtitle:
-          first.description ||
-          "Designing a student-focused savings and budgeting platform for life after school",
-        slug: first.slug,
-        kind: first.kind,
-      };
-    }
-    return {
-      pill: "Graphic Design",
-      titleTop: "Flyers & Social Media",
-      titleBottom: "Designs",
-      subtitle:
-        "Designing a student-focused savings and budgeting platform for life after school",
-      slug: null,
-      kind: "gallary",
-    };
-  }, [mappedGraphicProjects]);
+  const gridLoading = status.loading || (needsUi && uiStatus.loading);
 
   /* ================================================================
      Render
@@ -538,23 +447,6 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
       <div className="mt-10">
         {isWebTab ? (
           <WebsiteDesignHeroCard onView={() => navigate("/website-design")} />
-        ) : isGfxTab ? (
-          <>
-            {gridLoading && (
-              <div className="mb-3 text-center text-xs text-white/55">
-                Loading graphic projects…
-              </div>
-            )}
-            <GraphicDesignHeroCard
-              project={gfxHero}
-              onView={() => navigate(GRAPHIC_GALLERY_ROUTE)}
-            />
-            {gfxStatus.error && (
-              <p className="mt-4 text-center text-xs text-red-400">
-                {gfxStatus.error}
-              </p>
-            )}
-          </>
         ) : gridLoading ? (
           <p className="text-sm text-neutral-300">
             Loading projects…
