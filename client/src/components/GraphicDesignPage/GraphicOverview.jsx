@@ -1,8 +1,8 @@
 // src/components/GraphicDesignPage/GraphicOverview.jsx
-import React, { useRef, useCallback, useMemo } from "react";
-import { motion, useInView, useMotionValue, useTransform, useSpring } from "framer-motion";
+import React, { useRef, useMemo, useCallback, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
 
-/* ─── Starfield (same pattern as Testimonials) ─────────── */
+/* ─── Starfield ─────────────────────────────────────────── */
 const mkLCG = (s) => { s = s>>>0; return () => { s=(Math.imul(s,1664525)+1013904223)>>>0; return s/0x100000000; }; };
 const rng = mkLCG(0xf00dc0de);
 const STARS = Array.from({length: 55}, () => ({
@@ -21,80 +21,212 @@ const Starfield = () => (
   </svg>
 );
 
-/* ─── Fan positions (back → front) ────────────────────── */
-const FAN = [
-  { rotate: -16, x: -54, y: 22,  scale: 0.86, zIndex: 1 },
-  { rotate:  -4, x: -12, y:  8,  scale: 0.93, zIndex: 2 },
-  { rotate:   9, x:  28, y:  0,  scale: 1.00, zIndex: 3 },
+/* ─── Fan positions (back → front) ──────────────────────── */
+const FAN_OPEN = [
+  { x: -42, y: 20, rotate: -15, scale: 0.87 },
+  { x:   2, y:  8, rotate:  -3, scale: 0.93 },
+  { x:  38, y:  0, rotate:  10, scale: 1.00 },
 ];
-const STACKED = { rotate: 0, x: 0, y: 0, scale: 0.92 };
+const FAN_CLOSED = { x: 0, y: 0, rotate: 0, scale: 0.94 };
 
-/* ─── Single design card ───────────────────────────────── */
-const DesignCard = ({ src, idx, inView }) => {
-  const innerRef = useRef(null);
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const rotX = useSpring(useTransform(my, [-0.5, 0.5], [10, -10]), { stiffness: 260, damping: 32 });
-  const rotY = useSpring(useTransform(mx, [-0.5, 0.5], [-10, 10]), { stiffness: 260, damping: 32 });
+/* ─── Card constants — identical to GraphicGallery ──────── */
+const T = {
+  outerRTop: 14, outerRBottom: 6,
+  innerRTop: 10, innerRBottom: 0,
+  padX: 10, padTop: 10, padBottom: 0,
+  innerRingInset: 6,
+  perspective: 760,
+  maxRotate: 18,
+  maxZRotate: 3,
+  popScale: 1.08,
+  popLift: 18,
+  popZ: 70,
+};
 
-  const handleMove = useCallback((e) => {
-    const el = innerRef.current;
+function clamp(n, lo, hi) { return Math.max(lo, Math.min(hi, n)); }
+
+/* ─── Single fan card ────────────────────────────────────── */
+const OverviewCard = ({ src, fanIdx, inView }) => {
+  const cardRef  = useRef(null);
+  const hoveredRef = useRef(false);
+  const rafRef   = useRef(null);
+
+  const outerRadius = `${T.outerRTop}px ${T.outerRTop}px ${T.outerRBottom}px ${T.outerRBottom}px`;
+  const innerRadius = `${T.innerRTop}px ${T.innerRTop}px ${T.innerRBottom}px ${T.innerRBottom}px`;
+  const baseTransform = `perspective(${T.perspective}px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateY(0px) translateZ(0px) scale(1)`;
+
+  // init CSS custom props on mount
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    el.style.setProperty("--hx", "50%");
+    el.style.setProperty("--hy", "35%");
+    el.style.setProperty("--imgZ", "12px");
+    el.style.setProperty("--imgScale", "1");
+    el.style.setProperty("--ringZ", "52px");
+    el.style.transform = baseTransform;
+  }, []);
+
+  const applyTilt = useCallback((clientX, clientY) => {
+    const el = cardRef.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
-    mx.set((e.clientX - r.left) / r.width  - 0.5);
-    my.set((e.clientY - r.top)  / r.height - 0.5);
-  }, [mx, my]);
+    const px = clamp((clientX - r.left) / r.width, 0, 1);
+    const py = clamp((clientY - r.top)  / r.height, 0, 1);
+    const rotY = (px - 0.5) * 2 * T.maxRotate;
+    const rotX = (0.5 - py) * 2 * T.maxRotate;
+    const roll = (px - 0.5) * 2 * T.maxZRotate;
+    el.style.setProperty("--hx", `${px * 100}%`);
+    el.style.setProperty("--hy", `${py * 100}%`);
+    el.style.setProperty("--imgZ", "30px");
+    el.style.setProperty("--imgScale", "1.05");
+    el.style.transform = `perspective(${T.perspective}px) rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${roll}deg) translateY(-${T.popLift}px) translateZ(${T.popZ}px) scale(${T.popScale})`;
+  }, []);
 
-  const handleLeave = useCallback(() => { mx.set(0); my.set(0); }, [mx, my]);
+  const onPointerEnter = useCallback((e) => {
+    if (e.pointerType === "touch") return;
+    hoveredRef.current = true;
+    const el = cardRef.current;
+    if (!el) return;
+    el.style.transition = "transform 120ms ease-out, box-shadow 180ms ease-out, border-color 180ms ease-out";
+    applyTilt(e.clientX, e.clientY);
+  }, [applyTilt]);
+
+  const onPointerMove = useCallback((e) => {
+    if (e.pointerType === "touch" || !hoveredRef.current) return;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      const el = cardRef.current;
+      if (!el) return;
+      el.style.transition = "transform 0ms";
+      applyTilt(e.clientX, e.clientY);
+    });
+  }, [applyTilt]);
+
+  const onPointerLeave = useCallback(() => {
+    hoveredRef.current = false;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    const el = cardRef.current;
+    if (!el) return;
+    el.style.transition = "transform 380ms cubic-bezier(.2,.8,.2,1), box-shadow 280ms ease-out, border-color 280ms ease-out";
+    el.style.transform = baseTransform;
+    el.style.setProperty("--hx", "50%");
+    el.style.setProperty("--hy", "35%");
+    el.style.setProperty("--imgZ", "12px");
+    el.style.setProperty("--imgScale", "1");
+  }, [baseTransform]);
+
+  const fan = FAN_OPEN[fanIdx];
 
   return (
     <motion.div
-      animate={inView ? FAN[idx] : STACKED}
+      animate={inView
+        ? { x: fan.x, y: fan.y, rotate: fan.rotate, scale: fan.scale }
+        : FAN_CLOSED
+      }
       transition={{
         duration: 0.80,
         ease: [0.22, 0.61, 0.36, 1],
-        delay: inView ? idx * 0.08 : (2 - idx) * 0.05,
+        delay: inView ? fanIdx * 0.09 : (2 - fanIdx) * 0.05,
       }}
-      style={{ position: "absolute", inset: 0, zIndex: FAN[idx].zIndex }}
+      style={{
+        position: "absolute", inset: 0,
+        zIndex: fanIdx + 1,
+      }}
     >
-      <motion.div
-        ref={innerRef}
-        style={{
-          width: "100%", height: "100%",
-          rotateX: rotX, rotateY: rotY,
-          transformStyle: "preserve-3d",
-          perspective: 900,
-        }}
-        onMouseMove={handleMove}
-        onMouseLeave={handleLeave}
+      {/* ── Outer card shell (matches ImgCard exactly) ── */}
+      <div
+        ref={cardRef}
+        className={[
+          "group relative isolate h-full w-full",
+          "border border-white/10 bg-white/[0.02]",
+          "shadow-[0_22px_70px_rgba(0,0,0,0.70)]",
+          "will-change-transform cursor-pointer select-none",
+          "hover:border-lime-400/30",
+          "hover:shadow-[0_50px_150px_rgba(0,0,0,0.86),0_26px_130px_rgba(34,197,94,0.20)]",
+        ].join(" ")}
+        style={{ borderRadius: outerRadius, transformStyle: "preserve-3d" }}
+        onPointerEnter={onPointerEnter}
+        onPointerMove={onPointerMove}
+        onPointerLeave={onPointerLeave}
       >
-        <div style={{
-          width: "100%", height: "100%",
-          borderRadius: "14px 14px 6px 6px",
-          overflow: "hidden",
-          boxShadow: [
-            "0 28px 72px rgba(0,0,0,0.78)",
-            "0 0 0 1px rgba(255,255,255,0.07) inset",
-            "0 0 40px rgba(132,204,22,0.12)",
-            "0 2px 8px rgba(132,204,22,0.06)",
-          ].join(", "),
-        }}>
-          <img
-            src={src} alt="" draggable="false"
-            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-          />
+        {/* outer top highlight */}
+        <div className="pointer-events-none absolute inset-0"
+          style={{ borderRadius: outerRadius, boxShadow: "inset 0 1px 0 rgba(255,255,255,0.085)", transform: "translateZ(10px)" }} />
+
+        {/* shine overlay on hover */}
+        <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+          style={{
+            borderRadius: outerRadius,
+            backgroundImage: "radial-gradient(320px circle at var(--hx) var(--hy), rgba(255,255,255,0.22), transparent 64%)",
+            mixBlendMode: "screen",
+            transform: "translateZ(68px)",
+          }} />
+
+        {/* frame padding */}
+        <div className="relative h-full w-full"
+          style={{
+            paddingLeft: T.padX, paddingRight: T.padX,
+            paddingTop: T.padTop, paddingBottom: T.padBottom,
+            transform: "translateZ(26px)", transformStyle: "preserve-3d",
+          }}>
+
+          {/* inner card */}
+          <div className={[
+            "relative h-full w-full overflow-hidden",
+            "border border-white/10 bg-black/35",
+            "shadow-[0_18px_62px_rgba(0,0,0,0.62)]",
+            "transition-colors duration-200",
+            "group-hover:border-lime-400/25",
+          ].join(" ")}
+            style={{ borderRadius: innerRadius, transformStyle: "preserve-3d" }}>
+
+            {/* top lime edge glow */}
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-lime-400/35 opacity-85"
+              style={{ transform: "translateZ(44px)" }} />
+
+            {/* image — grayscale by default, full color on hover */}
+            <img
+              src={src} alt="" draggable="false" loading="lazy"
+              className={[
+                "h-full w-full object-cover",
+                "transition duration-500 ease-out",
+                "grayscale",
+                "group-hover:grayscale-0",
+                "group-hover:saturate-[1.34] group-hover:contrast-[1.12] group-hover:brightness-[1.07]",
+              ].join(" ")}
+              style={{
+                transform: "translateZ(var(--imgZ)) scale(var(--imgScale))",
+                transformStyle: "preserve-3d",
+              }}
+            />
+
+            {/* vignette */}
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_28%,transparent_0%,rgba(0,0,0,0.42)_70%,rgba(0,0,0,0.78)_100%)]"
+              style={{ transform: "translateZ(26px)" }} />
+
+            {/* inner ring */}
+            <div className="pointer-events-none absolute border border-white/10 transition-colors duration-200 group-hover:border-white/15"
+              style={{
+                left: T.innerRingInset, right: T.innerRingInset,
+                top: T.innerRingInset, bottom: T.innerRingInset,
+                borderRadius: innerRadius,
+                transform: "translateZ(var(--ringZ))",
+              }} />
+          </div>
         </div>
-      </motion.div>
+      </div>
     </motion.div>
   );
 };
 
-/* ─── GraphicOverview ──────────────────────────────────── */
+/* ─── GraphicOverview ────────────────────────────────────── */
 export default function GraphicOverview({ data, items = [] }) {
   const sectionRef = useRef(null);
+  // once:false so it re-triggers every time the section enters/leaves viewport
   const inView = useInView(sectionRef, { once: false, amount: 0.25 });
 
-  // Pick 3 images spaced across the gallery for visual variety
+  // pick 3 images spaced evenly across the gallery
   const cardImages = useMemo(() => {
     if (!items.length) return [];
     const len = items.length;
@@ -106,47 +238,40 @@ export default function GraphicOverview({ data, items = [] }) {
   }, [items]);
 
   return (
-    <section ref={sectionRef} className="relative bg-[#070707] overflow-hidden">
+    // No overflow:hidden — lets fan cards bleed slightly AND keeps whileInView working
+    <section ref={sectionRef} className="relative bg-[#070707]">
       <Starfield />
 
-      {/* ambient lime glow — right side near cards */}
-      <div
-        className="pointer-events-none absolute right-[-80px] top-1/2 -translate-y-1/2"
+      {/* subtle lime glow behind cards */}
+      <div className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2"
         style={{
-          width: 480, height: 480,
-          borderRadius: "50%",
-          background: "radial-gradient(ellipse, rgba(132,204,22,0.055) 0%, transparent 70%)",
+          width: 480, height: 480, borderRadius: "50%",
+          background: "radial-gradient(ellipse, rgba(132,204,22,0.05) 0%, transparent 70%)",
           filter: "blur(50px)",
-        }}
-      />
+        }} />
 
       <div className="relative z-10 mx-auto w-full max-w-[980px] px-4 sm:px-8 py-16 sm:py-20">
         <div className="mx-auto max-w-[920px]">
-          <div className="grid items-center gap-12 md:gap-16 md:grid-cols-[1fr_300px]">
+          <div className="grid items-center gap-12 md:gap-16 md:grid-cols-[1fr_320px]">
 
-            {/* ── Text ── */}
+            {/* ── Text column ── */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.7, ease: [0.22, 0.61, 0.36, 1] }}
             >
               <h2 className="font-['Outfit'] text-[28px] sm:text-[32px] font-semibold text-white">
                 {data?.overviewTitle || "Overview"}
               </h2>
-
               <div className="mt-5 space-y-5">
                 {(data?.overviewText || []).map((p, idx) => (
                   <motion.p
                     key={idx}
                     initial={{ opacity: 0, y: 16 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{
-                      duration: 0.6,
-                      ease: [0.22, 0.61, 0.36, 1],
-                      delay: 0.1 + idx * 0.1,
-                    }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1], delay: 0.1 + idx * 0.1 }}
                     className="text-[15px] sm:text-[16px] leading-[1.7] text-white/65 max-w-[540px]"
                   >
                     {p}
@@ -155,20 +280,17 @@ export default function GraphicOverview({ data, items = [] }) {
               </div>
             </motion.div>
 
-            {/* ── Card fan ── */}
+            {/* ── Card fan column ── */}
             <div className="flex justify-center md:justify-end">
-              {/* Extra padding so fanned cards aren't clipped */}
-              <div className="relative" style={{ width: 240, height: 300, padding: "0 40px 20px 60px" }}>
-                <div className="relative w-full h-full" style={{ perspective: "1200px" }}>
-                  {cardImages.slice(0, 3).map((src, i) => (
-                    <DesignCard key={i} src={src} idx={i} inView={inView} />
-                  ))}
-
-                  {/* fallback placeholder when no gallery items passed */}
-                  {cardImages.length === 0 && (
-                    <div className="absolute inset-0 rounded-[14px_14px_6px_6px] bg-white/5 border border-white/10" />
-                  )}
-                </div>
+              {/*
+                Container sets the base size of each card.
+                Cards use position:absolute inset:0 and fan OUTSIDE this box
+                — no overflow:hidden anywhere in this chain.
+              */}
+              <div className="relative" style={{ width: 240, height: 310 }}>
+                {cardImages.slice(0, 3).map((src, i) => (
+                  <OverviewCard key={i} src={src} fanIdx={i} inView={inView} />
+                ))}
               </div>
             </div>
 
