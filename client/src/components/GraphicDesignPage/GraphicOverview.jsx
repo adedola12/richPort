@@ -23,9 +23,9 @@ const Starfield = () => (
 
 /* ─── Fan positions (back → front) ──────────────────────── */
 const FAN_OPEN = [
-  { x: -42, y: 20, rotate: -15, scale: 0.87 },
-  { x:   2, y:  8, rotate:  -3, scale: 0.93 },
-  { x:  38, y:  0, rotate:  10, scale: 1.00 },
+  { x: -80, y: 32, rotate: -22, scale: 0.85 },
+  { x:  -5, y: 14, rotate:  -4, scale: 0.92 },
+  { x:  65, y:  0, rotate:  14, scale: 1.00 },
 ];
 const FAN_CLOSED = { x: 0, y: 0, rotate: 0, scale: 0.94 };
 
@@ -38,18 +38,19 @@ const T = {
   perspective: 760,
   maxRotate: 18,
   maxZRotate: 3,
-  popScale: 1.08,
-  popLift: 18,
-  popZ: 70,
+  popScale: 1.18,
+  popLift: 32,
+  popZ: 110,
 };
 
 function clamp(n, lo, hi) { return Math.max(lo, Math.min(hi, n)); }
 
 /* ─── Single fan card ────────────────────────────────────── */
 const OverviewCard = ({ src, fanIdx, inView }) => {
-  const cardRef  = useRef(null);
+  const wrapperRef = useRef(null);
+  const cardRef    = useRef(null);
   const hoveredRef = useRef(false);
-  const rafRef   = useRef(null);
+  const rafRef     = useRef(null);
 
   const outerRadius = `${T.outerRTop}px ${T.outerRTop}px ${T.outerRBottom}px ${T.outerRBottom}px`;
   const innerRadius = `${T.innerRTop}px ${T.innerRTop}px ${T.innerRBottom}px ${T.innerRBottom}px`;
@@ -86,6 +87,7 @@ const OverviewCard = ({ src, fanIdx, inView }) => {
   const onPointerEnter = useCallback((e) => {
     if (e.pointerType === "touch") return;
     hoveredRef.current = true;
+    if (wrapperRef.current) wrapperRef.current.style.zIndex = "60";
     const el = cardRef.current;
     if (!el) return;
     el.style.transition = "transform 120ms ease-out, box-shadow 180ms ease-out, border-color 180ms ease-out";
@@ -106,6 +108,7 @@ const OverviewCard = ({ src, fanIdx, inView }) => {
   const onPointerLeave = useCallback(() => {
     hoveredRef.current = false;
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    if (wrapperRef.current) wrapperRef.current.style.zIndex = String(fanIdx + 1);
     const el = cardRef.current;
     if (!el) return;
     el.style.transition = "transform 380ms cubic-bezier(.2,.8,.2,1), box-shadow 280ms ease-out, border-color 280ms ease-out";
@@ -114,12 +117,13 @@ const OverviewCard = ({ src, fanIdx, inView }) => {
     el.style.setProperty("--hy", "35%");
     el.style.setProperty("--imgZ", "12px");
     el.style.setProperty("--imgScale", "1");
-  }, [baseTransform]);
+  }, [baseTransform, fanIdx]);
 
   const fan = FAN_OPEN[fanIdx];
 
   return (
     <motion.div
+      ref={wrapperRef}
       animate={inView
         ? { x: fan.x, y: fan.y, rotate: fan.rotate, scale: fan.scale }
         : FAN_CLOSED
