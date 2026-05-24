@@ -82,7 +82,7 @@ export default function GraphicDesignPage() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_0%,rgba(255,255,255,0.05)_0%,transparent_55%)]" />
       <main className="relative z-10">
         <GraphicHero data={DATA} />
-        <GraphicOverview data={DATA} />
+        <GraphicOverview data={DATA} items={DATA.gallery} />
         <GraphicGallery items={DATA.gallery} />
         <OtherProj currentSlug={DATA.slug} currentKind="gallary" />
         <BuildSection />
