@@ -21,7 +21,7 @@ const PROJECT = {
   clientName: "Cleanstead",
 
   description:
-    "Cleanstead is a professional cleaning and janitorial service dedicated to helping people reclaim their time and peace of mind. With a mission to simplify life through excellence, integrity, and respect, Cleanstead provides spotless results for homes, offices, and events. The brand stands as a reflection of trust, professionalism, and care — built for people who value both cleanliness and the calm that comes with it.\n\nThe project's goal was to establish a strong and consistent brand identity that communicates the company's values across every touchpoint — from digital platforms to physical materials. Cleanstead's commitment to "not cutting corners, but cleaning them" became the guiding principle behind its visual and verbal design language.",
+    "Cleanstead is a professional cleaning and janitorial service dedicated to helping people reclaim their time and peace of mind. With a mission to simplify life through excellence, integrity, and respect, Cleanstead provides spotless results for homes, offices, and events. The brand stands as a reflection of trust, professionalism, and care — built for people who value both cleanliness and the calm that comes with it.\n\nThe project's goal was to establish a strong and consistent brand identity that communicates the company's values across every touchpoint — from digital platforms to physical materials. Cleanstead's commitment to “not cutting corners, but cleaning them” became the guiding principle behind its visual and verbal design language.",
 
   tags: ["Brand Identity", "Brand Guideline", "Logo Design"],
   categories: ["Brand Identity Design", "Graphic Design"],
@@ -66,7 +66,7 @@ const PROJECT = {
 
   conclusionTitle: "Conclusion",
   conclusionBody:
-    "The outcome was a clean, confident, and modern identity that perfectly reflects Cleanstead's promise — excellence, trust, and care in every detail. From the logo and tone of voice to the uniforms and van wraps, every touchpoint now speaks with one consistent voice: "We don't cut corners in your stead — we clean them."\n\nThe new brand identity positioned Cleanstead as a credible, professional, and approachable service provider ready to scale its presence both within Lagos and beyond.",
+    "The outcome was a clean, confident, and modern identity that perfectly reflects Cleanstead's promise — excellence, trust, and care in every detail. From the logo and tone of voice to the uniforms and van wraps, every touchpoint now speaks with one consistent voice: “We don’t cut corners in your stead — we clean them.”\n\nThe new brand identity positioned Cleanstead as a credible, professional, and approachable service provider ready to scale its presence both within Lagos and beyond.",
   conclusionCtaLabel: "",
   conclusionCtaUrl: "",
 
