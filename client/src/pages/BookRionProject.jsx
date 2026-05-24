@@ -11,6 +11,7 @@ import ProjectConc from "../components/ProjectPage/ProjectConc";
 import DiscoverImg from "../components/ProjectPage/DiscoverImg";
 import OtherProj from "../components/ProjectPage/OtherProj";
 import BuildSection from "../components/Home/BuildSection";
+import PageMeta from "../components/common/PageMeta";
 
 /* ─────────────────────────────────────────
    ALL BOOK RION DATA — hardcoded from DB
@@ -105,6 +106,11 @@ const PROJECT = {
    ───────────────────────────────────────── */
 const BookRionProject = () => (
   <div className="text-white bg-[#050505]">
+    <PageMeta
+      title="BookRion — Brand Identity"
+      description="Brand identity case study for BookRion — a book distribution platform. Logo, visual guidelines, and a cohesive identity system built to unify a growing platform."
+      url="/projects/book-rion"
+    />
     <ProjectDetailsHero project={PROJECT} />
     <MainImg project={PROJECT} />
     <ProjectWriteUp project={PROJECT} />

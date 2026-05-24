@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import OtherProj from "../components/ProjectPage/OtherProj";
 import BuildSection from "../components/Home/BuildSection";
+import PageMeta from "../components/common/PageMeta";
 
 const GR = "#a3e635"; // lime-400 — portfolio accent
 
@@ -442,6 +443,11 @@ const SavedupProject = () => {
 
   return (
   <div className="relative min-h-screen bg-[#07090C] text-white overflow-x-hidden font-['Outfit']">
+    <PageMeta
+      title="Savedup — UI/UX Case Study"
+      description="A detailed UI/UX case study on Savedup — a savings app designed to help users build disciplined saving habits through smart visual feedback."
+      url="/ui-projects/savedup"
+    />
 
     {/* ambient glows */}
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">

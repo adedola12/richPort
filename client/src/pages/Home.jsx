@@ -9,10 +9,16 @@ import DesignProcess from "../components/Home/DesignProcess";
 import Testimonials from "../components/Home/Testimonials";
 import BuildSection from "../components/Home/BuildSection";
 import WorkExp from "../components/Home/WorkExp";
+import PageMeta from "../components/common/PageMeta";
 
 const Home = () => {
   return (
     <div className="text-white bg-[#050505]">
+      <PageMeta
+        title="Home"
+        description="Portfolio of Richard Enoch — a multidisciplinary designer specialising in brand identity, UI/UX, graphic design, and web design."
+        url="/"
+      />
       <Hero />
       <PickACard />
       <AboutMe />

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
 import { FiClock, FiGlobe, FiZap } from "react-icons/fi";
 import confetti from "canvas-confetti";
+import PageMeta from "../components/common/PageMeta";
 
 const SERVICE_OPTIONS = [
   "UI / UX Design",
@@ -463,6 +464,11 @@ const Contact = () => {
       className="flex flex-col w-full bg-[#050505]"
       style={{ paddingTop: "56px", minHeight: "calc(100vh - 56px)", marginBottom: "-32px" }}
     >
+      <PageMeta
+        title="Contact"
+        description="Get in touch with Richard Enoch — whether you have a project in mind or just want to connect, send a message and let's talk."
+        url="/contact"
+      />
       {/* ── MOBILE VIDEO HEADER (hidden on desktop) ── */}
       <div className="relative lg:hidden h-52 shrink-0 overflow-hidden">
         <BgVideo className="absolute inset-0 h-full w-full object-cover opacity-30" />

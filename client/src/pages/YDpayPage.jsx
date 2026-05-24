@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Shield01Icon, FlashIcon, PaintBrush01Icon, RulerIcon } from "hugeicons-react";
 import OtherProj from "../components/ProjectPage/OtherProj";
 import BuildSection from "../components/Home/BuildSection";
+import PageMeta from "../components/common/PageMeta";
 
 import iphone12 from "../assets/YDpay/iphone12pro.png";
 import iphone15 from "../assets/YDpay/iphone15pro.png";
@@ -160,6 +161,11 @@ const FlowBlock = ({ badge, badgeColor = GR, num, title, count, description, scr
 ══════════════════════════════════════ */
 const YDpayPage = () => (
   <div className="relative min-h-screen bg-[#07090C] text-white overflow-x-hidden font-['Outfit']">
+    <PageMeta
+      title="YDpay Mobile Redesign"
+      description="A full mobile redesign of the YDpay fintech app — dark UI, trust-first design language, and a streamlined 4-action home experience."
+      url="/ui-projects/ydpay-mobile-redesign"
+    />
 
     {/* ambient glows */}
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">

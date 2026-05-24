@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { FiExternalLink, FiArrowDown } from "react-icons/fi";
 import BuildSection from "../components/Home/BuildSection";
+import PageMeta from "../components/common/PageMeta";
 
 import niqsLogo  from "../assets/partner/NiqsColor.svg";
 import adlmLogo  from "../assets/partner/ADLMLogo.png";
@@ -395,6 +396,11 @@ const Hero = () => {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 const WebsiteDesignPage = () => (
   <div className="min-h-screen bg-[#050505] text-white" style={{ paddingTop: "56px" }}>
+    <PageMeta
+      title="Website Design"
+      description="Website design projects by Richard Enoch — live, interactive sites built for national organisations and growing brands."
+      url="/website-design"
+    />
     <Hero />
 
     <div style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>

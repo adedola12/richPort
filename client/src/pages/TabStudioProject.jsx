@@ -11,6 +11,7 @@ import ProjectConc from "../components/ProjectPage/ProjectConc";
 import DiscoverImg from "../components/ProjectPage/DiscoverImg";
 import OtherProj from "../components/ProjectPage/OtherProj";
 import BuildSection from "../components/Home/BuildSection";
+import PageMeta from "../components/common/PageMeta";
 
 import TS3 from "../assets/TabStudio/TS_3.jpg";
 import TS5 from "../assets/TabStudio/TS_5.jpg";
@@ -117,6 +118,11 @@ const PROJECT = {
    ───────────────────────────────────────── */
 const TabStudioProject = () => (
   <div className="text-white bg-[#050505]">
+    <PageMeta
+      title="Tabstudio — Brand Identity"
+      description="Brand identity case study for Tabstudio — a modern, scalable identity system designed for a creative-forward company serving startups, creators, and tech brands."
+      url="/projects/tabstudio"
+    />
     <ProjectDetailsHero project={PROJECT} />
     <MainImg project={PROJECT} />
     <ProjectWriteUp project={PROJECT} />

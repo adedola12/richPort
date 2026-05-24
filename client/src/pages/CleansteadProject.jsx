@@ -11,6 +11,7 @@ import ProjectConc from "../components/ProjectPage/ProjectConc";
 import DiscoverImg from "../components/ProjectPage/DiscoverImg";
 import OtherProj from "../components/ProjectPage/OtherProj";
 import BuildSection from "../components/Home/BuildSection";
+import PageMeta from "../components/common/PageMeta";
 
 /* ─────────────────────────────────────────
    ALL CLEANSTEAD DATA — hardcoded from DB
@@ -110,6 +111,11 @@ const PROJECT = {
    ───────────────────────────────────────── */
 const CleansteadProject = () => (
   <div className="text-white bg-[#050505]">
+    <PageMeta
+      title="Cleanstead — Brand Identity"
+      description="Brand identity case study for Cleanstead — a professional cleaning brand built on trust, integrity, and care. Full identity system from logo to brand guidelines."
+      url="/projects/cleanstead"
+    />
     <ProjectDetailsHero project={PROJECT} />
     <MainImg project={PROJECT} />
     <ProjectWriteUp project={PROJECT} />

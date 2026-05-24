@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import OtherProj from "../components/ProjectPage/OtherProj";
 import BuildSection from "../components/Home/BuildSection";
+import PageMeta from "../components/common/PageMeta";
 
 const GR = "#a3e635";
 
@@ -231,6 +232,11 @@ const PersonaSection = () => {
 const SnotesProject = () => {
   return (
     <div className="relative min-h-screen bg-[#07090C] text-white overflow-x-hidden font-['Outfit']">
+      <PageMeta
+        title="Snotes — UI/UX Case Study"
+        description="A concept-stage UI/UX case study for Snotes — a focused mobile sermon note-taking app designed to help people live what they hear."
+        url="/ui-projects/snotes"
+      />
 
       {/* ambient glows */}
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">

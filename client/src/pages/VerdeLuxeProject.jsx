@@ -11,6 +11,7 @@ import ProjectConc from "../components/ProjectPage/ProjectConc";
 import DiscoverImg from "../components/ProjectPage/DiscoverImg";
 import OtherProj from "../components/ProjectPage/OtherProj";
 import BuildSection from "../components/Home/BuildSection";
+import PageMeta from "../components/common/PageMeta";
 
 /* ─────────────────────────────────────────
    ALL VERDE LUXE DATA — hardcoded from DB
@@ -109,6 +110,11 @@ const PROJECT = {
    ───────────────────────────────────────── */
 const VerdeLuxeProject = () => (
   <div className="text-white bg-[#050505]">
+    <PageMeta
+      title="Verde Luxe — Brand Identity"
+      description="Brand identity case study for Verde Luxe — a premier interior design brand. Sophisticated visual system built around elegance, craftsmanship, and timeless décor."
+      url="/projects/verde-luxe"
+    />
     <ProjectDetailsHero project={PROJECT} />
     <MainImg project={PROJECT} />
     <ProjectWriteUp project={PROJECT} />

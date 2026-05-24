@@ -7,6 +7,7 @@ import GraphicOverview from "../components/GraphicDesignPage/GraphicOverview";
 import GraphicGallery from "../components/GraphicDesignPage/GraphicGallery";
 import BuildSection from "../components/Home/BuildSection";
 import OtherProj from "../components/ProjectPage/OtherProj";
+import PageMeta from "../components/common/PageMeta";
 
 /* ── hero / overview background ── */
 const GRAPHICS_ASSETS = import.meta.glob(
@@ -77,6 +78,11 @@ const DATA = {
 export default function GraphicDesignPage() {
   return (
     <div className="relative min-h-screen bg-[#070707] text-white overflow-x-hidden">
+      <PageMeta
+        title="Graphic Design"
+        description="Graphic design work by Richard Enoch — flyers, social media designs, and visual campaigns crafted for brands that want to be seen."
+        url="/graphic-design"
+      />
       <div className="pointer-events-none absolute -left-40 -top-40 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle_at_center,#4ade80_0,transparent_65%)] opacity-[0.16] blur-3xl" />
       <div className="pointer-events-none absolute -right-44 top-[18%] h-[560px] w-[560px] rounded-full bg-[radial-gradient(circle_at_center,#22c55e_0,transparent_70%)] opacity-[0.12] blur-3xl" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_0%,rgba(255,255,255,0.05)_0%,transparent_55%)]" />
