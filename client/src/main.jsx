@@ -35,6 +35,7 @@ import ADLMStudioPage from "./pages/ADLMStudioPage.jsx";
 import WhitespacePage from "./pages/WhitespacePage.jsx";
 import YDpayDesignPage from "./pages/YDpayDesignPage.jsx";
 import Contact from "./pages/Contact.jsx";
+import PresentationDesignPage from "./pages/PresentationDesignPage.jsx";
 
 // Redirect component that preserves slug params
 const RedirectWithSlug = ({ basePath }) => {
@@ -62,6 +63,7 @@ const router = createBrowserRouter([
       { path: "website-design", element: <WebsiteDesignPage /> },
       { path: "rate-details", element: <RateDetails /> },
       { path: "contact", element: <Contact /> },
+      { path: "presentation-design", element: <PresentationDesignPage /> },
       { path: "projects/:slug", element: <ProjectPage /> },
 
       // ✅ UI Projects (plural) — matches your navigate(`/ui-projects/${slug}`)

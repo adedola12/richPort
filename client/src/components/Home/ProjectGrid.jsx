@@ -10,6 +10,7 @@ import webHeroImg from "../../assets/workImg/WI1.png";
 import adlmThumb from "../../assets/ADLMStudio/ADLM Studio -  Discount.jpg";
 import wsThumb from "../../assets/Whitespace/Colours and their meanings - Cover.jpg";
 import ydpayGfxThumb from "../../assets/YDpayDesigns/Card Design 1.png";
+import presThumb from "../../assets/PresentationDesigns/1.png";
 
 const STATIC_GFX_PROJECTS = [
   {
@@ -63,6 +64,19 @@ const STATIC_GFX_PROJECTS = [
     pageImg: ydpayGfxThumb,
     categories: ["Graphic Designs"],
     id: "static-gfx-ydpay",
+  },
+  {
+    kind: "gallary",
+    slug: "presentation-design",
+    route: "/presentation-design",
+    name: "Presentation Design",
+    description: "Investor pitch decks, corporate presentations, and personal brand slide design — built to communicate with clarity and confidence.",
+    url: "",
+    tags: ["Presentation Design", "Pitch Deck"],
+    images: { main: presThumb },
+    pageImg: presThumb,
+    categories: ["Presentation Designs"],
+    id: "static-presentation",
   },
 ];
 
@@ -126,6 +140,10 @@ const TAB_CONFIG = [
   {
     label: "Graphic Designs",
     matches: ["Graphic Designs", "Graphic Design"],
+  },
+  {
+    label: "Presentation Designs",
+    matches: ["Presentation Designs", "Presentation Design"],
   },
 ];
 
@@ -371,7 +389,11 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
     return combined.filter((item) => {
       if (!applyExclude(item)) return false;
       if (item.kind === "ui") return isAllTab || isUiTab;
-      if (item.kind === "gallary") return isAllTab || isGfxTab;
+      if (item.kind === "gallary") {
+        if (isAllTab) return true;
+        const cats = Array.isArray(item.categories) ? item.categories : [];
+        return matches ? matches.some((m) => cats.includes(m)) : false;
+      }
       if (isGfxTab) return false;
       if (isAllTab) return true;
       if (!matches || !matches.length) return false;
