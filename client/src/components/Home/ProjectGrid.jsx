@@ -113,7 +113,7 @@ const TAB_CONFIG = [
   { label: "All", matches: null },
   {
     label: "Brand Identity Designs",
-    matches: ["Brand Identity Designs", "Brand Identity"],
+    matches: ["Brand Identity Designs", "Brand Identity", "Brand Identity Design"],
   },
   {
     label: "Websites Designs",
@@ -317,12 +317,17 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
     );
   }, [projects]);
 
-  const staticUiSlugs = useMemo(() => new Set(STATIC_UI_PROJECTS.map((p) => p.slug)), []);
+  const staticUiSlugs = useMemo(() => new Set(STATIC_UI_PROJECTS.map((p) => p.slug.toLowerCase())), []);
+  const staticUiNameKeys = useMemo(() => new Set(STATIC_UI_PROJECTS.map((p) => p.name.toLowerCase().replace(/[^a-z0-9]/g, ""))), []);
 
   const mappedUiProjects = useMemo(() => {
     return (uiProjects || [])
       .filter((p) => p.showOnProjectsPage === undefined || p.showOnProjectsPage)
-      .filter((p) => !staticUiSlugs.has(p.slug))
+      .filter((p) => {
+        const slug = (p.slug || "").toLowerCase();
+        const nameKey = (p.name || p.title || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+        return !staticUiSlugs.has(slug) && !staticUiNameKeys.has(nameKey);
+      })
       .map((p) => ({
         kind: "ui",
         slug: p.slug,

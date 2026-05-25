@@ -129,7 +129,7 @@ const Bento5 = ({ images, onImageClick }) => {
         className={`${tileBase}
           col-span-3
           md:col-span-2 md:col-start-1 md:row-start-1 md:row-span-1
-          aspect-[4/3] md:aspect-auto
+          aspect-[4/5] md:aspect-auto
         `}
         onClick={() => onImageClick(0)}
       >
@@ -144,7 +144,7 @@ const Bento5 = ({ images, onImageClick }) => {
         className={`${tileBase}
           col-span-3
           md:col-span-1 md:col-start-3 md:row-start-1 md:row-span-1
-          aspect-[4/3] md:aspect-[3/4]
+          aspect-[4/5] md:aspect-[3/4]
         `}
         onClick={() => onImageClick(1)}
       >
