@@ -1,7 +1,7 @@
 // src/pages/SavedupProject.jsx
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { motion, useMotionValue, useTransform, useSpring, AnimatePresence } from "framer-motion";
+import { motion, useMotionValue, useTransform, useSpring, AnimatePresence, useInView } from "framer-motion";
 import OtherProj from "../components/ProjectPage/OtherProj";
 import BuildSection from "../components/Home/BuildSection";
 import PageMeta from "../components/common/PageMeta";
@@ -9,41 +9,53 @@ import PageMeta from "../components/common/PageMeta";
 const GR = "#a3e635"; // lime-400 — portfolio accent
 
 /* ─── animation primitives (same pattern as YDpay) ─── */
-const FadeUp = ({ children, delay = 0, className = "" }) => (
-  <motion.div
-    className={className}
-    initial={{ opacity: 0, y: 32 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, amount: 0.1 }}
-    transition={{ duration: 0.7, ease: [0.22, 0.61, 0.36, 1], delay }}
-  >
-    {children}
-  </motion.div>
-);
+const FadeUp = ({ children, delay = 0, className = "" }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0 });
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      initial={{ opacity: 0, y: 32 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 }}
+      transition={{ duration: 0.7, ease: [0.22, 0.61, 0.36, 1], delay }}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
-const SlideIn = ({ children, direction = "left", delay = 0, className = "" }) => (
-  <motion.div
-    className={className}
-    initial={{ opacity: 0, x: direction === "left" ? -40 : 40 }}
-    whileInView={{ opacity: 1, x: 0 }}
-    viewport={{ once: true, amount: 0.1 }}
-    transition={{ duration: 0.75, ease: [0.22, 0.61, 0.36, 1], delay }}
-  >
-    {children}
-  </motion.div>
-);
+const SlideIn = ({ children, direction = "left", delay = 0, className = "" }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0 });
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      initial={{ opacity: 0, x: direction === "left" ? -40 : 40 }}
+      animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: direction === "left" ? -40 : 40 }}
+      transition={{ duration: 0.75, ease: [0.22, 0.61, 0.36, 1], delay }}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
-const StaggerGrid = ({ children, className = "" }) => (
-  <motion.div
-    className={className}
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: false, amount: 0.1 }}
-    variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
-  >
-    {children}
-  </motion.div>
-);
+const StaggerGrid = ({ children, className = "" }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0 });
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 const StaggerItem = ({ children, className = "" }) => (
   <motion.div

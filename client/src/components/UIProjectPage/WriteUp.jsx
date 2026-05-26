@@ -56,9 +56,8 @@ function BlockImages({ images = [] }) {
         <div
           className={cx(
             "w-full",
-            "h-[220px] sm:h-[300px] md:h-[420px] lg:h-[480px]",
+            "aspect-[4/5] sm:aspect-auto sm:h-[300px] md:h-[420px] lg:h-[480px]",
           )}
-          style={{ aspectRatio: "16 / 9" }}
         >
           <img
             src={list[0]}

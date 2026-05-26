@@ -3,8 +3,8 @@ import SafeImage from "../common/SafeImage";
 import MainImgMock from "../../assets/UIPage/MainImgMock.jpg";
 
 const HEIGHTS = {
-  full: "h-[220px] sm:h-[300px] md:h-[380px] lg:h-[440px]",
-  narrow: "h-[160px] sm:h-[220px] md:h-[260px] lg:h-[300px]",
+  full: "aspect-[4/5] sm:aspect-auto sm:h-[300px] md:h-[380px] lg:h-[440px]",
+  narrow: "aspect-[4/5] sm:aspect-auto sm:h-[220px] md:h-[260px] lg:h-[300px]",
 };
 
 const FRAMES = {

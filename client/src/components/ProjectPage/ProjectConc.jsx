@@ -105,7 +105,7 @@ const ProjectConc = ({ project }) => {
                     ? `${project.name} conclusion visual`
                     : "Project conclusion visual"
                 }
-                className="h-[260px] sm:h-[280px] lg:h-[300px] w-full object-cover"
+                className="aspect-[4/5] sm:aspect-auto sm:h-[280px] lg:h-[300px] w-full object-cover"
               />
             </div>
           </motion.div>
