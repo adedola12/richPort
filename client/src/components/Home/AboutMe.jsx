@@ -12,8 +12,6 @@ import {
 
 const AboutMe = () => {
   const [nameReady, setNameReady] = useState(false);
-  const [leftDone, setLeftDone] = useState(false);
-  const [rightDone, setRightDone] = useState(false);
 
   return (
     <section className="relative w-full overflow-hidden bg-[#050505] py-20 lg:py-24">
@@ -55,23 +53,20 @@ const AboutMe = () => {
                 startWhen={nameReady}
                 delay={0}
                 wordStep={0.1}
-                onComplete={() => setLeftDone(true)}
                 className="inline-block"
               />
             </h2>
 
             {/* Left paragraphs */}
-            <TypingText
-              as="p"
-              startWhen={leftDone}
-              delay={0}
-              wordStep={0.03}
-              onComplete={() => setRightDone(true)}
-              text={`Design, for me, is simply giving life to the many ideas constantly buzzing in my head. I love to draw, play with colors, and explore the endless possibilities that come from starting with a blank canvas.
-
-I'm a multidisciplinary designer, and I've been on this roller coaster for about 6 years now. Over the years, I've had the chance to bring brands to life, collaborate with national organizations both locally and internationally, and just enjoy the process of creating.`}
+            <motion.p
               className="mt-2 text-[15px] sm:text-[16px] leading-[1.65] text-neutral-200 whitespace-pre-line"
-            />
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1], delay: 0.25 }}
+            >
+              {`I'm a visual designer and product thinker with 6 years of experience across brand identity, UI/UX, and construction technology.\n\nI'm drawn to work that demands precision and restraint — design that carries weight without announcing itself. Given a clear brief, I make it look like it couldn't have been done any other way.`}
+            </motion.p>
           </div>
 
           {/* ---- CENTER IMAGE ---- */}
@@ -115,18 +110,17 @@ I'm a multidisciplinary designer, and I've been on this roller coaster for about
 
           {/* ---- RIGHT TEXT + CTAs ---- */}
           <div className="flex flex-col items-start gap-12 text-left lg:pt-[133px]">
-            <TypingText
-              as="p"
-              startWhen={rightDone}
-              delay={0}
-              wordStep={0.03}
-              text={`I've also worked across different teams, building my soft skills and doing my best to make sure my designs solve real problems—because at the end of the day, isn't that what design is all about?
-
-And since I find the construction industry super fascinating (I studied Quantity Surveying, by the way), I like to think I'm discovering my purpose in connecting design and construction…
-
-or maybe it's the other way around.`}
+            <motion.p
               className="text-[15px] sm:text-[16px] leading-[1.65] text-neutral-200 whitespace-pre-line"
-            />
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, ease: [0.22, 0.61, 0.36, 1], delay: 0.15 }}
+            >
+              {`I'm also a trained Quantity Surveyor — which means when I'm designing for the built environment, I already speak the language. That background shows up in how I approach systems, structure, and detail.\n\n`}
+              <span className="text-lime-400 font-medium">I build things I design.</span>
+              {` This portfolio was designed and coded by me — not templated, not generated.`}
+            </motion.p>
 
             {/* View Resume button + social icons — Figma style */}
             <div className="flex items-center gap-2 lg:mt-[-40px] mt-[-20px]">

@@ -16,7 +16,7 @@ const Home = () => {
     <div className="text-white bg-[#050505]">
       <PageMeta
         title="Home"
-        description="Portfolio of Richard Enoch — a multidisciplinary designer specialising in brand identity, UI/UX, graphic design, and web design."
+        description="Portfolio of Richard Enoch — visual designer and product thinker with 6 years across brand identity, UI/UX, and construction technology."
         url="/"
       />
       <Hero />
