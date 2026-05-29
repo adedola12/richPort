@@ -22,15 +22,14 @@ const PROJECT = {
   clientName: "Verde Luxe",
 
   description:
-    "Verde Luxe is a premier interior design brand dedicated to transforming spaces into timeless works of art. Specializing in high-quality décor pieces—from chandeliers to furniture and frames — the brand embodies sophistication, elegance, and craftsmanship.",
+    "Verde Luxe is a premier interior design brand dedicated to transforming spaces into timeless works of art. Specializing in high-quality décor pieces—from chandeliers to furniture and frames — the brand embodies sophistication, elegance, and craftsmanship.\n\nMy Role — Sole designer. I delivered the full brand identity system: logo design and variations, colour palette, typography, brand stationery, and a complete brand guidelines document (~30 pages).",
 
   tags: ["Brand Identity", "Brand Guideline", "Logo Design"],
   categories: ["Brand Identity Design", "Graphic Design"],
 
   heroMeta: {
     categories: ["Brand Identity", "Brand Guideline", "Logo Design"],
-    deliverables:
-      "Brand Guideline, Logo Design, Brand Identity, Social Media Designs, Logo Files",
+    deliverables: "Brand Guidelines (~30 pages), Logo Design, Colour Palette, Typography, Brand Stationery",
     timeline: "2 Weeks",
     teamInitials: ["RE"],
   },

@@ -13,7 +13,7 @@ const About = () => {
     <div className="text-white bg-[#050505]">
       <PageMeta
         title="About"
-        description="Learn about Richard Enoch — a multidisciplinary designer with 6+ years crafting brand identities, UI/UX experiences, and graphic design."
+        description="Richard Enoch — visual designer and product thinker with 6 years across brand identity, UI/UX, and construction technology. Trained Quantity Surveyor."
         url="/about"
       />
       <AboutHero />

@@ -82,9 +82,22 @@ const STATIC_GFX_PROJECTS = [
 
 const SAVEDUP_THUMB = "https://res.cloudinary.com/dirgfivvb/image/upload/v1769320865/richard_portfolio/ui-projects/nhjprdndluq6dbch0j27.jpg";
 
-const SNOTES_THUMB = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450'%3E%3Cdefs%3E%3Cpattern id='sp' patternUnits='userSpaceOnUse' width='20' height='20' patternTransform='rotate(45)'%3E%3Crect width='10' height='20' fill='%230f1318'/%3E%3Crect x='10' width='10' height='20' fill='%23111820'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='800' height='450' fill='url(%23sp)'/%3E%3Crect x='360' y='160' width='80' height='96' rx='4' fill='none' stroke='%23a3e635' stroke-width='1.5' opacity='0.3'/%3E%3Cline x1='376' y1='188' x2='424' y2='188' stroke='%23a3e635' stroke-width='1' opacity='0.2'/%3E%3Cline x1='376' y1='203' x2='424' y2='203' stroke='%23a3e635' stroke-width='1' opacity='0.2'/%3E%3Cline x1='376' y1='218' x2='414' y2='218' stroke='%23a3e635' stroke-width='1' opacity='0.2'/%3E%3Ctext x='400' y='285' text-anchor='middle' font-family='system-ui' font-size='12' fill='%23a3e635' opacity='0.45' letter-spacing='4'%3ESNOTES%3C/text%3E%3Ctext x='400' y='304' text-anchor='middle' font-family='system-ui' font-size='9' fill='%23ffffff' opacity='0.2'%3ESermon Notes App%3C/text%3E%3C/svg%3E";
+
+const QUIV_THUMB = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450'%3E%3Crect width='800' height='450' fill='%230a0f18'/%3E%3Crect x='60' y='60' width='480' height='330' rx='8' fill='%230d1521' stroke='%233B8EF0' stroke-width='1' opacity='0.5'/%3E%3Crect x='60' y='60' width='480' height='32' rx='8' fill='%233B8EF0' opacity='0.15'/%3E%3Cline x1='60' y1='110' x2='540' y2='110' stroke='%233B8EF0' stroke-width='0.5' opacity='0.2'/%3E%3Crect x='76' y='122' width='200' height='8' rx='2' fill='%23ffffff' opacity='0.12'/%3E%3Crect x='76' y='140' width='140' height='6' rx='2' fill='%233B8EF0' opacity='0.3'/%3E%3Crect x='76' y='162' width='200' height='8' rx='2' fill='%23ffffff' opacity='0.08'/%3E%3Crect x='76' y='180' width='160' height='6' rx='2' fill='%23ffffff' opacity='0.06'/%3E%3Crect x='76' y='202' width='200' height='8' rx='2' fill='%23ffffff' opacity='0.08'/%3E%3Crect x='300' y='122' width='220' height='200' rx='4' fill='%233B8EF0' opacity='0.06' stroke='%233B8EF0' stroke-width='0.5' opacity='0.2'/%3E%3Cline x1='320' y1='155' x2='500' y2='185' stroke='%233B8EF0' stroke-width='1.5' opacity='0.5'/%3E%3Cline x1='500' y1='185' x2='480' y2='230' stroke='%233B8EF0' stroke-width='1.5' opacity='0.5'/%3E%3Ccircle cx='320' cy='155' r='3' fill='%233B8EF0' opacity='0.7'/%3E%3Ccircle cx='500' cy='185' r='3' fill='%233B8EF0' opacity='0.7'/%3E%3Ccircle cx='480' cy='230' r='3' fill='%233B8EF0' opacity='0.7'/%3E%3Ctext x='400' y='415' text-anchor='middle' font-family='system-ui' font-size='11' fill='%233B8EF0' opacity='0.5' letter-spacing='4'%3EQUIV%3C/text%3E%3C/svg%3E";
 
 const STATIC_UI_PROJECTS = [
+  {
+    kind: "ui",
+    slug: "quiv",
+    name: "Quiv — QS Take-Off Software",
+    description: "Standalone desktop app replacing manual quantity take-off for Nigerian construction professionals. PDF-based measurement, BESMM-aligned, offline-first.",
+    url: "",
+    tags: ["Product Design", "Desktop App", "Construction Tech"],
+    images: { main: QUIV_THUMB },
+    pageImg: QUIV_THUMB,
+    categories: ["Product UI/UX Designs"],
+    id: "static-quiv",
+  },
   {
     kind: "ui",
     slug: "ydpay-mobile-redesign",
@@ -112,14 +125,32 @@ const STATIC_UI_PROJECTS = [
   {
     kind: "ui",
     slug: "snotes",
-    name: "Snotes — Sermon Notes App",
-    description: "A focused mobile sermon note-taking app — built quietly, for people who want to actually live what they hear.",
+    name: "Snotes — Note-Taking App",
+    description: "A focused note-taking and organisation app for students — clean capture, smart tagging, and a calm interface built around the way students actually study.",
     url: "",
-    tags: ["UI/UX Design", "Mobile App", "Product Strategy"],
-    images: { main: SNOTES_THUMB },
-    pageImg: SNOTES_THUMB,
+    tags: ["UI/UX Design", "Mobile App", "EdTech"],
+    images: { main: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450'%3E%3Crect width='800' height='450' fill='%230b0f0b'/%3E%3Crect x='80' y='50' width='260' height='350' rx='16' fill='%230e1a0e' stroke='%23a3e635' stroke-width='1' opacity='0.4'/%3E%3Crect x='80' y='50' width='260' height='48' rx='16' fill='%23a3e635' opacity='0.1'/%3E%3Crect x='100' y='118' width='180' height='8' rx='2' fill='%23ffffff' opacity='0.15'/%3E%3Crect x='100' y='136' width='120' height='6' rx='2' fill='%23a3e635' opacity='0.4'/%3E%3Crect x='100' y='158' width='180' height='6' rx='2' fill='%23ffffff' opacity='0.08'/%3E%3Crect x='100' y='172' width='150' height='6' rx='2' fill='%23ffffff' opacity='0.06'/%3E%3Crect x='100' y='186' width='165' height='6' rx='2' fill='%23ffffff' opacity='0.06'/%3E%3Cline x1='80' y1='214' x2='340' y2='214' stroke='%23a3e635' stroke-width='0.5' opacity='0.15'/%3E%3Crect x='100' y='228' width='180' height='8' rx='2' fill='%23ffffff' opacity='0.12'/%3E%3Crect x='100' y='246' width='130' height='6' rx='2' fill='%23a3e635' opacity='0.3'/%3E%3Crect x='100' y='266' width='180' height='6' rx='2' fill='%23ffffff' opacity='0.07'/%3E%3Crect x='100' y='280' width='140' height='6' rx='2' fill='%23ffffff' opacity='0.05'/%3E%3Crect x='420' y='50' width='300' height='350' rx='16' fill='%230e1a0e' stroke='%23a3e635' stroke-width='1' opacity='0.25'/%3E%3Crect x='440' y='80' width='260' height='280' rx='4' fill='%23a3e635' opacity='0.03'/%3E%3Crect x='450' y='95' width='200' height='10' rx='2' fill='%23ffffff' opacity='0.1'/%3E%3Crect x='450' y='115' width='240' height='6' rx='2' fill='%23ffffff' opacity='0.06'/%3E%3Crect x='450' y='129' width='220' height='6' rx='2' fill='%23ffffff' opacity='0.05'/%3E%3Ccircle cx='720' cy='390' r='24' fill='%23a3e635' opacity='0.15'/%3E%3Ctext x='400' y='425' text-anchor='middle' font-family='system-ui' font-size='11' fill='%23a3e635' opacity='0.5' letter-spacing='4'%3ESNOTES%3C/text%3E%3C/svg%3E" },
+    pageImg: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450'%3E%3Crect width='800' height='450' fill='%230b0f0b'/%3E%3Crect x='80' y='50' width='260' height='350' rx='16' fill='%230e1a0e' stroke='%23a3e635' stroke-width='1' opacity='0.4'/%3E%3Crect x='80' y='50' width='260' height='48' rx='16' fill='%23a3e635' opacity='0.1'/%3E%3Crect x='100' y='118' width='180' height='8' rx='2' fill='%23ffffff' opacity='0.15'/%3E%3Crect x='100' y='136' width='120' height='6' rx='2' fill='%23a3e635' opacity='0.4'/%3E%3Crect x='100' y='158' width='180' height='6' rx='2' fill='%23ffffff' opacity='0.08'/%3E%3Crect x='100' y='172' width='150' height='6' rx='2' fill='%23ffffff' opacity='0.06'/%3E%3Crect x='100' y='186' width='165' height='6' rx='2' fill='%23ffffff' opacity='0.06'/%3E%3Cline x1='80' y1='214' x2='340' y2='214' stroke='%23a3e635' stroke-width='0.5' opacity='0.15'/%3E%3Crect x='100' y='228' width='180' height='8' rx='2' fill='%23ffffff' opacity='0.12'/%3E%3Crect x='100' y='246' width='130' height='6' rx='2' fill='%23a3e635' opacity='0.3'/%3E%3Crect x='100' y='266' width='180' height='6' rx='2' fill='%23ffffff' opacity='0.07'/%3E%3Crect x='100' y='280' width='140' height='6' rx='2' fill='%23ffffff' opacity='0.05'/%3E%3Crect x='420' y='50' width='300' height='350' rx='16' fill='%230e1a0e' stroke='%23a3e635' stroke-width='1' opacity='0.25'/%3E%3Crect x='440' y='80' width='260' height='280' rx='4' fill='%23a3e635' opacity='0.03'/%3E%3Crect x='450' y='95' width='200' height='10' rx='2' fill='%23ffffff' opacity='0.1'/%3E%3Crect x='450' y='115' width='240' height='6' rx='2' fill='%23ffffff' opacity='0.06'/%3E%3Crect x='450' y='129' width='220' height='6' rx='2' fill='%23ffffff' opacity='0.05'/%3E%3Ccircle cx='720' cy='390' r='24' fill='%23a3e635' opacity='0.15'/%3E%3Ctext x='400' y='425' text-anchor='middle' font-family='system-ui' font-size='11' fill='%23a3e635' opacity='0.5' letter-spacing='4'%3ESNOTES%3C/text%3E%3C/svg%3E",
     categories: ["Product UI/UX Designs"],
     id: "static-snotes",
+  },
+];
+
+const NIQS_THUMB = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450'%3E%3Crect width='800' height='450' fill='%23000033'/%3E%3Crect x='0' y='0' width='800' height='450' fill='url(%23ng)'/%3E%3Cdefs%3E%3CradialGradient id='ng' cx='30%25' cy='40%25' r='70%25'%3E%3Cstop offset='0%25' stop-color='%23000066' stop-opacity='1'/%3E%3Cstop offset='100%25' stop-color='%23000022' stop-opacity='1'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect x='60' y='80' width='320' height='290' rx='6' fill='%23000066' stroke='%23D9B650' stroke-width='1' opacity='0.6'/%3E%3Crect x='60' y='80' width='320' height='60' rx='6' fill='%23D9B650' opacity='0.12'/%3E%3Crect x='80' y='165' width='220' height='8' rx='2' fill='%23D9B650' opacity='0.5'/%3E%3Crect x='80' y='184' width='180' height='5' rx='2' fill='%23ffffff' opacity='0.2'/%3E%3Crect x='80' y='196' width='200' height='5' rx='2' fill='%23ffffff' opacity='0.15'/%3E%3Crect x='80' y='220' width='280' height='1' rx='1' fill='%23D9B650' opacity='0.2'/%3E%3Crect x='80' y='233' width='160' height='5' rx='2' fill='%23ffffff' opacity='0.12'/%3E%3Crect x='80' y='246' width='200' height='5' rx='2' fill='%23ffffff' opacity='0.1'/%3E%3Crect x='80' y='259' width='140' height='5' rx='2' fill='%23ffffff' opacity='0.08'/%3E%3Crect x='80' y='280' width='280' height='1' rx='1' fill='%23D9B650' opacity='0.15'/%3E%3Crect x='80' y='293' width='180' height='5' rx='2' fill='%23D9B650' opacity='0.25'/%3E%3Crect x='420' y='100' width='320' height='230' rx='6' fill='%23D9B650' opacity='0.05' stroke='%23D9B650' stroke-width='1' opacity='0.3'/%3E%3Ccircle cx='580' cy='215' r='60' fill='none' stroke='%23D9B650' stroke-width='1' opacity='0.2'/%3E%3Ccircle cx='580' cy='215' r='40' fill='none' stroke='%23D9B650' stroke-width='0.5' opacity='0.15'/%3E%3Cpath d='M555 200 L580 180 L605 200 L605 230 L580 250 L555 230 Z' fill='%23D9B650' opacity='0.12' stroke='%23D9B650' stroke-width='1' opacity='0.3'/%3E%3Ctext x='400' y='420' text-anchor='middle' font-family='Georgia,serif' font-size='11' fill='%23D9B650' opacity='0.6' letter-spacing='5'%3ENIQS%3C/text%3E%3C/svg%3E";
+
+const STATIC_BRAND_PROJECTS = [
+  {
+    kind: "default",
+    slug: "niqs",
+    route: "/projects/niqs",
+    name: "NIQS — Brand Identity",
+    description: "Full brand identity system for the Nigerian Institute of Quantity Surveyors — a 50-year-old institution representing 10,000+ professionals. Navy, gold, and a heraldic system built to last.",
+    url: "",
+    tags: ["Brand Identity", "Brand Guidelines", "Design"],
+    images: { main: NIQS_THUMB },
+    pageImg: NIQS_THUMB,
+    categories: ["Brand Identity Designs"],
+    id: "static-niqs",
   },
 ];
 
@@ -371,6 +402,7 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
   const combined = useMemo(() => {
     return [
       ...mappedDefaultProjects,
+      ...STATIC_BRAND_PROJECTS,
       ...STATIC_UI_PROJECTS,
       ...mappedUiProjects,
       ...STATIC_GFX_PROJECTS,

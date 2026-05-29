@@ -22,15 +22,14 @@ const PROJECT = {
   clientName: "Book Rion",
 
   description:
-    "BookRion is redefining how books reach readers. The platform connects readers directly with verified bookstores and publishers, ensuring that quality literature remains accessible, affordable, and sustainable. Our vision is to build a world where getting the books you love is effortless — by creating a reliable, innovative, and inclusive book distribution network that sets a new standard in the publishing industry.\n\nI joined the project as a Creative Designer while the platform was already in development. At the time, BookRion lacked a cohesive visual direction and clear brand identity. My primary responsibility was to establish these foundations — setting visual guidelines, designing the logo, choosing colors and typography, and crafting a consistent identity system that would unify all design touchpoints.",
+    "BookRion is redefining how books reach readers. The platform connects readers directly with verified bookstores and publishers, ensuring that quality literature remains accessible, affordable, and sustainable. Our vision is to build a world where getting the books you love is effortless — by creating a reliable, innovative, and inclusive book distribution network that sets a new standard in the publishing industry.\n\nI joined the project as a Creative Designer while the platform was already in development. At the time, BookRion lacked a cohesive visual direction and clear brand identity. My primary responsibility was to establish these foundations — setting visual guidelines, designing the logo, choosing colors and typography, and crafting a consistent identity system that would unify all design touchpoints.\n\nMy Role — Contracted Creative Designer. I built the visual identity from zero: logo system, colour palette, typography, brand stationery, brand guidelines, and website design and delivery. Product design was completed but is not featured here pending client launch approval.",
 
   tags: ["Brand Guidelines", "Design"],
   categories: ["Brand Identity", "UI/UX Design", "Graphic Design", "Website Design"],
 
   heroMeta: {
-    categories: ["Brand Identity", "UI/UX Design", "Graphic Design", "Website Design"],
-    deliverables:
-      "Art Direction, User Interface, Branding Strategy, Print Design, 3D Render",
+    categories: ["Brand Identity Design", "Graphic Design"],
+    deliverables: "Brand Guidelines, Logo Design, Colour Palette, Typography, Brand Stationery, Website Design",
     timeline: "4 weeks",
     teamInitials: ["AD", "DA", "RE"],
   },

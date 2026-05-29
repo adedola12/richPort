@@ -29,7 +29,7 @@ const PROJECT = {
 
   heroMeta: {
     categories: ["Brand Identity Design", "Graphic Design"],
-    deliverables: "Art Direction, Brand Assets Design, Detailed Brand Guideline",
+    deliverables: "Brand Guidelines (~60 pages), Logo Suite (5 lockups, all formats), Social Media Templates, Messaging & Brand Voice, Colour Palette, Brand Stationery",
     timeline: "4 Weeks",
     teamInitials: ["RE"],
   },

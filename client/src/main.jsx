@@ -27,11 +27,13 @@ import WebsiteDesignPage from "./pages/WebsiteDesignPage.jsx";
 import YDpayPage from "./pages/YDpayPage.jsx";
 import SavedupProject from "./pages/SavedupProject.jsx";
 import SnotesProject from "./pages/SnotesProject.jsx";
+import QuivProject from "./pages/QuivProject.jsx";
 import TabStudioProject from "./pages/TabStudioProject.jsx";
 import VerdeLuxeProject from "./pages/VerdeLuxeProject.jsx";
 import CleansteadProject from "./pages/CleansteadProject.jsx";
 import BookRionProject from "./pages/BookRionProject.jsx";
 import ADLMStudioPage from "./pages/ADLMStudioPage.jsx";
+import NIQSProject from "./pages/NIQSProject.jsx";
 import WhitespacePage from "./pages/WhitespacePage.jsx";
 import YDpayDesignPage from "./pages/YDpayDesignPage.jsx";
 import Contact from "./pages/Contact.jsx";
@@ -52,6 +54,7 @@ const router = createBrowserRouter([
       { path: "about", element: <About /> },
 
       { path: "projects", element: <Projects /> },
+      { path: "projects/niqs", element: <NIQSProject /> },
       { path: "projects/tabstudio", element: <TabStudioProject /> },
       { path: "projects/verde-luxe", element: <VerdeLuxeProject /> },
       { path: "projects/cleanstead", element: <CleansteadProject /> },
@@ -71,6 +74,7 @@ const router = createBrowserRouter([
       { path: "ui-projects/ydpay-mobile-redesign", element: <YDpayPage /> },
       { path: "ui-projects/savedup", element: <SavedupProject /> },
       { path: "ui-projects/snotes", element: <SnotesProject /> },
+      { path: "ui-projects/quiv", element: <QuivProject /> },
       { path: "ui-projects/:slug", element: <UIProjectPage /> },
 
       // keep old links working by redirecting (preserving slug)

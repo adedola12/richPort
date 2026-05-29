@@ -28,14 +28,14 @@ const PROJECT = {
 
   // Description is used as intro text in the hero
   description:
-    "Tabstudio is a creative-forward company serving startups, creators, media teams, and tech brands. The goal was to establish a modern, scalable identity system that communicated clarity, creative versatility, and a strong digital presence. My responsibility was to design the brand identity, develop the logo system, and produce a concise guideline that outlined its usage.",
+    "Tabstudio is a creative-forward company serving startups, creators, media teams, and tech brands. The goal was to establish a modern, scalable identity system that communicated clarity, creative versatility, and a strong digital presence. My responsibility was to design the brand identity, develop the logo system, and produce a concise guideline that outlined its usage.\n\nMy Role — Sole brand designer. I led an intensive logo iteration process to get the mark right, then extended it into a full system: colour palette, typography, business card, letterhead, and a 30-page brand guidelines document.",
 
   tags: ["Brand Identity", "Brand Guideline", "Logo Design"],
   categories: ["Brand Identity Design", "Graphic Design"],
 
   heroMeta: {
     categories: ["Brand Identity Design", "Graphic Design"],
-    deliverables: "Brand Guideline, Logo design, Typography, Colour Palette",
+    deliverables: "Brand Guidelines (~30 pages), Logo Design, Colour Palette, Typography, Business Card, Letterhead",
     timeline: "2 Weeks",
     teamInitials: [],
   },
