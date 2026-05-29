@@ -566,7 +566,7 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
                       group flex cursor-pointer flex-col
                       rounded-[28px] border border-neutral-700
                       pt-[37px] px-[30px] sm:px-[45px]
-                      h-[533px]
+                      h-auto md:h-[533px]
                       overflow-hidden
                       transition duration-300
                       hover:-translate-y-1
@@ -657,8 +657,8 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
                       )}
                     </div>
 
-                    {/* ---- Preview image (fills remaining card height) ---- */}
-                    <div className="mt-auto flex-1 min-h-0 overflow-hidden rounded-t-[11px] mt-[29px]">
+                    {/* ---- Preview image ---- */}
+                    <div className="mt-[29px] overflow-hidden rounded-t-[11px] aspect-[4/5] md:aspect-auto md:flex-1 md:min-h-0">
                       <img
                         src={previewSrc}
                         alt={`${project.name} preview`}
@@ -679,8 +679,7 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
               <div className="mt-10 flex justify-center">
                 <button
                   type="button"
-                  // onClick={() => setVisibleCount((prev) => prev + 4)}
-                  onClick={() => navigate("/projects")}
+                  onClick={() => setVisibleCount((prev) => prev + 4)}
                   className="
                     inline-flex h-12 items-center justify-center
                     rounded-xl border border-white/80
