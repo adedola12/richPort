@@ -492,7 +492,7 @@ const SavedupProject = () => {
                 style={{ borderColor: `${GR}44`, color: GR, background: `${GR}0D` }}
               >
                 <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ background: GR }} />
-                UI / UX Case Study
+                UI / UX Case Study · Retrospective
               </span>
             </div>
           </FadeUp>
@@ -510,8 +510,11 @@ const SavedupProject = () => {
             >
               Savedup
             </h1>
-            <p className="text-[16px] sm:text-[18px] leading-[1.65] text-white/55 max-w-[580px] mb-10">
+            <p className="text-[16px] sm:text-[18px] leading-[1.65] text-white/55 max-w-[580px] mb-4">
               Designing a student-focused savings and budgeting platform for life after school.
+            </p>
+            <p className="text-[14px] leading-[1.65] text-white/35 max-w-[560px] mb-10">
+              A look back at my first UI/UX project — and what I'd do differently today.
             </p>
           </FadeUp>
 
@@ -581,9 +584,9 @@ const SavedupProject = () => {
             <FadeUp delay={0.15}>
               <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-5">
                 <p className="text-[9px] tracking-[0.3em] uppercase text-white/30 mb-4">MY ROLE</p>
-                <p className="text-[17px] font-semibold text-white mb-1">Product Designer (End-to-End)</p>
+                <p className="text-[17px] font-semibold text-white mb-1">Solo Product Designer</p>
                 <p className="text-[14px] leading-[1.65] text-white/50 mb-5">
-                  I led the product from research to final UI, owning:
+                  Concept, research, flows, and UI — end to end. This was my first UI/UX project, used to learn product thinking and prototyping from scratch:
                 </p>
                 <ul className="space-y-2.5">
                   {[
@@ -1158,8 +1161,54 @@ const SavedupProject = () => {
         </div>
       </section>
 
+      {/* ══ WHAT I'D BUILD TODAY ══ */}
+      <section className="py-16 sm:py-20 px-4 sm:px-8 lg:px-16 border-t border-white/5">
+        <div className="max-w-[1100px] mx-auto">
+          <FadeUp>
+            <p className="text-[11px] font-bold tracking-[0.3em] uppercase mb-5" style={{ color: GR }}>
+              Retrospective
+            </p>
+            <h2 className="text-4xl sm:text-5xl font-semibold leading-[1.05] tracking-[-0.03em] text-white mb-3">
+              What I&apos;d build<br />
+              <span style={{ color: GR }}>differently today</span>
+            </h2>
+            <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50 max-w-[560px] mb-10">
+              Three years on. Here&apos;s what the experience taught me — and what I&apos;d change if I were starting this from scratch now.
+            </p>
+          </FadeUp>
+
+          <div className="grid sm:grid-cols-3 gap-5">
+            {[
+              {
+                n: "01",
+                title: "Fewer preset saving types",
+                body: "The original design offered too many pre-built categories. I'd reduce them to 3–4 anchors and let users define their own goal structure — the flexibility would feel more personal without overwhelming first-time users.",
+              },
+              {
+                n: "02",
+                title: "AI-guided savings targets",
+                body: "Instead of asking users to set their own targets, I'd build a guided flow: a few questions about goals and timeline, then a suggested saving schedule. Fewer decisions upfront means higher activation. The intelligence should do the work.",
+              },
+              {
+                n: "03",
+                title: "The financial buddy concept",
+                body: "Accountability is underrated in savings apps. I'd design a core feature around pairing users with a 'financial buddy' — a friend or peer working toward a similar goal. Shared progress creates the social pressure that actually builds habits.",
+              },
+            ].map(({ n, title, body }) => (
+              <FadeUp key={n}>
+                <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-6 h-full">
+                  <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-3" style={{ color: GR }}>{n}</p>
+                  <p className="text-[15px] font-semibold text-white mb-3">{title}</p>
+                  <p className="text-[14px] text-white/50 leading-[1.65]">{body}</p>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ══ OTHER PROJECTS ══ */}
-      <OtherProj currentSlug="s" currentKind="ui" />
+      <OtherProj currentSlug="savedup" currentKind="ui" />
       <BuildSection />
 
     </div>

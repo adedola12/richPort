@@ -37,7 +37,7 @@ const StackedCard = ({ src, alt, index, total, scrollYProgress, onClick }) => {
           bg-black/40
           shadow-[0_0_35px_rgba(0,0,0,0.9)]
           cursor-pointer select-none
-          aspect-video
+          aspect-[4/5] sm:aspect-video
           hover:border-lime-400 hover:shadow-[0_0_45px_rgba(190,242,100,0.45)]
           transition-[border-color,box-shadow] duration-300
         "

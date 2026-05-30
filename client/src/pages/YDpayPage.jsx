@@ -289,7 +289,7 @@ const YDpayPage = () => (
               </div>
               <p className="text-[9px] tracking-[0.3em] uppercase text-white/30 mb-3">MY ROLE</p>
               <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/55">
-                Contracted to redesign a fintech mobile app — fixing broken UX flows, reducing click depth, and establishing a trust-first design language from scratch. Responsible for all 96 screens: information architecture, component system, visual identity, and developer-ready spec documentation.
+                Contracted UI Designer — responsible for UX audit, high-fidelity redesign, and new feature design: SpinPop (gamification), Refer'm'earn (referral flow), and admin dashboards for both. Full ownership of all 96 screens from IA to developer-ready Figma spec.
               </p>
             </FadeUp>
             <FadeUp delay={0.15}>
@@ -395,8 +395,8 @@ const YDpayPage = () => (
               {/* delivery */}
               <div className="rounded-2xl border p-5" style={{ borderColor: `${GR}44`, background: `${GR}0D` }}>
                 <p className="text-[9px] tracking-[0.3em] uppercase mb-2" style={{ color: GR }}>DELIVERY</p>
-                <p className="text-xl font-bold text-white mb-2">Complete &amp; Ready</p>
-                <p className="text-[13px] leading-[1.6] text-white/50">All 96 screens delivered in Figma. Ready for client review, developer handoff, and component library generation.</p>
+                <p className="text-xl font-bold text-white mb-2">Design Delivered</p>
+                <p className="text-[13px] leading-[1.6] text-white/50">All 96 screens delivered in Figma with developer-ready specs and component documentation. Partial implementation adopted by client — core flows shipped, new features pending.</p>
               </div>
             </FadeUp>
           </div>
