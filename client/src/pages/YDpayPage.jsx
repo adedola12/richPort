@@ -930,6 +930,32 @@ const YDpayPage = () => (
         </div>
       </section>
 
+      {/* ══ BRAND FOUNDATION LINK ══ */}
+      <section className="py-14 px-4 sm:px-8 border-t border-white/5">
+        <div className="max-w-[860px] mx-auto">
+          <FadeUp>
+            <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-8 sm:p-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+              <div>
+                <p className="text-[10px] font-bold tracking-[0.25em] uppercase text-white/30 mb-2">THE OTHER HALF OF THIS STORY</p>
+                <p className="text-[18px] sm:text-[20px] font-semibold text-white leading-snug mb-2">
+                  The brand was built before this product.
+                </p>
+                <p className="text-[14px] text-white/50 leading-[1.65] max-w-[420px]">
+                  The typography, palette, and visual language this app inherits came from the brand foundation phase — designed first, so the product had something coherent to build on.
+                </p>
+              </div>
+              <Link
+                to="/projects/ydpay-brand"
+                className="shrink-0 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[13px] font-semibold text-black whitespace-nowrap transition-opacity hover:opacity-85"
+                style={{ background: GR }}
+              >
+                See the brand foundation →
+              </Link>
+            </div>
+          </FadeUp>
+        </div>
+      </section>
+
       {/* ══ OTHER PROJECTS ══ */}
       <OtherProj currentSlug="ydpay-mobile-redesign" currentKind="ui" />
       <BuildSection />

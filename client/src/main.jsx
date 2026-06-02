@@ -35,6 +35,7 @@ import BookRionProject from "./pages/BookRionProject.jsx";
 import ADLMStudioPage from "./pages/ADLMStudioPage.jsx";
 import NIQSProject from "./pages/NIQSProject.jsx";
 import NiqsUIProject from "./pages/NiqsUIProject.jsx";
+import YDpayBrandPage from "./pages/YDpayBrandPage.jsx";
 import WhitespacePage from "./pages/WhitespacePage.jsx";
 import YDpayDesignPage from "./pages/YDpayDesignPage.jsx";
 import Contact from "./pages/Contact.jsx";
@@ -60,6 +61,7 @@ const router = createBrowserRouter([
       { path: "projects/verde-luxe", element: <VerdeLuxeProject /> },
       { path: "projects/cleanstead", element: <CleansteadProject /> },
       { path: "projects/book-rion", element: <BookRionProject /> },
+      { path: "projects/ydpay-brand", element: <YDpayBrandPage /> },
       { path: "graphic-design", element: <GraphicDesignPage /> },
       { path: "adlm-studio-designs", element: <ADLMStudioPage /> },
       { path: "whitespace-designs", element: <WhitespacePage /> },
