@@ -34,6 +34,7 @@ import CleansteadProject from "./pages/CleansteadProject.jsx";
 import BookRionProject from "./pages/BookRionProject.jsx";
 import ADLMStudioPage from "./pages/ADLMStudioPage.jsx";
 import NIQSProject from "./pages/NIQSProject.jsx";
+import NiqsUIProject from "./pages/NiqsUIProject.jsx";
 import WhitespacePage from "./pages/WhitespacePage.jsx";
 import YDpayDesignPage from "./pages/YDpayDesignPage.jsx";
 import Contact from "./pages/Contact.jsx";
@@ -73,6 +74,7 @@ const router = createBrowserRouter([
       { path: "ui-projects", element: <UIProjectPage /> },
       { path: "ui-projects/ydpay-mobile-redesign", element: <YDpayPage /> },
       { path: "ui-projects/savedup", element: <SavedupProject /> },
+      { path: "ui-projects/niqs", element: <NiqsUIProject /> },
       { path: "ui-projects/snotes", element: <SnotesProject /> },
       { path: "ui-projects/quiv", element: <QuivProject /> },
       { path: "ui-projects/:slug", element: <UIProjectPage /> },

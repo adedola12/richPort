@@ -4,11 +4,9 @@ import { Link } from "react-router-dom";
 
 import ydpayThumb    from "../../assets/YDpay/iphone15pro.png";
 import bookrionThumb from "../../assets/Bookrion/mainSign.jpg";
-import uiThumb       from "../../assets/UIPage/HeroImgMock.png";
 import wi1           from "../../assets/workImg/WI1.png";
 import wi2           from "../../assets/workImg/WI2.jpg";
 import wi3           from "../../assets/workImg/WI3.jpg";
-import wi4           from "../../assets/workImg/WI4.jpg";
 
 const CARDS = [
   {
@@ -32,13 +30,13 @@ const CARDS = [
     imgPos: "center center",
   },
   {
-    id: "graphic",
-    tag: "Graphic Design",
-    title: "Creative Works",
-    subtitle: "Illustration & Print",
-    href: "/graphic-design",
-    accent: "#f59e0b",
-    img: wi4,
+    id: "niqs",
+    tag: "Brand & Digital",
+    title: "NIQS",
+    subtitle: "Institutional Redesign",
+    href: "/ui-projects/niqs",
+    accent: "#D9B650",
+    img: "/NIQSEmblemDark.png",
     imgPos: "center center",
   },
   {

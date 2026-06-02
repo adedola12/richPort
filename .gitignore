@@ -36,3 +36,6 @@ Thumbs.db
 
 # Claude
 .claude/
+
+# Raw source assets (design files, prototypes, brand exports)
+extra/

@@ -82,10 +82,22 @@ const STATIC_GFX_PROJECTS = [
 
 const SAVEDUP_THUMB = "https://res.cloudinary.com/dirgfivvb/image/upload/v1769320865/richard_portfolio/ui-projects/nhjprdndluq6dbch0j27.jpg";
 
-
 const QUIV_THUMB = "/thumb-quiv.svg";
+const NIQS_THUMB = "/NIQSEmblemDark.png";
 
 const STATIC_UI_PROJECTS = [
+  {
+    kind: "ui",
+    slug: "niqs",
+    name: "NIQS — Digital Transformation",
+    description: "Full digital identity rebuild for Nigeria's premier professional body for Quantity Surveyors — brand system, website, member portal, admin dashboard, and a self-serve flyer design engine.",
+    url: "",
+    tags: ["UI/UX Design", "Institutional", "Web App"],
+    images: { main: NIQS_THUMB },
+    pageImg: NIQS_THUMB,
+    categories: ["Product UI/UX Designs", "Brand Identity Designs"],
+    id: "static-niqs-ui",
+  },
   {
     kind: "ui",
     slug: "quiv",
@@ -136,23 +148,10 @@ const STATIC_UI_PROJECTS = [
   },
 ];
 
-const NIQS_THUMB = "/thumb-niqs.svg";
+const STATIC_BRAND_PROJECTS = [];
 
-const STATIC_BRAND_PROJECTS = [
-  {
-    kind: "default",
-    slug: "niqs",
-    route: "/projects/niqs",
-    name: "NIQS — Brand Identity",
-    description: "Full brand identity system for the Nigerian Institute of Quantity Surveyors — a 50-year-old institution representing 10,000+ professionals. Navy, gold, and a heraldic system built to last.",
-    url: "",
-    tags: ["Brand Identity", "Brand Guidelines", "Design"],
-    images: { main: NIQS_THUMB },
-    pageImg: NIQS_THUMB,
-    categories: ["Brand Identity Designs"],
-    id: "static-niqs",
-  },
-];
+// Desired display order for brand identity projects from DB
+const BRAND_SLUG_ORDER = ["tabstudio", "verde-luxe", "book-rion", "cleanstead"];
 
 const TAB_CONFIG = [
   { label: "All", matches: null },
@@ -400,10 +399,21 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
   }, [visibleDefaultProjects]);
 
   const combined = useMemo(() => {
+    // Sort brand DB projects into the desired display order
+    const brandSorted = [...mappedDefaultProjects].sort((a, b) => {
+      const ai = BRAND_SLUG_ORDER.indexOf((a.slug || "").toLowerCase());
+      const bi = BRAND_SLUG_ORDER.indexOf((b.slug || "").toLowerCase());
+      if (ai === -1 && bi === -1) return 0;
+      if (ai === -1) return 1;
+      if (bi === -1) return -1;
+      return ai - bi;
+    });
+    // Place NIQS UI after TabStudio (index 0) for Brand Identity tab ordering
+    const [firstBrand, ...restBrand] = brandSorted;
     return [
-      ...mappedDefaultProjects,
-      ...STATIC_BRAND_PROJECTS,
+      ...(firstBrand ? [firstBrand] : []),
       ...STATIC_UI_PROJECTS,
+      ...restBrand,
       ...mappedUiProjects,
       ...STATIC_GFX_PROJECTS,
     ];
@@ -420,7 +430,13 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
     const matches = tabCfg.matches;
     return combined.filter((item) => {
       if (!applyExclude(item)) return false;
-      if (item.kind === "ui") return isAllTab || isUiTab;
+      if (item.kind === "ui") {
+        if (isAllTab || isUiTab) return true;
+        // also show in non-UI category tabs if the item's categories match
+        if (!matches || !matches.length) return false;
+        const cats = Array.isArray(item.categories) ? item.categories : [];
+        return matches.some((m) => cats.includes(m));
+      }
       if (item.kind === "gallary") {
         if (isAllTab) return true;
         const cats = Array.isArray(item.categories) ? item.categories : [];

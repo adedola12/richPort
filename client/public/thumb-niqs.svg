@@ -1,1 +1,51 @@
-<svg xmlns='http://www.w3.org/2000/svg' width='800' height='450'><rect width='800' height='450' fill='#000033'/><rect x='0' y='0' width='800' height='450' fill='url(#ng)'/><defs><radialGradient id='ng' cx='30%' cy='40%' r='70%'><stop offset='0%' stop-color='#000066' stop-opacity='1'/><stop offset='100%' stop-color='#000022' stop-opacity='1'/></radialGradient></defs><rect x='60' y='80' width='320' height='290' rx='6' fill='#000066' stroke='#D9B650' stroke-width='1' opacity='0.6'/><rect x='60' y='80' width='320' height='60' rx='6' fill='#D9B650' opacity='0.12'/><rect x='80' y='165' width='220' height='8' rx='2' fill='#D9B650' opacity='0.5'/><rect x='80' y='184' width='180' height='5' rx='2' fill='#ffffff' opacity='0.2'/><rect x='80' y='196' width='200' height='5' rx='2' fill='#ffffff' opacity='0.15'/><rect x='80' y='220' width='280' height='1' rx='1' fill='#D9B650' opacity='0.2'/><rect x='80' y='233' width='160' height='5' rx='2' fill='#ffffff' opacity='0.12'/><rect x='80' y='246' width='200' height='5' rx='2' fill='#ffffff' opacity='0.1'/><rect x='80' y='259' width='140' height='5' rx='2' fill='#ffffff' opacity='0.08'/><rect x='80' y='280' width='280' height='1' rx='1' fill='#D9B650' opacity='0.15'/><rect x='80' y='293' width='180' height='5' rx='2' fill='#D9B650' opacity='0.25'/><rect x='420' y='100' width='320' height='230' rx='6' fill='#D9B650' opacity='0.05' stroke='#D9B650' stroke-width='1' opacity='0.3'/><circle cx='580' cy='215' r='60' fill='none' stroke='#D9B650' stroke-width='1' opacity='0.2'/><circle cx='580' cy='215' r='40' fill='none' stroke='#D9B650' stroke-width='0.5' opacity='0.15'/><path d='M555 200 L580 180 L605 200 L605 230 L580 250 L555 230 Z' fill='#D9B650' opacity='0.12' stroke='#D9B650' stroke-width='1' opacity='0.3'/><text x='400' y='420' text-anchor='middle' font-family='Georgia,serif' font-size='11' fill='#D9B650' opacity='0.6' letter-spacing='5'>NIQS</text></svg>
+<svg xmlns='http://www.w3.org/2000/svg' width='800' height='450' viewBox='0 0 800 450'>
+  <defs>
+    <radialGradient id='bg' cx='25%' cy='35%' r='75%'>
+      <stop offset='0%' stop-color='#000066'/>
+      <stop offset='100%' stop-color='#00001A'/>
+    </radialGradient>
+    <radialGradient id='glow' cx='50%' cy='50%' r='50%'>
+      <stop offset='0%' stop-color='#D9B650' stop-opacity='0.18'/>
+      <stop offset='100%' stop-color='#D9B650' stop-opacity='0'/>
+    </radialGradient>
+    <clipPath id='cr'><rect width='800' height='450' rx='0'/></clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width='800' height='450' fill='url(#bg)'/>
+  <ellipse cx='200' cy='160' rx='320' ry='240' fill='url(#glow)'/>
+
+  <!-- Gold accent bar top -->
+  <rect x='60' y='60' width='56' height='3' rx='1.5' fill='#D9B650' opacity='0.9'/>
+
+  <!-- Main NIQS wordmark -->
+  <text x='60' y='200' font-family='Georgia,Times New Roman,serif' font-size='96' font-weight='700' fill='#FFFFFF' letter-spacing='-2' opacity='0.97'>NIQS</text>
+
+  <!-- Full name -->
+  <text x='62' y='234' font-family='Arial,Helvetica,sans-serif' font-size='11.5' fill='#D9B650' letter-spacing='3.5' opacity='0.75'>NIGERIAN INSTITUTE OF QUANTITY SURVEYORS</text>
+
+  <!-- Divider -->
+  <rect x='60' y='258' width='500' height='1' rx='0.5' fill='#D9B650' opacity='0.2'/>
+
+  <!-- Tag line -->
+  <text x='62' y='282' font-family='Arial,Helvetica,sans-serif' font-size='11' fill='#ffffff' letter-spacing='1.5' opacity='0.35'>DIGITAL TRANSFORMATION · BRAND SYSTEM · WEB &amp; PORTAL</text>
+
+  <!-- Right: abstract UI mockup suggestion -->
+  <rect x='540' y='80' width='220' height='290' rx='8' fill='#ffffff' opacity='0.03' stroke='#D9B650' stroke-width='0.75' stroke-opacity='0.25'/>
+  <rect x='556' y='96' width='188' height='32' rx='4' fill='#D9B650' opacity='0.07'/>
+  <rect x='556' y='140' width='130' height='7' rx='2' fill='#D9B650' opacity='0.35'/>
+  <rect x='556' y='155' width='188' height='4' rx='2' fill='#ffffff' opacity='0.1'/>
+  <rect x='556' y='166' width='160' height='4' rx='2' fill='#ffffff' opacity='0.07'/>
+  <rect x='556' y='190' width='188' height='1' rx='1' fill='#D9B650' opacity='0.15'/>
+  <rect x='556' y='202' width='100' height='4' rx='2' fill='#ffffff' opacity='0.08'/>
+  <rect x='556' y='214' width='140' height='4' rx='2' fill='#ffffff' opacity='0.06'/>
+  <rect x='556' y='226' width='120' height='4' rx='2' fill='#ffffff' opacity='0.05'/>
+  <rect x='556' y='248' width='188' height='1' rx='1' fill='#D9B650' opacity='0.12'/>
+  <rect x='556' y='260' width='80' height='18' rx='3' fill='#D9B650' opacity='0.2'/>
+  <rect x='648' y='260' width='96' height='18' rx='3' fill='#000066' opacity='0.6' stroke='#D9B650' stroke-width='0.5' stroke-opacity='0.4'/>
+
+  <!-- Bottom year badge -->
+  <text x='62' y='400' font-family='Arial,Helvetica,sans-serif' font-size='10' fill='#D9B650' letter-spacing='2' opacity='0.45'>EST. 1969</text>
+  <circle cx='110' cy='396' r='1.5' fill='#D9B650' opacity='0.35'/>
+  <text x='118' y='400' font-family='Arial,Helvetica,sans-serif' font-size='10' fill='#ffffff' letter-spacing='1.5' opacity='0.3'>10,000+ PROFESSIONALS</text>
+</svg>

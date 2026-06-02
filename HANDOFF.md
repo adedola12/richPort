@@ -99,7 +99,7 @@ No proxy is configured. All API calls go directly to the URL set in `VITE_AUTH_E
 
 ### Routing model
 
-Full router config from `client/src/main.jsx`:
+Full router config from `client/src/main.jsx` (current as of May 2026):
 
 ```jsx
 const router = createBrowserRouter([
@@ -110,10 +110,29 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "about", element: <About /> },
       { path: "projects", element: <Projects /> },
-      { path: "graphic-design", element: <GraphicDesignPage /> },
-      { path: "rate-details", element: <RateDetails /> },
-      { path: "projects/:slug", element: <ProjectPage /> },
 
+      // Hardcoded brand identity case studies (MUST come before :slug catch-all)
+      { path: "projects/niqs", element: <NIQSProject /> },
+      { path: "projects/tabstudio", element: <TabStudioProject /> },
+      { path: "projects/verde-luxe", element: <VerdeLuxeProject /> },
+      { path: "projects/cleanstead", element: <CleansteadProject /> },
+      { path: "projects/book-rion", element: <BookRionProject /> },
+
+      { path: "projects/:slug", element: <ProjectPage /> },   // dynamic catch-all
+      { path: "graphic-design", element: <GraphicDesignPage /> },
+      { path: "adlm-studio-designs", element: <ADLMStudioPage /> },
+      { path: "whitespace-designs", element: <WhitespacePage /> },
+      { path: "ydpay-designs", element: <YDpayDesignPage /> },
+      { path: "website-design", element: <WebsiteDesignPage /> },
+      { path: "presentation-design", element: <PresentationDesignPage /> },
+      { path: "rate-details", element: <RateDetails /> },
+      { path: "contact", element: <Contact /> },
+
+      // Hardcoded UI/UX case studies (MUST come before :slug catch-all)
+      { path: "ui-projects/ydpay-mobile-redesign", element: <YDpayPage /> },
+      { path: "ui-projects/savedup", element: <SavedupProject /> },
+      { path: "ui-projects/snotes", element: <SnotesProject /> },
+      { path: "ui-projects/quiv", element: <QuivProject /> },
       { path: "ui-projects", element: <UIProjectPage /> },
       { path: "ui-projects/:slug", element: <UIProjectPage /> },
 
@@ -146,6 +165,8 @@ const router = createBrowserRouter([
   },
 ]);
 ```
+
+**CRITICAL:** Specific hardcoded routes must come BEFORE their dynamic `:slug` catch-alls. Route order matters in React Router v7.
 
 `App.jsx` wraps all routes in an `<AnimatePresence>` with Framer Motion page transitions (opacity + blur + slide). `<Nav />` and `<Footer />` are always visible.
 
@@ -989,23 +1010,42 @@ In non-production environments, `GET https://richport-1oer.onrender.com/__debug/
 
 ## 6. WHAT'S DONE vs. WHAT'S MISSING
 
-### What's fully working
+### What's fully working (as of May 2026)
 
-- All five public pages (Home, About, Projects, Graphic Design, Rate Details)
-- Individual project detail pages (brand + UI/UX)
-- Admin dashboard with CRUD for all content types
-- Cloudinary image upload and delete
-- JWT authentication with cookie + localStorage dual storage
-- Rate enquiry form submission + admin enquiry viewer
-- Redirect from old `/ui-project` routes to `/ui-projects`
-- CORS, Helmet, Morgan, error handling all configured
+- Home page: hero, AboutMe (updated bio), ProjectGrid with View More pagination, all sections
+- About, Contact, Rate Details pages
+- Preloader: RE monogram + lime progress bar, gated by `window.onload` (MIN 1.8s / MAX 3.2s)
+- **Hardcoded brand identity case studies:** NIQS, TabStudio, VerdeLuxe, Cleanstead, BookRion
+- **Hardcoded UI/UX case studies:** YDpay (redesign), Savedup (retrospective), Quiv, Snotes (concept — all images are intentional placeholders)
+- Graphic design pages: ADLMStudio, Whitespace, YDpay Designs, Website Design, Presentation Design
+- Footer: all links enabled
+- ProjectGrid: portrait `aspect-[4/5]` on mobile for both grid cards and DiscoverImg stacked gallery
+- Admin dashboard: CRUD for all content types, Cloudinary upload/delete
+- JWT auth with cookie + localStorage, rate enquiry form
+- CORS, Helmet, Morgan, error handling configured
 
-### What's stubbed or incomplete
+### Placeholder pages (intentional — Figma mockups pending)
 
-- **`server/models/EnquiriesModel.js`** — explicitly commented "unused — kept for reference." Duplicate of `RateEnquiry.js`. Safe to delete.
-- **Server tests** — `"test": "echo \"Error: no test specified\" && exit 1"` — no tests exist at all
-- **Client tests** — none configured
-- **No seed/migration scripts** — the database has no initial data scripts; content must be entered via the admin dashboard
+| Page | What's missing |
+|---|---|
+| `SnotesProject.jsx` | All 13 images — Figma mockups not yet created |
+| `QuivProject.jsx` | 9 screenshot slots — capture from `extra/Quiv/Quiv_Measure_v4.html` |
+| `NIQSProject.jsx` | Brand guideline spread screenshots — capture from `extra/NIQS Brand Guideline.html` |
+
+### Not yet built
+
+- NIQS page structural rework (strategy documented in `SESSION_PROGRESS.html`)
+- About page hero headline review
+- "I built this portfolio" credit in footer or About page
+- Load time optimisations: `loading="lazy"` sweep, Cloudinary `q_auto,f_auto`, `React.lazy()` for heavy pages
+- LinkedIn bio and CV summary line (copy direction is confirmed, just not written)
+
+### Technical debt
+
+- **`server/models/EnquiriesModel.js`** — unused, duplicate of `RateEnquiry.js`. Safe to delete.
+- **Server tests / Client tests** — none exist
+- **No seed scripts** — all content entered via admin dashboard
+- **Console.log artifacts** in admin tab components (see section 8 below)
 
 ### Console.log statements left in code (debugging artifacts)
 
@@ -1020,7 +1060,68 @@ These are in the admin tab components and should be cleaned up before production
 
 ---
 
-## 7. RUN COMMANDS
+## 7. DESIGN SYSTEM & WORKING CONVENTIONS
+
+### Visual system
+
+| Token | Value |
+|---|---|
+| Background (site) | `#0B0B0B` |
+| Background (preloader) | `#050505` |
+| Background (docs) | `#07090C` |
+| Accent | lime-400 `#a3e635` |
+| Font | Outfit (Google Fonts), weights 300–800 |
+| Border base | `rgba(255,255,255,0.07)` |
+| Border lime | `rgba(163,230,53,0.25)` |
+
+**No custom Tailwind extensions** — all values are arbitrary classes directly in JSX.
+
+### Case study page accent constants
+
+Each hardcoded case study page declares its accent at the top:
+- YDpay, Savedup, Snotes: `const GR = "#a3e635"` (lime)
+- Quiv: `const QB = "#3B8EF0"` (Quiv Blue)
+- NIQS: `const NAVY = "#000066"`, `const GOLD = "#D9B650"`
+
+### Case study page pattern (UI/UX pages)
+
+All UI/UX case studies (Savedup, YDpay, Snotes, Quiv) follow the same structure:
+- Animation primitives: `FadeUp`, `SlideIn`, `StaggerGrid`/`StaggerItem`
+- Section components: `SLabel`, `H2`, `TiltFrame`, `PersonaSection`
+- Image placeholders: `bg-white/[0.02]` dark block with centered muted caption text
+- Footer: `<OtherProj currentSlug="..." currentKind="ui" />` then `<BuildSection />`
+
+### Key components
+
+| Component | Location | Notes |
+|---|---|---|
+| `ProjectGrid` | `components/Home/ProjectGrid.jsx` | Three static arrays merged; thumbnail SVGs in `public/` |
+| `DiscoverImg` | `components/ProjectPage/DiscoverImg.jsx` | Stacked scroll gallery; `aspect-[4/5] sm:aspect-video` |
+| `OtherProj` | `components/ProjectPage/OtherProj.jsx` | Always pass exact `currentSlug` string |
+| `BuildSection` | `components/ProjectPage/BuildSection.jsx` | Footer of every case study |
+| `Preloader` | `components/common/Preloader.jsx` | RE monogram + lime progress bar |
+
+### Richard's working preferences (Claude Code)
+
+- No `font-black` — use `font-bold` on all headlines
+- Body text minimum 14px (13px reads tiny against bold headlines)
+- No inline SVG data URIs in JS — put SVGs in `client/public/` as files
+- No trailing summaries after edits — Richard can read the diff
+- Concise responses — no preamble
+- Always Read a file before Edit
+- Do not commit unless explicitly asked
+- Image placeholders are intentional — do not ask about them
+
+### Positioning / copy direction
+
+Richard is a **visual designer and product thinker** — 6 years across brand identity, UI/UX, and construction technology. Trained Quantity Surveyor turned designer. This QS-to-design crossover is the core differentiator.
+
+**No longer:** "multidisciplinary designer"
+**Now:** "visual designer and product thinker"
+
+---
+
+## 9. RUN COMMANDS
 
 ### Install
 
@@ -1066,7 +1167,7 @@ None exist. The database starts empty; all content is added through the admin da
 
 ## 8. DESIGN WORK LOG (session history)
 
-This section tracks UI/design edits made across coding sessions so any Claude session can pick up where the last left off.
+This section tracks UI/design edits made across coding sessions. For full detail on May 2026 changes, see `SESSION_PROGRESS.html` in the project root.
 
 ### Session — May 2026
 
@@ -1108,6 +1209,37 @@ This section tracks UI/design edits made across coding sessions so any Claude se
 - Removed the margin class.
 - File: `client/src/components/Home/WorkExp.jsx`
 
+### Session — May 2026 (continuation — new pages & fixes)
+
+**New pages built:**
+- `NIQSProject.jsx` — brand identity case study, Navy/Gold accent, 12-chapter grid, `/projects/niqs`
+- `QuivProject.jsx` — UI/UX case study, Quiv Blue `#3B8EF0` accent, 9 screenshot placeholders, `/ui-projects/quiv`
+- `SnotesProject.jsx` — concept-stage UI/UX case study, all 13 images are placeholders, `/ui-projects/snotes`
+
+**Copy & content updates:**
+- `AboutMe.jsx` — removed TypingText chain (caused 3s forced wait); replaced with FadeUp animations; new bio copy ("visual designer and product thinker")
+- `SavedupProject.jsx` — retrospective reframe: badge "· Retrospective", "What I'd Build Today" section, fixed `currentSlug="savedup"` in OtherProj
+- `YDpayPage.jsx` — My Role updated, Delivery card reframed to "Design Delivered" with partial implementation note
+- `BookRionProject.jsx`, `VerdeLuxeProject.jsx`, `TabStudioProject.jsx`, `CleansteadProject.jsx` — deliverables and My Role updated
+
+**ProjectGrid fixes:**
+- Thumbnails extracted from inline data URIs to `client/public/` SVGs (bundle size reduction)
+- Snotes re-added to grid
+- NIQS added via new `STATIC_BRAND_PROJECTS` array
+- View More pagination fixed (was navigating to `/projects` instead of `setVisibleCount + 4`)
+- Card height: `h-auto md:h-[533px]` (was fixed `h-[533px]` — broke mobile)
+- Mobile image aspect: `aspect-[4/5]`
+
+**DiscoverImg fix:**
+- `aspect-video` → `aspect-[4/5] sm:aspect-video` — stacked gallery images now portrait on mobile
+
+**Preloader added:**
+- `Preloader.jsx` — RE monogram + lime progress bar
+- `App.jsx` — gated by `window.onload` with MIN_MS=1800, MAX_MS=3200
+
+**Footer fix:**
+- Presentation Design link enabled (`to: "/presentation-design"`)
+
 ### What still needs design review (as of May 2026)
 
 **Home page** — these sections have not been reviewed or polished:
@@ -1139,7 +1271,7 @@ This section tracks UI/design edits made across coding sessions so any Claude se
 
 ---
 
-## 9. KNOWN GOTCHAS
+## 10. KNOWN GOTCHAS
 
 1. **Dev hits production DB by default.** `client/.env` points `VITE_AUTH_ENDPOINT` at the live Render server. If you run local dev without changing this, any data you create or delete goes to the live database. Change it to `http://localhost:4000` for local work.
 

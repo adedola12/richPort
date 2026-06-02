@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Session Progress Report — Richard Enoch Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #07090C; --surface: #0F1318; --border: rgba(255,255,255,0.07);
+    --border-hi: rgba(163,230,53,0.25); --lime: #a3e635; --lime-dim: rgba(163,230,53,0.08);
+    --white: #ffffff; --muted: rgba(255,255,255,0.45); --soft: rgba(255,255,255,0.65);
+    --blue: #4A9EF0; --blue-dim: rgba(74,158,240,0.10);
+    --orange: #f97316; --orange-dim: rgba(249,115,22,0.10);
+    --purple: #a78bfa; --purple-dim: rgba(167,139,250,0.10);
+    --red: #f87171; --red-dim: rgba(248,113,113,0.10);
+    --green: #4ade80; --green-dim: rgba(74,222,128,0.10);
+    --yellow: #facc15; --yellow-dim: rgba(250,204,21,0.10);
+    --gold: #D9B650; --gold-dim: rgba(217,182,80,0.10);
+    --navy: #000066;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--white); min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  .page-wrap { max-width: 880px; margin: 0 auto; padding: 60px 24px 120px; }
+
+  /* HEADER */
+  .doc-header { border-bottom: 1px solid var(--border); padding-bottom: 32px; margin-bottom: 48px; }
+  .doc-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--lime); margin-bottom: 12px; }
+  .doc-title { font-size: clamp(28px, 5vw, 46px); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 10px; }
+  .doc-subtitle { font-size: 15px; color: var(--muted); max-width: 600px; line-height: 1.65; }
+  .doc-meta { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .tag { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); background: var(--surface); }
+  .tag.lime { background: var(--lime-dim); border-color: var(--border-hi); color: var(--lime); }
+  .tag.blue { background: var(--blue-dim); border-color: rgba(74,158,240,0.25); color: var(--blue); }
+  .tag.orange { background: var(--orange-dim); border-color: rgba(249,115,22,0.25); color: var(--orange); }
+  .tag.gold { background: var(--gold-dim); border-color: rgba(217,182,80,0.25); color: var(--gold); }
+
+  /* TOC */
+  .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px 24px; margin-bottom: 48px; }
+  .toc-title { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .toc-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .toc-list li a { font-size: 13.5px; color: var(--soft); text-decoration: none; transition: color 0.15s; }
+  .toc-list li a:hover { color: var(--lime); }
+
+  /* SECTIONS */
+  .section { margin-bottom: 52px; }
+  .section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--lime); margin-bottom: 10px; }
+  .section-title { font-size: clamp(20px, 3vw, 26px); font-weight: 800; letter-spacing: -0.025em; margin-bottom: 10px; }
+  .section-desc { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 20px; max-width: 680px; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 44px 0; }
+
+  /* STATUS BADGES */
+  .status { display: inline-flex; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+  .status.done    { background: var(--green-dim);  color: var(--green); }
+  .status.pending { background: var(--orange-dim); color: var(--orange); }
+  .status.you     { background: var(--blue-dim);   color: var(--blue); }
+  .status.blocked { background: var(--red-dim);    color: var(--red); }
+  .status.inprog  { background: var(--gold-dim);   color: var(--gold); }
+
+  /* OWNER */
+  .owner { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+  .owner.me   { background: var(--blue-dim);   color: var(--blue);   border: 1px solid rgba(74,158,240,0.25); }
+  .owner.you  { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(249,115,22,0.25); }
+
+  /* TASK TABLE */
+  .task-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 13.5px; }
+  .task-table th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); padding: 8px 14px 10px; border-bottom: 1px solid var(--border); }
+  .task-table td { padding: 12px 14px; vertical-align: top; border-bottom: 1px solid var(--border); color: var(--soft); line-height: 1.55; }
+  .task-table tr:last-child td { border-bottom: none; }
+  .task-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .task-table td:first-child { color: var(--white); }
+
+  /* CALLOUTS */
+  .callout { border-radius: 12px; padding: 16px 20px; margin: 16px 0; border-left: 3px solid; font-size: 14px; line-height: 1.65; }
+  .callout.lime   { background: var(--lime-dim);   border-color: var(--lime);   color: var(--soft); }
+  .callout.blue   { background: var(--blue-dim);   border-color: var(--blue);   color: var(--soft); }
+  .callout.orange { background: var(--orange-dim); border-color: var(--orange); color: var(--soft); }
+  .callout.gold   { background: var(--gold-dim);   border-color: var(--gold);   color: var(--soft); }
+  .callout.green  { background: var(--green-dim);  border-color: var(--green);  color: var(--soft); }
+  .callout strong { color: var(--white); }
+
+  /* FILE PILLS */
+  .file { display: inline-flex; align-items: center; gap: 5px; font-family: 'Courier New', monospace; font-size: 11px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; padding: 2px 8px; color: var(--muted); }
+
+  /* COMMIT LOG */
+  .commit-list { display: flex; flex-direction: column; gap: 10px; }
+  .commit { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; }
+  .commit-hash { font-family: 'Courier New', monospace; font-size: 11px; color: var(--lime); margin-right: 8px; }
+  .commit-msg { font-size: 13.5px; color: var(--white); font-weight: 600; }
+  .commit-sub { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.55; }
+
+  /* NIQS STRATEGY */
+  .strategy-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px 24px; margin-bottom: 12px; }
+  .strategy-num  { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+  .strategy-title { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+  .strategy-body  { font-size: 13.5px; color: var(--muted); line-height: 1.7; }
+  .strategy-body strong { color: var(--soft); }
+
+  /* PERF TABLE */
+  .perf-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .perf-table th { text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); padding: 8px 12px 10px; border-bottom: 1px solid var(--border); }
+  .perf-table td { padding: 11px 12px; vertical-align: top; border-bottom: 1px solid var(--border); color: var(--soft); line-height: 1.55; }
+  .perf-table tr:last-child td { border-bottom: none; }
+
+  /* FOOTER */
+  .doc-footer { padding-top: 32px; border-top: 1px solid var(--border); text-align: center; font-size: 12px; color: var(--muted); }
+  .doc-footer strong { color: var(--lime); }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <header class="doc-header">
+    <p class="doc-eyebrow">Session Progress Report · May 2026</p>
+    <h1 class="doc-title">Richard Enoch<br>Portfolio — What Got Done</h1>
+    <p class="doc-subtitle">
+      Full record of every change shipped in this working session, what still needs doing,
+      and the NIQS presentation strategy discussed. Keep this open as a reference.
+    </p>
+    <div class="doc-meta">
+      <span class="tag lime">Session: May 29–30, 2026</span>
+      <span class="tag blue">15 files changed</span>
+      <span class="tag orange">4 commits pushed</span>
+      <span class="tag">Branch: main → live</span>
+    </div>
+  </header>
+
+  <!-- TOC -->
+  <div class="toc">
+    <p class="toc-title">Contents</p>
+    <ul class="toc-list">
+      <li><a href="#shipped">01 — Everything Shipped This Session</a></li>
+      <li><a href="#commits">02 — Commit Log</a></li>
+      <li><a href="#pending">03 — Still Pending (Needs Action)</a></li>
+      <li><a href="#perf">04 — Load Time: Done vs. Still To Do</a></li>
+      <li><a href="#niqs">05 — NIQS Page Strategy (Full Discussion)</a></li>
+      <li><a href="#niqs-actions">06 — NIQS: What Needs To Happen Next</a></li>
+    </ul>
+  </div>
+
+
+  <!-- ═══ 01 SHIPPED ═══ -->
+  <section class="section" id="shipped">
+    <p class="section-label">01 — Completed</p>
+    <h2 class="section-title">Everything Shipped This Session</h2>
+    <p class="section-desc">All items below are live on main. Vercel has redeployed.</p>
+
+    <!-- New Pages -->
+    <p style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;margin-top:8px;">New Pages & Files</p>
+    <table class="task-table">
+      <thead><tr><th>Item</th><th>File</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>NIQS brand identity case study page — full custom page with hero, challenge, brand system (navy/gold), 12-chapter grid, process section, status note, closing quote</td>
+          <td><span class="file">src/pages/NIQSProject.jsx</span></td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+        <tr>
+          <td>Quiv case study page — typography fixed (font-bold throughout), body text bumped to 14px, closing quote section added, OtherProj added before BuildSection</td>
+          <td><span class="file">src/pages/QuivProject.jsx</span></td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+        <tr>
+          <td>Preloader screen — RE monogram, lime progress bar, name label. Waits for window.onload (min 1.8s, max 3.2s), fades out via AnimatePresence</td>
+          <td><span class="file">src/components/common/Preloader.jsx</span></td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+        <tr>
+          <td>NIQS logo SVGs copied to public folder so the live site can serve them</td>
+          <td><span class="file">public/NIQSColor.svg</span> <span class="file">public/NIQSGrey.svg</span></td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+        <tr>
+          <td>SVG thumbnails extracted from inline JS data URIs into separate public files — reduces bundle size by ~7.6KB</td>
+          <td><span class="file">public/thumb-quiv.svg</span> <span class="file">public/thumb-snotes-a.svg</span> <span class="file">public/thumb-niqs.svg</span></td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Project Grid -->
+    <p style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--purple);margin-bottom:10px;margin-top:28px;">Project Grid (Home & Projects page)</p>
+    <table class="task-table">
+      <thead><tr><th>Item</th><th>File</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Snotes added back</strong> to STATIC_UI_PROJECTS with lime-green SVG thumbnail. Route and page were already there — just needed the grid entry.</td>
+          <td><span class="file">ProjectGrid.jsx</span></td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+        <tr>
+          <td><strong>NIQS added</strong> as STATIC_BRAND_PROJECTS entry — kind: "default", routes to /projects/niqs, navy/gold thumbnail</td>
+          <td><span class="file">ProjectGrid.jsx</span></td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+        <tr>
+          <td><strong>View More</strong> restored to proper pagination (load 4 more in place). Was incorrectly navigating to /projects instead.</td>
+          <td><span class="file">ProjectGrid.jsx</span></td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+        <tr>
+          <td><strong>Mobile portrait images (4:5)</strong> — cards are now h-auto on mobile with aspect-[4/5] image containers. Desktop keeps original h-[533px] fixed layout.</td>
+          <td><span class="file">ProjectGrid.jsx</span></td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Project Gallery -->
+    <p style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;margin-top:28px;">Project Page Gallery (DiscoverImg stacked scroll)</p>
+    <table class="task-table">
+      <thead><tr><th>Item</th><th>File</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Stacked gallery cards changed from <code>aspect-video</code> (landscape) to <code>aspect-[4/5]</code> portrait on mobile. Reverts to <code>aspect-video</code> on sm+ breakpoint.</td>
+          <td><span class="file">DiscoverImg.jsx</span></td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Brand Identity Pages -->
+    <p style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;margin-top:28px;">Brand Identity Pages — Copy Updates (Phase 2)</p>
+    <table class="task-table">
+      <thead><tr><th>Project</th><th>What Changed</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>BookRion</strong></td>
+          <td>Deliverables updated: Brand Guidelines, Logo Design, Colour Palette, Typography, Brand Stationery, Website Design. My Role paragraph added — "Contracted Creative Designer, built from zero... website design and delivery. Product design done but not featured pending launch."</td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+        <tr>
+          <td><strong>VerdeLuxe</strong></td>
+          <td>Deliverables updated to include ~30 pages + Brand Stationery. My Role added — "Sole designer. Full brand identity system."</td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+        <tr>
+          <td><strong>TabStudio</strong></td>
+          <td>Deliverables updated with Business Card + Letterhead (~30 pages). My Role added — "Sole brand designer. Intensive logo iteration, business card, letterhead, 30-page guidelines."</td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+        <tr>
+          <td><strong>Cleanstead</strong></td>
+          <td>Deliverables fully replaced: "Brand Guidelines (~60 pages), Logo Suite (5 lockups, all formats), Social Media Templates, Messaging &amp; Brand Voice, Colour Palette, Brand Stationery"</td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- UI Project Pages -->
+    <p style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;margin-top:28px;">UI Project Pages — Copy Updates (Phase 2)</p>
+    <table class="task-table">
+      <thead><tr><th>Project</th><th>What Changed</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>YDpay</strong></td>
+          <td>My Role updated: "Contracted UI Designer — responsible for UX audit, high-fidelity redesign, and new feature design: SpinPop (gamification), Refer'm'earn (referral), admin dashboards." Delivery card updated from "Complete &amp; Ready" to "Design Delivered — partial implementation adopted by client, new features pending."</td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+        <tr>
+          <td><strong>SavedUp</strong></td>
+          <td>Badge updated to "UI/UX Case Study · Retrospective". Sub-headline added: "A look back at my first UI/UX project." My Role updated to "Solo Product Designer — First UI/UX project." New section added: <strong>"What I'd Build Today"</strong> with 3 cards — fewer preset types, AI-guided savings, financial buddy concept. Fixed OtherProj bug: slug was "s" instead of "savedup".</td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Site-Wide -->
+    <p style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--lime);margin-bottom:10px;margin-top:28px;">Site-Wide Changes</p>
+    <table class="task-table">
+      <thead><tr><th>Item</th><th>File</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Landing page bio (AboutMe) rewritten</strong> — removed "multidisciplinary designer" and casual language. New copy uses Options A+B from the roadmap: visual designer/product thinker, precision and restraint, QS differentiator, "I build things I design." Paragraph typing animation replaced with instant FadeUp — removes 3-second forced wait.</td>
+          <td><span class="file">AboutMe.jsx</span></td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+        <tr>
+          <td><strong>Home page meta description</strong> updated — removed "multidisciplinary designer"</td>
+          <td><span class="file">pages/Home.jsx</span></td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+        <tr>
+          <td><strong>Footer</strong> — Presentation Design now links to /presentation-design (was null/disabled)</td>
+          <td><span class="file">Footer.jsx</span></td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+        <tr>
+          <td><strong>main.jsx</strong> — NIQS route added at /projects/niqs, NIQSProject imported</td>
+          <td><span class="file">main.jsx</span></td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+        <tr>
+          <td><strong>App.jsx</strong> — Preloader wired in with AnimatePresence, window.onload logic, min/max timing</td>
+          <td><span class="file">App.jsx</span></td>
+          <td><span class="status done">Done</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr class="divider" />
+
+
+  <!-- ═══ 02 COMMITS ═══ -->
+  <section class="section" id="commits">
+    <p class="section-label">02 — Git History</p>
+    <h2 class="section-title">Commit Log — This Session</h2>
+    <p class="section-desc">All 4 commits pushed to origin/main and deployed.</p>
+
+    <div class="commit-list">
+      <div class="commit">
+        <span class="commit-hash">cfd792a</span>
+        <span class="commit-msg">Update landing bio to new direction, fix load time, extract SVG thumbnails</span>
+        <p class="commit-sub">AboutMe.jsx bio rewrite · TypingText removed from paragraphs · Data URI SVGs → public files · Home meta description updated</p>
+      </div>
+      <div class="commit">
+        <span class="commit-hash">7823a74</span>
+        <span class="commit-msg">Add preloader, fix gallery portrait ratio, YDpay + Savedup copy updates</span>
+        <p class="commit-sub">Preloader.jsx created · App.jsx wired · DiscoverImg aspect-[4/5] on mobile · YDpay My Role + delivery note · SavedUp retrospective + "What I'd Build Today" + slug fix</p>
+      </div>
+      <div class="commit">
+        <span class="commit-hash">6103f8e</span>
+        <span class="commit-msg">Fix project grid mobile portrait images, View More pagination, and footer links</span>
+        <p class="commit-sub">Cards h-auto md:h-[533px] · Image wrapper aspect-[4/5] md:aspect-auto · View More → pagination · Footer Presentation Design link fixed</p>
+      </div>
+      <div class="commit">
+        <span class="commit-hash">a63519f</span>
+        <span class="commit-msg">Add NIQS + Quiv pages, Snotes back to grid, and brand identity copy updates</span>
+        <p class="commit-sub">NIQSProject.jsx · QuivProject.jsx · NIQSColor/Grey SVGs · STATIC_BRAND_PROJECTS · STATIC_UI_PROJECTS (Snotes) · BookRion/VerdeLuxe/TabStudio/Cleanstead copy</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+
+  <!-- ═══ 03 PENDING ═══ -->
+  <section class="section" id="pending">
+    <p class="section-label">03 — Still To Do</p>
+    <h2 class="section-title">Pending Items — Needs Action</h2>
+
+    <div class="callout orange" style="margin-bottom:20px;">
+      <strong>Most urgent:</strong> The NIQS page is live but has no images except the logo SVGs. A recruiter will land on it and leave. Screenshots from the HTML guideline are the single highest-impact thing you can do right now.
+    </div>
+
+    <table class="task-table">
+      <thead><tr><th style="width:40%">Task</th><th style="width:14%">Owner</th><th style="width:14%">Priority</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>NIQS page — add screenshots</strong>. Open <span class="file">extra/NIQS Brand Guideline.html</span> in Chrome. Screenshot 3–5 spreads: cover, colour page, typography page, a stationery application. Upload to Cloudinary and share URLs.</td>
+          <td><span class="owner you">Richard</span></td>
+          <td><span class="status blocked">Urgent</span></td>
+          <td>Claude can wire them into the page immediately once URLs are ready</td>
+        </tr>
+        <tr>
+          <td><strong>NIQS page — structural rework</strong> (see Section 05 for full strategy). Hero needs to lead with the design tension. "What We Didn't Change" section for the eagle. QS connection moved to the opening.</td>
+          <td><span class="owner me">Claude</span></td>
+          <td><span class="status pending">High</span></td>
+          <td>Ready to implement — waiting on screenshot URLs first so both happen in one pass</td>
+        </tr>
+        <tr>
+          <td><strong>About page hero</strong> — bio has been updated in ShortIntro but the About page hero headline and intro text hasn't been reviewed against the new positioning direction</td>
+          <td><span class="owner me">Claude</span></td>
+          <td><span class="status pending">Medium</span></td>
+          <td>Quick pass needed</td>
+        </tr>
+        <tr>
+          <td><strong>"I built and coded this portfolio"</strong> credit — flagged in the roadmap as ready to add. Should go in the footer or About page hero area.</td>
+          <td><span class="owner me">Claude</span></td>
+          <td><span class="status pending">Medium</span></td>
+          <td>Just needs a location decision from Richard</td>
+        </tr>
+        <tr>
+          <td><strong>Snotes page images</strong> — SnotesProject.jsx still uses placeholder TiltFrame components with null src throughout. Screenshots from Snotes prototype needed.</td>
+          <td><span class="owner you">Richard</span></td>
+          <td><span class="status pending">Medium</span></td>
+          <td>Page is live but all image slots are empty placeholders</td>
+        </tr>
+        <tr>
+          <td><strong>Quiv page screenshots</strong> — QuivProject.jsx has 9 ImgPlaceholder components waiting for real screenshots from Quiv_Measure_v4.html. Each placeholder has detailed instructions on what to capture.</td>
+          <td><span class="owner you">Richard</span></td>
+          <td><span class="status pending">Medium</span></td>
+          <td>See screenshot guide at the bottom of QuivProject.jsx</td>
+        </tr>
+        <tr>
+          <td><strong>TabStudio brand system showcase</strong> — roadmap flagged this as an opportunity. If the brand guideline PDF pages can be exported as images, Claude can build a fuller case study showing type, colour, logo lockups, and application spreads. Strong "systems thinking" signal for senior roles.</td>
+          <td><span class="owner you">Richard</span></td>
+          <td><span class="status pending">Low</span></td>
+          <td>Provide exported guideline page images to proceed</td>
+        </tr>
+        <tr>
+          <td><strong>LinkedIn bio</strong> — under 300 characters, keyword-optimised for the new positioning. Roadmap flagged this as waiting on bio confirmation (now confirmed).</td>
+          <td><span class="owner me">Claude</span></td>
+          <td><span class="status pending">Low</span></td>
+          <td>Ready to write now — just ask</td>
+        </tr>
+        <tr>
+          <td><strong>CV summary line</strong> — 2 sentences max, new positioning language. Same situation as LinkedIn bio.</td>
+          <td><span class="owner me">Claude</span></td>
+          <td><span class="status pending">Low</span></td>
+          <td>Ready to write now — just ask</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr class="divider" />
+
+
+  <!-- ═══ 04 PERFORMANCE ═══ -->
+  <section class="section" id="perf">
+    <p class="section-label">04 — Load Time</p>
+    <h2 class="section-title">Performance: Done vs. Still To Do</h2>
+    <p class="section-desc">What shipped this session and what's still on the table if load time becomes a priority.</p>
+
+    <p style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--green);margin-bottom:10px;">Done this session</p>
+    <table class="perf-table" style="margin-bottom:28px;">
+      <thead><tr><th>Fix</th><th>Impact</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Extracted 3 data URI SVG thumbnails (Quiv, Snotes, NIQS) from JS bundle into separate public files</td>
+          <td>~7.6KB removed from initial JS bundle. Files are now browser-cached after first visit.</td>
+        </tr>
+        <tr>
+          <td>Replaced TypingText animation on long bio paragraphs with instant FadeUp</td>
+          <td>Removes ~3 seconds of forced wait before users can read the AboutMe section on the home page</td>
+        </tr>
+        <tr>
+          <td>Preloader with window.onload gating</td>
+          <td>Gives real assets (fonts, CSS, hero image) time to arrive before the site appears. Prevents layout flash.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;">Still available — not yet done</p>
+    <table class="perf-table">
+      <thead><tr><th style="width:38%">Fix</th><th style="width:18%">Estimated impact</th><th>What's needed</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Check and compress myImg.jpg</strong> (the portrait photo used in AboutMe). Local assets are commonly oversized — often 1–4MB uncompressed.</td>
+          <td>Potentially large</td>
+          <td>Check file size. If over 200KB, compress via Squoosh or TinyPNG and replace.</td>
+        </tr>
+        <tr>
+          <td><strong>Add loading="lazy"</strong> to all below-fold images across project pages</td>
+          <td>Medium — defers off-screen image downloads</td>
+          <td>A quick sweep — Claude can do this in one pass across all project page files</td>
+        </tr>
+        <tr>
+          <td><strong>Cloudinary image transforms</strong> — add <code>q_auto,f_auto</code> to all Cloudinary URLs so images are served in WebP/AVIF at auto quality</td>
+          <td>Medium — 30–50% smaller image payloads</td>
+          <td>Confirm Cloudinary plan supports auto format transforms, then Claude can sweep all URLs</td>
+        </tr>
+        <tr>
+          <td><strong>React.lazy() for heavy project pages</strong> — YDpayPage, SnotesProject, QuivProject, SavedupProject, NIQSProject are large JS files loaded upfront</td>
+          <td>Medium — splits bundle, pages only load when navigated to</td>
+          <td>A few hours of routing refactor. Low risk, clear win for initial load speed.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr class="divider" />
+
+
+  <!-- ═══ 05 NIQS STRATEGY ═══ -->
+  <section class="section" id="niqs">
+    <p class="section-label">05 — NIQS Page Strategy</p>
+    <h2 class="section-title">How to Present the NIQS Project</h2>
+    <p class="section-desc">
+      Full strategic discussion from this session — both the recruiter lens and the senior UX designer lens.
+      This is the brief for restructuring the page once screenshots are available.
+    </p>
+
+    <div class="callout gold" style="margin-bottom:24px;">
+      <strong>The core tension:</strong> The NIQS page currently has strong copy and structure but zero visual evidence. No recruiter will read past the hero without seeing the work. Screenshots from the HTML guideline file are the unlock. Everything else here is the strategy for what goes around them.
+    </div>
+
+    <p style="font-size:13px;font-weight:700;color:var(--soft);margin-bottom:14px;text-transform:uppercase;letter-spacing:0.1em;">The 5 questions a recruiter and a senior UX designer are both asking — in order</p>
+    <table class="task-table" style="margin-bottom:28px;">
+      <thead><tr><th>#</th><th>Question</th><th>Current answer on the page</th><th>Gap</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Who is this client and why does it matter?</td>
+          <td>Answered — 55 years, 10K+ members, 37 chapters</td>
+          <td>Good. Keep it.</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>What was the actual problem you were solving?</td>
+          <td>Answered but buried — "no unified visual language across 37 chapters"</td>
+          <td>This needs to be the first thing someone reads. Move it above the stats.</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>What decision did YOU make, and why?</td>
+          <td>Partially answered — constraints listed but the key decision (preserve the eagle) is just a bullet point</td>
+          <td>Needs its own named section. This is the most senior signal on the page.</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>What does the work look like?</td>
+          <td>Not answered — no images except logo SVGs</td>
+          <td>Critical gap. Screenshots needed before the page can work.</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>What was the result?</td>
+          <td>Answered — 60 pages, 12 chapters, stationery + digital applications</td>
+          <td>Good. The "in production" framing needs tightening.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:13px;font-weight:700;color:var(--soft);margin-bottom:14px;text-transform:uppercase;letter-spacing:0.1em;">5 specific changes that would make the biggest difference</p>
+
+    <div class="strategy-card">
+      <p class="strategy-num">Change 01 — Most Important</p>
+      <p class="strategy-title">Lead with the design tension, not the facts</p>
+      <p class="strategy-body">
+        The brief section currently opens with deliverable tags and role labels. The most interesting sentence on the page —
+        <strong>"A 55-year institution. No unified visual language."</strong> — is buried in the challenge section.
+        That needs to be the first thing someone reads, in large type, before any stats or tags.
+        It tells you immediately that this is a real problem with real stakes.
+      </p>
+    </div>
+
+    <div class="strategy-card">
+      <p class="strategy-num">Change 02 — Highest Signal for Senior Roles</p>
+      <p class="strategy-title">Make "What We Didn't Change" its own named section</p>
+      <p class="strategy-body">
+        The decision to preserve the heraldic eagle is currently just a bullet point in a constraints list.
+        It deserves its own section — call it <strong>"The First Decision"</strong> or <strong>"What We Didn't Change."</strong>
+        Show the eagle. Explain explicitly: we were given a brief to refresh the identity and the first thing we decided was to leave the mark alone.
+        That is brand strategy, not just design execution. Senior designers and creative directors will stop scrolling when they read that.
+        It distinguishes the work from the 99% of brand projects that are just "redesign everything."
+      </p>
+    </div>
+
+    <div class="strategy-card">
+      <p class="strategy-num">Change 03 — Credibility Fix</p>
+      <p class="strategy-title">Replace "~60% complete" with "In Production" framing</p>
+      <p class="strategy-body">
+        The current status note says the guidelines are "approximately 60% complete." That is a liability.
+        It plants doubt before any work is seen. The correct framing:
+        <strong>"The core system — logo, colour, typography, stationery, digital guidelines — is complete and delivered.
+        Social media templates across 37 chapters are currently in production."</strong>
+        Same information. Completely different impression. Active work reads as professional momentum, not incompleteness.
+      </p>
+    </div>
+
+    <div class="strategy-card">
+      <p class="strategy-num">Change 04 — Highest Visual Impact</p>
+      <p class="strategy-title">Add at least 3 screenshots from the HTML guideline</p>
+      <p class="strategy-body">
+        Open <span class="file">extra/NIQS Brand Guideline.html</span> in Chrome.
+        Take full-page or section screenshots of: the cover spread, the colour palette page, and the typography specimen page.
+        Upload to Cloudinary. Even screenshots of a well-designed HTML file read as polished portfolio content.
+        Without any images of the actual work, no amount of good copy will save the page.
+        A recruiter makes a visual judgment in 8 seconds. Right now they see logo SVGs only.
+      </p>
+    </div>
+
+    <div class="strategy-card">
+      <p class="strategy-num">Change 05 — Most Memorable Detail</p>
+      <p class="strategy-title">Move the QS connection to the opening</p>
+      <p class="strategy-body">
+        The closing quote currently contains the most distinctive sentence in the entire portfolio:
+        Richard is a trained Quantity Surveyor designing FOR the professional body of Quantity Surveyors in Nigeria.
+        That needs to be near the top of the page — not the bottom. A version of this line near the opening:
+        <strong>"I'm a trained Quantity Surveyor. NIQS is the professional body for Quantity Surveyors in Nigeria.
+        This wasn't a client — this was my profession."</strong>
+        That line, read early, changes how everything after it is interpreted.
+        It makes the design decisions more credible, the constraints more understandable, and the work impossible to forget.
+      </p>
+    </div>
+
+    <div class="callout lime" style="margin-top:16px;">
+      <strong>What the page says right now vs. what it should say:</strong><br>
+      Right now: "Here is a brand identity project I did for a big institution."<br>
+      After restructure: "Here is the institution I belong to, the brief I was given, the one decision that defined everything, and the system I built around it."<br>
+      The second version earns attention. The first loses it.
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+
+  <!-- ═══ 06 NIQS ACTIONS ═══ -->
+  <section class="section" id="niqs-actions">
+    <p class="section-label">06 — NIQS Next Steps</p>
+    <h2 class="section-title">What Needs To Happen Next on NIQS</h2>
+
+    <table class="task-table">
+      <thead><tr><th style="width:42%">Action</th><th style="width:14%">Owner</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Open <span class="file">extra/NIQS Brand Guideline.html</span> in Chrome. Screenshot the cover, the colour page, the typography page, and one stationery application spread. Use DevTools → Ctrl+Shift+P → "Capture full size screenshot" for clean results.</td>
+          <td><span class="owner you">Richard</span></td>
+          <td>3–5 screenshots is enough. Quality over quantity.</td>
+        </tr>
+        <tr>
+          <td>Upload screenshots to Cloudinary and share the URLs here or in chat</td>
+          <td><span class="owner you">Richard</span></td>
+          <td>Same folder as other project images: richard_portfolio/projects/</td>
+        </tr>
+        <tr>
+          <td>Restructure the NIQS page: lead with tension, add "What We Didn't Change" section, move QS angle to opening, replace status note, wire in screenshots</td>
+          <td><span class="owner me">Claude</span></td>
+          <td>One pass once screenshot URLs are provided. Estimated ~45 minutes of work.</td>
+        </tr>
+        <tr>
+          <td>Decide: should the NIQS page also show a brand stationery mockup? (letterhead, business card) — if you have any mockup assets from the project, they'd dramatically improve the "applications" section.</td>
+          <td><span class="owner you">Richard</span></td>
+          <td>Nice to have, not a blocker</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer class="doc-footer">
+    <p>Generated end of session · <strong>May 2026</strong> · Richard Enoch Portfolio</p>
+    <p style="margin-top:6px;">Live on <strong>main</strong> · Deployed on Vercel · Backend on Render</p>
+  </footer>
+
+</div>
+</body>
+</html>

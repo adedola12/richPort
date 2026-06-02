@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio Audit — Richard Enoch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #07090C;
+      --bg-2:      #0f1114;
+      --bg-card:   rgba(255,255,255,0.03);
+      --border:    rgba(255,255,255,0.08);
+      --border-hi: rgba(255,255,255,0.14);
+      --text:      #ffffff;
+      --text-55:   rgba(255,255,255,0.55);
+      --text-35:   rgba(255,255,255,0.35);
+      --text-20:   rgba(255,255,255,0.20);
+      --lime:      #a3e635;
+      --lime-dim:  rgba(163,230,53,0.12);
+      --lime-bd:   rgba(163,230,53,0.28);
+      --red:       #ef4444;
+      --red-dim:   rgba(239,68,68,0.10);
+      --amber:     #f59e0b;
+      --amber-dim: rgba(245,158,11,0.10);
+      --blue:      #60a5fa;
+      --blue-dim:  rgba(96,165,250,0.10);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Layout ── */
+    .page-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px 120px;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      border-bottom: 1px solid var(--border);
+      padding: 28px 0 24px;
+      margin-bottom: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .site-header .logo {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-35);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .site-header .logo span { color: var(--lime); }
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 100px;
+      border: 1px solid var(--lime-bd);
+      background: var(--lime-dim);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--lime);
+      letter-spacing: 0.04em;
+    }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); display: inline-block; }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 20px 0 64px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 72px;
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 800;
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+      background: linear-gradient(180deg, #fff 0%, #6b6b6b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+    }
+    .hero-sub {
+      font-size: 16px;
+      color: var(--text-55);
+      max-width: 580px;
+      line-height: 1.65;
+      margin-bottom: 32px;
+    }
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .meta-item { }
+    .meta-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-20);
+      margin-bottom: 3px;
+    }
+    .meta-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-55);
+    }
+
+    /* ── TOC ── */
+    .toc {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 72px;
+    }
+    .toc-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--text-35);
+      margin-bottom: 16px;
+    }
+    .toc-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 6px 24px;
+    }
+    .toc-list li a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-55);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 4px 0;
+      transition: color 0.2s;
+    }
+    .toc-list li a:hover { color: var(--lime); }
+    .toc-num {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--lime);
+      opacity: 0.6;
+      min-width: 20px;
+    }
+
+    /* ── Section ── */
+    .section {
+      margin-bottom: 80px;
+      padding-bottom: 80px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section:last-child { border-bottom: none; }
+
+    .section-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 12px;
+    }
+    .section h2 {
+      font-size: clamp(26px, 3.5vw, 38px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .section h2 .accent { color: var(--lime); }
+    .section-intro {
+      font-size: 15px;
+      color: var(--text-55);
+      max-width: 640px;
+      line-height: 1.7;
+      margin-top: 12px;
+      margin-bottom: 36px;
+    }
+    .rule {
+      width: 48px;
+      height: 2px;
+      background: var(--lime);
+      border-radius: 2px;
+      margin-bottom: 36px;
+    }
+
+    /* ── Verdict Banner ── */
+    .verdict-banner {
+      background: var(--lime-dim);
+      border: 1px solid var(--lime-bd);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 28px;
+    }
+    .verdict-banner p {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--lime);
+      line-height: 1.6;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-title .badge {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .badge-green  { background: var(--lime-dim);  color: var(--lime);  border: 1px solid var(--lime-bd); }
+    .badge-red    { background: var(--red-dim);   color: var(--red);   border: 1px solid rgba(239,68,68,0.25); }
+    .badge-amber  { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,158,11,0.25); }
+    .badge-blue   { background: var(--blue-dim);  color: var(--blue);  border: 1px solid rgba(96,165,250,0.25); }
+    .badge-neutral{ background: rgba(255,255,255,0.05); color: var(--text-35); border: 1px solid var(--border); }
+    .card p { font-size: 14px; color: var(--text-55); line-height: 1.7; }
+    .card p + p { margin-top: 10px; }
+
+    /* ── 2-col card grid ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 620px) { .card-grid { grid-template-columns: 1fr; } }
+    .mini-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+    }
+    .mini-card-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .mini-card p { font-size: 13px; color: var(--text-55); line-height: 1.65; }
+
+    /* ── Alert / Callout ── */
+    .callout {
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      border-left: 3px solid;
+    }
+    .callout-red   { background: var(--red-dim);   border-color: var(--red);   }
+    .callout-amber { background: var(--amber-dim); border-color: var(--amber); }
+    .callout-lime  { background: var(--lime-dim);  border-color: var(--lime);  }
+    .callout-blue  { background: var(--blue-dim);  border-color: var(--blue);  }
+    .callout p {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--text-55);
+    }
+    .callout strong { color: var(--text); font-weight: 600; }
+
+    /* ── Project table ── */
+    .project-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .project-row:last-child { border-bottom: none; }
+    .project-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      min-width: 180px;
+      flex-shrink: 0;
+    }
+    .project-desc {
+      font-size: 13px;
+      color: var(--text-55);
+      line-height: 1.65;
+    }
+
+    /* ── Q&A ── */
+    .qa-item {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .qa-q {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      display: flex;
+      gap: 12px;
+    }
+    .qa-num {
+      color: var(--lime);
+      font-size: 11px;
+      font-weight: 700;
+      min-width: 20px;
+      margin-top: 1px;
+    }
+    .qa-context {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-35);
+      margin-bottom: 6px;
+    }
+    .qa-body {
+      font-size: 13px;
+      color: var(--text-55);
+      line-height: 1.65;
+      padding-left: 32px;
+    }
+
+    /* ── Final verdict ── */
+    .verdict-block {
+      border-radius: 20px;
+      padding: 32px 36px;
+      margin-bottom: 20px;
+    }
+    .verdict-block-yes {
+      background: linear-gradient(135deg, rgba(163,230,53,0.06) 0%, rgba(163,230,53,0.02) 100%);
+      border: 1px solid var(--lime-bd);
+    }
+    .verdict-block-no {
+      background: linear-gradient(135deg, rgba(239,68,68,0.06) 0%, rgba(239,68,68,0.02) 100%);
+      border: 1px solid rgba(239,68,68,0.2);
+    }
+    .verdict-block h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .verdict-block p { font-size: 14px; color: var(--text-55); line-height: 1.75; }
+    .verdict-block p + p { margin-top: 12px; }
+    .verdict-icon { font-size: 18px; }
+
+    /* ── Bullet list ── */
+    .bullet-list { list-style: none; padding: 0; margin: 14px 0; }
+    .bullet-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text-55);
+      line-height: 1.65;
+      padding: 5px 0;
+    }
+    .bullet-list li::before {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--lime);
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+    .bullet-list.red li::before { background: var(--red); }
+    .bullet-list.amber li::before { background: var(--amber); }
+
+    /* ── Divider label ── */
+    .divider-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 28px 0 20px;
+    }
+    .divider-label span {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-35);
+      white-space: nowrap;
+    }
+    .divider-label::before, .divider-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Highlight quote ── */
+    blockquote {
+      border-left: 2px solid var(--lime);
+      padding: 12px 20px;
+      margin: 16px 0;
+      background: var(--lime-dim);
+      border-radius: 0 8px 8px 0;
+    }
+    blockquote p {
+      font-size: 14px;
+      font-style: italic;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.65;
+    }
+
+    /* ── Body text ── */
+    .body-text { font-size: 14px; color: var(--text-55); line-height: 1.75; }
+    .body-text + .body-text { margin-top: 12px; }
+    .body-text strong { color: var(--text); font-weight: 600; }
+
+    /* ── Footer ── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .site-footer p { font-size: 12px; color: var(--text-20); }
+    .site-footer .lime { color: var(--lime); }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .page-wrap { padding: 0 16px 80px; }
+      .card, .verdict-block { padding: 20px; }
+      .toc { padding: 18px 20px; }
+      .project-name { min-width: unset; }
+      .project-row { flex-direction: column; gap: 6px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="logo">Richard Enoch — <span>Portfolio Audit</span></div>
+    <div class="header-badge"><span class="dot"></span> June 2026</div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <p class="hero-eyebrow">Senior Recruiter × Executive Client</p>
+    <h1>Honest Portfolio<br/>Audit</h1>
+    <p class="hero-sub">
+      Conducted as a senior recruiter at a top tech firm and an executive client considering a high-value contract. No flattery. No softening. Just the truth about what works, what doesn't, and what's missing.
+    </p>
+    <div class="meta-row">
+      <div class="meta-item"><div class="meta-label">Subject</div><div class="meta-value">Richard Enoch</div></div>
+      <div class="meta-item"><div class="meta-label">Audited by</div><div class="meta-value">Claude (Senior Recruiter + Exec Client lens)</div></div>
+      <div class="meta-item"><div class="meta-label">Scope</div><div class="meta-value">All pages, all case studies, site structure</div></div>
+      <div class="meta-item"><div class="meta-label">Excluded</div><div class="meta-value">Placeholder images (known, in progress)</div></div>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <nav class="toc">
+    <p class="toc-title">Contents</p>
+    <ol class="toc-list">
+      <li><a href="#s1"><span class="toc-num">01</span> Positioning</a></li>
+      <li><a href="#s2"><span class="toc-num">02</span> Audience Fit (30–90s scan)</a></li>
+      <li><a href="#s3"><span class="toc-num">03</span> Project Selection</a></li>
+      <li><a href="#s4"><span class="toc-num">04</span> Case Study Depth</a></li>
+      <li><a href="#s5"><span class="toc-num">05</span> Narrative Coherence</a></li>
+      <li><a href="#s6"><span class="toc-num">06</span> Weaknesses &amp; Blind Spots</a></li>
+      <li><a href="#s7"><span class="toc-num">07</span> Interview Questions</a></li>
+      <li><a href="#s8"><span class="toc-num">08</span> Honest Verdict</a></li>
+    </ol>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- 01 — POSITIONING -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="section" id="s1">
+    <p class="section-eyebrow">01 — Positioning</p>
+    <h2>What Role Does This Portfolio <span class="accent">Actually Position You For?</span></h2>
+    <div class="rule"></div>
+
+    <div class="verdict-banner">
+      <p>Mid-level to upper-mid product + brand designer, with strong execution discipline, early strategic ambition, and one institutional-scale engagement (NIQS) that supports a stretch toward senior. Not a senior. Not a specialist. Not yet a strategic partner.</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="mini-card">
+        <div class="mini-card-label badge-green" style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--lime);background:var(--lime-dim);border:1px solid var(--lime-bd);margin-bottom:10px;">Where proof supports the claim</div>
+        <p>YDpay shows genuine execution depth and system-level thinking across 96 screens and 14 flows. NIQS is institutional-scale complexity — signed MoU, six-figure budget, multi-surface delivery. Snotes demonstrates architectural and strategic discipline above average for the stated experience level. Building this portfolio in code is a real differentiator.</p>
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-label badge-red" style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);background:var(--red-dim);border:1px solid rgba(239,68,68,0.25);margin-bottom:10px;">Where there's a gap</div>
+        <p>"Visual designer and product thinker" could describe anyone. "6 years across brand identity, UI/UX, and construction technology" covers three disciplines — which means it owns none of them in the reader's mind. The construction technology claim appears in the bio and meta description but zero times in the actual work.</p>
+      </div>
+    </div>
+
+    <div class="callout callout-red">
+      <p><strong>The single most damaging sentence in the portfolio:</strong> "I work best when the problem is defined and execution is the mandate." Honest and admirable — and it costs you the senior framing. A senior recruiter reads this as: "hire me to execute, not to lead." That's mid-level positioning dressed up in careful language. The follow-up — "I can also think from first principles but that takes longer" — compounds it.</p>
+    </div>
+
+    <p class="body-text">If you're going to claim a vertical ("construction technology"), you have to show work in it. A recruiter who reads that bio and scans the portfolio finds cleaning company branding, a crypto app, a savings app, and a sermon notes concept. The construction angle vanishes. Either connect it to a case study, or remove it from the headline positioning until you have that work.</p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- 02 — AUDIENCE FIT -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="section" id="s2">
+    <p class="section-eyebrow">02 — Audience Fit</p>
+    <h2>Does It Communicate Effectively <span class="accent">in 30–90 Seconds?</span></h2>
+    <div class="rule"></div>
+
+    <p class="body-text">A recruiter at Google or Moniepoint is not shopping for services. They're scanning for three things: <strong>who are you, what kind of work do you do, is it good enough to continue.</strong></p>
+
+    <div class="divider-label"><span>What a recruiter encounters first</span></div>
+
+    <div class="callout callout-amber">
+      <p><strong>The home page is structured like a marketing landing page for a freelance studio.</strong> Ten sections before reaching real work: Hero → Pick a Card → About Me → Partners → Services → Work Experience → Design Process → Testimonials → Build Section. The "Services" and pricing tiers appearing on the portfolio home page is the freelance business brain showing — these are different signals to different audiences. To a top-firm recruiter, it says "vendor," not "designer."</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="mini-card">
+        <div class="mini-card-label" style="color:var(--lime);font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:8px;">What makes a recruiter stop</div>
+        <p>A compelling case study visible above the fold with clear scope and a real outcome. YDpay could do that if the hero mockup is strong. NIQS at institutional scale could do that. Either one, front and center, with a sharp one-line outcome statement, earns the next 60 seconds of attention.</p>
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-label" style="color:var(--red);font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:8px;">What makes a recruiter bounce</div>
+        <p>"Pick a Card" is a beautiful interaction — and it's a tour of categories, not a showcase of work. A "Design Process" section with a generic five-step methodology is filler that experienced reviewers recognize instantly and skip. Services + pricing tiers = vendor framing, not designer framing.</p>
+      </div>
+    </div>
+
+    <p class="body-text" style="margin-top:8px;"><strong>Hard truth:</strong> The home page is trying to be a portfolio AND a freelance studio website simultaneously. For a top-firm recruiter, those goals conflict and one wins — the wrong one.</p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- 03 — PROJECT SELECTION -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="section" id="s3">
+    <p class="section-eyebrow">03 — Project Selection</p>
+    <h2>What Strengthens, What <span class="accent">Weakens, What Dilutes</span></h2>
+    <div class="rule"></div>
+
+    <div class="divider-label"><span>Projects that strengthen</span></div>
+
+    <div class="project-row">
+      <div class="project-name">NIQS <span class="badge badge-green" style="font-size:9px;padding:2px 7px;border-radius:4px;margin-left:6px;">Strongest</span></div>
+      <div class="project-desc">Institutional scale, real complexity, real client. 56-year institution, 10,000+ members, signed MoU, six-figure budget, five parallel deliverables — brand system, website, member portal, admin dashboard, flyer engine. The combination of brand identity + full digital transformation is genuinely impressive. This is the anchor of the entire portfolio.</div>
+    </div>
+    <div class="project-row">
+      <div class="project-name">YDpay Mobile Redesign <span class="badge badge-green" style="font-size:9px;padding:2px 7px;border-radius:4px;margin-left:6px;">Strong</span></div>
+      <div class="project-desc">96 screens, 14 flows, 10 user journeys. The design decision documentation is the strongest in the portfolio — why 4 actions not 5–6, why OTP only on outbound, why two-tier KYC. This is systems thinking, not just screen-making. The gap: "partial implementation adopted" needs specificity or it invites doubt.</div>
+    </div>
+    <div class="project-row">
+      <div class="project-name">Snotes <span class="badge badge-blue" style="font-size:9px;padding:2px 7px;border-radius:4px;margin-left:6px;">Distinctive</span></div>
+      <div class="project-desc">The strategic architecture and philosophical clarity are unusual for a designer's portfolio. Three-phase rollout, three-layer Bible API stack, hard-coded bright lines before launch — this shows a product thinker. The risk: it's unbuilt and niche. For a design-conscious startup or agency, it could be the most memorable thing in the portfolio. For a fintech recruiter, it may not land.</div>
+    </div>
+
+    <div class="divider-label"><span>Projects that are neutral</span></div>
+
+    <div class="project-row">
+      <div class="project-name">Savedup <span class="badge badge-neutral" style="font-size:9px;padding:2px 7px;border-radius:4px;margin-left:6px;">Neutral</span></div>
+      <div class="project-desc">Retrospective framing on a 2023 student concept is the right call (honesty is better than false confidence), but it positions this as a learning exercise, not professional-grade shipped work. The "what I'd do differently" section is rare and valuable. Keep it — but make sure the visual work carries it.</div>
+    </div>
+    <div class="project-row">
+      <div class="project-name">TabStudio, VerdeLuxe <span class="badge badge-neutral" style="font-size:9px;padding:2px 7px;border-radius:4px;margin-left:6px;">Neutral</span></div>
+      <div class="project-desc">Competent brand work. The case studies are thin — same four-step Discover/Ideate/Design/Test template with no differentiation between projects. A recruiter who reads one and then the other notices immediately. This reads as template execution, not strategic thinking.</div>
+    </div>
+
+    <div class="divider-label"><span>Projects that weaken</span></div>
+
+    <div class="project-row">
+      <div class="project-name">Cleanstead, BookRion <span class="badge badge-red" style="font-size:9px;padding:2px 7px;border-radius:4px;margin-left:6px;">Dilutes</span></div>
+      <div class="project-desc">A cleaning service and a book distribution app are the weakest brand projects in the lineup. A recruiter who sees NIQS (55-year institution, 10,000 members) and then Cleanstead recalibrates their mental model downward. These are solid early-career commissions. Move them to a secondary or archived section — not the same tab as NIQS.</div>
+    </div>
+    <div class="project-row">
+      <div class="project-name">Graphic Design (Flyers) <span class="badge badge-red" style="font-size:9px;padding:2px 7px;border-radius:4px;margin-left:6px;">Weakens</span></div>
+      <div class="project-desc">Social media flyers, promotional graphics — these are production work, not case studies. They demonstrate execution but not thinking. For a senior role at a top firm, having social media flyers in your portfolio says "I take all work that comes my way." This work belongs behind a separate client-facing studio URL, not on the same navigation as NIQS and YDpay.</div>
+    </div>
+    <div class="project-row">
+      <div class="project-name">Quiv (+ Snotes ratio) <span class="badge badge-amber" style="font-size:9px;padding:2px 7px;border-radius:4px;margin-left:6px;">Ratio problem</span></div>
+      <div class="project-desc">Quiv is concept stage. Alongside Snotes (also unbuilt), two of your UI/UX projects have no shipped screen — and your largest (YDpay) is "partially implemented." That's a portfolio where the majority of UI/UX work has no shipped, live, measurable outcome. A sharp recruiter will notice this ratio.</div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- 04 — CASE STUDY DEPTH -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="section" id="s4">
+    <p class="section-eyebrow">04 — Case Study Depth</p>
+    <h2>Does Each Case Study Communicate <span class="accent">the Right Things?</span></h2>
+    <div class="rule"></div>
+
+    <div class="card">
+      <div class="card-title">YDpay <span class="badge badge-green">Strongest</span></div>
+      <p>Flow documentation, decision rationale, typography + colour systems — all correct. This is the best case study for demonstrating systems thinking. The gap is the outcome statement. <strong>"Partial implementation adopted by client — core flows shipped, new features pending"</strong> is vague in a way that invites the worst-case interpretation. What shipped? What didn't? Who made that call? Fix it: "Client shipped 60 of 96 screens in production by March 2026" is concrete and professional. Vague partial-delivery language implies either client conflict or design quality concerns.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Savedup <span class="badge badge-blue">Good research, unclear status</span></div>
+      <p>78% problem validation, competitive analysis, three user archetypes, retrospective honesty — good methodology. The weakness is no outcome data and no production status clarity. Not a single metric about what happened after the work. Either the app shipped and you have data (get it), or it's a design exercise (say so explicitly). The current framing implies product status without committing to it. That gap will be the first question in any interview.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Snotes <span class="badge badge-blue">Intellectually honest, needs context-setting</span></div>
+      <p>The most philosophically honest case study in the portfolio. Clearly labeled "Concept Stage." The three-layer API architecture, the bright lines, the phased rollout — all above average for a designer's portfolio. The risk: a niche product (African Pentecostal sermon notes) leads with a niche audience. For a Moniepoint recruiter, this may not resonate. Know when to lead with it and when to lead with NIQS.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">NIQS UI/UX <span class="badge badge-green">Strong narrative, needs post-delivery data</span></div>
+      <p>Institutional transformation, signed MoU, multi-surface delivery — the narrative is strong. The weakness is the absence of post-delivery validation. No client testimonial, no member adoption rate, no before/after metric. For an institutional client at this scale, even one specific outcome statement — "the flyer engine eliminated the design bottleneck on the secretariat's 12 weekly recurring communications" — adds significant weight.</p>
+    </div>
+
+    <div class="callout callout-red">
+      <p><strong>Brand Identity Projects (TabStudio, VerdeLuxe, Cleanstead, BookRion) — all four have the same problem:</strong> The Discover → Ideate → Design → Test template applied uniformly produces prose that could have been written by anyone. "The new identity gave BookRion a clear voice and visual presence" is not an outcome — it's a sentence. "A harmonious color palette of deep greens, warm neutrals, and beige tones" is the client brief restated, not design thinking. What happened after delivery? Did the platform launch? Did sign-ups increase? Were there investor conversations? Without outcomes, these are process descriptions, not case studies.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- 05 — NARRATIVE COHERENCE -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="section" id="s5">
+    <p class="section-eyebrow">05 — Narrative Coherence</p>
+    <h2>Does the Portfolio Tell <span class="accent">One Consistent Story?</span></h2>
+    <div class="rule"></div>
+
+    <p class="body-text">The portfolio currently tells three simultaneous stories that compete:</p>
+
+    <div style="margin: 24px 0; display: grid; gap: 12px;">
+      <div class="mini-card" style="border-color:rgba(163,230,53,0.2);">
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--lime);margin-bottom:6px;">Story A — Brand Designer</div>
+        <p>TabStudio, VerdeLuxe, Cleanstead, BookRion, NIQS Brand → "I build visual systems for businesses"</p>
+      </div>
+      <div class="mini-card" style="border-color:rgba(96,165,250,0.2);">
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue);margin-bottom:6px;">Story B — Product Designer</div>
+        <p>YDpay, Savedup, Snotes, NIQS UI → "I design apps and digital products"</p>
+      </div>
+      <div class="mini-card" style="border-color:rgba(239,68,68,0.2);">
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);margin-bottom:6px;">Story C — Freelance Studio</div>
+        <p>Graphic design work, presentation design, pricing tiers, rate card → "I take commissions"</p>
+      </div>
+    </div>
+
+    <p class="body-text">A recruiter or client cannot hold all three in their head simultaneously. They're not supposed to — that's your job as the portfolio designer. The most coherent version of your story, based on the evidence: <strong>institutional and product-scale designer who works at the intersection of brand systems and digital products, with a specialty in complex, multi-surface design problems.</strong> The graphic design commissions and cleaning company branding do not belong in that story.</p>
+
+    <div class="callout callout-amber">
+      <p><strong>The Quantity Surveyor background is genuinely differentiating — if it's connected to work.</strong> It isn't, currently. It reads like resume padding. Either connect it to a case study that shows construction/built environment context, or remove it from the main positioning statement until you have that work.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- 06 — WEAKNESSES & BLIND SPOTS -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="section" id="s6">
+    <p class="section-eyebrow">06 — Weaknesses &amp; Blind Spots</p>
+    <h2>What a Sharp Recruiter <span class="accent">Will Catch</span></h2>
+    <div class="rule"></div>
+
+    <div class="card">
+      <div class="card-title"><span style="color:var(--red);font-size:18px;">01</span> No live shipped product with measurable outcomes</div>
+      <p>This is the central vulnerability. Every recruiter will ask: "What shipped, and what happened after it shipped?" The honest answer right now: YDpay partially shipped, Savedup's production status is unclear, Snotes and Quiv are unbuilt. NIQS is in production and is your strongest answer to this question. It's also your most recent project — lean on it.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span style="color:var(--red);font-size:18px;">02</span> The About page undermines senior positioning</div>
+      <p>"I work best when the problem is defined and execution is the mandate" is a self-imposed ceiling. If you want a Creative Lead title at a serious company, reframe to lead with the NIQS and Snotes evidence of strategic thinking first, and position execution strength as a competitive advantage — not as a limitation.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span style="color:var(--red);font-size:18px;">03</span> Pricing is publicly visible and it anchors low</div>
+      <p>$100 for brand identity Gold tier. $500 for UI/UX Essentials. A recruiter at a top firm seeing these numbers will recalibrate their mental model of your seniority before they've seen the work. The rate card should be behind a separate domain or client inquiry flow, not publicly navigable from the same header as your case studies. High-value clients and top-firm recruiters will not price-anchor before deciding what you're worth — but only if you don't let them.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span style="color:var(--red);font-size:18px;">04</span> Brand case studies are interchangeable</div>
+      <p>Remove the client names from TabStudio, VerdeLuxe, Cleanstead, and BookRion. The structure and language are identical. No differentiation. A recruiter reviewing multiple projects expects to understand what's unique about your approach in each context — not read the same template four times.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span style="color:var(--red);font-size:18px;">05</span> "Partial implementation" on YDpay needs specificity</div>
+      <p>"96 screens delivered; client implemented 60 in production by March 2026" is concrete and professional. "Partial implementation adopted" is vague and invites the worst-case interpretation. Fix the outcome statement before anyone reads it in an interview context.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span style="color:var(--red);font-size:18px;">06</span> Two unbuilt products listed as UI/UX case studies</div>
+      <p>Snotes and Quiv are both concepts. Listed alongside YDpay and Savedup, they dilute the category. Consider labeling them "Product Strategy" or "Concept Documentation" rather than positioning them as UI/UX design work — because there is no visual UI design to evaluate yet, and a recruiter who clicks expecting screens will find architecture.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span style="color:var(--red);font-size:18px;">07</span> "Construction technology" claimed, never shown</div>
+      <p>It's in the bio, the About meta description, and the home page meta description. It appears in zero case studies. Either build a case study that earns the claim, or remove it from positioning until you can. An executive who hires you for a construction-adjacent project based on that bio, then discovers the portfolio has no construction work, is a trust problem before the project starts.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- 07 — INTERVIEW QUESTIONS -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="section" id="s7">
+    <p class="section-eyebrow">07 — Interview Questions</p>
+    <h2>8 Questions a Recruiter Will Ask <span class="accent">After Reading This</span></h2>
+    <div class="rule"></div>
+    <p class="body-text" style="margin-bottom:28px;">These are designed to test whether the work is really yours and whether you understand your own decisions. Prepare specific answers to every one of these before any interview.</p>
+
+    <div class="qa-item">
+      <div class="qa-context">On YDpay</div>
+      <div class="qa-q"><span class="qa-num">01</span><span>You document 96 screens across 14 flows, but the case study says "partial implementation adopted." Which flows did the client ship, which ones didn't make it, and what was the reason for the gap between delivery and implementation?</span></div>
+      <div class="qa-body">This tests whether you understand the relationship between design delivery and production reality — and whether the partial implementation reflects a client resourcing decision or a design quality concern.</div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-context">On NIQS</div>
+      <div class="qa-q"><span class="qa-num">02</span><span>You were Creative Lead on a six-figure institutional engagement. Walk me through a decision where the client pushed back and you held your position — and one where you changed your mind because they were right.</span></div>
+      <div class="qa-body">Tests whether "Creative Lead" reflects real authority or a title. Senior designers can articulate both directions.</div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-context">On Snotes</div>
+      <div class="qa-q"><span class="qa-num">03</span><span>You wrote 10,000 words of product strategy for an app you haven't built yet. How do you know the problem is real if the solution is unvalidated? What's the one assumption in your V1 strategy that you're least confident about?</span></div>
+      <div class="qa-body">Tests whether the strategy holds up to pressure. Snotes is ambitious — a recruiter who's impressed will probe its weakest assumption.</div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-context">On Savedup</div>
+      <div class="qa-q"><span class="qa-num">04</span><span>You describe what you'd do differently today. If you went back to Savedup now with three weeks and your current skill level, what would the screens look like that they currently don't?</span></div>
+      <div class="qa-body">Tests whether the retrospective is genuine growth-thinking or a defensive hedge. The answer should be specific and visual.</div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-context">On brand identity process</div>
+      <div class="qa-q"><span class="qa-num">05</span><span>Your TabStudio, VerdeLuxe, Cleanstead, and BookRion case studies follow the same four-step structure with similar language. Walk me through what made the TabStudio engagement specifically different from VerdeLuxe — different challenge, different constraint, different design decision.</span></div>
+      <div class="qa-body">Tests whether the template is masking a lack of differentiated thinking, or whether the work was genuinely different and the write-up failed to capture it.</div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-context">On the About page claim</div>
+      <div class="qa-q"><span class="qa-num">06</span><span>Your About page says you work best when the brief is defined and execution is the mandate, but you're listed as Creative Lead at ADLM Studio. What's the last time you shaped the brief before executing on it — and how did you do that?</span></div>
+      <div class="qa-body">Tests whether the Creative Lead title is real authority or nominal. The answer to this one question will define how the rest of the interview is calibrated.</div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-context">On background claims</div>
+      <div class="qa-q"><span class="qa-num">07</span><span>Your bio mentions you're a trained Quantity Surveyor. None of the case studies show built environment or construction design work. Either show me that work — or explain why it's not in the portfolio.</span></div>
+      <div class="qa-body">If the answer is "I haven't done construction-adjacent design work," say so and remove it from the bio. If there's work that isn't shown, show it.</div>
+    </div>
+
+    <div class="qa-item">
+      <div class="qa-context">On authorship</div>
+      <div class="qa-q"><span class="qa-num">08</span><span>Across the YDpay project — the 4-action dashboard model, the OTP-only-on-outbound decision, the two-tier KYC architecture — which of those were your original calls, and which were direction you received from the client or brief?</span></div>
+      <div class="qa-body">The most important question in the portfolio. The YDpay case study documents these decisions with confident rationale. If any were pre-defined by the client, a sharp interviewer will find that gap. Know your answer precisely.</div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- 08 — HONEST VERDICT -->
+  <!-- ═══════════════════════════════════════════ -->
+  <section class="section" id="s8">
+    <p class="section-eyebrow">08 — Honest Verdict</p>
+    <h2>Would This Portfolio <span class="accent">Get You There?</span></h2>
+    <div class="rule"></div>
+
+    <div class="verdict-block verdict-block-no">
+      <h3><span class="verdict-icon">→</span> Scenario A: Senior Product/Brand Design Role at a Top Firm</h3>
+      <p><strong style="color:var(--red);">Not yet, on the current portfolio alone.</strong></p>
+      <p>A senior role at Google, Moniepoint, or a top agency requires evidence of shipped product with measurable outcomes, evidence of influencing product direction (not just executing on it), and case studies that demonstrate systems thinking under real constraints. NIQS is the only project that approaches this bar — and it's the most recent, in-production work. The rest of the portfolio has a ratio problem: too many concepts and retrospectives, not enough shipped work with post-launch data.</p>
+      <p>With a strong interview, you could close some of that gap. The YDpay decision documentation and Snotes product strategy show thinking above average for your stated experience level. But a strong interview requires the portfolio to get you the interview. A recruiter scanning this for 60 seconds sees: brand generalist, some UI/UX work, graphic design commissions, two unbuilt concepts, pricing tiers on the home page. They may not reach NIQS or Snotes.</p>
+    </div>
+
+    <div class="verdict-block verdict-block-yes">
+      <h3><span class="verdict-icon">→</span> Scenario B: High-Value Freelance / Contract Retainer</h3>
+      <p><strong style="color:var(--lime);">Closer. Significantly closer than Scenario A.</strong></p>
+      <p>The NIQS engagement is a proof point that a serious client with real budget trusted you with a complex, multi-surface problem. YDpay's documentation depth shows a client can trust you to deliver a complete, spec-ready design package. The rate details page and contact flow are functional and professional.</p>
+      <p>The rate card is the liability. $100–$650 for brand identity anchors you before a client has decided what you're worth. An executive considering a high-value contract will find the pricing before they've formed an opinion — and anchor low. Fix this: either remove the public rate card entirely and move to an enquiry-led conversation, or add a clear "Enterprise / Institutional" inquiry path that signals a different price tier.</p>
+      <p>With those changes — sharper positioning, the rate card restructured, and NIQS elevated as the lead case study — this portfolio can support a high-value contract conversation. Not every client. The right client.</p>
+    </div>
+
+    <div class="callout callout-lime" style="margin-top:28px;">
+      <p><strong>One-line verdict:</strong> The raw material is better than the packaging. NIQS, YDpay's decision discipline, and Snotes' strategic depth are all above average. The portfolio as structured undersells them by surrounding them with cleaning company logos, $100 brand packages, and four identical case study templates. Fix the framing, tighten the selection, and get one shipped product with a specific outcome into the portfolio. Then apply.</p>
+    </div>
+
+    <div class="divider-label"><span>Specific actions, in priority order</span></div>
+
+    <ul class="bullet-list">
+      <li>Rewrite the About page opening — lead with strategic capacity evidence (NIQS, Snotes), not execution comfort</li>
+      <li>Remove or restructure the public rate card so pricing isn't the first financial anchor a high-value client sees</li>
+      <li>Fix the YDpay outcome statement — be specific about what shipped and what didn't, and why</li>
+      <li>Differentiate the four brand identity case studies — each needs a unique problem statement and a real outcome</li>
+      <li>Move Cleanstead and BookRion to an archive or secondary section — off the main Brand Identity tab</li>
+      <li>Move graphic design flyers to a separate studio URL or client-only section</li>
+      <li>Label Snotes and Quiv as "Product Strategy" rather than UI/UX design work — they're strategy documents, not UI portfolios</li>
+      <li>Remove "construction technology" from positioning copy until there's a case study that earns it</li>
+      <li>Elevate NIQS as the portfolio lead — it's the strongest credential and it should be the first thing a recruiter or client sees</li>
+    </ul>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <p>Portfolio Audit · Richard Enoch · June 2026</p>
+    <p>Conducted by <span class="lime">Claude Sonnet 4.6</span> · Anthropic</p>
+  </footer>
+
+</div>
+</body>
+</html>
