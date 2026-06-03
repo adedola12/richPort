@@ -227,7 +227,7 @@ const PersonaSection = () => {
                   <p className="text-[10px] tracking-[0.28em] uppercase mb-2" style={{ color: GR }}>User Persona</p>
                   <p className="text-[26px] font-bold text-white leading-tight tracking-[-0.02em] mb-1">{p.name}</p>
                   <p className="text-[13px] font-medium mb-4" style={{ color: GR }}>{p.subtitle}</p>
-                  <p className="text-[14px] leading-[1.7] text-white/70">{p.about}</p>
+                  <p className="text-[15px] leading-[1.7] text-white/70">{p.about}</p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -364,7 +364,7 @@ const SnotesProject = () => {
                 <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-6">
                   <p className="text-[9px] tracking-[0.3em] uppercase mb-4" style={{ color: GR }}>MY ROLE</p>
                   <p className="text-[15px] font-semibold text-white mb-3">Founder · Product Strategy · UX Architect</p>
-                  <p className="text-[14px] leading-[1.65] text-white/55 mb-4">
+                  <p className="text-[15px] leading-[1.65] text-white/55 mb-4">
                     I led Snotes from problem identification to product strategy and concept architecture, owning:
                   </p>
                   <ul className="space-y-2">
@@ -377,7 +377,7 @@ const SnotesProject = () => {
                       "Concept documentation (~10,000 words across three docs)",
                       "Brand & visual direction (in progress)",
                     ].map((item) => (
-                      <li key={item} className="flex items-start gap-2.5 text-[13px] text-white/60">
+                      <li key={item} className="flex items-start gap-2.5 text-[15px] text-white/60">
                         <span className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style={{ background: GR }} />
                         {item}
                       </li>
@@ -411,7 +411,7 @@ const SnotesProject = () => {
                       <span className="shrink-0 w-7 h-7 rounded-full border border-[#E0525244] flex items-center justify-center text-[10px] font-bold text-[#E05252]">{n}</span>
                       <div>
                         <p className="text-[14px] font-semibold text-white mb-1">{title}</p>
-                        <p className="text-[14px] leading-[1.65] text-white/50">{desc}</p>
+                        <p className="text-[15px] leading-[1.65] text-white/50">{desc}</p>
                       </div>
                     </li>
                   ))}
@@ -473,7 +473,7 @@ const SnotesProject = () => {
                           { f: "Designed for the pew (not study)",    s:true,  y:false, l:false, e:false },
                         ].map(({ f, s, y, l, e }, i) => (
                           <tr key={f} className={i % 2 === 0 ? "bg-white/[0.015]" : ""}>
-                            <td className="px-5 py-3 text-[13px] text-white/70">{f}</td>
+                            <td className="px-5 py-3 text-[15px] text-white/70">{f}</td>
                             <td className="px-3 py-3 text-center text-[14px]">{s ? "✅" : "❌"}</td>
                             <td className="px-3 py-3 text-center text-[14px]">{y ? "✅" : "❌"}</td>
                             <td className="px-3 py-3 text-center text-[14px]">{l ? "✅" : "❌"}</td>
@@ -510,7 +510,7 @@ const SnotesProject = () => {
                       </div>
                       <div>
                         <p className="text-[15px] font-semibold text-white leading-tight mb-1">of personal sermon notes</p>
-                        <p className="text-[13px] leading-[1.6] text-white/50">over six months of services — captured on the default Notes app. Not one was reopened after the week it was written.</p>
+                        <p className="text-[15px] leading-[1.6] text-white/50">over six months of services — captured on the default Notes app. Not one was reopened after the week it was written.</p>
                       </div>
                     </div>
                   </div>
@@ -616,7 +616,7 @@ const SnotesProject = () => {
                       <span className="inline-block rounded-md px-2 py-0.5 text-[9px] font-bold tracking-widest uppercase mb-4"
                         style={{ background: `${GR}15`, color: GR }}>FEATURE {n}</span>
                       <h3 className="text-[20px] sm:text-[22px] font-bold text-white mb-3">{name}</h3>
-                      <p className="text-[14px] sm:text-[15px] leading-[1.7] text-white/55">{desc}</p>
+                      <p className="text-[15px] sm:text-[16px] leading-[1.7] text-white/55">{desc}</p>
                     </div>
                   </SlideIn>
                   <SlideIn direction={flip ? "left" : "right"} delay={0.15}>
@@ -667,7 +667,7 @@ const SnotesProject = () => {
                   <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-6 h-full flex flex-col gap-3">
                     <div className="w-2.5 h-2.5 rounded-full" style={{ background: color }} />
                     <p className="text-[16px] font-bold text-white">{title}</p>
-                    <p className="text-[14px] leading-[1.65] text-white/50 flex-1">{desc}</p>
+                    <p className="text-[15px] leading-[1.65] text-white/50 flex-1">{desc}</p>
                   </div>
                 </StaggerItem>
               ))}
@@ -718,7 +718,7 @@ const SnotesProject = () => {
                       <div>
                         <p className="text-[14px] font-bold text-white mb-0.5">{label}</p>
                         <p className="text-[11px] text-white/35 mb-1.5">{meta}</p>
-                        <p className="text-[13px] leading-[1.65] text-white/55">{desc}</p>
+                        <p className="text-[15px] leading-[1.65] text-white/55">{desc}</p>
                       </div>
                     </li>
                   ))}
@@ -792,7 +792,7 @@ const SnotesProject = () => {
                         {fields.map(({ label, value }) => (
                           <div key={label}>
                             <p className="text-[9px] tracking-[0.2em] uppercase text-white/30 mb-0.5">{label}</p>
-                            <p className="text-[13px] leading-[1.5] text-white/65">{value}</p>
+                            <p className="text-[15px] leading-[1.65] text-white/65">{value}</p>
                           </div>
                         ))}
                       </div>
@@ -803,7 +803,7 @@ const SnotesProject = () => {
 
               <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.02] px-5 py-4 flex items-start gap-3">
                 <span className="text-[16px] shrink-0">ℹ️</span>
-                <p className="text-[13px] leading-[1.65] italic text-white/45">
+                <p className="text-[15px] leading-[1.65] italic text-white/45">
                   V3 transitions to API.Bible Pro (commercial license) for NKJV/NIV/AMP/MSG with FUMS reporting integrated. V1 architecture is already structured for this transition — no rewrite needed.
                 </p>
               </div>
@@ -933,7 +933,7 @@ const SnotesProject = () => {
                     <span className="rounded-md px-2 py-0.5 text-[9px] font-bold tracking-widest uppercase w-fit"
                       style={{ background: `${GR}15`, color: GR }}>{n}</span>
                     <p className="text-[15px] font-semibold text-white leading-snug">{q}</p>
-                    <p className="text-[14px] sm:text-[15px] leading-[1.65] text-white/50 flex-1">{a}</p>
+                    <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50 flex-1">{a}</p>
                   </div>
                 </StaggerItem>
               ))}
@@ -962,7 +962,7 @@ const SnotesProject = () => {
                   </div>
                   <ul className="space-y-2.5 flex-1">
                     {["Unlimited notes", "Public-domain translations (KJV, BSB, WEB)", "Scripture autocomplete", "Action points (no limit)", "Service-aware reminders", "Focus mode", "Single-device cloud backup", "Limited AI reflection prompts (3 per note)"].map((item) => (
-                      <li key={item} className="flex items-start gap-2.5 text-[13px] text-white/60">
+                      <li key={item} className="flex items-start gap-2.5 text-[15px] text-white/60">
                         <span className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 bg-white/30" />
                         {item}
                       </li>
@@ -981,7 +981,7 @@ const SnotesProject = () => {
                   </div>
                   <ul className="space-y-2.5 flex-1">
                     {["Licensed translations (NKJV, NIV, AMP, MSG, ESV)", "Multi-device sync", "Circles & selective sharing", "Spouse mode", "Unlimited AI reflections", "Priority support"].map((item) => (
-                      <li key={item} className="flex items-start gap-2.5 text-[13px] text-white/70">
+                      <li key={item} className="flex items-start gap-2.5 text-[15px] text-white/70">
                         <span className="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style={{ background: GR }} />
                         {item}
                       </li>
@@ -995,7 +995,7 @@ const SnotesProject = () => {
             <FadeUp delay={0.2} className="mt-4">
               <div className="rounded-2xl border border-[#E0525220] bg-[#1A0A0A] p-5">
                 <p className="text-[9px] font-bold tracking-widest uppercase text-[#E05252] mb-2">PERMANENT NON-GOALS — NO EXCEPTIONS, AT ANY USER COUNT</p>
-                <p className="text-[14px] leading-[1.65] text-white/50">
+                <p className="text-[15px] leading-[1.65] text-white/50">
                   No ads &nbsp;·&nbsp; No data sales (including aggregated) &nbsp;·&nbsp; No gamification &nbsp;·&nbsp; No public feed &nbsp;·&nbsp; No AI sermon generation
                 </p>
               </div>
@@ -1027,7 +1027,7 @@ const SnotesProject = () => {
                   ].map(({ title, desc }) => (
                     <li key={title} className="flex items-start gap-3">
                       <span className="w-1.5 h-1.5 rounded-full mt-2 shrink-0" style={{ background: GR }} />
-                      <p className="text-[14px] text-white/60">
+                      <p className="text-[15px] text-white/60">
                         <strong className="text-white">{title}</strong> — {desc}
                       </p>
                     </li>

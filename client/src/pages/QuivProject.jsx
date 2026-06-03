@@ -76,7 +76,7 @@ const PainRow = ({ issue, impact }) => (
     <span className="mt-[3px] w-1.5 h-1.5 rounded-full shrink-0" style={{ background: QB }} />
     <div>
       <p className="text-[14px] font-semibold text-white mb-0.5">{issue}</p>
-      <p className="text-[14px] text-white/50 leading-[1.55]">{impact}</p>
+      <p className="text-[15px] text-white/50 leading-[1.65]">{impact}</p>
     </div>
   </div>
 );
@@ -94,7 +94,7 @@ const Fragment = ({ num, name, desc, tag }) => (
       )}
     </div>
     <p className="text-[15px] font-semibold text-white mb-2">{name}</p>
-    <p className="text-[14px] text-white/50 leading-[1.6]">{desc}</p>
+    <p className="text-[15px] text-white/50 leading-[1.65]">{desc}</p>
   </div>
 );
 
@@ -102,7 +102,7 @@ const Fragment = ({ num, name, desc, tag }) => (
 const Stat = ({ value, label }) => (
   <div>
     <p className="text-3xl sm:text-4xl font-bold tracking-[-0.03em] text-white" style={{ color: QB }}>{value}</p>
-    <p className="text-[12px] text-white/40 mt-1">{label}</p>
+    <p className="text-[13px] text-white/40 mt-1">{label}</p>
   </div>
 );
 
@@ -305,7 +305,7 @@ const QuivProject = () => (
                     <Stat value="NGN 15K/mo" label="Quiv Solo plan pricing" />
                   </div>
                 </div>
-                <p className="text-[12px] text-white/25 italic leading-[1.55] px-1">
+                <p className="text-[14px] text-white/25 italic leading-[1.65] px-1">
                   "If I could cut my takeoff time in half, I could double my project load without sacrificing quality." — Target user persona, ADLM Studio research
                 </p>
               </div>
@@ -336,11 +336,11 @@ const QuivProject = () => (
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/5 text-white/30 border border-white/10">Deprecated</span>
                 </div>
                 <h3 className="text-[18px] font-semibold text-white mb-3">Revit Plugin</h3>
-                <p className="text-[13px] text-white/45 leading-[1.65] mb-5">
+                <p className="text-[15px] text-white/45 leading-[1.65] mb-5">
                   A plugin within Autodesk Revit that read BIM element data directly. Clean architecture, strong BIM integration. The constraint: every user needed Revit installed.
                 </p>
                 <div className="rounded-xl border border-red-500/20 bg-red-500/5 px-4 py-3">
-                  <p className="text-[12px] text-red-300/70 leading-[1.55]">
+                  <p className="text-[14px] text-red-300/70 leading-[1.65]">
                     <strong className="text-red-300/90">The blocker:</strong> Autodesk Revit costs NGN 4.5M+/year. Less than 2% of Nigerian QS firms could afford it. The addressable market was negligible.
                   </p>
                 </div>
@@ -373,7 +373,7 @@ const QuivProject = () => (
                     <span className="text-[9px] font-bold px-2 py-0.5 rounded-full" style={{ background: `${QB}15`, color: QB, border: `1px solid ${QB}33` }}>Current</span>
                   </div>
                   <h3 className="text-[18px] font-semibold text-white mb-3">Standalone Desktop App</h3>
-                  <p className="text-[13px] text-white/55 leading-[1.65] mb-5">
+                  <p className="text-[15px] text-white/55 leading-[1.65] mb-5">
                     Rebuilt from scratch as an Electron.js + React app. Instead of BIM models, it works with the tool every Nigerian QS already uses: <strong className="text-white">PDF drawings</strong>. Built-in PDF renderer, Fabric.js canvas for measurement overlay, SQLite for offline storage, Supabase for cloud sync.
                   </p>
                   <div className="flex flex-col gap-2">
@@ -384,7 +384,7 @@ const QuivProject = () => (
                       "Supabase — cross-device cloud sync",
                       "BESMM — Nigeria's primary QS standard",
                     ].map(t => (
-                      <div key={t} className="flex items-center gap-2 text-[13px] text-white/45">
+                      <div key={t} className="flex items-center gap-2 text-[15px] text-white/45">
                         <span className="w-1 h-1 rounded-full shrink-0" style={{ background: QB }} />
                         {t}
                       </div>
@@ -461,7 +461,7 @@ const QuivProject = () => (
                 <h3 className="text-2xl sm:text-3xl font-semibold text-white leading-tight tracking-[-0.02em] mb-3">
                   PDF Viewer + Measurement Overlay
                 </h3>
-                <p className="text-[14px] text-white/50 leading-[1.65]">
+                <p className="text-[15px] text-white/50 leading-[1.65]">
                   The central screen. A construction drawing rendered via PDF.js with a Fabric.js canvas layered on top. The surveyor clicks to place measurement points directly on the drawing — no scaling, no manual entry. Dimensions are extracted automatically.
                 </p>
               </SlideIn>
@@ -497,7 +497,7 @@ const QuivProject = () => (
                 <h3 className="text-2xl sm:text-3xl font-semibold text-white leading-tight tracking-[-0.02em] mb-3">
                   Auto-Generated Take-Off List
                 </h3>
-                <p className="text-[14px] text-white/50 leading-[1.65]">
+                <p className="text-[15px] text-white/50 leading-[1.65]">
                   When a project is created, Quiv generates a structured checklist of every item the surveyor needs to measure — ordered by construction sequence (Substructure → Superstructure) and aligned with BESMM. No manual list-building. The structure exists before a single measurement is taken.
                 </p>
               </SlideIn>
@@ -531,7 +531,7 @@ const QuivProject = () => (
                 <h3 className="text-2xl sm:text-3xl font-semibold text-white leading-tight tracking-[-0.02em] mb-3">
                   Data Input & Quantity Calculation
                 </h3>
-                <p className="text-[14px] text-white/50 leading-[1.65]">
+                <p className="text-[15px] text-white/50 leading-[1.65]">
                   After measurements are placed, the surveyor inputs additional parameters (waste factor, depth, count). Calculations are performed server-side and rendered in real time. The interface preserves professional judgement — the system guides but never overrides.
                 </p>
               </SlideIn>
@@ -565,7 +565,7 @@ const QuivProject = () => (
                 <h3 className="text-2xl sm:text-3xl font-semibold text-white leading-tight tracking-[-0.02em] mb-3">
                   Export to Excel & .quiv Format
                 </h3>
-                <p className="text-[14px] text-white/50 leading-[1.65]">
+                <p className="text-[15px] text-white/50 leading-[1.65]">
                   Completed take-offs export to Excel (.xlsx) in traditional Taking-Off Sheet format — compatible with every existing QS workflow. The .quiv format feeds directly into Quiv Cost (Fragment 2) for pricing, with no re-entry. Data flows forward, not sideways.
                 </p>
               </SlideIn>
@@ -632,7 +632,7 @@ const QuivProject = () => (
               <FadeUp key={title}>
                 <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-6 h-full">
                   <p className="text-[15px] font-semibold text-white mb-2">{title}</p>
-                  <p className="text-[14px] text-white/50 leading-[1.65]">{body}</p>
+                  <p className="text-[15px] text-white/50 leading-[1.65]">{body}</p>
                 </div>
               </FadeUp>
             ))}
@@ -688,7 +688,7 @@ const QuivProject = () => (
                 ].map(({ metric, desc }) => (
                   <div key={metric} className="flex items-start gap-4 rounded-xl border border-white/8 bg-white/[0.025] px-5 py-4">
                     <p className="text-2xl font-bold shrink-0 w-[90px]" style={{ color: QB }}>{metric}</p>
-                    <p className="text-[14px] text-white/50 leading-[1.6] mt-1">{desc}</p>
+                    <p className="text-[15px] text-white/50 leading-[1.65] mt-1">{desc}</p>
                   </div>
                 ))}
               </div>

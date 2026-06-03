@@ -260,7 +260,7 @@ export default function YDpayBrandPage() {
                 <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-6">
                   <p className="text-[9px] tracking-[0.3em] uppercase text-white/30 mb-4">MY ROLE</p>
                   <p className="text-[15px] font-semibold text-white mb-1">Brand Design Lead · YDPay</p>
-                  <p className="text-[14px] leading-[1.65] text-white/55 mb-5">
+                  <p className="text-[15px] leading-[1.65] text-white/55 mb-5">
                     Built the working brand system around a fixed mark and palette:
                   </p>
                   <ul className="space-y-2 mb-6">
@@ -272,13 +272,13 @@ export default function YDpayBrandPage() {
                       "Brand touchpoints — posters, merch, stationery",
                       "Application system across channels",
                     ].map((item) => (
-                      <li key={item} className="flex items-start gap-2 text-[13px] leading-[1.6] text-white/50">
+                      <li key={item} className="flex items-start gap-2 text-[15px] leading-[1.6] text-white/50">
                         <span className="mt-[6px] w-1.5 h-1.5 rounded-full shrink-0" style={{ background: GR }} />
                         {item}
                       </li>
                     ))}
                   </ul>
-                  <p className="text-[12px] leading-[1.65] text-white/35 border-t border-white/8 pt-4 italic">
+                  <p className="text-[15px] leading-[1.65] text-white/35 border-t border-white/8 pt-4 italic">
                     Logo and core palette were pre-existing; my role was to systematize and extend them into a complete brand.
                   </p>
                 </div>
@@ -323,7 +323,7 @@ export default function YDpayBrandPage() {
                           {n}
                         </span>
                       </div>
-                      <p className="text-[13px] sm:text-[14px] leading-[1.65] text-white/50">{body}</p>
+                      <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50">{body}</p>
                     </div>
                   ))}
                 </div>
@@ -391,7 +391,7 @@ export default function YDpayBrandPage() {
                       </span>
                       <p className="text-[16px] font-semibold text-white">{label}</p>
                     </div>
-                    <p className="text-[14px] sm:text-[15px] leading-[1.65] text-white/50 flex-1">{body}</p>
+                    <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50 flex-1">{body}</p>
                   </div>
                 </StaggerItem>
               ))}
@@ -414,7 +414,7 @@ export default function YDpayBrandPage() {
             <FadeUp delay={0.05} className="mb-16">
               <p className="text-[11px] tracking-[0.28em] uppercase text-white/35 mb-2">4.1 — THE MARK & PALETTE</p>
               <p className="text-[18px] font-semibold text-white mb-3">The starting point</p>
-              <p className="text-[14px] sm:text-[15px] leading-[1.65] text-white/50 max-w-[660px] mb-6">
+              <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50 max-w-[660px] mb-6">
                 The logo and core palette were established before I came on. My role began here — not by changing them, but by building the system that lets them work everywhere.
               </p>
               <TiltFrame
@@ -432,7 +432,7 @@ export default function YDpayBrandPage() {
               <p className="text-[18px] font-semibold text-white mb-3">Setting the voice in type</p>
               <div className="grid lg:grid-cols-[1fr_420px] gap-8 items-start">
                 <div>
-                  <p className="text-[14px] sm:text-[15px] leading-[1.65] text-white/50 mb-5">
+                  <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50 mb-5">
                     I set the type system to <strong className="text-white">Onest</strong> — a clean, modern, geometric-leaning typeface with the legibility a fintech needs across both dense UI and bold marketing. Onest gives YDPay one consistent typographic voice from a button label to a billboard headline.
                   </p>
                   <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-5">
@@ -446,7 +446,7 @@ export default function YDpayBrandPage() {
                       <p className="text-[11px] text-white/35"><span className="text-white/50">Weights:</span> 800 / 700 / 600 / 400 / 300</p>
                       <p className="text-[11px] text-white/35"><span className="text-white/50">Used for:</span> All headings, body copy, UI labels, marketing headlines, captions</p>
                     </div>
-                    <p className="text-[12px] leading-[1.65] text-white/45 border-t border-white/6 pt-4">
+                    <p className="text-[14px] leading-[1.65] text-white/45 border-t border-white/6 pt-4">
                       Onest's geometric clarity makes it equally at home in a transaction confirmation screen and a campaign headline — the single typeface that unifies the YDPay brand across all surfaces.
                     </p>
                   </div>
@@ -472,7 +472,7 @@ export default function YDpayBrandPage() {
                   onClick={ph}
                 />
                 <div>
-                  <p className="text-[14px] sm:text-[15px] leading-[1.65] text-white/50 mb-6">
+                  <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50 mb-6">
                     Beyond how it looks, I defined how YDPay sounds — the tone, the language, the way it talks to users about money (a sensitive, trust-dependent subject). Clear, confident, human — never cold or jargon-heavy.
                   </p>
                   <div className="rounded-2xl border border-white/8 bg-white/[0.025] overflow-hidden">
@@ -504,7 +504,7 @@ export default function YDpayBrandPage() {
             <FadeUp delay={0.08}>
               <p className="text-[11px] tracking-[0.28em] uppercase text-white/35 mb-2">4.4 — THE APPLICATION SYSTEM</p>
               <p className="text-[18px] font-semibold text-white mb-3">One brand, every surface</p>
-              <p className="text-[14px] sm:text-[15px] leading-[1.65] text-white/50 max-w-[660px] mb-6">
+              <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50 max-w-[660px] mb-6">
                 The system defines how the brand shows up consistently — spacing, layout rhythm, the visual devices that make a YDPay piece recognizable at a glance, whether it's a story, a post, or a print piece.
               </p>
               <TiltFrame
@@ -571,7 +571,7 @@ export default function YDpayBrandPage() {
                           {n}
                         </span>
                         <h3 className="text-[22px] sm:text-[26px] font-semibold text-white mb-4">{title}</h3>
-                        <p className="text-[14px] sm:text-[15px] leading-[1.7] text-white/55">{body}</p>
+                        <p className="text-[15px] sm:text-[16px] leading-[1.7] text-white/55">{body}</p>
                       </div>
                     </div>
                     <TiltFrame
@@ -594,7 +594,7 @@ export default function YDpayBrandPage() {
             <FadeUp>
               <SLabel n="06" t="THE GUIDELINE" />
               <H2 white="The system," accent="documented" />
-              <p className="mt-5 text-[14px] sm:text-[15px] leading-[1.65] text-white/50 max-w-[620px] mb-10">
+              <p className="mt-5 text-[15px] sm:text-[16px] leading-[1.65] text-white/50 max-w-[620px] mb-10">
                 Everything was captured in a brand guideline — the single source of truth that lets the whole team use the brand correctly without a designer in the room for every piece.
               </p>
             </FadeUp>
@@ -639,7 +639,7 @@ export default function YDpayBrandPage() {
             </div>
 
             <FadeUp delay={0.1}>
-              <p className="mt-5 text-[12px] text-white/35 leading-relaxed">
+              <p className="mt-5 text-[14px] text-white/35 leading-relaxed">
                 Tap any spread to view it full-size. The guideline is what makes the brand usable by everyone, not just the designer who built it.
               </p>
             </FadeUp>
@@ -700,7 +700,7 @@ export default function YDpayBrandPage() {
                         <span className="mt-1.5 w-3 h-3 rounded-full shrink-0" style={{ background: color }} />
                         <div>
                           <p className="text-[14px] font-semibold text-white mb-1">{metric}</p>
-                          <p className="text-[13px] leading-[1.65] text-white/50">{desc}</p>
+                          <p className="text-[15px] leading-[1.65] text-white/50">{desc}</p>
                         </div>
                       </div>
                     </StaggerItem>

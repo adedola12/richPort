@@ -213,7 +213,7 @@ const PersonaSection = () => {
                   <p className="text-[13px] font-medium mb-4" style={{ color: GR }}>
                     {p.subtitle}
                   </p>
-                  <p className="text-[14px] leading-[1.7] text-white/70">
+                  <p className="text-[15px] leading-[1.7] text-white/70">
                     {p.about}
                   </p>
                 </motion.div>
@@ -513,7 +513,7 @@ const SavedupProject = () => {
             <p className="text-[16px] sm:text-[18px] leading-[1.65] text-white/55 max-w-[580px] mb-4">
               Designing a student-focused savings and budgeting platform for life after school.
             </p>
-            <p className="text-[14px] leading-[1.65] text-white/35 max-w-[560px] mb-10">
+            <p className="text-[15px] leading-[1.65] text-white/35 max-w-[560px] mb-10">
               A look back at my first UI/UX project — and what I'd do differently today.
             </p>
           </FadeUp>
@@ -585,7 +585,7 @@ const SavedupProject = () => {
               <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-5">
                 <p className="text-[9px] tracking-[0.3em] uppercase text-white/30 mb-4">MY ROLE</p>
                 <p className="text-[17px] font-semibold text-white mb-1">Solo Product Designer</p>
-                <p className="text-[14px] leading-[1.65] text-white/50 mb-5">
+                <p className="text-[15px] leading-[1.65] text-white/50 mb-5">
                   Concept, research, flows, and UI — end to end. This was my first UI/UX project, used to learn product thinking and prototyping from scratch:
                 </p>
                 <ul className="space-y-2.5">
@@ -597,7 +597,7 @@ const SavedupProject = () => {
                     "Wireframing & high-fidelity UI design",
                     "Usability testing and iteration",
                   ].map(item => (
-                    <li key={item} className="flex items-start gap-3 text-[14px] text-white/60">
+                    <li key={item} className="flex items-start gap-3 text-[15px] text-white/60">
                       <span className="mt-[6px] w-1.5 h-1.5 rounded-full shrink-0" style={{ background: GR }} />
                       {item}
                     </li>
@@ -643,7 +643,7 @@ const SavedupProject = () => {
                     <span className="shrink-0 w-7 h-7 rounded-full border border-[#E0525244] flex items-center justify-center text-[10px] font-bold text-[#E05252]">{n}</span>
                     <div>
                       <p className="text-[14px] font-semibold text-white mb-1">{title}</p>
-                      <p className="text-[14px] leading-[1.65] text-white/50">{desc}</p>
+                      <p className="text-[15px] leading-[1.65] text-white/50">{desc}</p>
                     </div>
                   </li>
                 ))}
@@ -705,7 +705,7 @@ const SavedupProject = () => {
                         { feature: "Gamification (Streaks & Rewards)", s: true, p: true, c: true },
                       ].map(({ feature, s, p, c }, i) => (
                         <tr key={feature} className={i % 2 === 0 ? "bg-white/[0.015]" : ""}>
-                          <td className="px-5 py-3 text-[13px] text-white/70">{feature}</td>
+                          <td className="px-5 py-3 text-[15px] text-white/70">{feature}</td>
                           <td className="px-3 py-3 text-center text-[15px]">{s ? "✅" : "❌"}</td>
                           <td className="px-3 py-3 text-center text-[15px]">{p ? "✅" : "❌"}</td>
                           <td className="px-3 py-3 text-center text-[15px]">{c ? "✅" : "❌"}</td>
@@ -747,7 +747,7 @@ const SavedupProject = () => {
                     </div>
                     <div>
                       <p className="text-[15px] font-semibold text-white leading-tight mb-1">of students</p>
-                      <p className="text-[13px] leading-[1.6] text-white/50">validated the problem — confirming no student-specific savings solution existed.</p>
+                      <p className="text-[15px] leading-[1.6] text-white/50">validated the problem — confirming no student-specific savings solution existed.</p>
                     </div>
                   </div>
                 </div>
@@ -792,7 +792,7 @@ const SavedupProject = () => {
                       { dot: "#F59E0B", text: "Long-term goal clarity is critical" },
                     ].map(({ dot, text }) => (
                       <StaggerItem key={text}>
-                        <div className="flex items-center gap-2.5 text-[13px] text-white/60">
+                        <div className="flex items-center gap-2.5 text-[15px] text-white/60">
                           <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: dot }} />
                           {text}
                         </div>
@@ -845,7 +845,7 @@ const SavedupProject = () => {
                     </span>
                     <div>
                       <p className="text-[14px] font-semibold text-white mb-0.5">{title}</p>
-                      <p className="text-[13px] leading-[1.65] text-white/50">{desc}</p>
+                      <p className="text-[15px] leading-[1.65] text-white/50">{desc}</p>
                     </div>
                   </li>
                 ))}
@@ -959,7 +959,7 @@ const SavedupProject = () => {
                 <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-5 h-full">
                   <div className="w-2 h-2 rounded-full mb-4" style={{ background: color }} />
                   <p className="text-[15px] font-semibold text-white mb-2">{title}</p>
-                  <p className="text-[13px] sm:text-[14px] leading-[1.65] text-white/50">{desc}</p>
+                  <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50">{desc}</p>
                 </div>
               </StaggerItem>
             ))}
@@ -1001,7 +1001,7 @@ const SavedupProject = () => {
                   { label: "Budgeting flows", desc: "Withdrawal categorization with non-judgmental, informative feedback." },
                   { label: "Social flows", desc: "Peer saving and community features built around support, not comparison." },
                 ].map(({ label, desc }) => (
-                  <li key={label} className="flex items-start gap-3 text-[14px] text-white/55">
+                  <li key={label} className="flex items-start gap-3 text-[15px] text-white/55">
                     <span className="mt-[6px] w-1.5 h-1.5 rounded-full shrink-0" style={{ background: GR }} />
                     <span><strong className="text-white/85">{label}</strong> — {desc}</span>
                   </li>
@@ -1050,7 +1050,7 @@ const SavedupProject = () => {
                 <p className="text-[9px] tracking-[0.3em] uppercase text-white/30 mb-3">KEY ITERATION AREAS</p>
                 <ul className="space-y-2">
                   {["Unclear labels in onboarding screens", "Abrupt transitions between budgeting and savings", "Feedback messaging tone and clarity"].map(t => (
-                    <li key={t} className="flex items-center gap-2.5 text-[13px] text-white/55">
+                    <li key={t} className="flex items-center gap-2.5 text-[15px] text-white/55">
                       <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: GR }} />
                       {t}
                     </li>
@@ -1107,7 +1107,7 @@ const SavedupProject = () => {
                     <span className="mt-1 w-2 h-2 rounded-full shrink-0" style={{ background: color }} />
                     <div>
                       <p className="text-[14px] font-semibold text-white mb-1">{metric}</p>
-                      <p className="text-[13px] leading-[1.65] text-white/50 line-clamp-2">{desc}</p>
+                      <p className="text-[15px] leading-[1.65] text-white/50 line-clamp-2">{desc}</p>
                     </div>
                   </div>
                 </StaggerItem>
@@ -1199,7 +1199,7 @@ const SavedupProject = () => {
                 <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-6 h-full">
                   <p className="text-[10px] font-bold tracking-[0.2em] uppercase mb-3" style={{ color: GR }}>{n}</p>
                   <p className="text-[15px] font-semibold text-white mb-3">{title}</p>
-                  <p className="text-[14px] text-white/50 leading-[1.65]">{body}</p>
+                  <p className="text-[15px] text-white/50 leading-[1.65]">{body}</p>
                 </div>
               </FadeUp>
             ))}
