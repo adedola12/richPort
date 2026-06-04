@@ -16,26 +16,24 @@ import heroMain from "../assets/YDpay/HeroMain.png";
 import ydpayLogo from "../assets/YDpay/ydpayLogo.svg";
 
 // Screen exports
-import scrEnterMpin       from "../assets/YDpay/screens/enter-mpin.png";
-import scrTwoFactorAuth   from "../assets/YDpay/screens/two-factor-auth.png";
-import scrEnterMpinError  from "../assets/YDpay/screens/enter-mpin-error.png";
-import scrSignUp          from "../assets/YDpay/screens/sign-up.png";
-import scrEnterDetails    from "../assets/YDpay/screens/enter-details.png";
-import scrVerifyEmail     from "../assets/YDpay/screens/verify-email.png";
-import scrDepositMethod   from "../assets/YDpay/screens/deposit-method.png";
-import scrDepositAmount   from "../assets/YDpay/screens/deposit-amount.png";
-import scrDepositSuccess  from "../assets/YDpay/screens/deposit-successful.png";
-import scrBankAccounts    from "../assets/YDpay/screens/bank-accounts.png";
-import scrWithdraw        from "../assets/YDpay/screens/withdraw.png";
-import scrTransferComplete from "../assets/YDpay/screens/transfer-complete.png";
-import scrTransferBalance  from "../assets/YDpay/screens/transfer-balance.png";
-import scrTransferDetails  from "../assets/YDpay/screens/transfer-details.png";
-import scrTradeSuccess     from "../assets/YDpay/screens/trade-success.png";
-import scrTransferBalance1 from "../assets/YDpay/screens/transfer-balance-1.png";
-import scrConfirmDetails   from "../assets/YDpay/screens/confirm-details.png";
-import scrReceiveAsset     from "../assets/YDpay/screens/receive-asset-select.png";
-import scrReceiveNetwork   from "../assets/YDpay/screens/receive-network-select.png";
-import scrReceiveEth       from "../assets/YDpay/screens/receive-eth.png";
+import scrTwoFactorAuth      from "../assets/YDpay/screens/two-factor-auth.png";
+import scrEnterMpin          from "../assets/YDpay/screens/enter-mpin.png";
+import scrDashboardCrypto    from "../assets/YDpay/screens/dashboard-crypto.png";
+import scrSignUp             from "../assets/YDpay/screens/sign-up.png";
+import scrEnterDetails       from "../assets/YDpay/screens/enter-details.png";
+import scrAccountCreated     from "../assets/YDpay/screens/account-created.png";
+import scrDepositMethodSelect from "../assets/YDpay/screens/deposit-method-select.png";
+import scrTransferDetails    from "../assets/YDpay/screens/transfer-details.png";
+import scrDepositSuccess     from "../assets/YDpay/screens/deposit-successful.png";
+import scrWithdraw           from "../assets/YDpay/screens/withdraw.png";
+import scrWithdrawForm       from "../assets/YDpay/screens/withdraw-form.png";
+import scrSentInstantly      from "../assets/YDpay/screens/sent-instantly.png";
+import scrReceiveAsset       from "../assets/YDpay/screens/receive-asset-select.png";
+import scrWithdrawReview     from "../assets/YDpay/screens/withdraw-review.png";
+import scrTradeSuccess       from "../assets/YDpay/screens/trade-success.png";
+import scrSentInstantly2     from "../assets/YDpay/screens/sent-instantly-2.png";
+import scrReceiveNetwork     from "../assets/YDpay/screens/receive-network-select.png";
+import scrReceiveEth         from "../assets/YDpay/screens/receive-eth.png";
 
 const GR = "#01BA4B";
 
@@ -635,9 +633,9 @@ const YDpayPage = () => (
             screens={[["L1","Sign In Entry"],["L2","Biometric Prompt"],["L3","Error / Account Locked"],["L4","Forgot Password"],["L5","Resend OTP Verification"],["L6","Create New Password"],["L7","Password Reset Success"]]}
           >
             <PhoneGrid screens={[
-              { label: "Sign In",        src: scrEnterMpin },
-              { label: "Biometric",      src: scrTwoFactorAuth },
-              { label: "Account Locked", src: scrEnterMpinError },
+              { label: "2FA Security",    src: scrTwoFactorAuth },
+              { label: "Enter MPIN",      src: scrEnterMpin },
+              { label: "Dashboard",       src: scrDashboardCrypto },
             ]} cols={3} />
           </FlowBlock>
 
@@ -649,9 +647,9 @@ const YDpayPage = () => (
             screens={[["O1","Welcome / Sign Up"],["O2","Enter Details"],["O3","Age Gate Error"],["O4","Email OTP Verification"],["O5","Account Created (Tier 0)"],["O6–O10","KYC Steps 1–4"],["O11","Verification Processing"],["O12","KYC Approved (Tier 1)"],["O13–O14","Google SSO Path"]]}
           >
             <PhoneGrid screens={[
-              { label: "Welcome",      src: scrSignUp },
-              { label: "Enter Details", src: scrEnterDetails },
-              { label: "OTP Verify",   src: scrVerifyEmail },
+              { label: "Welcome",         src: scrSignUp },
+              { label: "Your Details",    src: scrEnterDetails },
+              { label: "Account Created", src: scrAccountCreated },
             ]} cols={3} />
           </FlowBlock>
 
@@ -756,8 +754,8 @@ const YDpayPage = () => (
             screens={[["D1","Method Select"],["D2","Enter Amount"],["D3","Review Transfer"],["D4","Bank Payment Details"],["D5","Card Payment Form"],["D6","Processing"],["D7","Deposit Success"]]}
           >
             <PhoneGrid screens={[
-              { label: "Method Select",   src: scrDepositMethod },
-              { label: "Enter Amount",    src: scrDepositAmount },
+              { label: "Choose Method",   src: scrDepositMethodSelect },
+              { label: "Bank Details",    src: scrTransferDetails },
               { label: "Deposit Success", src: scrDepositSuccess },
             ]} cols={3} />
           </FlowBlock>
@@ -770,9 +768,9 @@ const YDpayPage = () => (
             screens={[["D1","Destination Select"],["D2","Add Bank Account"],["D3","Enter Amount"],["D4","Review Withdrawal"],["D5","PIN / OTP Verification"],["D6","Processing"],["D7","Withdrawal Success"]]}
           >
             <PhoneGrid screens={[
-              { label: "Destination",        src: scrBankAccounts },
-              { label: "Enter Amount",        src: scrWithdraw },
-              { label: "Withdrawal Success",  src: scrTransferComplete },
+              { label: "Choose Destination", src: scrWithdraw },
+              { label: "Fill Details",       src: scrWithdrawForm },
+              { label: "Sent!",              src: scrSentInstantly },
             ]} cols={3} />
           </FlowBlock>
 
@@ -784,9 +782,9 @@ const YDpayPage = () => (
             screens={[["SE1","Entry / Tab Select"],["SE2","Recipient Address"],["SE3","Enter Amount"],["SE4","Network Select"],["SE5","Review Transaction"],["SE6","Send Success / TX Hash"]]}
           >
             <PhoneGrid screens={[
-              { label: "Tab Select", src: scrTransferBalance },
-              { label: "Recipient",  src: scrTransferDetails },
-              { label: "TX Hash",    src: scrTradeSuccess },
+              { label: "Select Asset",   src: scrReceiveAsset },
+              { label: "Review & PIN",   src: scrWithdrawReview },
+              { label: "TX Hash",        src: scrTradeSuccess },
             ]} cols={3} />
           </FlowBlock>
 
@@ -798,9 +796,9 @@ const YDpayPage = () => (
             screens={[["SI1","Recipient Search"],["SI2","Asset + Amount"],["SI3","Review Transfer"],["SI4","Sent Instantly!"]]}
           >
             <PhoneGrid screens={[
-              { label: "Recipient Search", src: scrTransferBalance1 },
-              { label: "Asset + Amount",   src: scrConfirmDetails },
-              { label: "Sent!",            src: scrTransferComplete },
+              { label: "Recipient + Amount", src: scrWithdrawForm },
+              { label: "Review & PIN",       src: scrWithdrawReview },
+              { label: "Sent Instantly!",    src: scrSentInstantly2 },
             ]} cols={3} />
           </FlowBlock>
 
@@ -812,8 +810,8 @@ const YDpayPage = () => (
             screens={[["R1","Asset Select"],["R2","Network Select"],["R3","QR Code + Address"]]}
           >
             <PhoneGrid screens={[
-              { label: "Asset Select",   src: scrReceiveAsset },
-              { label: "Network Select", src: scrReceiveNetwork },
+              { label: "Select Asset",   src: scrReceiveNetwork },
+              { label: "Select Network", src: scrReceiveAsset },
               { label: "QR Code",        src: scrReceiveEth },
             ]} cols={3} />
           </FlowBlock>
