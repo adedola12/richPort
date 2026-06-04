@@ -15,6 +15,28 @@ import heroBg from "../assets/YDpay/HeroBackground.png";
 import heroMain from "../assets/YDpay/HeroMain.png";
 import ydpayLogo from "../assets/YDpay/ydpayLogo.svg";
 
+// Screen exports
+import scrEnterMpin       from "../assets/YDpay/screens/enter-mpin.png";
+import scrTwoFactorAuth   from "../assets/YDpay/screens/two-factor-auth.png";
+import scrEnterMpinError  from "../assets/YDpay/screens/enter-mpin-error.png";
+import scrSignUp          from "../assets/YDpay/screens/sign-up.png";
+import scrEnterDetails    from "../assets/YDpay/screens/enter-details.png";
+import scrVerifyEmail     from "../assets/YDpay/screens/verify-email.png";
+import scrDepositMethod   from "../assets/YDpay/screens/deposit-method.png";
+import scrDepositAmount   from "../assets/YDpay/screens/deposit-amount.png";
+import scrDepositSuccess  from "../assets/YDpay/screens/deposit-successful.png";
+import scrBankAccounts    from "../assets/YDpay/screens/bank-accounts.png";
+import scrWithdraw        from "../assets/YDpay/screens/withdraw.png";
+import scrTransferComplete from "../assets/YDpay/screens/transfer-complete.png";
+import scrTransferBalance  from "../assets/YDpay/screens/transfer-balance.png";
+import scrTransferDetails  from "../assets/YDpay/screens/transfer-details.png";
+import scrTradeSuccess     from "../assets/YDpay/screens/trade-success.png";
+import scrTransferBalance1 from "../assets/YDpay/screens/transfer-balance-1.png";
+import scrConfirmDetails   from "../assets/YDpay/screens/confirm-details.png";
+import scrReceiveAsset     from "../assets/YDpay/screens/receive-asset-select.png";
+import scrReceiveNetwork   from "../assets/YDpay/screens/receive-network-select.png";
+import scrReceiveEth       from "../assets/YDpay/screens/receive-eth.png";
+
 const GR = "#01BA4B";
 
 /* ─── shared animation ─── */
@@ -96,38 +118,45 @@ const H2 = ({ white, accent, accentColor = GR }) => (
   </h2>
 );
 
-/* ─── phone frame placeholder ─── */
-const Phone = ({ label }) => (
+/* ─── phone frame ─── */
+const Phone = ({ label, src }) => (
   <div className="relative flex flex-col aspect-[9/19] w-full rounded-[18px] border border-white/10 bg-[#0C1015] overflow-hidden shadow-[0_8px_24px_rgba(0,0,0,0.7)]">
-    <div className="flex items-center justify-between px-3 pt-2">
-      <span className="text-[7px] text-white/40">9:41</span>
-      <div className="w-4 h-[3px] rounded-full bg-white/20" />
-    </div>
-    <div className="flex-1 flex flex-col items-center justify-center gap-2 px-2 pb-3">
-      <div className="w-7 h-7 rounded-full flex items-center justify-center"
-        style={{ background: `${GR}18`, border: `1px solid ${GR}44` }}>
-        <span className="text-[9px] font-black" style={{ color: GR }}>yd</span>
-      </div>
-      {label && <p className="text-[6px] text-white/25 text-center leading-tight px-1">{label}</p>}
-    </div>
-    <div className="h-5 flex items-center justify-center">
-      <div className="w-10 h-1 rounded-full bg-white/15" />
-    </div>
+    {src ? (
+      <img src={src} alt={label} className="w-full h-full object-cover object-top" loading="lazy" />
+    ) : (
+      <>
+        <div className="flex items-center justify-between px-3 pt-2">
+          <span className="text-[7px] text-white/40">9:41</span>
+          <div className="w-4 h-[3px] rounded-full bg-white/20" />
+        </div>
+        <div className="flex-1 flex flex-col items-center justify-center gap-2 px-2 pb-3">
+          <div className="w-7 h-7 rounded-full flex items-center justify-center"
+            style={{ background: `${GR}18`, border: `1px solid ${GR}44` }}>
+            <span className="text-[9px] font-black" style={{ color: GR }}>yd</span>
+          </div>
+          {label && <p className="text-[6px] text-white/25 text-center leading-tight px-1">{label}</p>}
+        </div>
+        <div className="h-5 flex items-center justify-center">
+          <div className="w-10 h-1 rounded-full bg-white/15" />
+        </div>
+      </>
+    )}
   </div>
 );
 
-/* ─── phone grid: top row of 4, optional second row ─── */
+/* ─── phone grid: top row of cols, optional second row ─── */
 const PhoneGrid = ({ screens, cols = 4 }) => {
-  const top = screens.slice(0, cols);
-  const bot = screens.slice(cols);
+  const norm = (s) => typeof s === "string" ? { label: s, src: null } : s;
+  const top = screens.slice(0, cols).map(norm);
+  const bot = screens.slice(cols).map(norm);
   return (
     <div className="flex flex-col gap-2 sm:gap-3">
       <div className="grid gap-2 sm:gap-3" style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}>
-        {top.map((s, i) => <Phone key={i} label={s} />)}
+        {top.map((s, i) => <Phone key={i} label={s.label} src={s.src} />)}
       </div>
       {bot.length > 0 && (
         <div className="grid gap-2 sm:gap-3" style={{ gridTemplateColumns: `repeat(${Math.min(bot.length, cols)}, 1fr)` }}>
-          {bot.map((s, i) => <Phone key={i} label={s} />)}
+          {bot.map((s, i) => <Phone key={i} label={s.label} src={s.src} />)}
         </div>
       )}
     </div>
@@ -605,7 +634,11 @@ const YDpayPage = () => (
             description="The full authentication suite — email/password log-in, biometric fast-login, account lockout with reset flow, and a 4-screen forgot-password journey ending in a success confirmation."
             screens={[["L1","Sign In Entry"],["L2","Biometric Prompt"],["L3","Error / Account Locked"],["L4","Forgot Password"],["L5","Resend OTP Verification"],["L6","Create New Password"],["L7","Password Reset Success"]]}
           >
-            <PhoneGrid screens={["Sign In","Biometric","Account Locked"]} cols={3} />
+            <PhoneGrid screens={[
+              { label: "Sign In",        src: scrEnterMpin },
+              { label: "Biometric",      src: scrTwoFactorAuth },
+              { label: "Account Locked", src: scrEnterMpinError },
+            ]} cols={3} />
           </FlowBlock>
 
           {/* Flow 02 */}
@@ -615,7 +648,11 @@ const YDpayPage = () => (
             description="New user registration from welcome screen through email OTP, account creation (Tier 0), and the optional 4-step KYC upgrade flow (Tier 1) — plus Google SSO path."
             screens={[["O1","Welcome / Sign Up"],["O2","Enter Details"],["O3","Age Gate Error"],["O4","Email OTP Verification"],["O5","Account Created (Tier 0)"],["O6–O10","KYC Steps 1–4"],["O11","Verification Processing"],["O12","KYC Approved (Tier 1)"],["O13–O14","Google SSO Path"]]}
           >
-            <PhoneGrid screens={["Welcome","Enter Details","OTP Verify"]} cols={3} />
+            <PhoneGrid screens={[
+              { label: "Welcome",      src: scrSignUp },
+              { label: "Enter Details", src: scrEnterDetails },
+              { label: "OTP Verify",   src: scrVerifyEmail },
+            ]} cols={3} />
           </FlowBlock>
 
           {/* Flow 03 */}
@@ -718,7 +755,11 @@ const YDpayPage = () => (
             description="Full deposit funnel — method selection (bank transfer or card), amount entry with quick chips, fee preview, payment execution, processing state, and success confirmation."
             screens={[["D1","Method Select"],["D2","Enter Amount"],["D3","Review Transfer"],["D4","Bank Payment Details"],["D5","Card Payment Form"],["D6","Processing"],["D7","Deposit Success"]]}
           >
-            <PhoneGrid screens={["Method Select","Enter Amount","Deposit Success"]} cols={3} />
+            <PhoneGrid screens={[
+              { label: "Method Select",   src: scrDepositMethod },
+              { label: "Enter Amount",    src: scrDepositAmount },
+              { label: "Deposit Success", src: scrDepositSuccess },
+            ]} cols={3} />
           </FlowBlock>
 
           {/* Flow 05 */}
@@ -728,7 +769,11 @@ const YDpayPage = () => (
             description="Cash-out to bank account — destination selection from saved accounts, new bank account addition (with account name verification against Zenith Bank), review, OTP auth, and success."
             screens={[["D1","Destination Select"],["D2","Add Bank Account"],["D3","Enter Amount"],["D4","Review Withdrawal"],["D5","PIN / OTP Verification"],["D6","Processing"],["D7","Withdrawal Success"]]}
           >
-            <PhoneGrid screens={["Destination","Enter Amount","Withdrawal Success"]} cols={3} />
+            <PhoneGrid screens={[
+              { label: "Destination",        src: scrBankAccounts },
+              { label: "Enter Amount",        src: scrWithdraw },
+              { label: "Withdrawal Success",  src: scrTransferComplete },
+            ]} cols={3} />
           </FlowBlock>
 
           {/* Flow 06 */}
@@ -738,7 +783,11 @@ const YDpayPage = () => (
             description="On-chain transfer to any external wallet — address entry (paste or QR), amount in crypto or fiat, network selector with gas fee preview, review, and transaction hash on success."
             screens={[["SE1","Entry / Tab Select"],["SE2","Recipient Address"],["SE3","Enter Amount"],["SE4","Network Select"],["SE5","Review Transaction"],["SE6","Send Success / TX Hash"]]}
           >
-            <PhoneGrid screens={["Tab Select","Recipient","TX Hash"]} cols={3} />
+            <PhoneGrid screens={[
+              { label: "Tab Select", src: scrTransferBalance },
+              { label: "Recipient",  src: scrTransferDetails },
+              { label: "TX Hash",    src: scrTradeSuccess },
+            ]} cols={3} />
           </FlowBlock>
 
           {/* Flow 07 */}
@@ -748,7 +797,11 @@ const YDpayPage = () => (
             description="Instant, zero-fee transfer between YDPay users — search by username or phone number, select asset and amount, review with trust card showing recipient avatar, instant success."
             screens={[["SI1","Recipient Search"],["SI2","Asset + Amount"],["SI3","Review Transfer"],["SI4","Sent Instantly!"]]}
           >
-            <PhoneGrid screens={["Recipient Search","Asset + Amount","Sent!"]} cols={3} />
+            <PhoneGrid screens={[
+              { label: "Recipient Search", src: scrTransferBalance1 },
+              { label: "Asset + Amount",   src: scrConfirmDetails },
+              { label: "Sent!",            src: scrTransferComplete },
+            ]} cols={3} />
           </FlowBlock>
 
           {/* Flow 08 */}
@@ -758,7 +811,11 @@ const YDpayPage = () => (
             description="Three-step receive flow — select asset, select network (with network mismatch warning), display QR code with copyable wallet address and share functionality."
             screens={[["R1","Asset Select"],["R2","Network Select"],["R3","QR Code + Address"]]}
           >
-            <PhoneGrid screens={["Asset Select","Network Select","QR Code"]} cols={3} />
+            <PhoneGrid screens={[
+              { label: "Asset Select",   src: scrReceiveAsset },
+              { label: "Network Select", src: scrReceiveNetwork },
+              { label: "QR Code",        src: scrReceiveEth },
+            ]} cols={3} />
           </FlowBlock>
         </div>
       </section>
