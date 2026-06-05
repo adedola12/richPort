@@ -635,7 +635,7 @@ export default function YDpayBrandPage() {
           description="Selected touchpoint designs across social, marketing, merch, and stationery — the brand system working in real-world contexts."
           color={GR}
           images={[
-            { src: null, alt: "Social campaign — YDPay promo poster" },
+            { src: gProduct, alt: "Social media & marketing designs — YDPay campaign posts" },
             { src: null, alt: "Marketing banner — brand colours and Onest type" },
             { src: null, alt: "Logo lockup — primary mark on dark" },
             { src: null, alt: "Typography spread — Onest weights in use" },
@@ -648,6 +648,7 @@ export default function YDpayBrandPage() {
             { src: null, alt: "Merch mockup — branded t-shirt / tote" },
             { src: null, alt: "Email signature — brand identity in digital comms" },
           ]}
+          cta={{ label: "See all YDPay social & marketing designs", to: "/ydpay-designs" }}
         />
 
         {/* ══ 08 — BRIDGE TO PRODUCT ══ */}

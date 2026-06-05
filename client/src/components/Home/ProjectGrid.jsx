@@ -6,6 +6,7 @@ import { fetchJson } from "../../api/http";
 
 import GraphicHeroImg from "../../assets/Graphics/HeroImg.png";
 import ydpayThumb from "../../assets/YDpay/iphone15pro.png";
+import ydpayBrandThumb from "../../assets/YDpay/brand-screens/hero.jpg";
 import webHeroImg from "../../assets/workImg/WI1.png";
 import adlmThumb from "../../assets/ADLMStudio/ADLM Studio -  Discount.jpg";
 import wsThumb from "../../assets/Whitespace/Colours and their meanings - Cover.jpg";
@@ -148,7 +149,21 @@ const STATIC_UI_PROJECTS = [
   },
 ];
 
-const STATIC_BRAND_PROJECTS = [];
+const STATIC_BRAND_PROJECTS = [
+  {
+    kind: "default",
+    slug: "ydpay-brand",
+    route: "/projects/ydpay-brand",
+    name: "YDPay Brand Identity",
+    description: "Full brand system for a Nigerian crypto-fintech — logo, colour, typography, tone, and touchpoint application.",
+    url: "",
+    tags: ["Brand Identity", "Fintech"],
+    images: { main: ydpayBrandThumb },
+    pageImg: ydpayBrandThumb,
+    categories: ["Brand Identity Designs"],
+    id: "static-ydpay-brand",
+  },
+];
 
 // Desired display order for brand identity projects from DB
 const BRAND_SLUG_ORDER = ["tabstudio", "verde-luxe", "book-rion", "cleanstead"];
@@ -411,6 +426,7 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
     // Place NIQS UI after TabStudio (index 0) for Brand Identity tab ordering
     const [firstBrand, ...restBrand] = brandSorted;
     return [
+      ...STATIC_BRAND_PROJECTS,
       ...(firstBrand ? [firstBrand] : []),
       ...STATIC_UI_PROJECTS,
       ...restBrand,
@@ -455,6 +471,7 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
   const handleOpenProject = (item) => {
     if (item.kind === "ui") return navigate(`/ui-projects/${item.slug}`);
     if (item.kind === "gallary") return navigate(item.route || GRAPHIC_GALLERY_ROUTE);
+    if (item.route) return navigate(item.route);
     navigate(`/projects/${item.slug}`);
   };
 

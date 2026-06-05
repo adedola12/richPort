@@ -8,11 +8,9 @@ import {
 
 /* ─── single slide card — separate component so it can call hooks ─── */
 function SlideCard({ slide, index, rawIndex }) {
-  // x: vw-based shift so it's viewport-responsive
-  // card is 72vw wide; 1.05 × 72 = 75.6 vw between slide centres
-  // → side card peeks ~(100 - 86 - 75.6 + 72) = ~10 vw from edge
-  const x     = useTransform(rawIndex, v => `${(index - v) * 75.6}vw`);
-  const scale = useTransform(rawIndex, v => Math.max(0.88, 1 - Math.min(Math.abs(index - v), 1) * 0.12));
+  // card is 80vw wide; offset 82vw → ~2vw gap between cards, ~8vw peek from edges
+  const x     = useTransform(rawIndex, v => `${(index - v) * 82}vw`);
+  const scale = useTransform(rawIndex, v => Math.max(0.90, 1 - Math.min(Math.abs(index - v), 1) * 0.10));
   const opacity = useTransform(rawIndex, v => {
     const d = Math.abs(index - v);
     if (d > 1.4) return 0;
@@ -20,7 +18,7 @@ function SlideCard({ slide, index, rawIndex }) {
   });
   const blur = useTransform(rawIndex, v => {
     const d = Math.min(Math.abs(index - v), 1);
-    return `blur(${d * 10}px)`;
+    return `blur(${d * 8}px)`;
   });
   const zIndex = useTransform(rawIndex, v =>
     Math.round(20 - Math.abs(index - v) * 10)
@@ -33,8 +31,8 @@ function SlideCard({ slide, index, rawIndex }) {
         left: 0,
         right: 0,
         margin: "0 auto",
-        width: "72%",
-        maxWidth: "900px",
+        width: "80%",
+        maxWidth: "1100px",
         top: 0,
         bottom: 0,
         display: "flex",

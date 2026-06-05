@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 /* ─── animation ─── */
 const FadeUp = ({ children, delay = 0, className = "" }) => {
@@ -67,8 +68,10 @@ export default function BrandGallery({
   description = "Selected touchpoints and application designs — the brand system in real-world use.",
   images = [],
   color = "#a3e635",
+  cta = null,
 }) {
   const img = (i) => images[i] || {};
+  const navigate = useNavigate();
 
   return (
     <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 border-t border-white/5">
@@ -127,6 +130,23 @@ export default function BrandGallery({
             />
           ))}
         </div>
+
+        {/* ── Optional CTA ── */}
+        {cta && (
+          <FadeUp delay={0.12}>
+            <div className="mt-10 flex justify-start">
+              <button
+                onClick={() => navigate(cta.to)}
+                className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 py-3 text-[13px] font-medium text-white/75 transition hover:border-white/35 hover:bg-white/10 hover:text-white"
+              >
+                {cta.label}
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </div>
+          </FadeUp>
+        )}
 
       </div>
     </section>
