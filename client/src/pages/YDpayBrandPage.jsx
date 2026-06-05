@@ -642,21 +642,21 @@ export default function YDpayBrandPage() {
           description="Everything captured in a brand guideline — the single source of truth that lets the whole team use the brand correctly without a designer in the room for every piece."
           color={GR}
           slides={[
-            { src: gc1,  alt: "Vision statement — Africa's most trusted digital asset infrastructure" },
-            { src: gc2,  alt: "Core values — Accessibility, Trust, Speed, User-Centricity, Innovation" },
-            { src: gc3,  alt: "Touchpoint designs — the brand applied across real surfaces" },
-            { src: gc4,  alt: "Billboard — Move Money, Move Smart (city outdoor)" },
-            { src: gc5,  alt: "Ceiling billboard — Innovative trading meets trusted security" },
-            { src: gc6,  alt: "Vertical outdoor — All Your Crypto, One Powerful App" },
-            { src: gc7,  alt: "Wall-mounted display — Move Money, Move Smart" },
-            { src: gc8,  alt: "Window poster — Fast Swap, Faster Withdrawals" },
-            { src: gc9,  alt: "Building billboard — Built for the New Economy" },
-            { src: gc10, alt: "Business cards — premium variant on marble surface" },
-            { src: gc11, alt: "Business cards — flat dark variant with brand mark" },
-            { src: gc12, alt: "Branded tote bag — Innovative trading meets trusted security" },
-            { src: gc13, alt: "Email signatures — YDPay leadership team" },
-            { src: gc14, alt: "Letterhead — official brand stationery" },
-            { src: gc15, alt: "Typography spread — Onest typeface in display scale" },
+            { src: gc1,  alt: "Brand guideline cover — introducing the YDPay brand system" },
+            { src: gc2,  alt: "Mission statement — democratising digital finance across Africa" },
+            { src: gc3,  alt: "Vision statement — Africa's most trusted digital asset infrastructure" },
+            { src: gc4,  alt: "Core values — Accessibility, Trust, Speed, User-Centricity, Innovation" },
+            { src: gc5,  alt: "Brand personality & voice — professional, bold, creative, and friendly" },
+            { src: gc6,  alt: "Who is YDpay — the brand story and positioning" },
+            { src: gc7,  alt: "Colour inspiration — Shamrock Green and Supernova palette rationale" },
+            { src: gc8,  alt: "Primary logo — usage rules, minimum width, clear space" },
+            { src: gc9,  alt: "Secondary logo — the alternate mark with usage specs" },
+            { src: gc10, alt: "Wordmark — standalone logotype with size specifications" },
+            { src: gc11, alt: "Logo don'ts — six misuse rules for correct brand application" },
+            { src: gc12, alt: "Design effects — Flat and 3D text and container effects" },
+            { src: gc13, alt: "Brand assets — 3D icon library for the gamified design system" },
+            { src: gc14, alt: "Effects & assets — what the design system is saying here" },
+            { src: gc15, alt: "Guideline purpose — the role of this document for the team" },
           ]}
         />
 
