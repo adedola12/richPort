@@ -8,17 +8,18 @@ import {
 
 /* ─── single slide card — separate component so it can call hooks ─── */
 function SlideCard({ slide, index, rawIndex }) {
-  // card is 80vw wide; offset 82vw → ~2vw gap between cards, ~8vw peek from edges
-  const x     = useTransform(rawIndex, v => `${(index - v) * 82}vw`);
-  const scale = useTransform(rawIndex, v => Math.max(0.90, 1 - Math.min(Math.abs(index - v), 1) * 0.10));
+  // card 65vw wide, offset 60vw → adjacent cards overlap slightly, ~12vw visible each side
+  // scale 0.72 + blur 14px = strong depth-behind effect; revolves smoothly into center
+  const x     = useTransform(rawIndex, v => `${(index - v) * 60}vw`);
+  const scale = useTransform(rawIndex, v => Math.max(0.72, 1 - Math.min(Math.abs(index - v), 1) * 0.28));
   const opacity = useTransform(rawIndex, v => {
     const d = Math.abs(index - v);
-    if (d > 1.4) return 0;
-    return Math.max(0, 1 - d * 0.68);
+    if (d > 1.6) return 0;
+    return Math.max(0.60, 1 - d * 0.40);
   });
   const blur = useTransform(rawIndex, v => {
     const d = Math.min(Math.abs(index - v), 1);
-    return `blur(${d * 8}px)`;
+    return `blur(${d * 14}px)`;
   });
   const zIndex = useTransform(rawIndex, v =>
     Math.round(20 - Math.abs(index - v) * 10)
@@ -31,8 +32,8 @@ function SlideCard({ slide, index, rawIndex }) {
         left: 0,
         right: 0,
         margin: "0 auto",
-        width: "80%",
-        maxWidth: "1100px",
+        width: "65%",
+        maxWidth: "900px",
         top: 0,
         bottom: 0,
         display: "flex",

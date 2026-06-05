@@ -8,21 +8,32 @@ import GuidelineCarousel from "../components/ProjectPage/GuidelineCarousel";
 import BrandGallery from "../components/ProjectPage/BrandGallery";
 
 /* ── brand screen images ── */
-import imgHero       from "../assets/YDpay/brand-screens/hero.jpg";
-import imgTypography from "../assets/YDpay/brand-screens/typography.png";
-import imgToneOfVoice from "../assets/YDpay/brand-screens/tone-of-voice.jpg";
-import imgPosters    from "../assets/YDpay/brand-screens/posters.png";
+import imgHero         from "../assets/YDpay/brand-screens/hero.jpg";
+import imgTypography   from "../assets/YDpay/brand-screens/typography.png";
+import imgToneOfVoice  from "../assets/YDpay/brand-screens/tone-of-voice.jpg";
+import imgPosters      from "../assets/YDpay/brand-screens/posters.png";
+import imgSocial       from "../assets/YDpay/brand-screens/social-samples.png";
+import imgAppUi        from "../assets/YDpay/brand-screens/app-ui.png";
 
-/* ── guideline carousel images ── */
-import gCover      from "../assets/YDpay/guidelines/g1-cover.png";
-import gLogo       from "../assets/YDpay/guidelines/g2-logo.png";
-import gLogoRules  from "../assets/YDpay/guidelines/g3-logo-rules.png";
-import gVision     from "../assets/YDpay/guidelines/g4-vision.png";
-import gColour     from "../assets/YDpay/guidelines/g5-colour.png";
-import gTypography from "../assets/YDpay/guidelines/g6-typography.png";
-import gBillboard  from "../assets/YDpay/guidelines/g7-billboard.png";
-import gCards      from "../assets/YDpay/guidelines/g8-cards.png";
+/* ── bento gallery ── */
 import gProduct    from "../assets/YDpay/guidelines/g9-product.png";
+
+/* ── guideline carousel images (15 fresh pages) ── */
+import gc1  from "../assets/YDpay/guidelines/c1-vision.png";
+import gc2  from "../assets/YDpay/guidelines/c2-core-values.png";
+import gc3  from "../assets/YDpay/guidelines/c3-touchpoints.png";
+import gc4  from "../assets/YDpay/guidelines/c4-billboard-move.png";
+import gc5  from "../assets/YDpay/guidelines/c5-billboard-ceiling.png";
+import gc6  from "../assets/YDpay/guidelines/c6-billboard-vertical.png";
+import gc7  from "../assets/YDpay/guidelines/c7-billboard-wall.png";
+import gc8  from "../assets/YDpay/guidelines/c8-poster-window.png";
+import gc9  from "../assets/YDpay/guidelines/c9-billboard-building.png";
+import gc10 from "../assets/YDpay/guidelines/c10-cards-marble.png";
+import gc11 from "../assets/YDpay/guidelines/c11-cards-flat.png";
+import gc12 from "../assets/YDpay/guidelines/c12-tote-bag.png";
+import gc13 from "../assets/YDpay/guidelines/c13-email-sig.png";
+import gc14 from "../assets/YDpay/guidelines/c14-letterhead.png";
+import gc15 from "../assets/YDpay/guidelines/c15-typography.png";
 
 const GR = "#a3e635"; // portfolio lime
 const RED = "#E05252";
@@ -308,11 +319,13 @@ export default function YDpayBrandPage() {
         {/* ══ 02 — THE CHALLENGE ══ */}
         <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 border-t border-white/5">
           <div className="max-w-[1100px] mx-auto">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+            <FadeUp>
+              <SLabel n="02" t="THE CHALLENGE" />
+              <H2 white="A mark is not" accent="a brand" accentColor={RED} />
+              <div className="mt-5 mb-8 h-[2px] w-16 rounded-full bg-[#E05252]" />
+            </FadeUp>
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
               <FadeUp>
-                <SLabel n="02" t="THE CHALLENGE" />
-                <H2 white="A mark is not" accent="a brand" accentColor={RED} />
-                <div className="mt-5 mb-8 h-[2px] w-16 rounded-full bg-[#E05252]" />
                 <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/55 mb-8">
                   YDPay had a logo and a color palette. What it didn't have was a brand — the system that makes those elements add up to something a market recognizes, trusts, and remembers. Three gaps defined the work:
                 </p>
@@ -347,12 +360,12 @@ export default function YDpayBrandPage() {
                 </div>
               </FadeUp>
 
-              <SlideIn direction="right" delay={0.1}>
+              <SlideIn direction="right" delay={0.1} className="flex flex-col">
                 <TiltFrame
                   src={null}
                   alt="'Raw ingredients vs. working system' — left: just the logo and color swatches floating alone; right: the full system applied across touchpoints. From a mark and a palette → to a working brand."
-                  className="w-full"
-                  style={{ aspectRatio: "4/5" }}
+                  className="w-full flex-1"
+                  style={{ minAspectRatio: "4/5" }}
                   onClick={ph}
                 />
               </SlideIn>
@@ -448,7 +461,7 @@ export default function YDpayBrandPage() {
             <FadeUp delay={0.08} className="mb-16">
               <p className="text-[11px] tracking-[0.28em] uppercase text-white/35 mb-2">4.2 — TYPOGRAPHY</p>
               <p className="text-[18px] font-semibold text-white mb-3">Setting the voice in type</p>
-              <div className="grid lg:grid-cols-[1fr_420px] gap-8 items-start">
+              <div className="grid lg:grid-cols-[1fr_420px] gap-8 items-stretch">
                 <div>
                   <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50 mb-5">
                     I set the type system to <strong className="text-white">Onest</strong> — a clean, modern, geometric-leaning typeface with the legibility a fintech needs across both dense UI and bold marketing. Onest gives YDPay one consistent typographic voice from a button label to a billboard headline.
@@ -472,7 +485,8 @@ export default function YDpayBrandPage() {
                 <TiltFrame
                   src={imgTypography}
                   alt="Typography system — Onest"
-                  style={{ aspectRatio: "16/9", minHeight: "200px" }}
+                  className="h-full"
+                  style={{ minHeight: "calc(420px * 5 / 4)" }}
                 />
               </div>
             </FadeUp>
@@ -481,11 +495,12 @@ export default function YDpayBrandPage() {
             <FadeUp delay={0.08} className="mb-16">
               <p className="text-[11px] tracking-[0.28em] uppercase text-white/35 mb-2">4.3 — TONE OF VOICE</p>
               <p className="text-[18px] font-semibold text-white mb-3">How the brand speaks</p>
-              <div className="grid lg:grid-cols-[420px_1fr] gap-8 items-start">
+              <div className="grid lg:grid-cols-[420px_1fr] gap-8 items-stretch">
                 <TiltFrame
                   src={imgToneOfVoice}
                   alt="Communications & tone of voice"
-                  style={{ aspectRatio: "16/9", minHeight: "200px" }}
+                  className="h-full"
+                  style={{ minHeight: "calc(420px * 5 / 4)" }}
                 />
                 <div>
                   <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50 mb-6">
@@ -551,7 +566,9 @@ export default function YDpayBrandPage() {
                   n: "SOCIAL & MARKETING",
                   title: "Social & Marketing Designs",
                   body: "The social media design direction in action — templates and posts built within the system. Consistent layout rhythm, the Onest type set at the right scale, the brand palette used with discipline. Every post is recognizably YDPay without being templated into sameness.",
-                  alt: "Social & marketing designs — grid or carousel of YDPay social media posts and marketing assets.",
+                  alt: "Social & marketing designs — YDPay social media posts and marketing assets.",
+                  src: imgSocial,
+                  cta: { label: "See all YDPay social & marketing designs", to: "/ydpay-designs" },
                   flip: false,
                 },
                 {
@@ -576,7 +593,7 @@ export default function YDpayBrandPage() {
                   alt: "Stationery system — YDPay business cards, letterhead, and stationery suite in correct brand application.",
                   flip: true,
                 },
-              ].map(({ n, title, body, alt, src = null, flip }) => (
+              ].map(({ n, title, body, alt, src = null, cta = null, flip }) => (
                 <FadeUp key={n}>
                   <div className="flex flex-col gap-6">
                     <div className={`flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 ${flip ? "sm:flex-row-reverse" : ""}`}>
@@ -589,6 +606,17 @@ export default function YDpayBrandPage() {
                         </span>
                         <h3 className="text-[22px] sm:text-[26px] font-semibold text-white mb-4">{title}</h3>
                         <p className="text-[15px] sm:text-[16px] leading-[1.7] text-white/55">{body}</p>
+                        {cta && (
+                          <Link
+                            to={cta.to}
+                            className="mt-5 inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-5 py-2.5 text-[13px] font-medium text-white/75 transition hover:border-white/35 hover:bg-white/10 hover:text-white"
+                          >
+                            {cta.label}
+                            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                              <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          </Link>
+                        )}
                       </div>
                     </div>
                     <TiltFrame
@@ -614,15 +642,21 @@ export default function YDpayBrandPage() {
           description="Everything captured in a brand guideline — the single source of truth that lets the whole team use the brand correctly without a designer in the room for every piece."
           color={GR}
           slides={[
-            { src: gCover,      alt: "Cover — YDPay brand guideline cover page" },
-            { src: gLogo,       alt: "Logo — primary mark with usage specs on dark background" },
-            { src: gLogoRules,  alt: "Logo rules — dos and don'ts for correct brand application" },
-            { src: gVision,     alt: "Vision — brand purpose and continental focus" },
-            { src: gColour,     alt: "Colour system — the brand palette documented" },
-            { src: gTypography, alt: "Typography — Onest typeface specimen and weights" },
-            { src: gBillboard,  alt: "Billboard — brand applied to out-of-home advertising" },
-            { src: gCards,      alt: "Business cards — white and dark variants" },
-            { src: gProduct,    alt: "Product mockup — brand applied to app and collateral" },
+            { src: gc1,  alt: "Vision statement — Africa's most trusted digital asset infrastructure" },
+            { src: gc2,  alt: "Core values — Accessibility, Trust, Speed, User-Centricity, Innovation" },
+            { src: gc3,  alt: "Touchpoint designs — the brand applied across real surfaces" },
+            { src: gc4,  alt: "Billboard — Move Money, Move Smart (city outdoor)" },
+            { src: gc5,  alt: "Ceiling billboard — Innovative trading meets trusted security" },
+            { src: gc6,  alt: "Vertical outdoor — All Your Crypto, One Powerful App" },
+            { src: gc7,  alt: "Wall-mounted display — Move Money, Move Smart" },
+            { src: gc8,  alt: "Window poster — Fast Swap, Faster Withdrawals" },
+            { src: gc9,  alt: "Building billboard — Built for the New Economy" },
+            { src: gc10, alt: "Business cards — premium variant on marble surface" },
+            { src: gc11, alt: "Business cards — flat dark variant with brand mark" },
+            { src: gc12, alt: "Branded tote bag — Innovative trading meets trusted security" },
+            { src: gc13, alt: "Email signatures — YDPay leadership team" },
+            { src: gc14, alt: "Letterhead — official brand stationery" },
+            { src: gc15, alt: "Typography spread — Onest typeface in display scale" },
           ]}
         />
 
@@ -648,7 +682,6 @@ export default function YDpayBrandPage() {
             { src: null, alt: "Merch mockup — branded t-shirt / tote" },
             { src: null, alt: "Email signature — brand identity in digital comms" },
           ]}
-          cta={{ label: "See all YDPay social & marketing designs", to: "/ydpay-designs" }}
         />
 
         {/* ══ 08 — BRIDGE TO PRODUCT ══ */}
@@ -673,11 +706,10 @@ export default function YDpayBrandPage() {
 
             <FadeUp delay={0.12} className="mt-12">
               <TiltFrame
-                src={null}
-                alt="From brand system → to product UI. A visual showing the brand system (colors, type, voice) flowing into the YDPay app screens — brand on the left, product on the right."
+                src={imgAppUi}
+                alt="YDPay app UI — the product built on this brand foundation"
                 className="w-full"
                 style={{ aspectRatio: "16/9" }}
-                onClick={ph}
               />
             </FadeUp>
           </div>
