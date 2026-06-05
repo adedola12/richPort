@@ -9,6 +9,8 @@ import { motion, useInView } from "framer-motion";
 import OtherProj from "../components/ProjectPage/OtherProj";
 import BuildSection from "../components/Home/BuildSection";
 import PageMeta from "../components/common/PageMeta";
+import GuidelineCarousel from "../components/ProjectPage/GuidelineCarousel";
+import BrandGallery from "../components/ProjectPage/BrandGallery";
 
 const NAVY = "#000066";
 const GOLD = "#D9B650";
@@ -395,6 +397,57 @@ const NIQSProject = () => (
           </div>
         </div>
       </section>
+
+      {/* ══ 05 — THE GUIDELINE (scroll carousel) ══ */}
+      <GuidelineCarousel
+        n="05"
+        label="THE GUIDELINE"
+        white="The system,"
+        accent="documented"
+        description="60 pages. Every rule, every exception, every approved variant — a single source of truth for how NIQS shows up across every surface."
+        color={GOLD}
+        slides={[
+          { src: null, alt: "Cover — NIQS brand guideline document cover" },
+          { src: null, alt: "Brand story — 55-year institutional history and mission" },
+          { src: null, alt: "Personality & voice — six brand pillars and tone of voice" },
+          { src: null, alt: "Logo & brand mark — the heraldic eagle, codified" },
+          { src: null, alt: "Logo clear space — exclusion zones and minimum sizes" },
+          { src: null, alt: "Logo colour variants — approved applications across backgrounds" },
+          { src: null, alt: "Logo don'ts — misuse rules and examples" },
+          { src: null, alt: "Colour palette — Navy #000066, Gold #D9B650, and neutrals" },
+          { src: null, alt: "Typography — display and body typeface hierarchy" },
+          { src: null, alt: "Imagery — photography direction and art direction principles" },
+          { src: null, alt: "Design foundations — grid, spacing, and layout system" },
+          { src: null, alt: "Stationery — letterhead, business cards, and envelopes" },
+          { src: null, alt: "Digital applications — email signatures and social banners" },
+          { src: null, alt: "Components — UI patterns built on the NIQS visual language" },
+          { src: null, alt: "Brand voice & copy — writing guidelines and editorial standards" },
+        ]}
+      />
+
+      {/* ══ 06 — TOUCHPOINTS GALLERY ══ */}
+      <BrandGallery
+        n="06"
+        label="TOUCHPOINTS GALLERY"
+        white="The brand,"
+        accent="applied"
+        description="Selected touchpoint designs — the NIQS visual system at work across stationery, digital, and ceremonial applications."
+        color={GOLD}
+        images={[
+          { src: null, alt: "Letterhead — NIQS official stationery header" },
+          { src: null, alt: "Business card — front, navy with gold mark" },
+          { src: null, alt: "Business card — back, minimal gold on dark" },
+          { src: null, alt: "Envelope — branded stationery suite" },
+          { src: null, alt: "Email signature — digital identity application" },
+          { src: null, alt: "Social banner — branded social media template" },
+          { src: null, alt: "Event backdrop — ceremonial brand application" },
+          { src: null, alt: "Certificate — official NIQS document design" },
+          { src: null, alt: "ID card — member identification design" },
+          { src: null, alt: "Brand on screen — digital platform UI" },
+          { src: null, alt: "Chapter template — local chapter brand application" },
+          { src: null, alt: "Publication cover — branded document layout" },
+        ]}
+      />
 
       {/* ══ STATUS NOTE ══ */}
       <section className="py-16 sm:py-20 px-4 sm:px-8 lg:px-16 border-t border-white/5">
