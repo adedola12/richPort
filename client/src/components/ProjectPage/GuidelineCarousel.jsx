@@ -8,9 +8,9 @@ import {
 
 /* ─── single slide card — separate component so it can call hooks ─── */
 function SlideCard({ slide, index, rawIndex }) {
-  // card 65vw wide, offset 60vw → adjacent cards overlap slightly, ~12vw visible each side
+  // card 65vw wide, offset 55vw → adjacent cards sit flush against center card edges
   // scale 0.72 + blur 14px = strong depth-behind effect; revolves smoothly into center
-  const x     = useTransform(rawIndex, v => `${(index - v) * 60}vw`);
+  const x     = useTransform(rawIndex, v => `${(index - v) * 55}vw`);
   const scale = useTransform(rawIndex, v => Math.max(0.72, 1 - Math.min(Math.abs(index - v), 1) * 0.28));
   const opacity = useTransform(rawIndex, v => {
     const d = Math.abs(index - v);
