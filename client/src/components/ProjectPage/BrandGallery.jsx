@@ -90,43 +90,53 @@ export default function BrandGallery({
           </p>
         </FadeUp>
 
-        {/* ── Desktop bento grid — 12 slots, 5 rows ── */}
+        {/* ── Desktop bento — columns AND rows both vary for true bento feel ── */}
         <FadeUp delay={0.08}>
           <div
             className="hidden sm:grid gap-3"
             style={{
               gridTemplateColumns: "repeat(12, 1fr)",
-              gridTemplateRows: "300px 300px 200px 240px 240px",
+              gridTemplateRows: "240px 240px 180px 240px 200px",
             }}
           >
-            {/* Row 1 — 5 : 4 : 3 */}
-            <BentoCell src={img(0).src} alt={img(0).alt} style={{ gridColumn: "1 / 6",  gridRow: "1 / 2" }} />
-            <BentoCell src={img(1).src} alt={img(1).alt} style={{ gridColumn: "6 / 10", gridRow: "1 / 2" }} />
-            <BentoCell src={img(2).src} alt={img(2).alt} style={{ gridColumn: "10 / 13",gridRow: "1 / 2" }} />
-            {/* Row 2 — 4 : 8 */}
-            <BentoCell src={img(3).src} alt={img(3).alt} style={{ gridColumn: "1 / 5",  gridRow: "2 / 3" }} />
-            <BentoCell src={img(4).src} alt={img(4).alt} style={{ gridColumn: "5 / 13", gridRow: "2 / 3" }} />
-            {/* Row 3 — 6 : 6 */}
-            <BentoCell src={img(5).src} alt={img(5).alt} style={{ gridColumn: "1 / 7",  gridRow: "3 / 4" }} />
-            <BentoCell src={img(6).src} alt={img(6).alt} style={{ gridColumn: "7 / 13", gridRow: "3 / 4" }} />
-            {/* Row 4 — 4 : 4 : 4 */}
-            <BentoCell src={img(7).src} alt={img(7).alt} style={{ gridColumn: "1 / 5",  gridRow: "4 / 5" }} />
-            <BentoCell src={img(8).src} alt={img(8).alt} style={{ gridColumn: "5 / 9",  gridRow: "4 / 5" }} />
-            <BentoCell src={img(9).src} alt={img(9).alt} style={{ gridColumn: "9 / 13", gridRow: "4 / 5" }} />
-            {/* Row 5 — 8 : 4 */}
-            <BentoCell src={img(10).src} alt={img(10).alt} style={{ gridColumn: "1 / 9",  gridRow: "5 / 6" }} />
-            <BentoCell src={img(11).src} alt={img(11).alt} style={{ gridColumn: "9 / 13", gridRow: "5 / 6" }} />
+            {/* Cell 1 — big left anchor, spans 2 rows */}
+            <BentoCell src={img(0).src}  alt={img(0).alt}  style={{ gridColumn: "1 / 5",  gridRow: "1 / 3" }} />
+            {/* Cell 2 — top center */}
+            <BentoCell src={img(1).src}  alt={img(1).alt}  style={{ gridColumn: "5 / 9",  gridRow: "1 / 2" }} />
+            {/* Cell 3 — top right */}
+            <BentoCell src={img(2).src}  alt={img(2).alt}  style={{ gridColumn: "9 / 13", gridRow: "1 / 2" }} />
+            {/* Cell 4 — mid center */}
+            <BentoCell src={img(3).src}  alt={img(3).alt}  style={{ gridColumn: "5 / 9",  gridRow: "2 / 3" }} />
+            {/* Cell 5 — tall right anchor, spans 2 rows */}
+            <BentoCell src={img(4).src}  alt={img(4).alt}  style={{ gridColumn: "9 / 13", gridRow: "2 / 4" }} />
+            {/* Cell 6 — mid-left narrow */}
+            <BentoCell src={img(5).src}  alt={img(5).alt}  style={{ gridColumn: "1 / 5",  gridRow: "3 / 4" }} />
+            {/* Cell 7 — mid-center narrow */}
+            <BentoCell src={img(6).src}  alt={img(6).alt}  style={{ gridColumn: "5 / 9",  gridRow: "3 / 4" }} />
+            {/* Cell 8 — wide lower-left */}
+            <BentoCell src={img(7).src}  alt={img(7).alt}  style={{ gridColumn: "1 / 6",  gridRow: "4 / 5" }} />
+            {/* Cell 9 — lower center */}
+            <BentoCell src={img(8).src}  alt={img(8).alt}  style={{ gridColumn: "6 / 9",  gridRow: "4 / 5" }} />
+            {/* Cell 10 — tall right anchor, spans 2 rows */}
+            <BentoCell src={img(9).src}  alt={img(9).alt}  style={{ gridColumn: "9 / 13", gridRow: "4 / 6" }} />
+            {/* Cell 11 — wide bottom-left */}
+            <BentoCell src={img(10).src} alt={img(10).alt} style={{ gridColumn: "1 / 7",  gridRow: "5 / 6" }} />
+            {/* Cell 12 — bottom center */}
+            <BentoCell src={img(11).src} alt={img(11).alt} style={{ gridColumn: "7 / 9",  gridRow: "5 / 6" }} />
           </div>
         </FadeUp>
 
-        {/* ── Mobile: 2-col grid, 4:3 aspect ratio ── */}
+        {/* ── Mobile: mixed 2-col, some cells span 2 cols for variety ── */}
         <div className="sm:hidden grid grid-cols-2 gap-3">
           {Array.from({ length: 12 }, (_, i) => (
             <BentoCell
               key={i}
               src={img(i).src}
               alt={img(i).alt}
-              style={{ aspectRatio: "4/3" }}
+              style={{
+                aspectRatio: i === 0 || i === 4 || i === 9 ? "1/1" : "4/3",
+                gridColumn: i === 0 ? "1 / 3" : undefined,
+              }}
             />
           ))}
         </div>

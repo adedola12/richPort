@@ -14,6 +14,13 @@ import imgToneOfVoice  from "../assets/YDpay/brand-screens/tone-of-voice.jpg";
 import imgPosters      from "../assets/YDpay/brand-screens/posters.png";
 import imgSocial       from "../assets/YDpay/brand-screens/social-samples.png";
 import imgAppUi        from "../assets/YDpay/brand-screens/app-ui.png";
+import imgMarkPalette  from "../assets/YDpay/brand-screens/mark-palette.png";
+import imgBillboard    from "../assets/YDpay/brand-screens/billboard.png";
+import imgMerch        from "../assets/YDpay/brand-screens/merch.png";
+import imgStationery   from "../assets/YDpay/brand-screens/stationery.png";
+import imgToteBag      from "../assets/YDpay/brand-screens/tote-bag.png";
+import imgLetterhead   from "../assets/YDpay/brand-screens/letterhead.png";
+import imgEmailSig     from "../assets/YDpay/brand-screens/email-signature.png";
 
 /* ── bento gallery ── */
 import gProduct    from "../assets/YDpay/guidelines/g9-product.png";
@@ -449,11 +456,10 @@ export default function YDpayBrandPage() {
                 The logo and core palette were established before I came on. My role began here — not by changing them, but by building the system that lets them work everywhere.
               </p>
               <TiltFrame
-                src={null}
+                src={imgMarkPalette}
                 alt="The fixed mark and palette — the foundation I built around. YDPay logo + official color palette shown cleanly."
                 className="w-full"
                 style={{ aspectRatio: "16/9" }}
-                onClick={ph}
               />
             </FadeUp>
 
@@ -669,18 +675,18 @@ export default function YDpayBrandPage() {
           description="Selected touchpoint designs across social, marketing, merch, and stationery — the brand system working in real-world contexts."
           color={GR}
           images={[
-            { src: gProduct, alt: "Social media & marketing designs — YDPay campaign posts" },
-            { src: null, alt: "Marketing banner — brand colours and Onest type" },
-            { src: null, alt: "Logo lockup — primary mark on dark" },
-            { src: null, alt: "Typography spread — Onest weights in use" },
-            { src: null, alt: "Social media grid — campaign post series" },
-            { src: null, alt: "Brand on screen — app mockup with brand colours" },
-            { src: null, alt: "Poster design — large format application" },
-            { src: null, alt: "Business card — front, dark variant" },
-            { src: null, alt: "Business card — back, with logo mark" },
-            { src: null, alt: "Letterhead — stationery suite header" },
-            { src: null, alt: "Merch mockup — branded t-shirt / tote" },
-            { src: null, alt: "Email signature — brand identity in digital comms" },
+            { src: gProduct,      alt: "Social media posts — YDPay campaign designs in context" },
+            { src: imgBillboard,  alt: "Billboard — Move Money, Move Smart, city outdoor" },
+            { src: imgPosters,    alt: "Poster & campaign designs — large format brand application" },
+            { src: imgMerch,      alt: "Branded merchandise — YDPay hoodies, white and black variants" },
+            { src: imgAppUi,      alt: "App UI — the product built on this brand foundation" },
+            { src: imgStationery, alt: "Business cards — white and dark premium variants" },
+            { src: imgToteBag,    alt: "Branded tote bag — Innovative trading meets trusted security" },
+            { src: imgMarkPalette,alt: "Primary palette — Shamrock Green and Supernova documented" },
+            { src: imgLetterhead, alt: "Letterhead — official brand stationery" },
+            { src: imgEmailSig,   alt: "Email signatures — YDPay leadership team" },
+            { src: imgSocial,     alt: "Social & marketing direction — design system in action" },
+            { src: null,          alt: "Coming soon — additional touchpoint design" },
           ]}
         />
 
