@@ -188,41 +188,6 @@ export default function BrandGallery({
   /* stagger delay capped so late cells don't feel disconnected */
   const d = (i) => Math.min(i * 0.04, 0.35);
 
-  const hasAnyImage = images.some((item) => item.src);
-
-  /* ── compact placeholder when no images yet ── */
-  if (!hasAnyImage) {
-    return (
-      <section className="py-16 sm:py-20 px-4 sm:px-8 lg:px-16 border-t border-white/5">
-        <div className="max-w-[1400px] mx-auto">
-          <motion.div
-            ref={headerRef}
-            initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
-            animate={headerInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
-            transition={{ duration: 0.7, ease: [0.22, 0.61, 0.36, 1] }}
-          >
-            <p className="text-[11px] font-bold tracking-[0.3em] uppercase mb-5" style={{ color }}>{n} — {label}</p>
-            <h2 className="text-4xl sm:text-5xl lg:text-[52px] font-semibold leading-[1.05] tracking-[-0.03em]">
-              <span className="text-white">{white} </span>
-              <span style={{ color }}>{accent}</span>
-            </h2>
-            <p className="mt-4 mb-8 text-[15px] sm:text-[16px] leading-[1.65] text-white/50 max-w-[520px]">{description}</p>
-            <div className="w-full rounded-2xl border border-dashed border-white/10 bg-white/[0.015] flex items-center justify-center py-20">
-              <div className="flex flex-col items-center gap-3 text-center px-8">
-                <div className="w-10 h-10 rounded-full border border-dashed flex items-center justify-center" style={{ borderColor: `${color}35` }}>
-                  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke={`${color}50`} strokeWidth="1.5">
-                    <rect x="3" y="3" width="18" height="18" rx="3" /><path d="M3 16l5-5 4 4 3-3 6 6" />
-                  </svg>
-                </div>
-                <p className="text-[12px] text-white/25">Touchpoint designs coming soon</p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 border-t border-white/5">
       <div className="max-w-[1400px] mx-auto">

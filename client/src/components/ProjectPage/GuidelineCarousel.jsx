@@ -114,32 +114,6 @@ export default function GuidelineCarousel({
     window.scrollTo({ top: target, behavior: "smooth" });
   };
 
-  /* ── when no images yet: show compact coming-soon block ── */
-  if (!hasContent) {
-    return (
-      <section className="border-t border-white/5 py-16 sm:py-20 px-4 sm:px-8 lg:px-16">
-        <div className="max-w-[1100px] mx-auto">
-          <p className="text-[11px] font-bold tracking-[0.3em] uppercase mb-5" style={{ color }}>{n} — {label}</p>
-          <h2 className="text-3xl sm:text-[44px] font-semibold leading-tight tracking-[-0.03em] mb-3">
-            <span className="text-white">{white} </span>
-            <span style={{ color }}>{accent}</span>
-          </h2>
-          <p className="text-[15px] leading-[1.65] text-white/50 max-w-[560px] mb-8">{description}</p>
-          <div className="w-full rounded-2xl border border-dashed border-white/10 bg-white/[0.015] flex items-center justify-center py-20">
-            <div className="flex flex-col items-center gap-3 text-center px-8">
-              <div className="w-10 h-10 rounded-full border border-dashed flex items-center justify-center" style={{ borderColor: `${color}35` }}>
-                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke={`${color}50`} strokeWidth="1.5">
-                  <rect x="3" y="3" width="18" height="18" rx="3" /><path d="M3 16l5-5 4 4 3-3 6 6" />
-                </svg>
-              </div>
-              <p className="text-[12px] text-white/25">Guideline spreads coming soon</p>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <div
       ref={containerRef}
