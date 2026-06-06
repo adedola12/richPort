@@ -255,60 +255,62 @@ const NIQSProject = () => (
             </p>
           </FadeUp>
 
-          {/* Colour + Logo */}
-          <div className="grid sm:grid-cols-2 gap-6 mb-10">
-            <SlideIn direction="left" delay={0.1}>
-              <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-6 h-full">
-                <p className="text-[11px] font-bold tracking-[0.2em] uppercase mb-5" style={{ color: GOLD }}>Colour Palette</p>
-                <div className="flex gap-4 mb-5">
-                  <div className="flex flex-col items-start gap-2">
-                    <div className="w-16 h-16 rounded-xl border border-white/10" style={{ background: NAVY }} />
-                    <p className="text-[11px] font-semibold text-white/70">Navy</p>
-                    <p className="text-[10px] text-white/30 font-mono">{NAVY}</p>
+          {/* 2.1 — Colour Palette */}
+          <FadeUp className="mb-12">
+            <p className="text-[11px] tracking-[0.28em] uppercase text-white/35 mb-2">2.1 — COLOUR PALETTE</p>
+            <p className="text-[18px] font-semibold text-white mb-3">Navy, gold, and white</p>
+            <div className="grid lg:grid-cols-[1fr_360px] gap-8 items-start">
+              <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50">
+                Navy conveys authority and institutional depth. Gold signals prestige and heraldic heritage. White provides confident, clean space between them — a palette that reads as permanent.
+              </p>
+              <div className="flex gap-4">
+                {[
+                  { name: "Navy", hex: NAVY, color: NAVY },
+                  { name: "Gold", hex: GOLD, color: GOLD },
+                  { name: "White", hex: "#FFFFFF", color: "#FFFFFF" },
+                ].map(({ name, hex, color }) => (
+                  <div key={name} className="flex flex-col items-start gap-2">
+                    <div className="w-16 h-16 rounded-xl border border-white/10" style={{ background: color }} />
+                    <p className="text-[11px] font-semibold text-white/70">{name}</p>
+                    <p className="text-[10px] text-white/30 font-mono">{hex}</p>
                   </div>
-                  <div className="flex flex-col items-start gap-2">
-                    <div className="w-16 h-16 rounded-xl border border-white/10" style={{ background: GOLD }} />
-                    <p className="text-[11px] font-semibold text-white/70">Gold</p>
-                    <p className="text-[10px] text-white/30 font-mono">{GOLD}</p>
-                  </div>
-                  <div className="flex flex-col items-start gap-2">
-                    <div className="w-16 h-16 rounded-xl border border-white/10 bg-white" />
-                    <p className="text-[11px] font-semibold text-white/70">White</p>
-                    <p className="text-[10px] text-white/30 font-mono">#FFFFFF</p>
-                  </div>
-                </div>
-                <p className="text-[13px] text-white/45 leading-[1.65]">
-                  Navy conveys authority and institutional depth. Gold signals prestige, heraldic heritage, and precision. White provides the breath between them — clean, confident space.
-                </p>
-              </div>
-            </SlideIn>
-            <SlideIn direction="right" delay={0.15}>
-              <div className="rounded-2xl border p-6 h-full" style={{ borderColor: `${GOLD}33`, background: `${NAVY}22` }}>
-                <p className="text-[11px] font-bold tracking-[0.2em] uppercase mb-5" style={{ color: GOLD }}>Logo System</p>
-                <div className="rounded-xl overflow-hidden mb-5 flex items-center justify-center py-8 px-6"
-                  style={{ background: NAVY }}>
-                  <img src="/NIQSColor.svg" alt="NIQS Colour Logo" className="w-full max-w-[280px]" />
-                </div>
-                <div className="rounded-xl overflow-hidden flex items-center justify-center py-6 px-6 bg-white/5 border border-white/8">
-                  <img src="/NIQSGrey.svg" alt="NIQS Grey Logo" className="w-full max-w-[280px] opacity-60" />
-                </div>
-                <p className="text-[12px] text-white/35 mt-3 leading-[1.55]">
-                  The heraldic eagle mark is preserved as institutional heritage. The system defines clear usage rules, exclusion zones, and approved colour variants.
-                </p>
-              </div>
-            </SlideIn>
-          </div>
-
-          {/* Brand personality pills */}
-          <FadeUp>
-            <div className="rounded-2xl border border-white/8 bg-white/[0.025] p-6">
-              <p className="text-[11px] font-bold tracking-[0.2em] uppercase mb-4" style={{ color: GOLD }}>Brand Personality</p>
-              <div className="flex flex-wrap gap-2">
-                {["Authoritative", "Heraldic", "Precise", "Progressive", "Trustworthy", "Civic"].map(t => (
-                  <span key={t} className="rounded-full border px-4 py-1.5 text-[12px] font-semibold"
-                    style={{ borderColor: `${GOLD}44`, color: GOLD, background: `${GOLD}0D` }}>{t}</span>
                 ))}
               </div>
+            </div>
+          </FadeUp>
+
+          {/* 2.2 — Logo System */}
+          <FadeUp className="mb-12">
+            <p className="text-[11px] tracking-[0.28em] uppercase text-white/35 mb-2">2.2 — LOGO SYSTEM</p>
+            <p className="text-[18px] font-semibold text-white mb-3">The heraldic eagle, codified</p>
+            <div className="grid lg:grid-cols-[1fr_360px] gap-8 items-start">
+              <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50">
+                The mark is institutional heritage — not up for redesign. The system defines exclusion zones, approved colour variants, minimum size rules, and every permitted usage context.
+              </p>
+              <div className="flex flex-col gap-3">
+                <div className="rounded-xl overflow-hidden flex items-center justify-center py-8 px-6"
+                  style={{ background: NAVY }}>
+                  <img src="/NIQSColor.svg" alt="NIQS Colour Logo" className="w-full max-w-[240px]" />
+                </div>
+                <div className="rounded-xl overflow-hidden flex items-center justify-center py-5 px-6 bg-white/5 border border-white/8">
+                  <img src="/NIQSGrey.svg" alt="NIQS Grey Logo" className="w-full max-w-[240px] opacity-60" />
+                </div>
+              </div>
+            </div>
+          </FadeUp>
+
+          {/* 2.3 — Brand Personality */}
+          <FadeUp>
+            <p className="text-[11px] tracking-[0.28em] uppercase text-white/35 mb-2">2.3 — BRAND PERSONALITY</p>
+            <p className="text-[18px] font-semibold text-white mb-3">Six pillars, every decision</p>
+            <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50 mb-5">
+              Every visual and communication decision maps back to at least one of these pillars — ensuring the brand stays coherent across 37 chapters and decades of use.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {["Authoritative", "Heraldic", "Precise", "Progressive", "Trustworthy", "Civic"].map(t => (
+                <span key={t} className="rounded-full border px-4 py-1.5 text-[12px] font-semibold"
+                  style={{ borderColor: `${GOLD}44`, color: GOLD, background: `${GOLD}0D` }}>{t}</span>
+              ))}
             </div>
           </FadeUp>
         </div>
@@ -398,9 +400,72 @@ const NIQSProject = () => (
         </div>
       </section>
 
-      {/* ══ 05 — THE GUIDELINE (scroll carousel) ══ */}
+      {/* ══ 04.5 — BRAND IN APPLICATION ══ */}
+      <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 border-t border-white/5">
+        <div className="max-w-[1100px] mx-auto">
+          <FadeUp>
+            <SLabel n="05" t="BRAND IN APPLICATION" />
+            <h2 className="text-4xl sm:text-5xl font-semibold leading-[1.05] tracking-[-0.03em] text-white mb-4">
+              Not a guideline <span style={{ color: GOLD }}>on a shelf.</span>
+            </h2>
+            <p className="mt-2 text-[15px] sm:text-[16px] leading-[1.65] text-white/50 max-w-[620px] mb-14">
+              The system applied across every surface NIQS operates on — from the stationery suite to digital templates.
+            </p>
+          </FadeUp>
+
+          <div className="space-y-20">
+            {[
+              {
+                eyebrow: "STATIONERY",
+                title: "Stationery Suite",
+                body: "Letterhead, business cards, and envelopes built to carry institutional authority into every physical interaction — partner meetings, board communications, and formal correspondence.",
+                flip: false,
+              },
+              {
+                eyebrow: "DIGITAL APPLICATIONS",
+                title: "Digital Templates",
+                body: "Email signatures and social media templates that keep the brand consistent across 37 chapters — no designer required, no brand drift possible.",
+                flip: true,
+              },
+              {
+                eyebrow: "CEREMONIAL MATERIALS",
+                title: "Event & Ceremonial",
+                body: "Event backdrops, certificates, and ID cards that carry the heraldic identity into institutional ceremonies — authority and precision at every scale.",
+                flip: false,
+              },
+            ].map(({ eyebrow, title, body, flip }) => (
+              <FadeUp key={eyebrow}>
+                <div className="flex flex-col gap-6">
+                  <div className={`flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 ${flip ? "sm:flex-row-reverse" : ""}`}>
+                    <div className="max-w-[420px]">
+                      <p className="text-[11px] tracking-[0.28em] uppercase text-white/35 mb-2">{eyebrow}</p>
+                      <p className="text-[18px] font-semibold text-white mb-3">{title}</p>
+                      <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50">{body}</p>
+                    </div>
+                  </div>
+                  {/* placeholder image slot */}
+                  <div className="w-full rounded-2xl border border-white/8 bg-white/[0.02] flex items-center justify-center"
+                    style={{ aspectRatio: "16/9" }}>
+                    <div className="flex flex-col items-center gap-3 text-center px-8">
+                      <div className="w-10 h-10 rounded-full border border-dashed flex items-center justify-center"
+                        style={{ borderColor: `${GOLD}30` }}>
+                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke={`${GOLD}50`} strokeWidth="1.5">
+                          <rect x="3" y="3" width="18" height="18" rx="3" /><path d="M3 16l5-5 4 4 3-3 6 6" />
+                        </svg>
+                      </div>
+                      <p className="text-[11px] text-white/20">{eyebrow} — image coming soon</p>
+                    </div>
+                  </div>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══ 07 — THE GUIDELINE (scroll carousel) ══ */}
       <GuidelineCarousel
-        n="05"
+        n="07"
         label="THE GUIDELINE"
         white="The system,"
         accent="documented"
@@ -425,9 +490,9 @@ const NIQSProject = () => (
         ]}
       />
 
-      {/* ══ 06 — TOUCHPOINTS GALLERY ══ */}
+      {/* ══ 08 — TOUCHPOINTS GALLERY ══ */}
       <BrandGallery
-        n="06"
+        n="08"
         label="TOUCHPOINTS GALLERY"
         white="The brand,"
         accent="applied"
