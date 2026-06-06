@@ -569,49 +569,46 @@ export default function YDpayBrandPage() {
             <div className="space-y-20">
               {[
                 {
-                  n: "SOCIAL & MARKETING",
+                  eyebrow: "SOCIAL & MARKETING",
                   title: "Social & Marketing Designs",
-                  body: "The social media design direction in action — templates and posts built within the system. Consistent layout rhythm, the Onest type set at the right scale, the brand palette used with discipline. Every post is recognizably YDPay without being templated into sameness.",
+                  body: "Templates and posts built within the system — consistent rhythm, Onest at the right scale, palette used with discipline. Every piece is recognizably YDPay.",
                   alt: "Social & marketing designs — YDPay social media posts and marketing assets.",
                   src: imgSocial,
                   cta: { label: "See all YDPay social & marketing designs", to: "/ydpay-designs" },
                   flip: false,
                 },
                 {
-                  n: "POSTERS",
+                  eyebrow: "POSTERS",
                   title: "Poster & Campaign Designs",
-                  body: "The brand at larger format — poster designs carrying the YDPay identity into campaign and event communications. Proves the system holds up when it gets bigger: the typography, the palette, the layout rules all scale.",
+                  body: "The brand at larger format. Typography, palette, and layout rules scale without losing coherence — from a phone screen to a wall.",
                   alt: "Poster / campaign designs — YDPay brand applied to large-format poster compositions.",
                   src: imgPosters,
                   flip: true,
                 },
                 {
-                  n: "MERCH",
+                  eyebrow: "MERCH",
                   title: "Branded Merchandise",
-                  body: "Branded merchandise — the brand made physical. Merch is where brand systems either fail or prove their depth. When the mark, palette, and type translate onto a tote, a t-shirt, or a cap without a designer making decisions in real time, the system is working.",
-                  alt: "Branded merchandise — YDPay merch mockups. T-shirts, caps, or tote bags showing the brand applied to physical products.",
+                  body: "When the mark, palette, and type translate onto a hoodie or a tote without a designer in the room, the system is working.",
+                  alt: "Branded merchandise — YDPay hoodie designs showing the brand applied to physical products.",
+                  src: imgMerch,
                   flip: false,
                 },
                 {
-                  n: "STATIONERY",
+                  eyebrow: "STATIONERY",
                   title: "Stationery System",
-                  body: "Business cards, letterhead, and the institutional touchpoints a fintech needs when it meets partners, investors, and clients in the physical world. The brand that operates in an app has to hold up on paper.",
-                  alt: "Stationery system — YDPay business cards, letterhead, and stationery suite in correct brand application.",
+                  body: "Business cards, letterhead, and the touchpoints a fintech needs when it meets partners and clients in the physical world.",
+                  alt: "Stationery system — YDPay business cards, letterhead, and stationery suite.",
+                  src: imgStationery,
                   flip: true,
                 },
-              ].map(({ n, title, body, alt, src = null, cta = null, flip }) => (
-                <FadeUp key={n}>
+              ].map(({ eyebrow, title, body, alt, src = null, cta = null, flip }) => (
+                <FadeUp key={eyebrow}>
                   <div className="flex flex-col gap-6">
                     <div className={`flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 ${flip ? "sm:flex-row-reverse" : ""}`}>
                       <div className="max-w-[420px]">
-                        <span
-                          className="rounded-md px-2 py-0.5 text-[9px] font-bold tracking-widest uppercase mb-3 inline-block"
-                          style={{ background: `${GR}15`, color: GR }}
-                        >
-                          {n}
-                        </span>
-                        <h3 className="text-[22px] sm:text-[26px] font-semibold text-white mb-4">{title}</h3>
-                        <p className="text-[15px] sm:text-[16px] leading-[1.7] text-white/55">{body}</p>
+                        <p className="text-[11px] tracking-[0.28em] uppercase text-white/35 mb-2">{eyebrow}</p>
+                        <p className="text-[18px] font-semibold text-white mb-3">{title}</p>
+                        <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50">{body}</p>
                         {cta && (
                           <Link
                             to={cta.to}
@@ -675,18 +672,38 @@ export default function YDpayBrandPage() {
           description="Selected touchpoint designs across social, marketing, merch, and stationery — the brand system working in real-world contexts."
           color={GR}
           images={[
-            { src: gProduct,      alt: "Social media posts — YDPay campaign designs in context" },
-            { src: imgBillboard,  alt: "Billboard — Move Money, Move Smart, city outdoor" },
-            { src: imgPosters,    alt: "Poster & campaign designs — large format brand application" },
-            { src: imgMerch,      alt: "Branded merchandise — YDPay hoodies, white and black variants" },
-            { src: imgAppUi,      alt: "App UI — the product built on this brand foundation" },
-            { src: imgStationery, alt: "Business cards — white and dark premium variants" },
-            { src: imgToteBag,    alt: "Branded tote bag — Innovative trading meets trusted security" },
-            { src: imgMarkPalette,alt: "Primary palette — Shamrock Green and Supernova documented" },
-            { src: imgLetterhead, alt: "Letterhead — official brand stationery" },
-            { src: imgEmailSig,   alt: "Email signatures — YDPay leadership team" },
-            { src: imgSocial,     alt: "Social & marketing direction — design system in action" },
-            { src: null,          alt: "Coming soon — additional touchpoint design" },
+            /* Slot 1 — big left portrait anchor */
+            { src: imgAppUi,      alt: "App UI",           label: "APP UI" },
+            /* Slot 2 — wide landscape */
+            { src: imgMerch,      alt: "Hoodie Design",    label: "HOODIE" },
+            /* Slot 3 — wide landscape */
+            { src: imgBillboard,  alt: "Billboard",        label: "BILLBOARD" },
+            /* Slot 4 — mid landscape */
+            { src: imgPosters,    alt: "Poster Design",    label: "POSTER DESIGN" },
+            /* Slot 5 — tall right portrait anchor */
+            { src: imgToteBag,    alt: "Tote Bag",         label: "TOTE BAG" },
+            /* Slot 6 — narrow, portrait-ish */
+            { src: imgStationery, alt: "Business Card",    label: "BUSINESS CARD" },
+            /* Slot 7 — 5-wide, landscape (email sigs are horizontal) */
+            { src: imgEmailSig,   alt: "Email Signature",  label: "EMAIL SIGNATURE" },
+            /* Slot 8 — wide landscape */
+            { src: imgLetterhead, alt: "Letterhead",       label: "LETTERHEAD" },
+            /* Slot 9 — medium, social media */
+            { src: null,          alt: "Social Media Designs", label: "SOCIAL MEDIA" },
+            /* Slot 10 — tall right anchor */
+            { src: null,          alt: "Website UI",       label: "WEBSITE UI" },
+            /* Slot 11 */
+            { src: null,          alt: "Folder Design",    label: "FOLDER DESIGN" },
+            /* Slot 12 */
+            { src: null,          alt: "T-Shirt",          label: "T-SHIRT" },
+            /* Slot 13 — small */
+            { src: null,          alt: "Cup",              label: "CUP" },
+            /* Slot 14 */
+            { src: null,          alt: "Notebook",         label: "NOTEBOOK" },
+            /* Slot 15 */
+            { src: null,          alt: "Bottle",           label: "BOTTLE" },
+            /* Slot 16 */
+            { src: null,          alt: "Signage",          label: "SIGNAGE" },
           ]}
         />
 

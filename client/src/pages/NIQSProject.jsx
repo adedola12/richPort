@@ -434,18 +434,22 @@ const NIQSProject = () => (
         description="Selected touchpoint designs — the NIQS visual system at work across stationery, digital, and ceremonial applications."
         color={GOLD}
         images={[
-          { src: null, alt: "Letterhead — NIQS official stationery header" },
-          { src: null, alt: "Business card — front, navy with gold mark" },
-          { src: null, alt: "Business card — back, minimal gold on dark" },
-          { src: null, alt: "Envelope — branded stationery suite" },
-          { src: null, alt: "Email signature — digital identity application" },
-          { src: null, alt: "Social banner — branded social media template" },
-          { src: null, alt: "Event backdrop — ceremonial brand application" },
-          { src: null, alt: "Certificate — official NIQS document design" },
-          { src: null, alt: "ID card — member identification design" },
-          { src: null, alt: "Brand on screen — digital platform UI" },
-          { src: null, alt: "Chapter template — local chapter brand application" },
-          { src: null, alt: "Publication cover — branded document layout" },
+          { src: null, alt: "App UI",           label: "APP UI" },
+          { src: null, alt: "Website UI",        label: "WEBSITE UI" },
+          { src: null, alt: "Letterhead",        label: "LETTERHEAD" },
+          { src: null, alt: "Business Card",     label: "BUSINESS CARD" },
+          { src: null, alt: "Email Signature",   label: "EMAIL SIGNATURE" },
+          { src: null, alt: "Hoodie",            label: "HOODIE" },
+          { src: null, alt: "Event Backdrop",    label: "SIGNAGE" },
+          { src: null, alt: "Certificate",       label: "CERTIFICATE" },
+          { src: null, alt: "Social Banner",     label: "SOCIAL MEDIA" },
+          { src: null, alt: "Tote Bag",          label: "TOTE BAG" },
+          { src: null, alt: "Folder Design",     label: "FOLDER DESIGN" },
+          { src: null, alt: "Notebook",          label: "NOTEBOOK" },
+          { src: null, alt: "Poster Design",     label: "POSTER DESIGN" },
+          { src: null, alt: "T-Shirt",           label: "T-SHIRT" },
+          { src: null, alt: "Cup",               label: "CUP" },
+          { src: null, alt: "Bottle",            label: "BOTTLE" },
         ]}
       />
 
