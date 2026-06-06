@@ -178,17 +178,17 @@ const NIQSProject = () => (
               </div>
               <p className="text-[9px] tracking-[0.3em] uppercase text-white/30 mb-3">MY ROLE</p>
               <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/55">
-                As Creative Lead at ADLM Studio, I led the full brand identity system for NIQS — auditing the existing mark, establishing the visual language, and building a comprehensive guidelines document that would serve the institution across print, digital, and ceremonial touchpoints for years to come.
+                As Creative Lead at ADLM Studio, I led the full brand identity system — auditing the mark, establishing the visual language, and building a 60-page guidelines document to serve the institution across print, digital, and ceremonial touchpoints.
               </p>
             </FadeUp>
             <FadeUp delay={0.15}>
               <div className="rounded-2xl border border-white/8 p-6" style={{ background: `${NAVY}22` }}>
                 <p className="text-[11px] font-bold tracking-[0.2em] uppercase mb-5" style={{ color: GOLD }}>About NIQS</p>
                 <p className="text-[14px] text-white/55 leading-[1.7] mb-4">
-                  The Nigerian Institute of Quantity Surveyors is the professional body for Quantity Surveyors in Nigeria, established in 1969. With over 10,000 registered members, 4,000+ corporate members, and 37 chapters across Nigeria, NIQS is a cornerstone institution in the Nigerian built environment.
+                  Nigeria's professional body for Quantity Surveyors, established 1969. 10,000+ registered members, 4,000+ corporate members, 37 chapters nationwide — a cornerstone institution in the built environment.
                 </p>
                 <p className="text-[14px] text-white/55 leading-[1.7]">
-                  The Institute holds 15+ international agreements and operates under the tagline: <em className="not-italic font-semibold text-white/75">"The Professional Construction Cost Managers."</em> — a declarative statement that is not a question.
+                  15+ international agreements. Tagline: <em className="not-italic font-semibold text-white/75">"The Professional Construction Cost Managers."</em> A declaration, not a question.
                 </p>
               </div>
             </FadeUp>
@@ -206,11 +206,11 @@ const NIQSProject = () => (
                 A 55-year institution.<br />
                 <span style={{ color: GOLD }}>No unified visual language.</span>
               </h2>
-              <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/55 mb-6">
-                NIQS carried decades of institutional authority but lacked the visual cohesion to project it. Communications across chapters varied widely — inconsistent colour use, mismatched typography, and logo applications that had drifted from any standard. The institution needed a single source of truth for its visual identity.
+              <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/55 mb-5">
+                NIQS carried decades of institutional authority but lacked the visual cohesion to project it — inconsistent colour, mismatched typography, logo applications that had drifted from any standard. The institution needed one source of truth.
               </p>
               <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/55">
-                The brief was to honour what already existed — the heraldic eagle mark is institutional heritage, not to be redesigned — while building a modern, comprehensive system around it. Every decision had to balance tradition with clarity.
+                The brief: honour what existed — the heraldic eagle is institutional heritage, not to be redesigned — and build a complete, modern system around it. Every decision had to balance tradition with clarity.
               </p>
             </FadeUp>
 
@@ -251,7 +251,7 @@ const NIQSProject = () => (
               <span style={{ color: GOLD }}>Heraldic. Precise.</span>
             </h2>
             <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50 max-w-[600px] mb-10">
-              The brand personality centres on six pillars: Authoritative, Heraldic, Precise, Progressive, Trustworthy, and Civic. Every visual decision maps back to at least one of them.
+              Six pillars — Authoritative, Heraldic, Precise, Progressive, Trustworthy, Civic — anchor every visual decision. The mark is the institution; the system is what makes it speak.
             </p>
           </FadeUp>
 
@@ -326,7 +326,7 @@ const NIQSProject = () => (
               <span style={{ color: GOLD }}>One complete system.</span>
             </h2>
             <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50 max-w-[600px] mb-10">
-              The guidelines document covers every touchpoint where the NIQS brand appears — from the letterhead to digital product UI.
+              Every touchpoint where NIQS appears — letterhead to digital UI, stationery to event banners — governed by one document.
             </p>
           </FadeUp>
 
@@ -374,19 +374,19 @@ const NIQSProject = () => (
             {[
               {
                 title: "Audit & Research",
-                body: "I began by cataloguing every existing NIQS communications material — letterheads, event banners, chapter publications. The audit revealed inconsistency at nearly every level, but also a consistent emotional gravity in the existing mark that was worth preserving.",
+                body: "Catalogued every existing NIQS communications material — letterheads, banners, chapter publications. Inconsistency at nearly every level, but a consistent emotional gravity in the mark that was worth preserving.",
               },
               {
                 title: "Anchoring the Mark",
-                body: "Rather than redesign the heraldic eagle, I codified it: defined the exclusion zone, established approved colour applications, documented the proportions. The mark became the anchor point from which everything else was derived.",
+                body: "Rather than redesign the heraldic eagle, I codified it — defined the exclusion zone, established colour applications, documented the proportions. The mark became the anchor everything else derived from.",
               },
               {
                 title: "Building the System",
-                body: "With the anchor set, I developed the full visual language — colour relationships, typography hierarchy, spacing grid, and component patterns — all traced back to the institutional values of authority, precision, and trust.",
+                body: "Colour relationships, typography hierarchy, spacing grid, component patterns — all traced back to the institutional values of authority, precision, and trust. Nothing arbitrary.",
               },
               {
                 title: "Application & Documentation",
-                body: "The final phase brought the system into context: stationery suites, digital templates, and chapter-level applications. Each was documented with clear do/don't examples so any team member — designer or not — could apply the brand correctly.",
+                body: "Stationery suites, digital templates, chapter-level applications — each documented with clear do/don't examples so any team member, designer or not, could apply the brand correctly.",
               },
             ].map(({ title, body }) => (
               <FadeUp key={title}>

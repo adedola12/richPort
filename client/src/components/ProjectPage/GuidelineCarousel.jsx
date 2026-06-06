@@ -71,7 +71,7 @@ function SlideCard({ slide, index, rawIndex }) {
 
 /* ─── main carousel ─── */
 export default function GuidelineCarousel({
-  slides,
+  slides = [],
   n = "06",
   label = "THE GUIDELINE",
   white = "The system,",
@@ -79,6 +79,11 @@ export default function GuidelineCarousel({
   description = "Everything captured in a brand guideline — the single source of truth.",
   color = "#a3e635",
 }) {
+  /* only use slides that have an actual image */
+  const filledSlides = slides.filter((s) => s.src);
+  const hasContent = filledSlides.length > 0;
+  const activeSlides = hasContent ? filledSlides : slides;
+
   const containerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -87,7 +92,7 @@ export default function GuidelineCarousel({
     target: containerRef,
     offset: ["start start", "end end"],
   });
-  const rawIndex = useTransform(scrollYProgress, [0, 1], [0, slides.length - 1]);
+  const rawIndex = useTransform(scrollYProgress, [0, 1], [0, Math.max(1, activeSlides.length - 1)]);
 
   useMotionValueEvent(rawIndex, "change", v => {
     setActiveIndex(Math.round(v));
@@ -105,15 +110,41 @@ export default function GuidelineCarousel({
     const el = containerRef.current;
     if (!el) return;
     const scrollable = el.offsetHeight - window.innerHeight;
-    const target = el.offsetTop + (i / Math.max(1, slides.length - 1)) * scrollable;
+    const target = el.offsetTop + (i / Math.max(1, activeSlides.length - 1)) * scrollable;
     window.scrollTo({ top: target, behavior: "smooth" });
   };
+
+  /* ── when no images yet: show compact coming-soon block ── */
+  if (!hasContent) {
+    return (
+      <section className="border-t border-white/5 py-16 sm:py-20 px-4 sm:px-8 lg:px-16">
+        <div className="max-w-[1100px] mx-auto">
+          <p className="text-[11px] font-bold tracking-[0.3em] uppercase mb-5" style={{ color }}>{n} — {label}</p>
+          <h2 className="text-3xl sm:text-[44px] font-semibold leading-tight tracking-[-0.03em] mb-3">
+            <span className="text-white">{white} </span>
+            <span style={{ color }}>{accent}</span>
+          </h2>
+          <p className="text-[15px] leading-[1.65] text-white/50 max-w-[560px] mb-8">{description}</p>
+          <div className="w-full rounded-2xl border border-dashed border-white/10 bg-white/[0.015] flex items-center justify-center py-20">
+            <div className="flex flex-col items-center gap-3 text-center px-8">
+              <div className="w-10 h-10 rounded-full border border-dashed flex items-center justify-center" style={{ borderColor: `${color}35` }}>
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke={`${color}50`} strokeWidth="1.5">
+                  <rect x="3" y="3" width="18" height="18" rx="3" /><path d="M3 16l5-5 4 4 3-3 6 6" />
+                </svg>
+              </div>
+              <p className="text-[12px] text-white/25">Guideline spreads coming soon</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <div
       ref={containerRef}
       className="relative border-t border-white/5"
-      style={{ height: `${slides.length * 100}vh` }}
+      style={{ height: `${activeSlides.length * 100}vh` }}
     >
       <motion.div
         className="sticky top-0 h-screen overflow-hidden flex flex-col"
@@ -137,7 +168,7 @@ export default function GuidelineCarousel({
 
         {/* ── slide track ── */}
         <div className="relative flex-1 w-full overflow-hidden">
-          {slides.map((slide, i) => (
+          {activeSlides.map((slide, i) => (
             <SlideCard key={i} slide={slide} index={i} rawIndex={rawIndex} />
           ))}
         </div>
@@ -146,12 +177,12 @@ export default function GuidelineCarousel({
         <div className="shrink-0 pb-6 pt-2">
           {/* slide counter */}
           <p className="text-center text-[11px] font-mono text-white/25 mb-3 tracking-widest">
-            {String(activeIndex + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
+            {String(activeIndex + 1).padStart(2, "0")} / {String(activeSlides.length).padStart(2, "0")}
           </p>
 
           {/* progress dots */}
           <div className="flex items-center justify-center gap-2">
-            {slides.map((_, i) => (
+            {activeSlides.map((_, i) => (
               <button
                 key={i}
                 onClick={() => goTo(i)}
@@ -180,8 +211,8 @@ export default function GuidelineCarousel({
               {activeIndex + 1} of {slides.length}
             </span>
             <button
-              onClick={() => goTo(Math.min(slides.length - 1, activeIndex + 1))}
-              disabled={activeIndex === slides.length - 1}
+              onClick={() => goTo(Math.min(activeSlides.length - 1, activeIndex + 1))}
+              disabled={activeIndex === activeSlides.length - 1}
               className="flex items-center justify-center w-11 h-11 rounded-full border border-white/15 bg-white/5 text-white/60 disabled:opacity-25 transition-opacity"
             >
               →
