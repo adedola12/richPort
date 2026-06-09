@@ -74,7 +74,7 @@ function SlideCard({ slide, index, rawIndex, isMobile }) {
         zIndex,
       }}
     >
-      <div className="w-full aspect-video rounded-2xl overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.75)] border border-white/10">
+      <div className="w-full aspect-video rounded-lg sm:rounded-2xl overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.75)] border border-white/10">
         {slide.src ? (
           <img
             src={slide.src}

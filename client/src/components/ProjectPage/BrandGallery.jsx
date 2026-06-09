@@ -106,7 +106,7 @@ function BentoCell({ src, alt = "", label = "", style, color = "#a3e635", delay 
     <motion.div
       ref={ref}
       style={style}
-      className={`relative rounded-2xl overflow-hidden border border-white/8 bg-white/[0.02] group ${src ? "cursor-pointer" : "cursor-default"}`}
+      className={`relative rounded-lg sm:rounded-2xl overflow-hidden border border-white/8 bg-white/[0.02] group ${src ? "cursor-pointer" : "cursor-default"}`}
       initial={{ opacity: 0, scale: 0.97, filter: "blur(4px)" }}
       animate={inView ? { opacity: 1, scale: 1, filter: "blur(0px)" } : {}}
       transition={{ duration: 0.55, ease: [0.22, 0.61, 0.36, 1], delay }}

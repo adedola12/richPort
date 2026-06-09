@@ -21,6 +21,11 @@ import imgStationery   from "../assets/YDpay/brand-screens/stationery.png";
 import imgToteBag      from "../assets/YDpay/brand-screens/tote-bag.png";
 import imgLetterhead   from "../assets/YDpay/brand-screens/letterhead.png";
 import imgEmailSig     from "../assets/YDpay/brand-screens/email-signature.png";
+import imgSocialMedia  from "../assets/YDpay/brand-screens/social-media.jpg";
+import imgFolder       from "../assets/YDpay/brand-screens/folder.png";
+import imgTshirt       from "../assets/YDpay/brand-screens/tshirt.png";
+import imgNotebook     from "../assets/YDpay/brand-screens/notebook.png";
+import imgBottle       from "../assets/YDpay/brand-screens/bottle.png";
 
 /* ── bento gallery ── */
 import gProduct    from "../assets/YDpay/guidelines/g9-product.png";
@@ -148,7 +153,7 @@ const TiltFrame = ({ src, alt = "", className = "", style = {}, onClick }) => {
     >
       <motion.div
         ref={ref}
-        className="rounded-2xl overflow-hidden border border-white/10 bg-black/20 relative h-full"
+        className="rounded-lg sm:rounded-2xl overflow-hidden border border-white/10 bg-black/20 relative h-full"
         style={{ ...style, rotateX, rotateY, scale, transformStyle: "preserve-3d" }}
         onMouseMove={onMove}
         onMouseLeave={onLeave}
@@ -689,19 +694,19 @@ export default function YDpayBrandPage() {
             /* Slot 8 — wide landscape */
             { src: imgLetterhead, alt: "Letterhead",       label: "LETTERHEAD" },
             /* Slot 9 — medium, social media */
-            { src: null,          alt: "Social Media Designs", label: "SOCIAL MEDIA" },
+            { src: imgSocialMedia, alt: "Social Media Designs", label: "SOCIAL MEDIA" },
             /* Slot 10 — tall right anchor */
             { src: null,          alt: "Website UI",       label: "WEBSITE UI" },
             /* Slot 11 */
-            { src: null,          alt: "Folder Design",    label: "FOLDER DESIGN" },
+            { src: imgFolder,     alt: "Folder Design",    label: "FOLDER DESIGN" },
             /* Slot 12 */
-            { src: null,          alt: "T-Shirt",          label: "T-SHIRT" },
+            { src: imgTshirt,     alt: "T-Shirt",          label: "T-SHIRT" },
             /* Slot 13 — small */
             { src: null,          alt: "Cup",              label: "CUP" },
             /* Slot 14 */
-            { src: null,          alt: "Notebook",         label: "NOTEBOOK" },
+            { src: imgNotebook,   alt: "Notebook",         label: "NOTEBOOK" },
             /* Slot 15 */
-            { src: null,          alt: "Bottle",           label: "BOTTLE" },
+            { src: imgBottle,     alt: "Bottle",           label: "BOTTLE" },
             /* Slot 16 */
             { src: null,          alt: "Signage",          label: "SIGNAGE" },
           ]}

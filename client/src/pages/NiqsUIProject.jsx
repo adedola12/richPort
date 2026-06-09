@@ -111,7 +111,7 @@ const TiltFrame = ({ src, alt = "", className = "", style = {}, onClick }) => {
     >
       <motion.div
         ref={ref}
-        className="rounded-2xl overflow-hidden border border-white/10 bg-black/20 relative h-full"
+        className="rounded-lg sm:rounded-2xl overflow-hidden border border-white/10 bg-black/20 relative h-full"
         style={{ ...style, rotateX, rotateY, scale, transformStyle: "preserve-3d" }}
         onMouseMove={onMove}
         onMouseLeave={onLeave}
@@ -142,7 +142,7 @@ const TiltFrame = ({ src, alt = "", className = "", style = {}, onClick }) => {
 
 const BentoCell = ({ n, src = null, cap = "", style = {}, className = "" }) => (
   <div
-    className={`relative rounded-2xl overflow-hidden border border-white/8 bg-white/[0.025] group cursor-pointer ${className}`}
+    className={`relative rounded-lg sm:rounded-2xl overflow-hidden border border-white/8 bg-white/[0.025] group cursor-pointer ${className}`}
     style={style}
   >
     {src ? (
