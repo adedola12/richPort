@@ -21,11 +21,11 @@ import imgStationery   from "../assets/YDpay/brand-screens/stationery.png";
 import imgToteBag      from "../assets/YDpay/brand-screens/tote-bag.png";
 import imgLetterhead   from "../assets/YDpay/brand-screens/letterhead.png";
 import imgEmailSig     from "../assets/YDpay/brand-screens/email-signature.png";
-import imgSocialMedia  from "../assets/YDpay/brand-screens/social-media.jpg";
-import imgFolder       from "../assets/YDpay/brand-screens/folder.png";
-import imgTshirt       from "../assets/YDpay/brand-screens/tshirt.png";
-import imgNotebook     from "../assets/YDpay/brand-screens/notebook.png";
-import imgBottle       from "../assets/YDpay/brand-screens/bottle.png";
+import imgSocialMedia  from "../assets/YDpay/brand-screens/social-media.webp";
+import imgFolder       from "../assets/YDpay/brand-screens/folder.webp";
+import imgTshirt       from "../assets/YDpay/brand-screens/tshirt.webp";
+import imgNotebook     from "../assets/YDpay/brand-screens/notebook.webp";
+import imgBottle       from "../assets/YDpay/brand-screens/bottle.webp";
 
 /* ── bento gallery ── */
 import gProduct    from "../assets/YDpay/guidelines/g9-product.png";
