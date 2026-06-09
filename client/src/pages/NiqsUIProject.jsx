@@ -80,7 +80,7 @@ const SLabel = ({ n, t }) => (
 );
 
 const H2 = ({ white, accent, accentColor = GR }) => (
-  <h2 className="text-4xl sm:text-5xl lg:text-[52px] font-semibold leading-[1.05] tracking-[-0.03em]">
+  <h2 className="text-4xl sm:text-5xl lg:text-[52px] font-semibold leading-[1.05] tracking-[-0.03em] break-words">
     <span className="text-white">{white} </span>
     <span style={{ color: accentColor }}>{accent}</span>
   </h2>
@@ -286,15 +286,15 @@ export default function NiqsUIProject() {
               </div>
             </FadeUp>
 
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
               <FadeUp>
                 <SLabel n="01" t="THE BRIEF" />
-                <h2 className="text-4xl sm:text-5xl lg:text-[52px] font-semibold leading-[1.05] tracking-[-0.03em]">
+                <h2 className="text-4xl sm:text-5xl lg:text-[52px] font-semibold leading-[1.05] tracking-[-0.03em] break-words">
                   <span className="text-white">A 56-year institution,</span><br />
                   <span style={{ color: GR }}>rebuilt for 2026</span>
                 </h2>
                 <div className="mt-5 mb-8 h-[2px] w-16 rounded-full" style={{ background: GR }} />
-                <div className="space-y-5 text-[15px] sm:text-[16px] leading-[1.65] text-white/55">
+                <div className="space-y-5 text-[15px] sm:text-[16px] leading-[1.65] text-white/55 break-words">
                   <p>The Nigerian Institute of Quantity Surveyors (NIQS) is the foremost professional and regulatory body for quantity surveyors in Nigeria — founded in 1969, granted statutory authority by Decree No. 31 of 1986, and home to over 10,000 members across all 37 states. After more than half a century of growth, its digital presence had fallen behind the institution's stature.</p>
                   <p>ADLM Studio was appointed Official Technical Partner to deliver a full digital transformation: a new brand guideline, a custom-coded MERN website to replace the legacy WordPress/PHP system, a member portal, an admin dashboard, a digital library, and a self-serve flyer design engine for the secretariat. I led the design side of this partnership — owning every pixel from the brand system to the portal interface.</p>
                   <p>The brief was institutional in tone but operational in spirit: respect 56 years of heritage, retain the heraldic logo and navy-gold palette, but rebuild the entire digital experience so that members, regulators, and the public meet NIQS the way they should — as a serious, modern, technology-forward institute.</p>
@@ -302,7 +302,7 @@ export default function NiqsUIProject() {
                 <div className="mt-8">
                   <p className="text-[9px] tracking-[0.3em] uppercase text-white/30 mb-3">DELIVERABLES</p>
                   <div
-                    className="flex gap-2 overflow-x-auto pb-1"
+                    className="flex gap-2 overflow-x-auto pb-1 no-scrollbar"
                     style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                   >
                     <style>{`.del-track::-webkit-scrollbar{display:none}`}</style>
@@ -373,7 +373,7 @@ export default function NiqsUIProject() {
         {/* ══ 02 — THE PROBLEM ══ */}
         <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 border-t border-white/5">
           <div className="max-w-[1100px] mx-auto">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
               <FadeUp>
                 <SLabel n="02" t="THE PROBLEM" />
                 <H2 white="What didn't" accent="match the institution" accentColor="#E05252" />
@@ -440,10 +440,12 @@ export default function NiqsUIProject() {
               </p>
             </FadeUp>
 
-            <div className="grid lg:grid-cols-[1fr_320px] gap-10">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-10">
               <FadeUp delay={0.1}>
                 <p className="text-[11px] tracking-[0.28em] uppercase text-white/35 mb-5">COMPETITIVE COMPARISON</p>
                 <div className="rounded-2xl border border-white/8 bg-white/[0.02] overflow-hidden">
+                 <div className="overflow-x-auto no-scrollbar">
+                  <div className="min-w-[480px]">
                   <div className="grid grid-cols-[1fr_76px_76px_76px_76px] text-[9px] font-bold tracking-wider uppercase text-white/30 px-4 py-3 border-b border-white/6">
                     <span>Capability</span>
                     <span className="text-center" style={{ color: GR }}>NIQS New</span>
@@ -472,6 +474,8 @@ export default function NiqsUIProject() {
                       ))}
                     </div>
                   ))}
+                  </div>
+                 </div>
                 </div>
               </FadeUp>
 
@@ -793,7 +797,7 @@ export default function NiqsUIProject() {
         {/* ══ 07 — MEMBER PORTAL & ADMIN DASHBOARD ══ */}
         <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 border-t border-white/5">
           <div className="max-w-[1100px] mx-auto">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
               <FadeUp>
                 <SLabel n="07" t="PORTAL & ADMIN" />
                 <H2 white="Built for the" accent="people who run NIQS" />
@@ -1017,7 +1021,7 @@ export default function NiqsUIProject() {
         {/* ══ 11 — TESTING & ITERATION ══ */}
         <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 border-t border-white/5">
           <div className="max-w-[1100px] mx-auto">
-            <div className="grid lg:grid-cols-2 gap-12 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <SlideIn direction="left" delay={0.05}>
                 <TiltFrame
                   src={null}
@@ -1076,7 +1080,7 @@ export default function NiqsUIProject() {
               </p>
             </FadeUp>
 
-            <div className="grid lg:grid-cols-[1fr_360px] gap-10 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 items-start">
               <StaggerGrid className="space-y-3">
                 {[
                   { metric: "Self-serve communications",             color: GR,         desc: "Secretariat staff produce on-brand flyers in under a minute. Eliminates the designer-bottleneck for the ~12 weekly recurring outputs." },

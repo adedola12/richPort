@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   motion,
   useScroll,
@@ -6,11 +6,38 @@ import {
   useMotionValueEvent,
 } from "framer-motion";
 
+/* detect the Tailwind `sm` breakpoint (640px) so the carousel can switch from
+   horizontal scrolling on desktop to vertical scrolling on mobile */
+function useIsMobile() {
+  const query = "(max-width: 639px)";
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" && window.matchMedia
+      ? window.matchMedia(query).matches
+      : false
+  );
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mq = window.matchMedia(query);
+    const update = () => setIsMobile(mq.matches);
+    update();
+    try {
+      mq.addEventListener("change", update);
+      return () => mq.removeEventListener("change", update);
+    } catch {
+      mq.addListener(update);
+      return () => mq.removeListener(update);
+    }
+  }, []);
+  return isMobile;
+}
+
 /* ─── single slide card — separate component so it can call hooks ─── */
-function SlideCard({ slide, index, rawIndex }) {
-  // card 65vw wide, offset 55vw → adjacent cards sit flush against center card edges
+function SlideCard({ slide, index, rawIndex, isMobile }) {
+  // desktop: cards fan out horizontally (translateX, 55vw apart)
+  // mobile:  cards stack vertically (translateY, 50vw apart) → scroll up/down
   // scale 0.72 + blur 14px = strong depth-behind effect; revolves smoothly into center
-  const x     = useTransform(rawIndex, v => `${(index - v) * 55}vw`);
+  const x = useTransform(rawIndex, v => (isMobile ? 0 : `${(index - v) * 55}vw`));
+  const y = useTransform(rawIndex, v => (isMobile ? `${(index - v) * 50}vw` : 0));
   const scale = useTransform(rawIndex, v => Math.max(0.72, 1 - Math.min(Math.abs(index - v), 1) * 0.28));
   const opacity = useTransform(rawIndex, v => {
     const d = Math.abs(index - v);
@@ -32,13 +59,15 @@ function SlideCard({ slide, index, rawIndex }) {
         left: 0,
         right: 0,
         margin: "0 auto",
-        width: "65%",
-        maxWidth: "900px",
+        width: isMobile ? "88%" : "65%",
+        maxWidth: isMobile ? "560px" : "900px",
         top: 0,
         bottom: 0,
         display: "flex",
         alignItems: "center",
+        justifyContent: "center",
         x,
+        y,
         scale,
         opacity,
         filter: blur,
@@ -86,6 +115,7 @@ export default function GuidelineCarousel({
 
   const containerRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const isMobile = useIsMobile();
 
   /* scroll drives the carousel */
   const { scrollYProgress } = useScroll({
@@ -143,7 +173,13 @@ export default function GuidelineCarousel({
         {/* ── slide track ── */}
         <div className="relative flex-1 w-full overflow-hidden">
           {activeSlides.map((slide, i) => (
-            <SlideCard key={i} slide={slide} index={i} rawIndex={rawIndex} />
+            <SlideCard
+              key={`${i}-${isMobile ? "m" : "d"}`}
+              slide={slide}
+              index={i}
+              rawIndex={rawIndex}
+              isMobile={isMobile}
+            />
           ))}
         </div>
 
