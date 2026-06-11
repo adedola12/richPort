@@ -14,12 +14,19 @@ const Counter =
 /* Atomically issue the next sequence number. `seed` is the value the
    counter starts from when it doesn't exist yet, so the first number
    issued is seed + 1 (invoice counter seeds at 3 → first issued is 4,
-   i.e. invoice 000-004 continues the existing manual sequence). */
+   i.e. invoice 000-004 continues the existing manual sequence).
+   Two classic operations instead of a pipeline update so it works on
+   any MongoDB version: ensure the doc exists with the seed, then $inc. */
 export async function nextSequence(name, seed = 0) {
+  await Counter.updateOne(
+    { _id: name },
+    { $setOnInsert: { seq: seed } },
+    { upsert: true }
+  );
   const doc = await Counter.findOneAndUpdate(
     { _id: name },
-    [{ $set: { seq: { $add: [{ $ifNull: ["$seq", seed] }, 1] } } }],
-    { upsert: true, new: true }
+    { $inc: { seq: 1 } },
+    { new: true }
   );
   return doc.seq;
 }
