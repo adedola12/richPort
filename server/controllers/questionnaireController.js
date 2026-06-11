@@ -126,12 +126,7 @@ export async function createQuestionnaire(req, res) {
     return res.json({ ok: true, invoice_no: invoiceNo, emails_sent: emailsSent });
   } catch (err) {
     console.error("createQuestionnaire error:", err);
-    return res.status(500).json({
-      ok: false,
-      error: "Could not save your booking. Please try again.",
-      // TEMP diagnostic — remove once the live deploy is verified
-      detail: String(err?.message || "").slice(0, 300),
-    });
+    return res.status(500).json({ ok: false, error: "Could not save your booking. Please try again." });
   }
 }
 
