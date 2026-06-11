@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book a Plan — Richard Enoch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+  :root{
+    --bg:#070906; --panel:#0c0f09; --panel-2:#11150c;
+    --green:#b9ff2c; --green-soft:rgba(185,255,44,.12); --green-line:rgba(185,255,44,.35);
+    --line:#222b16; --white:#f2f5ec; --grey:#9aa392; --grey-2:#6b7263; --purple:#c4a7ff;
+    --radius:14px; --btn-radius:10px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Outfit',sans-serif;background:var(--bg);color:var(--white);min-height:100vh;
+    background-image:
+      radial-gradient(ellipse 60% 40% at 85% -5%, rgba(185,255,44,.07), transparent 60%),
+      radial-gradient(ellipse 50% 35% at 0% 100%, rgba(185,255,44,.04), transparent 60%);
+    background-attachment:fixed;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:48px 24px 80px;}
+
+  .hdr{text-align:center;margin-bottom:36px;}
+  .hdr .script{font-family:'Great Vibes',cursive;font-size:34px;}
+  .hdr h1{font-size:clamp(26px,4.5vw,40px);font-weight:800;letter-spacing:-.01em;margin-top:10px;}
+  .hdr h1 em{font-style:normal;color:var(--green);}
+  .hdr p{color:var(--grey);max-width:580px;margin:14px auto 0;font-size:15px;line-height:1.65;font-weight:300;}
+  .plan-chip{display:none;align-items:center;gap:8px;margin-top:18px;border:1px solid var(--green-line);background:var(--green-soft);color:var(--green);font-size:13px;font-weight:600;padding:7px 16px;border-radius:var(--btn-radius);}
+  .plan-chip.show{display:inline-flex;}
+  .plan-chip .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);}
+
+  .progress{position:sticky;top:0;z-index:50;background:linear-gradient(var(--bg) 75%, transparent);padding:18px 0 22px;margin-bottom:8px;}
+  .steps{display:flex;gap:6px;}
+  .step-seg{flex:1;height:4px;border-radius:4px;background:var(--line);transition:background .3s;}
+  .step-seg.done,.step-seg.active{background:var(--green);}
+  .step-seg.active{box-shadow:0 0 10px rgba(185,255,44,.5);}
+  .step-meta{display:flex;justify-content:space-between;margin-top:10px;font-size:12.5px;color:var(--grey);}
+  .step-meta b{color:var(--green);font-weight:600;}
+  .autosave{font-size:11.5px;color:var(--grey-2);}
+  .autosave .tick{color:var(--green);opacity:0;transition:opacity .3s;}
+  .autosave .tick.show{opacity:1;}
+
+  .panel{display:none;animation:fadeUp .35s ease both;}
+  .panel.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+  .sec-card{border:1px solid var(--line);background:var(--panel);border-radius:var(--radius);padding:34px clamp(20px,4vw,40px);}
+  .sec-title{font-size:22px;font-weight:700;margin-bottom:4px;}
+  .sec-title span{color:var(--grey-2);font-weight:600;font-size:13px;display:block;margin-bottom:6px;letter-spacing:.12em;text-transform:uppercase;}
+  .sec-sub{color:var(--grey);font-size:14px;font-weight:300;line-height:1.6;margin-bottom:28px;}
+  .sec-sub b{color:var(--green);font-weight:500;}
+
+  .field{margin-bottom:24px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  @media(max-width:640px){.grid-2,.grid-3{grid-template-columns:1fr;}}
+  label{display:block;font-size:14px;font-weight:500;margin-bottom:8px;}
+  label .req{color:var(--green);}
+  label .hint{display:block;font-weight:300;font-size:12.5px;color:var(--grey-2);margin-top:3px;line-height:1.5;}
+  input[type=text],input[type=email],input[type=tel],textarea{
+    width:100%;background:var(--panel-2);border:1px solid var(--line);border-radius:var(--btn-radius);
+    color:var(--white);font-family:'Outfit',sans-serif;font-size:14.5px;font-weight:300;
+    padding:13px 16px;outline:none;transition:border-color .2s, box-shadow .2s;
+  }
+  textarea{min-height:96px;resize:vertical;line-height:1.6;}
+  input:focus,textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(185,255,44,.1);}
+  ::placeholder{color:var(--grey-2);}
+
+  .chips{display:flex;flex-wrap:wrap;gap:10px;}
+  .chip{position:relative;}
+  .chip input{position:absolute;opacity:0;inset:0;cursor:pointer;}
+  .chip span{display:inline-block;border:1px solid var(--line);background:var(--panel-2);border-radius:var(--btn-radius);padding:9px 18px;font-size:13.5px;color:var(--grey);cursor:pointer;transition:all .18s;user-select:none;}
+  .chip input:checked + span{border-color:var(--green);background:var(--green-soft);color:var(--green);font-weight:500;}
+  .chip:hover span{border-color:var(--green-line);}
+
+  .note-box{border:1px solid var(--green-line);background:var(--green-soft);border-radius:var(--btn-radius);padding:14px 18px;font-size:13px;line-height:1.6;font-weight:300;}
+  .note-box b{color:var(--green);font-weight:600;}
+
+  /* plan cards */
+  .plan-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  @media(max-width:760px){.plan-cards{grid-template-columns:1fr;}}
+  .plan-card{position:relative;border:1px solid var(--line);background:var(--panel-2);border-radius:var(--radius);padding:26px 22px;cursor:pointer;transition:all .2s;}
+  .plan-card:hover{border-color:var(--green-line);transform:translateY(-2px);}
+  .plan-card.selected{border-color:var(--green);background:var(--green-soft);box-shadow:0 0 26px rgba(185,255,44,.12);}
+  .plan-card .tier{font-size:20px;font-weight:700;}
+  .plan-card .blurb{font-size:12px;color:var(--grey);font-weight:300;line-height:1.5;margin-top:4px;min-height:36px;}
+  .plan-card .price{font-size:24px;font-weight:800;color:var(--green);margin:12px 0 2px;}
+  .plan-card .price small{font-size:11px;font-weight:600;vertical-align:12px;margin-right:2px;color:var(--grey);}
+  .plan-card .dep{font-size:11.5px;color:var(--grey-2);}
+  .plan-card ul{list-style:none;margin-top:14px;border-top:1px solid var(--line);padding-top:12px;}
+  .plan-card li{font-size:12px;color:var(--grey);font-weight:300;padding:3px 0 3px 16px;position:relative;}
+  .plan-card li::before{content:'✓';position:absolute;left:0;color:var(--green);font-size:10px;}
+  .plan-card .pick{margin-top:16px;text-align:center;border:1px solid var(--green-line);border-radius:var(--btn-radius);padding:9px;font-size:13px;font-weight:600;color:var(--green);}
+  .plan-card.selected .pick{background:var(--green);color:#0a0d05;border-color:var(--green);}
+
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-top:26px;}
+  button{font-family:'Outfit',sans-serif;cursor:pointer;border:none;border-radius:var(--btn-radius);font-size:14.5px;font-weight:600;padding:13px 30px;transition:all .2s;}
+  .btn-next{background:var(--green);color:#0a0d05;}
+  .btn-next:hover{box-shadow:0 0 22px rgba(185,255,44,.4);transform:translateY(-1px);}
+  .btn-next:disabled{opacity:.5;cursor:wait;transform:none;box-shadow:none;}
+  .btn-back{background:transparent;color:var(--grey);border:1px solid var(--line);}
+  .btn-back:hover{border-color:var(--green-line);color:var(--white);}
+  .btn-ghost{background:transparent;color:var(--green);border:1px solid var(--green-line);}
+  .btn-ghost:hover{background:var(--green-soft);}
+
+  .rev-group{border:1px solid var(--line);border-radius:12px;margin-bottom:16px;overflow:hidden;}
+  .rev-group h3{font-size:14px;font-weight:600;color:var(--green);padding:14px 20px;background:var(--panel-2);display:flex;justify-content:space-between;}
+  .rev-group h3 a{color:var(--grey);font-size:12px;font-weight:400;cursor:pointer;}
+  .rev-group h3 a:hover{color:var(--green);}
+  .rev-rows{padding:6px 20px 14px;}
+  .rev-row{display:flex;gap:14px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:13px;}
+  .rev-row:last-child{border-bottom:none;}
+  .rev-row .q{width:42%;color:var(--grey);font-weight:300;flex-shrink:0;}
+  .rev-row .a{white-space:pre-wrap;word-break:break-word;}
+  .rev-row .a.empty{color:var(--grey-2);font-style:italic;}
+
+  .success-overlay{position:fixed;inset:0;background:rgba(5,7,4,.92);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:100;padding:24px;overflow-y:auto;}
+  .success-overlay.show{display:flex;}
+  .success-card{max-width:580px;width:100%;border:1px solid var(--green-line);background:var(--panel);border-radius:18px;padding:44px 40px;text-align:center;animation:fadeUp .4s ease both;margin:auto;}
+  .success-card .ring{width:74px;height:74px;border-radius:50%;border:2px solid var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 22px;box-shadow:0 0 30px rgba(185,255,44,.3);}
+  .success-card .ring svg{width:34px;height:34px;stroke:var(--green);}
+  .success-card h2{font-size:24px;font-weight:700;margin-bottom:10px;}
+  .success-card p{color:var(--grey);font-size:14px;font-weight:300;line-height:1.7;}
+  .next-steps{text-align:left;margin:24px 0;border:1px solid var(--line);border-radius:12px;padding:18px 22px;}
+  .next-steps h4{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:12px;font-weight:600;}
+  .next-steps ol{margin-left:18px;}
+  .next-steps li{font-size:13.5px;font-weight:300;line-height:1.7;margin-bottom:8px;}
+  .next-steps li b{font-weight:600;color:var(--green);}
+  .success-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px;}
+  .email-status{font-size:12.5px;margin-top:14px;color:var(--grey-2);}
+  .email-status.ok{color:var(--green);}
+  .email-status.fail{color:#ff9c6b;}
+
+  .foot{margin-top:40px;text-align:center;font-size:12px;color:var(--grey-2);}
+  .foot a{color:var(--grey);text-decoration:none;}
+  .foot a:hover{color:var(--green);}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="hdr">
+    <div class="script">Richard Enoch</div>
+    <h1>Book a plan &amp; tell me about <em>your brand</em></h1>
+    <p>Choose the package that fits, then answer a short questionnaire so the brand and website we create truly fit your business. Every answer is optional except your contact details.</p>
+    <div class="plan-chip" id="planChip"><span class="dot"></span><span id="planLabel"></span></div>
+  </div>
+
+  <div class="progress">
+    <div class="steps" id="stepBar"></div>
+    <div class="step-meta">
+      <span>Step <b id="stepNow">1</b> of <b id="stepTotal">7</b> — <span id="stepName"></span></span>
+      <span class="autosave">Progress saves automatically <span class="tick" id="saveTick">✓ saved</span></span>
+    </div>
+  </div>
+
+  <form id="qform" onsubmit="return false;">
+
+  <!-- ============ STEP 1 : PLAN ============ -->
+  <div class="panel" data-step="plan" data-name="Choose Your Plan">
+    <div class="sec-card">
+      <div class="sec-title"><span>Section 01</span>Choose your plan</div>
+      <div class="sec-sub">Each plan is a complete package — pick the one that fits where your brand is right now.</div>
+      <div class="plan-cards" id="planCards"></div>
+    </div>
+  </div>
+
+  <!-- ============ STEP 2 : ABOUT ============ -->
+  <div class="panel" data-step="about" data-name="About You & Your Business">
+    <div class="sec-card">
+      <div class="sec-title"><span>Section 02</span>About You &amp; Your Business</div>
+      <div class="sec-sub">The basics — who you are and what your business does.</div>
+      <div class="grid-2">
+        <div class="field"><label>First name</label><input type="text" name="first_name"></div>
+        <div class="field"><label>Last name</label><input type="text" name="last_name"></div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Email <span class="req">*</span></label><input type="email" name="email" required placeholder="you@example.com"></div>
+        <div class="field"><label>Phone / WhatsApp <span class="req">*</span></label><input type="tel" name="phone" required placeholder="0800 000 0000"></div>
+      </div>
+      <div class="field"><label>Name of your brand / business <span class="req">*</span></label><input type="text" name="brand_name" required placeholder="The name your customers will know you by"></div>
+      <div class="field">
+        <label>Tell me about your business and what it offers
+          <span class="hint">What services do you provide, and how? The more detail, the better.</span></label>
+        <textarea name="business_about"></textarea>
+      </div>
+      <div class="field">
+        <label>What does your business focus on? <span class="hint">Select all that apply.</span></label>
+        <div class="chips">
+          <label class="chip"><input type="checkbox" name="focus" value="Residential"><span>Residential</span></label>
+          <label class="chip"><input type="checkbox" name="focus" value="Commercial / Offices"><span>Commercial / Offices</span></label>
+          <label class="chip"><input type="checkbox" name="focus" value="Industrial"><span>Industrial</span></label>
+          <label class="chip"><input type="checkbox" name="focus" value="Post-construction"><span>Post-construction</span></label>
+          <label class="chip"><input type="checkbox" name="focus" value="Deep / Specialized"><span>Deep / Specialized</span></label>
+          <label class="chip"><input type="checkbox" name="focus" value="Other"><span>Other</span></label>
+        </div>
+      </div>
+      <div class="field"><label>Which areas / locations do you serve?</label><input type="text" name="service_areas" placeholder="e.g. Okota, Lekki, V.I. — or nationwide"></div>
+      <div class="field">
+        <label>Certifications, training or insurance
+          <span class="hint">Anything that builds customer trust — business registration, trained staff, insurance cover.</span></label>
+        <textarea name="trust_signals"></textarea>
+      </div>
+      <div class="field">
+        <label>What makes your firm different from every other company in your industry?
+          <span class="hint">Your method, your guarantee, your story, your standards — this can power a dedicated page on your website.</span></label>
+        <textarea name="peculiarity"></textarea>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Short-term business goals</label><textarea name="goals_short" placeholder="Next 6–12 months"></textarea></div>
+        <div class="field"><label>Long-term business goals</label><textarea name="goals_long" placeholder="The big picture"></textarea></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ STEP 3 : BRAND ============ -->
+  <div class="panel" data-step="brand" data-name="Brand Identity">
+    <div class="sec-card">
+      <div class="sec-title"><span>Section 03</span>Brand Identity</div>
+      <div class="sec-sub">How your brand should look, feel and be perceived.</div>
+      <div class="field"><label>Who is your target audience? <span class="hint">Be specific — e.g. busy professionals, estate residents, offices, property managers.</span></label><textarea name="audience"></textarea></div>
+      <div class="field"><label>What are your brand values and mission?</label><textarea name="values"></textarea></div>
+      <div class="field"><label>How do you want customers to perceive your brand? <span class="hint">e.g. trustworthy, premium, friendly, professional.</span></label><input type="text" name="perception" placeholder="3–5 words that should come to mind"></div>
+      <div class="field"><label>Describe your desired design aesthetic <span class="hint">e.g. clean and minimal, bold and modern, premium and elegant.</span></label><input type="text" name="aesthetic"></div>
+      <div class="field"><label>Any colour preferences? <span class="hint">Colours you love, colours to avoid, and why.</span></label><input type="text" name="colors"></div>
+      <div class="field">
+        <label>Do you have an existing logo or visual identity?</label>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="existing_logo" value="No — starting from scratch"><span>No — start from scratch</span></label>
+          <label class="chip"><input type="radio" name="existing_logo" value="Yes — wants a revamp"><span>Yes — revamp it</span></label>
+          <label class="chip"><input type="radio" name="existing_logo" value="Yes — open to fresh direction"><span>Yes — but open to fresh ideas</span></label>
+        </div>
+      </div>
+      <div class="field"><label>Brands or designs you admire <span class="hint">Any industry. Names or links, and what you like about them.</span></label><textarea name="inspiration"></textarea></div>
+      <div class="field"><label>Anything you definitely don't want in your design?</label><input type="text" name="avoid"></div>
+      <div class="field"><label>Who are your key competitors?</label><input type="text" name="competitors"></div>
+      <div class="field"><label>Do you have a slogan or tagline? <span class="hint">If not, I can help craft one.</span></label><input type="text" name="tagline"></div>
+    </div>
+  </div>
+
+  <!-- ============ STEP 4 : WEBSITE (skipped for plans without one) ============ -->
+  <div class="panel" data-step="website" data-name="Your Website">
+    <div class="sec-card">
+      <div class="sec-title"><span id="webSecNo">Section 04</span>Your Website</div>
+      <div class="sec-sub" id="webSub"></div>
+      <div class="field">
+        <label>What is the primary purpose of your website?</label>
+        <div class="chips">
+          <label class="chip"><input type="checkbox" name="site_purpose" value="Attract new clients"><span>Attract new clients</span></label>
+          <label class="chip"><input type="checkbox" name="site_purpose" value="Showcase services"><span>Showcase services</span></label>
+          <label class="chip"><input type="checkbox" name="site_purpose" value="Build credibility"><span>Build credibility</span></label>
+          <label class="chip"><input type="checkbox" name="site_purpose" value="Generate quote requests"><span>Generate quote requests</span></label>
+          <label class="chip"><input type="checkbox" name="site_purpose" value="Other"><span>Other</span></label>
+        </div>
+      </div>
+      <div class="field"><label>What actions should visitors take on the site?</label><input type="text" name="site_actions" placeholder="e.g. request a quote, call, book a service"></div>
+      <div class="field"><label>The specialty page — what should it showcase? <span class="hint">Building on what makes your firm different: your process, standards, a signature service, your guarantee.</span></label><textarea name="specialty_page"></textarea></div>
+      <div class="field">
+        <label>Do you have website content ready? <span class="hint">Text about your business, service descriptions, team info.</span></label>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="content_status" value="Finalized and ready"><span>Ready &amp; finalized</span></label>
+          <label class="chip"><input type="radio" name="content_status" value="Have some — needs revision"><span>Have some — needs work</span></label>
+          <label class="chip"><input type="radio" name="content_status" value="Needs to be created"><span>Create it for me</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Do you have photos of past projects? <span class="hint">Before/after shots, your team at work — these power the portfolio page.</span></label>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="photos" value="Yes — plenty"><span>Yes — plenty</span></label>
+          <label class="chip"><input type="radio" name="photos" value="A few"><span>A few</span></label>
+          <label class="chip"><input type="radio" name="photos" value="None yet"><span>None yet</span></label>
+        </div>
+      </div>
+      <div class="field"><label>Websites you like <span class="hint">Any industry — links and what you like about them.</span></label><textarea name="site_refs"></textarea></div>
+      <div class="field">
+        <label>Features you'd like on the site</label>
+        <div class="chips">
+          <label class="chip"><input type="checkbox" name="features" value="Contact form"><span>Contact form</span></label>
+          <label class="chip"><input type="checkbox" name="features" value="Quote request form"><span>Quote request</span></label>
+          <label class="chip"><input type="checkbox" name="features" value="WhatsApp chat button"><span>WhatsApp chat</span></label>
+          <label class="chip"><input type="checkbox" name="features" value="Image gallery"><span>Image gallery</span></label>
+          <label class="chip"><input type="checkbox" name="features" value="Testimonials"><span>Testimonials</span></label>
+          <label class="chip"><input type="checkbox" name="features" value="Social media links"><span>Social links</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Preferred domain names — in order of preference <span class="hint">e.g. yourbrand.com / yourbrand.ng — I'll check availability and advise.</span></label>
+        <div class="grid-3">
+          <input type="text" name="domain_1" placeholder="1st choice">
+          <input type="text" name="domain_2" placeholder="2nd choice">
+          <input type="text" name="domain_3" placeholder="3rd choice">
+        </div>
+      </div>
+      <div class="note-box"><b>Please note:</b> website hosting and domain name are billed separately and paid by you directly to the providers — all accounts are created with your own credentials, so you fully own them. I handle the setup, design and development.</div>
+    </div>
+  </div>
+
+  <!-- ============ STEP 5 : SOCIAL ============ -->
+  <div class="panel" data-step="social" data-name="Social Media">
+    <div class="sec-card">
+      <div class="sec-title"><span id="socSecNo">Section 05</span>Social Media</div>
+      <div class="sec-sub">Your package includes social media designs — let's make sure they hit the right note.</div>
+      <div class="field"><label>Which platforms are you currently active on? <span class="hint">Share handles or links if available.</span></label><input type="text" name="social_active"></div>
+      <div class="field">
+        <label>Which platforms does your audience use the most?</label>
+        <div class="chips">
+          <label class="chip"><input type="checkbox" name="social_platforms" value="Instagram"><span>Instagram</span></label>
+          <label class="chip"><input type="checkbox" name="social_platforms" value="Facebook"><span>Facebook</span></label>
+          <label class="chip"><input type="checkbox" name="social_platforms" value="WhatsApp"><span>WhatsApp</span></label>
+          <label class="chip"><input type="checkbox" name="social_platforms" value="LinkedIn"><span>LinkedIn</span></label>
+          <label class="chip"><input type="checkbox" name="social_platforms" value="TikTok"><span>TikTok</span></label>
+          <label class="chip"><input type="checkbox" name="social_platforms" value="X (Twitter)"><span>X (Twitter)</span></label>
+        </div>
+      </div>
+      <div class="field"><label>What should the social media designs promote or announce?</label><input type="text" name="social_content"></div>
+      <div class="field"><label>Preferred tone of voice <span class="hint">e.g. professional, friendly, premium, playful.</span></label><input type="text" name="social_tone"></div>
+      <div class="field"><label>Any social media accounts you admire?</label><input type="text" name="social_refs"></div>
+    </div>
+  </div>
+
+  <!-- ============ STEP 6 : WORKING TOGETHER ============ -->
+  <div class="panel" data-step="working" data-name="Working Together">
+    <div class="sec-card">
+      <div class="sec-title"><span id="workSecNo">Section 06</span>Working Together</div>
+      <div class="sec-sub">How you'd like the project to run, day to day.</div>
+      <div class="field">
+        <label>How long would you like the project to take?
+          <span class="hint">Your preference — the final timeline is confirmed with you after I review your answers and scope.</span></label>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="duration" value="2 weeks"><span>2 weeks</span></label>
+          <label class="chip"><input type="radio" name="duration" value="3 weeks"><span>3 weeks</span></label>
+          <label class="chip"><input type="radio" name="duration" value="4 weeks"><span>4 weeks</span></label>
+          <label class="chip"><input type="radio" name="duration" value="Flexible — advise me"><span>Flexible — advise me</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Preferred communication channels</label>
+        <div class="chips">
+          <label class="chip"><input type="checkbox" name="comm" value="WhatsApp"><span>WhatsApp</span></label>
+          <label class="chip"><input type="checkbox" name="comm" value="Phone calls"><span>Phone calls</span></label>
+          <label class="chip"><input type="checkbox" name="comm" value="Email"><span>Email</span></label>
+          <label class="chip"><input type="checkbox" name="comm" value="Video calls"><span>Video calls</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label>How often would you like progress updates?</label>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="updates" value="Daily"><span>Daily</span></label>
+          <label class="chip"><input type="radio" name="updates" value="Every 2–3 days"><span>Every 2–3 days</span></label>
+          <label class="chip"><input type="radio" name="updates" value="At each milestone"><span>At each milestone</span></label>
+        </div>
+      </div>
+      <div class="field"><label>Who will review work and give approvals on your end?</label><input type="text" name="approver" placeholder="e.g. Myself"></div>
+      <div class="field"><label>Anything else I should know before we begin?</label><textarea name="anything_else"></textarea></div>
+    </div>
+  </div>
+
+  <!-- ============ STEP 7 : REVIEW ============ -->
+  <div class="panel" data-step="review" data-name="Review & Submit">
+    <div class="sec-card">
+      <div class="sec-title"><span>Final step</span>Review your answers</div>
+      <div class="sec-sub">Have a quick look through — you can jump back to edit any section. When you submit, you'll receive a copy of your responses with your invoice and terms by email.</div>
+      <div id="reviewArea"></div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button type="button" class="btn-back" id="btnBack" style="visibility:hidden;">← Back</button>
+    <button type="button" class="btn-next" id="btnNext">Continue →</button>
+  </div>
+
+  </form>
+
+  <div class="foot">
+    <a href="https://rich-port.vercel.app" target="_blank">rich-port.vercel.app</a> &nbsp;•&nbsp; enochrichard6@gmail.com &nbsp;•&nbsp; Designed &amp; built by Richard Enoch
+  </div>
+</div>
+
+<!-- ============ SUCCESS OVERLAY ============ -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-card">
+    <div class="ring"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+    <h2>Thank you<span id="successName"></span>!</h2>
+    <p id="successMsg">Your responses have been received.</p>
+    <div class="next-steps">
+      <h4>Next steps</h4>
+      <ol id="nextStepsList"></ol>
+    </div>
+    <div class="success-actions">
+      <button class="btn-next" onclick="downloadResponses('txt')">Download responses (.txt)</button>
+      <button class="btn-ghost" onclick="downloadResponses('json')">Download .json</button>
+    </div>
+    <div class="email-status" id="emailStatus"></div>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   RICHARD ENOCH — BOOK A PLAN / BRAND QUESTIONNAIRE  (v2, dynamic)
+   ---------------------------------------------------------------------
+   EDIT THE CONFIG BLOCK BELOW BEFORE SHARING.
+   Delivery modes (checked in order):
+     1. CONFIG.ENDPOINT set   -> POST JSON to your backend (RichPort).
+     2. EmailJS keys set      -> sends client + owner emails from browser.
+     3. Neither               -> fallback: download + WhatsApp instructions.
+   ===================================================================== */
+
+const CONFIG = {
+  OWNER: {
+    name: 'Richard Enoch',
+    fullName: 'Adesiyan Richard Enoch',
+    title: 'Brand Identity & Product Designer',
+    email: 'enochrichard6@gmail.com',
+    whatsapp: '0903 852 2066',
+    whatsappIntl: '2349038522066',
+    site: 'rich-port.vercel.app',
+    banks: [
+      { bank:'Access Bank', acc:'0774365963', name:'Adesiyan Richard Enoch' },
+      { bank:'Guaranty Trust Bank', acc:'0324882817', name:'Adesiyan Richard Enoch' }
+    ]
+  },
+
+  /* >>>>>> PRICING — USD rate-card prices, converted to NGN <<<<<<
+     RATE_OVERRIDE pins the exchange rate. It currently pins Gold at
+     exactly NGN 450,000 (350 x 1285.72) to match your agreed quote.
+     Set RATE_OVERRIDE to null to use the LIVE market rate instead
+     (fetched from open.er-api.com, FALLBACK_RATE if fetch fails).   */
+  PRICING: {
+    USD: { silver:150, gold:350, platinum:450 },
+    RATE_OVERRIDE: 1285.72,   /* null = use live rate */
+    FALLBACK_RATE: 1450,      /* used if live fetch fails */
+    ROUND_TO: 1000            /* round NGN price to nearest */
+  },
+
+  PLANS: {
+    silver: {
+      label:'Silver', website:false,
+      blurb:'For small businesses starting out that need a subtle identity.',
+      deliverables:[
+        'Logo Design','Colour Palette','Typography','Business Card',
+        '2 Social Media Designs','1 Social Media Banner','1 Merch Design',
+        '2 Mockup Images','2 Revision Rounds','Final files: JPEG, PNG'
+      ]
+    },
+    gold: {
+      label:'Gold', website:true,
+      blurb:'Launch your brand with everything you need to stand out.',
+      deliverables:[
+        'Logo Design','Colour Palette','Typography','Brand Patterns / Textures',
+        'Business Card','Email Signature','Letterhead','Presentation / Deck Template',
+        'Brand Guideline (15–30 pages)','2 Social Media Designs','3 Social Media Banners',
+        '2 Marketing Designs','4 Merch Designs','7 Mockup Images','5-Page Website',
+        '3 Revision Rounds','Final files: JPEG, PNG, SVG + website source code'
+      ]
+    },
+    platinum: {
+      label:'Platinum', website:true,
+      blurb:'Full brand + professional website to position your business at the next level.',
+      deliverables:[
+        'Logo Design','Colour Palette','Typography','Brand Patterns / Textures',
+        'Business Card','Email Signature','Letterhead','Presentation / Deck Template',
+        'Complete Brand Guideline (30+ pages)','5 Social Media Designs',
+        'Banners for All Social Platforms','5 Marketing Designs','10 Merch Designs',
+        'One Mockup per Design','Website (pages as required)','Revisions as required',
+        'All Files + website source code'
+      ]
+    }
+  },
+
+  DEPOSIT_PCT: 70,
+
+  /* EmailJS — create free account at emailjs.com, connect Gmail,
+     create ONE template whose body is exactly: {{{content}}}
+     and whose Subject is: {{subject}}  / To Email: {{to_email}}      */
+  EMAILJS: {
+    PUBLIC_KEY: 'N_H86G2OFjokJpJbU',
+    SERVICE_ID: 'service_kyjqpxn',
+    TEMPLATE_ID: 'template_2ymhxpg'
+  },
+
+  /* Backend endpoint — set by Claude Code during RichPort integration.
+     When set, EmailJS above is ignored.  e.g. '/api/questionnaire'    */
+  ENDPOINT: ''
+};
+
+/* ---------------- helpers ---------------- */
+const N = n => 'NGN ' + n.toLocaleString('en-NG');
+const pct = (n,p) => Math.round(n * p / 100);
+const today = new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+const invoiceRef = 'INV-' + new Date().toISOString().slice(2,10).replace(/-/g,'') + '-' + Math.random().toString(36).slice(2,5).toUpperCase();
+
+/* ---------------- FX rate + plan pricing ---------------- */
+let fxRate = CONFIG.PRICING.RATE_OVERRIDE || CONFIG.PRICING.FALLBACK_RATE;
+let fxSource = CONFIG.PRICING.RATE_OVERRIDE ? 'pinned' : 'fallback';
+function planPrice(key){
+  const usd = CONFIG.PRICING.USD[key];
+  const r = CONFIG.PRICING.ROUND_TO || 1;
+  return Math.round(usd * fxRate / r) * r;
+}
+function planUSD(key){ return CONFIG.PRICING.USD[key]; }
+async function fetchLiveRate(){
+  if (CONFIG.PRICING.RATE_OVERRIDE) return;           /* pinned — skip */
+  try{
+    const r = await fetch('https://open.er-api.com/v6/latest/USD');
+    const j = await r.json();
+    if (j && j.rates && j.rates.NGN){
+      fxRate = j.rates.NGN; fxSource = 'live';
+      refreshPrices();
+    }
+  }catch(e){ /* keep fallback */ }
+}
+function refreshPrices(){
+  document.querySelectorAll('.plan-card').forEach(card => {
+    const key = card.dataset.plan;
+    card.querySelector('.price').innerHTML = `<small>NGN</small>${planPrice(key).toLocaleString()}`;
+    card.querySelector('.dep').textContent = `${CONFIG.DEPOSIT_PCT}% deposit: ${N(pct(planPrice(key), CONFIG.DEPOSIT_PCT))} • $${planUSD(key)}`;
+  });
+  if (selectedPlan){
+    document.getElementById('planLabel').textContent =
+      `${CONFIG.PLANS[selectedPlan].label} Package — ${N(planPrice(selectedPlan))}`;
+  }
+}
+
+/* ---------------- plan state ---------------- */
+let selectedPlan = (new URLSearchParams(location.search).get('plan') || '').toLowerCase();
+if (!CONFIG.PLANS[selectedPlan]) selectedPlan = '';
+
+const planCardsEl = document.getElementById('planCards');
+Object.entries(CONFIG.PLANS).forEach(([key, p]) => {
+  const card = document.createElement('div');
+  card.className = 'plan-card';
+  card.dataset.plan = key;
+  card.innerHTML = `
+    <div class="tier">${p.label}</div>
+    <div class="blurb">${p.blurb}</div>
+    <div class="price"><small>NGN</small>${planPrice(key).toLocaleString()}</div>
+    <div class="dep">${CONFIG.DEPOSIT_PCT}% deposit: ${N(pct(planPrice(key), CONFIG.DEPOSIT_PCT))} • $${planUSD(key)}</div>
+    <ul>${p.deliverables.slice(0,6).map(d=>`<li>${d}</li>`).join('')}${p.deliverables.length>6?`<li>+ ${p.deliverables.length-6} more…</li>`:''}</ul>
+    <div class="pick">${'Select ' + p.label}</div>`;
+  card.addEventListener('click', () => selectPlan(key));
+  planCardsEl.appendChild(card);
+});
+/* NOTE: URL-param plan selection happens at the bottom of this script,
+   after the step-flow machinery is initialised. */
+
+function selectPlan(key) {
+  selectedPlan = key;
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.toggle('selected', c.dataset.plan === key));
+  const p = CONFIG.PLANS[key];
+  const chip = document.getElementById('planChip');
+  chip.classList.add('show');
+  document.getElementById('planLabel').textContent = `${p.label} Package — ${N(planPrice(key))}`;
+  buildStepFlow(); persist();
+}
+
+/* ---------------- step flow (skips website step for plans without one) ---------------- */
+const allPanels = [...document.querySelectorAll('.panel')];
+let flow = [];
+let current = 0;
+
+function buildStepFlow() {
+  const hasWeb = selectedPlan ? CONFIG.PLANS[selectedPlan].website : true;
+  flow = allPanels.filter(p => p.dataset.step !== 'website' || hasWeb);
+  // renumber visible section labels
+  const sec = n => `Section ${String(n).padStart(2,'0')}`;
+  if (hasWeb) {
+    document.getElementById('webSecNo').textContent = sec(4);
+    document.getElementById('socSecNo').textContent = sec(5);
+    document.getElementById('workSecNo').textContent = sec(6);
+    const p = CONFIG.PLANS[selectedPlan] || CONFIG.PLANS.gold;
+    document.getElementById('webSub').innerHTML = selectedPlan === 'gold'
+      ? 'Your package includes a 5-page website: <b>Landing page, About Us, Contact, Portfolio / Previous Projects,</b> and a <b>dedicated specialty page</b> built around what makes your firm unique.'
+      : 'Your package includes a professional website with pages scoped to your needs.';
+  } else {
+    document.getElementById('socSecNo').textContent = sec(4);
+    document.getElementById('workSecNo').textContent = sec(5);
+  }
+  buildBar();
+  render();
+}
+
+const stepBar = document.getElementById('stepBar');
+function buildBar() {
+  stepBar.innerHTML = '';
+  flow.forEach(() => { const s = document.createElement('div'); s.className='step-seg'; stepBar.appendChild(s); });
+  document.getElementById('stepTotal').textContent = flow.length;
+}
+
+function render() {
+  allPanels.forEach(p => p.classList.remove('active'));
+  flow[current].classList.add('active');
+  [...stepBar.children].forEach((s,i) => {
+    s.classList.toggle('done', i < current);
+    s.classList.toggle('active', i === current);
+  });
+  document.getElementById('stepNow').textContent = current + 1;
+  document.getElementById('stepName').textContent = flow[current].dataset.name;
+  document.getElementById('btnBack').style.visibility = current === 0 ? 'hidden' : 'visible';
+  document.getElementById('btnNext').textContent = current === flow.length - 1 ? 'Submit ✓' : 'Continue →';
+  if (flow[current].dataset.step === 'review') buildReview();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ---------------- labels / sections ---------------- */
+const LABELS = {
+  first_name:'First name', last_name:'Last name', email:'Email', phone:'Phone / WhatsApp',
+  brand_name:'Brand / business name', business_about:'About the business', focus:'Business focus',
+  service_areas:'Service areas', trust_signals:'Certifications / trust signals',
+  peculiarity:'What makes the firm different', goals_short:'Short-term goals', goals_long:'Long-term goals',
+  audience:'Target audience', values:'Brand values & mission', perception:'Desired perception',
+  aesthetic:'Design aesthetic', colors:'Colour preferences', existing_logo:'Existing logo',
+  inspiration:'Brands admired', avoid:'Things to avoid', competitors:'Competitors', tagline:'Tagline',
+  site_purpose:'Website purpose', site_actions:'Visitor actions', specialty_page:'Specialty page focus',
+  content_status:'Content readiness', photos:'Project photos', site_refs:'Reference websites',
+  features:'Website features', domain_1:'Domain — 1st choice', domain_2:'Domain — 2nd choice',
+  domain_3:'Domain — 3rd choice', social_active:'Active social platforms',
+  social_platforms:'Audience platforms', social_content:'Social designs should promote',
+  social_tone:'Tone of voice', social_refs:'Admired accounts', duration:'Preferred project duration',
+  comm:'Communication channels', updates:'Update frequency', approver:'Reviewer / approver',
+  anything_else:'Anything else'
+};
+const SECTIONS = [
+  ['About You & Your Business','about',['first_name','last_name','email','phone','brand_name','business_about','focus','service_areas','trust_signals','peculiarity','goals_short','goals_long']],
+  ['Brand Identity','brand',['audience','values','perception','aesthetic','colors','existing_logo','inspiration','avoid','competitors','tagline']],
+  ['Your Website','website',['site_purpose','site_actions','specialty_page','content_status','photos','site_refs','features','domain_1','domain_2','domain_3']],
+  ['Social Media','social',['social_active','social_platforms','social_content','social_tone','social_refs']],
+  ['Working Together','working',['duration','comm','updates','approver','anything_else']]
+];
+
+/* ---------------- collect / persist ---------------- */
+function collectResponses() {
+  const fd = new FormData(document.getElementById('qform'));
+  const plan = CONFIG.PLANS[selectedPlan] || null;
+  const price = plan ? planPrice(selectedPlan) : 0;
+  const data = { _meta:{
+    plan_key:selectedPlan, plan:plan?plan.label:'', price:price,
+    price_usd:plan?planUSD(selectedPlan):0, fx_rate:fxRate, fx_source:fxSource,
+    deposit:plan?pct(price,CONFIG.DEPOSIT_PCT):0,
+    balance:plan?price-pct(price,CONFIG.DEPOSIT_PCT):0,
+    invoice_ref:invoiceRef, submitted_at:new Date().toISOString()
+  }};
+  for (const key of new Set([...fd.keys()])) {
+    const vals = fd.getAll(key).filter(v=>v.trim()!=='');
+    data[key] = vals.length>1 ? vals : (vals[0]||'');
+  }
+  Object.keys(LABELS).forEach(k => { if(!(k in data)) data[k]=''; });
+  return data;
+}
+const STORE_KEY = 'requestionnaire_v2';
+let saveTimer;
+function persist(){
+  localStorage.setItem(STORE_KEY, JSON.stringify({plan:selectedPlan, data:collectResponses()}));
+  const t=document.getElementById('saveTick'); t.classList.add('show');
+  clearTimeout(saveTimer); saveTimer=setTimeout(()=>t.classList.remove('show'),1400);
+}
+document.getElementById('qform').addEventListener('input', persist);
+document.getElementById('qform').addEventListener('change', persist);
+(function restore(){
+  try{
+    const raw=localStorage.getItem(STORE_KEY); if(!raw) return;
+    const saved=JSON.parse(raw);
+    if(saved.plan && CONFIG.PLANS[saved.plan] && !selectedPlan) selectPlan(saved.plan);
+    const form=document.getElementById('qform');
+    for(const [k,v] of Object.entries(saved.data||{})){
+      if(k==='_meta') continue;
+      form.querySelectorAll(`[name="${k}"]`).forEach(el=>{
+        if(el.type==='checkbox'||el.type==='radio'){
+          const vals=Array.isArray(v)?v:[v]; el.checked=vals.includes(el.value);
+        } else el.value=Array.isArray(v)?v[0]:v;
+      });
+    }
+  }catch(e){}
+})();
+
+/* ---------------- review ---------------- */
+const fmt = v => Array.isArray(v)?v.join(', '):v;
+function buildReview(){
+  const data=collectResponses();
+  const hasWeb=CONFIG.PLANS[selectedPlan]?.website;
+  const area=document.getElementById('reviewArea');
+  let html = `<div class="rev-group"><h3>Selected Plan <a onclick="goToStep('plan')">Edit ✎</a></h3>
+    <div class="rev-rows"><div class="rev-row"><div class="q">Package</div><div class="a">${data._meta.plan} — ${N(data._meta.price)} (${CONFIG.DEPOSIT_PCT}% deposit: ${N(data._meta.deposit)})</div></div></div></div>`;
+  html += SECTIONS.filter(([,key])=>key!=='website'||hasWeb).map(([title,key,fields])=>`
+    <div class="rev-group"><h3>${title} <a onclick="goToStep('${key}')">Edit ✎</a></h3>
+      <div class="rev-rows">${fields.map(f=>{
+        const val=fmt(data[f]);
+        return `<div class="rev-row"><div class="q">${LABELS[f]}</div><div class="a ${val?'':'empty'}">${val||'Not answered'}</div></div>`;
+      }).join('')}</div></div>`).join('');
+  area.innerHTML=html;
+}
+function goToStep(stepKey){
+  const idx=flow.findIndex(p=>p.dataset.step===stepKey);
+  if(idx>-1){current=idx;render();}
+}
+
+/* ---------------- validation ---------------- */
+function validateStep(){
+  const step=flow[current].dataset.step;
+  if(step==='plan' && !selectedPlan){
+    planCardsEl.style.outline='1px solid #ff6b4a'; planCardsEl.style.borderRadius='14px';
+    setTimeout(()=>planCardsEl.style.outline='',1800); return false;
+  }
+  if(step==='about'){
+    for(const name of ['email','phone','brand_name']){
+      const el=document.querySelector(`[name="${name}"]`);
+      if(!el.value.trim()){ el.focus(); el.style.borderColor='#ff6b4a';
+        setTimeout(()=>el.style.borderColor='',1800); return false; }
+    }
+  }
+  return true;
+}
+
+/* ---------------- email content builders ---------------- */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function buildInvoiceHTML(data){
+  const m=data._meta, plan=CONFIG.PLANS[selectedPlan];
+  const G='#5e8c00', D='#1a1f12';
+  const banks=CONFIG.OWNER.banks.map(b=>
+    `<td style="padding:10px 14px;border:1px solid #dfe6d2;border-radius:8px;font-size:13px;line-height:1.7;">
+      <b style="color:${G};">${b.bank}</b><br>${b.name}<br>Acc. No: <b>${b.acc}</b></td>`).join('<td style="width:12px;"></td>');
+  return `
+  <div style="border:2px solid ${G};border-radius:12px;padding:26px;margin:18px 0;background:#fbfdf7;">
+    <table width="100%" style="border-collapse:collapse;"><tr>
+      <td><div style="font-size:24px;font-weight:800;color:${D};">INVOICE</div>
+          <div style="font-size:12px;color:#777;">Ref: <b style="color:${G};">${m.invoice_ref}</b> • ${today}</div></td>
+      <td align="right" style="font-size:13px;color:#555;line-height:1.6;">
+        <b style="color:${D};">${CONFIG.OWNER.fullName}</b><br>${CONFIG.OWNER.title}<br>${CONFIG.OWNER.email}</td>
+    </tr></table>
+    <div style="font-size:12px;color:#777;margin-top:16px;">Invoice to:</div>
+    <div style="font-size:16px;font-weight:700;color:${D};">${esc([data.first_name,data.last_name].filter(Boolean).join(' ')||data.brand_name)}</div>
+    <div style="font-size:13px;color:#555;">${esc(data.brand_name)} • ${esc(data.phone)} • ${esc(data.email)}</div>
+
+    <table width="100%" style="border-collapse:collapse;margin-top:18px;">
+      <tr style="background:${D};color:#fff;">
+        <th align="left" style="padding:10px 14px;font-size:12px;border-radius:8px 0 0 0;">Description</th>
+        <th align="right" style="padding:10px 14px;font-size:12px;border-radius:0 8px 0 0;">Amount</th></tr>
+      <tr><td style="padding:12px 14px;border:1px solid #dfe6d2;font-size:13.5px;">
+        <b>Brand Identity Design${plan.website?' + Website':''} — ${m.plan} Package</b><br>
+        <span style="font-size:12px;color:#666;">Includes: ${plan.deliverables.join('; ')}.</span></td>
+        <td align="right" style="padding:12px 14px;border:1px solid #dfe6d2;font-weight:700;">${N(m.price)}</td></tr>
+      ${plan.website?`<tr><td style="padding:12px 14px;border:1px solid #dfe6d2;font-size:13.5px;">
+        <b>Website Hosting &amp; Domain Name</b><br><span style="font-size:12px;color:#666;">Paid directly by the Client to providers; accounts created under the Client's own credentials.</span></td>
+        <td align="right" style="padding:12px 14px;border:1px solid #dfe6d2;color:#7a5db0;font-weight:600;font-size:12.5px;">Billed separately</td></tr>`:''}
+      <tr><td align="right" style="padding:10px 14px;font-size:13px;">Total</td>
+        <td align="right" style="padding:10px 14px;font-weight:800;font-size:15px;color:${G};">${N(m.price)}</td></tr>
+      <tr><td align="right" style="padding:4px 14px;font-size:13px;">Upfront deposit (${CONFIG.DEPOSIT_PCT}%) — due now</td>
+        <td align="right" style="padding:4px 14px;font-weight:700;">${N(m.deposit)}</td></tr>
+      <tr><td align="right" style="padding:4px 14px 12px;font-size:13px;">Final payment (${100-CONFIG.DEPOSIT_PCT}%) — on final approval</td>
+        <td align="right" style="padding:4px 14px 12px;font-weight:700;">${N(m.balance)}</td></tr>
+    </table>
+
+    <div style="font-size:11px;color:#999;margin-top:6px;">${m.plan} Package list price $${m.price_usd} USD, converted at NGN ${Math.round(m.fx_rate).toLocaleString()}/USD${m.fx_source==='live'?' (market rate, '+today+')':''}.</div>
+    <div style="font-size:12px;font-weight:700;color:${D};margin:14px 0 8px;">PAYMENT DETAILS</div>
+    <table style="border-collapse:separate;"><tr>${banks}</tr></table>
+    <div style="font-size:12px;color:#b35e00;margin-top:14px;line-height:1.7;font-style:italic;">
+      Please note: the ${CONFIG.DEPOSIT_PCT}% deposit is required before commencement of work. The project clock starts when your deposit is made and acknowledged. Kindly send your proof of payment to WhatsApp <b>${CONFIG.OWNER.whatsapp}</b>.</div>
+  </div>`;
+}
+
+function buildTermsHTML(data){
+  const m=data._meta, plan=CONFIG.PLANS[selectedPlan];
+  const G='#5e8c00';
+  const duration=data.duration||'To be agreed';
+  const webClauses = plan.website ? `
+    <p style="margin:8px 0;"><b>6. Hosting, Domain &amp; Third-Party Costs.</b> Website hosting and domain name are billed separately and are not included in the project fee. All hosting and domain accounts are created under the Client's own credentials, with payments made directly to the providers; the Designer handles setup, design and development. Other third-party costs, if required, are approved by the Client before purchase.</p>` : `
+    <p style="margin:8px 0;"><b>6. Third-Party Costs.</b> Third-party costs (premium fonts, stock imagery, licences), if required, are approved by the Client before purchase and billed separately.</p>`;
+  const files = plan.website
+    ? 'final brand assets as JPEG, PNG and SVG exports, together with the website source code. Editable working/design files (e.g. Figma, Illustrator, Photoshop) are not included'
+    : 'final brand assets as exported files per the package specification. Editable working/design files (e.g. Figma, Illustrator, Photoshop) are not included';
+  return `
+  <div style="border:1px solid #dfe6d2;border-radius:12px;padding:24px 26px;margin:18px 0;background:#fff;font-size:13px;line-height:1.75;color:#333;">
+    <div style="font-size:18px;font-weight:800;color:#1a1f12;margin-bottom:4px;">Terms of Agreement</div>
+    <div style="font-size:12px;color:#777;margin-bottom:14px;">Between <b>${CONFIG.OWNER.fullName}</b> (the Designer) and <b>${esc([data.first_name,data.last_name].filter(Boolean).join(' ')||data.brand_name)}</b> (the Client) • Ref ${m.invoice_ref}</div>
+    <p style="margin:8px 0;"><b>1. Scope.</b> This engagement covers the ${m.plan} Package deliverables: ${plan.deliverables.join('; ')}. Work outside this scope is quoted and agreed separately.</p>
+    <p style="margin:8px 0;"><b>2. Timeline.</b> The Client's preferred duration is <b style="color:${G};">${esc(duration)}</b>. The final timeline and milestone schedule are confirmed by the Designer after reviewing this questionnaire, and run from the date the deposit is made and acknowledged. Client-side delays (late feedback, content or approvals) pause the project clock.</p>
+    <p style="margin:8px 0;"><b>3. Payment.</b> Total fee ${N(m.price)}. A ${CONFIG.DEPOSIT_PCT}% deposit (${N(m.deposit)}) is due before work commences and is non-refundable once work has begun. The remaining ${100-CONFIG.DEPOSIT_PCT}% (${N(m.balance)}) is due on the Client's final approval of deliverables. Final files are released after the final payment clears.</p>
+    <p style="margin:8px 0;"><b>4. Client responsibilities.</b> Supply all required content within the first 5 days; designate one point of contact; give feedback within 48 hours of each presentation.</p>
+    <p style="margin:8px 0;"><b>5. Revisions.</b> The package includes ${plan.label==='Platinum'?'revisions as required within scope':plan.label==='Gold'?'up to 3 revision rounds':'up to 2 revision rounds'}. Additional rounds or post-approval direction changes are billed separately at a rate agreed in advance.</p>
+    ${webClauses}
+    <p style="margin:8px 0;"><b>7. File handover.</b> On final payment, the Client receives ${files} and remain the property of the Designer.</p>
+    <p style="margin:8px 0;"><b>8. Intellectual property.</b> Ownership of final approved assets transfers to the Client on full payment. The Designer retains portfolio and case-study rights. Unselected concepts remain the Designer's property.</p>
+    <p style="margin:8px 0;"><b>9. Cancellation.</b> Either party may end the engagement by written notice. If the Client cancels after work begins, the deposit is retained and work beyond its value becomes payable. If the Designer cannot complete for reasons within his control, payment for undelivered work is refunded.</p>
+    <p style="margin:8px 0;"><b>10. Acceptance.</b> Payment of the deposit constitutes acceptance of these terms in full.</p>
+  </div>`;
+}
+
+function buildResponsesHTML(data){
+  const hasWeb=CONFIG.PLANS[selectedPlan]?.website;
+  return SECTIONS.filter(([,key])=>key!=='website'||hasWeb).map(([title,,fields])=>`
+    <div style="margin:14px 0;border:1px solid #e5e9dc;border-radius:10px;overflow:hidden;">
+      <div style="background:#f2f6e8;padding:9px 16px;font-size:13px;font-weight:700;color:#3f5c00;">${title}</div>
+      <table width="100%" style="border-collapse:collapse;">${fields.map(f=>`
+        <tr><td style="padding:7px 16px;font-size:12px;color:#888;width:42%;vertical-align:top;border-top:1px solid #eef1e6;">${LABELS[f]}</td>
+        <td style="padding:7px 16px;font-size:12.5px;color:#333;border-top:1px solid #eef1e6;white-space:pre-wrap;">${esc(fmt(data[f]))||'—'}</td></tr>`).join('')}
+      </table></div>`).join('');
+}
+
+function buildClientEmail(data){
+  const m=data._meta;
+  return `
+  <div style="font-family:Arial,Helvetica,sans-serif;max-width:640px;margin:0 auto;color:#333;">
+    <div style="text-align:center;padding:22px 0 6px;">
+      <div style="font-size:22px;font-weight:800;color:#1a1f12;">Richard Enoch</div>
+      <div style="font-size:11px;color:#888;letter-spacing:.08em;">BRAND IDENTITY &amp; PRODUCT DESIGNER</div>
+    </div>
+    <p style="font-size:14px;line-height:1.8;">Hi ${esc(data.first_name||'there')},</p>
+    <p style="font-size:14px;line-height:1.8;">Thank you for booking the <b>${m.plan} Package</b> for <b>${esc(data.brand_name)}</b>! Your questionnaire responses have been received — a full copy is included below for your records, along with your invoice and the terms of agreement.</p>
+    <div style="border:2px solid #5e8c00;background:#f4f9e8;border-radius:10px;padding:16px 20px;font-size:13.5px;line-height:1.8;">
+      <b style="color:#3f5c00;">NEXT STEPS</b><br>
+      1. Make the <b>${CONFIG.DEPOSIT_PCT}% upfront deposit of ${N(m.deposit)}</b> using the payment details on the invoice below.<br>
+      2. Send your <b>proof of payment / receipt</b> to WhatsApp: <b>${CONFIG.OWNER.whatsapp}</b>.<br>
+      3. Once your deposit is acknowledged, your project officially begins — and I'll confirm the timeline and milestone schedule with you.</p>
+    </div>
+    ${buildInvoiceHTML(data)}
+    ${buildTermsHTML(data)}
+    <div style="font-size:15px;font-weight:700;color:#1a1f12;margin-top:22px;">Your Questionnaire Responses</div>
+    ${buildResponsesHTML(data)}
+    <p style="font-size:12px;color:#999;text-align:center;margin-top:24px;">${CONFIG.OWNER.site} • ${CONFIG.OWNER.email} • WhatsApp ${CONFIG.OWNER.whatsapp}</p>
+  </div>`;
+}
+
+function buildOwnerEmail(data){
+  const m=data._meta;
+  return `
+  <div style="font-family:Arial,Helvetica,sans-serif;max-width:640px;margin:0 auto;color:#333;">
+    <h2 style="color:#1a1f12;">New booking — ${m.plan} Package</h2>
+    <p style="font-size:14px;line-height:1.8;"><b>${esc([data.first_name,data.last_name].filter(Boolean).join(' '))}</b> (${esc(data.brand_name)}) just completed the questionnaire.<br>
+    ${esc(data.email)} • ${esc(data.phone)} • Preferred duration: <b>${esc(data.duration||'not stated')}</b><br>
+    Total ${N(m.price)} — deposit due ${N(m.deposit)} • Ref ${m.invoice_ref}</p>
+    ${buildResponsesHTML(data)}
+    ${buildInvoiceHTML(data)}
+    <div style="font-size:12px;font-weight:700;margin-top:18px;">RAW JSON (paste into Claude when starting the project):</div>
+    <pre style="background:#f4f4f0;border:1px solid #e0e0d8;border-radius:8px;padding:14px;font-size:10.5px;white-space:pre-wrap;word-break:break-all;">${esc(JSON.stringify(data,null,1))}</pre>
+  </div>`;
+}
+
+/* ---------------- submit ---------------- */
+async function handleSubmit(){
+  const btn=document.getElementById('btnNext');
+  btn.disabled=true; btn.textContent='Sending…';
+  const data=collectResponses();
+  const statusEl=document.getElementById('emailStatus');
+  let mode='fallback', ok=false;
+
+  try{
+    if(CONFIG.ENDPOINT){
+      mode='backend';
+      const r=await fetch(CONFIG.ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+      ok=r.ok;
+    } else if(CONFIG.EMAILJS.PUBLIC_KEY && CONFIG.EMAILJS.SERVICE_ID && CONFIG.EMAILJS.TEMPLATE_ID){
+      mode='emailjs';
+      emailjs.init({publicKey:CONFIG.EMAILJS.PUBLIC_KEY});
+      const subj=`${data._meta.plan} Package — ${data.brand_name} — Invoice ${data._meta.invoice_ref}`;
+      await emailjs.send(CONFIG.EMAILJS.SERVICE_ID, CONFIG.EMAILJS.TEMPLATE_ID,
+        {to_email:data.email, subject:`Your booking with Richard Enoch — ${subj}`, content:buildClientEmail(data)});
+      await emailjs.send(CONFIG.EMAILJS.SERVICE_ID, CONFIG.EMAILJS.TEMPLATE_ID,
+        {to_email:CONFIG.OWNER.email, subject:`NEW BOOKING — ${subj}`, content:buildOwnerEmail(data)});
+      ok=true;
+    }
+  }catch(e){ ok=false; }
+
+  /* success UI */
+  const name=data.first_name?', '+data.first_name:'';
+  document.getElementById('successName').textContent=name;
+  const steps=document.getElementById('nextStepsList');
+  const dep=N(data._meta.deposit);
+  if(ok){
+    document.getElementById('successMsg').textContent='Your responses have been received — check your email for a copy of your responses, your invoice and the terms of agreement.';
+    steps.innerHTML=`
+      <li>Check your inbox (<b>${esc(data.email)}</b>) for your <b>invoice and terms</b>. Check spam/promotions if you don't see it.</li>
+      <li>Make the <b>${CONFIG.DEPOSIT_PCT}% deposit of ${dep}</b> using the payment details on the invoice.</li>
+      <li>Send your <b>proof of payment</b> to WhatsApp <b>${CONFIG.OWNER.whatsapp}</b>.</li>
+      <li>Once acknowledged, your project begins and I'll confirm the timeline with you.</li>`;
+    statusEl.className='email-status ok'; statusEl.textContent='✓ Emails sent successfully';
+  } else {
+    document.getElementById('successMsg').textContent='Your responses have been captured. Download a copy below and send it to me — then we\'re ready to begin.';
+    steps.innerHTML=`
+      <li><b>Download your responses</b> below and send the file to <b>${CONFIG.OWNER.email}</b> or WhatsApp <b>${CONFIG.OWNER.whatsapp}</b>.</li>
+      <li>You'll receive your <b>invoice and terms of agreement</b> by email.</li>
+      <li>Make the <b>${CONFIG.DEPOSIT_PCT}% deposit of ${dep}</b> and send your <b>proof of payment</b> to WhatsApp <b>${CONFIG.OWNER.whatsapp}</b>.</li>
+      <li>Once acknowledged, your project begins.</li>`;
+    statusEl.className='email-status'+(mode!=='fallback'?' fail':'');
+    statusEl.textContent=mode!=='fallback'?'Email delivery hit a snag — please use the download button so nothing is lost.':'';
+  }
+  document.getElementById('successOverlay').classList.add('show');
+  localStorage.removeItem(STORE_KEY);
+  btn.disabled=false; btn.textContent='Submit ✓';
+}
+
+/* ---------------- nav ---------------- */
+document.getElementById('btnNext').addEventListener('click',()=>{
+  if(!validateStep())return;
+  if(current<flow.length-1){current++;render();}
+  else handleSubmit();
+});
+document.getElementById('btnBack').addEventListener('click',()=>{ if(current>0){current--;render();} });
+
+/* ---------------- export ---------------- */
+function downloadResponses(kind){
+  const data=collectResponses();
+  const brand=(data.brand_name||'brand').replace(/[^a-z0-9]+/gi,'-');
+  let blob,fname;
+  if(kind==='json'){
+    blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    fname=`questionnaire-${brand}.json`;
+  }else{
+    let txt=`BRAND QUESTIONNAIRE — ${data._meta.plan} Package (${N(data._meta.price)})\nInvoice Ref: ${data._meta.invoice_ref}\nSubmitted: ${new Date().toLocaleString()}\n${'='.repeat(56)}\n\n`;
+    const hasWeb=CONFIG.PLANS[selectedPlan]?.website;
+    for(const [title,key,fields] of SECTIONS){
+      if(key==='website'&&!hasWeb)continue;
+      txt+=`${title.toUpperCase()}\n${'-'.repeat(title.length)}\n`;
+      for(const f of fields)txt+=`${LABELS[f]}:\n  ${fmt(data[f])||'—'}\n\n`;
+      txt+='\n';
+    }
+    blob=new Blob([txt],{type:'text/plain'});
+    fname=`questionnaire-${brand}.txt`;
+  }
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download=fname;a.click();URL.revokeObjectURL(a.href);
+}
+
+if (selectedPlan) selectPlan(selectedPlan); else buildStepFlow();
+fetchLiveRate();
+</script>
+</body>
+</html>
