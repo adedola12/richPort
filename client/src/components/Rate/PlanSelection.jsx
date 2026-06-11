@@ -1,15 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { HiFire } from "react-icons/hi";
+import { planKeyFromName } from "../../config/plans";
 import goldBadge    from "../../assets/Gold.png";
 import silverBadge  from "../../assets/Silver.png";
 import platinumBadge from "../../assets/Platinum.png";
-
-const scrollToRateForm = () => {
-  const el = document.getElementById("rate-form");
-  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-};
 
 const getFeaturedIndex = (plans = []) => {
   if (!plans || plans.length === 0) return -1;
@@ -49,6 +45,12 @@ const PlanSelection = ({
   onToggleDetails,
 }) => {
   const featuredIndex = getFeaturedIndex(plans);
+  const navigate = useNavigate();
+
+  const bookPlan = (plan) => {
+    const key = planKeyFromName(plan?.name);
+    navigate(key ? `/book?plan=${key}` : "/book");
+  };
 
   const handleViewDeliverables = () => {
     onToggleDetails?.();
@@ -164,7 +166,7 @@ const PlanSelection = ({
                     <div className="mt-auto pt-6">
                       <button
                         type="button"
-                        onClick={scrollToRateForm}
+                        onClick={() => bookPlan(plan)}
                         className="
                           inline-flex w-full items-center justify-center
                           rounded-xl bg-gradient-to-b from-lime-500 to-lime-700
@@ -226,7 +228,7 @@ const PlanSelection = ({
                 <div className="mt-auto pt-6">
                   <button
                     type="button"
-                    onClick={scrollToRateForm}
+                    onClick={() => bookPlan(plan)}
                     className="
                       inline-flex w-full items-center justify-center
                       rounded-xl bg-gradient-to-b from-slate-500 to-slate-800

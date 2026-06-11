@@ -1,5 +1,7 @@
 ﻿import React from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { planKeyFromName } from "../../config/plans";
 import goldBadge    from "../../assets/Gold.png";
 import silverBadge  from "../../assets/Silver.png";
 import platinumBadge from "../../assets/Platinum.png";
@@ -23,14 +25,6 @@ const nameSx = {
 const PlanCheck = () => (
   <BsCheckCircle className="h-5 w-5 text-lime-400 drop-shadow-[0_0_10px_rgba(190,242,100,0.6)]" />
 );
-
-// Smooth scroll to RateForm
-const scrollToRateForm = () => {
-  const formSection = document.getElementById("rate-form");
-  if (formSection) {
-    formSection.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-};
 
 // Fallback rows if no deliverables are defined in DB
 const createFallbackDeliverables = (plans = []) => {
@@ -107,6 +101,13 @@ const truncateDescription = (text, maxChars = 100) => {
 };
 
 const PlanDetails = ({ plans = [], deliverables = [], isOpen = false }) => {
+  const navigate = useNavigate();
+
+  const bookPlan = (plan) => {
+    const key = planKeyFromName(plan?.name);
+    navigate(key ? `/book?plan=${key}` : "/book");
+  };
+
   if (!plans || plans.length === 0) return null;
 
   const rows =
@@ -191,7 +192,7 @@ const PlanDetails = ({ plans = [], deliverables = [], isOpen = false }) => {
                   <div className="mt-auto pt-4 w-full">
                     <button
                       type="button"
-                      onClick={scrollToRateForm}
+                      onClick={() => bookPlan(plan)}
                       className="
                         w-full rounded-xl border border-lime-500
                         bg-gradient-to-b from-lime-500/10 to-lime-700/10
@@ -315,7 +316,7 @@ const PlanDetails = ({ plans = [], deliverables = [], isOpen = false }) => {
                 {/* CTA */}
                 <button
                   type="button"
-                  onClick={scrollToRateForm}
+                  onClick={() => bookPlan(plan)}
                   className="
                     mt-4 w-full rounded-xl border border-lime-500
                     bg-gradient-to-b from-lime-500/10 to-lime-700/10
