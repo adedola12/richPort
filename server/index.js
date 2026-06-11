@@ -12,6 +12,7 @@ import journeyRoutes from "./routes/journeyRoutes.js";
 import rateRoutes from "./routes/rateRoutes.js";
 import uiProjectRoutes from "./routes/uiProjectRoutes.js";
 import graphicProjectRoutes from "./routes/graphicProjectRoutes.js";
+import questionnaireRoutes from "./routes/questionnaireRoutes.js";
 
 import { connectToDatabase } from "./db.js";
 
@@ -85,6 +86,7 @@ app.use("/api/ui-projects", uiProjectRoutes);
 app.use("/api/journey", journeyRoutes);
 app.use("/api/rates", rateRoutes);
 app.use("/api/graphic-projects", graphicProjectRoutes);
+app.use("/api/questionnaire", questionnaireRoutes);
 
 
 app.get("/", (_req, res) => res.json({ status: "ok" }));
