@@ -12,6 +12,23 @@ import PageMeta from "../components/common/PageMeta";
 import GuidelineCarousel from "../components/ProjectPage/GuidelineCarousel";
 import BrandGallery from "../components/ProjectPage/BrandGallery";
 
+/* touchpoint mockups */
+import imgBillboard     from "../assets/NIQS/board.webp";
+import imgBottle        from "../assets/NIQS/bottle.webp";
+import imgCapBlue       from "../assets/NIQS/cap-blue.webp";
+import imgCapWhite      from "../assets/NIQS/cap-white.webp";
+import imgConference    from "../assets/NIQS/conference.webp";
+import imgCup           from "../assets/NIQS/cup.webp";
+import imgEmailSig      from "../assets/NIQS/email-signature.webp";
+import imgFolder        from "../assets/NIQS/folder.webp";
+import imgHoodie        from "../assets/NIQS/hoodie.webp";
+import imgHoodieWhite   from "../assets/NIQS/hoodie-white.webp";
+import imgJournal       from "../assets/NIQS/journal.webp";
+import imgLetterhead    from "../assets/NIQS/letterhead.webp";
+import imgShirt         from "../assets/NIQS/shirt.webp";
+import imgToteBag       from "../assets/NIQS/tote-bag.webp";
+import imgToteBagLadies from "../assets/NIQS/tote-bag-ladies.webp";
+
 const NAVY = "#000066";
 const GOLD = "#D9B650";
 
@@ -420,20 +437,23 @@ const NIQSProject = () => (
                 title: "Stationery Suite",
                 body: "Letterhead, business cards, and envelopes built to carry institutional authority into every physical interaction — partner meetings, board communications, and formal correspondence.",
                 flip: false,
+                img: imgLetterhead,
               },
               {
                 eyebrow: "DIGITAL APPLICATIONS",
                 title: "Digital Templates",
                 body: "Email signatures and social media templates that keep the brand consistent across 37 chapters — no designer required, no brand drift possible.",
                 flip: true,
+                img: imgEmailSig,
               },
               {
                 eyebrow: "CEREMONIAL MATERIALS",
                 title: "Event & Ceremonial",
                 body: "Event backdrops, certificates, and ID cards that carry the heraldic identity into institutional ceremonies — authority and precision at every scale.",
                 flip: false,
+                img: imgConference,
               },
-            ].map(({ eyebrow, title, body, flip }) => (
+            ].map(({ eyebrow, title, body, flip, img }) => (
               <FadeUp key={eyebrow}>
                 <div className="flex flex-col gap-6">
                   <div className={`flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 ${flip ? "sm:flex-row-reverse" : ""}`}>
@@ -443,18 +463,14 @@ const NIQSProject = () => (
                       <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50">{body}</p>
                     </div>
                   </div>
-                  {/* placeholder image slot */}
-                  <div className="w-full rounded-2xl border border-white/8 bg-white/[0.02] flex items-center justify-center"
+                  <div className="w-full rounded-2xl border border-white/8 bg-white/[0.02] overflow-hidden"
                     style={{ aspectRatio: "16/9" }}>
-                    <div className="flex flex-col items-center gap-3 text-center px-8">
-                      <div className="w-10 h-10 rounded-full border border-dashed flex items-center justify-center"
-                        style={{ borderColor: `${GOLD}30` }}>
-                        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke={`${GOLD}50`} strokeWidth="1.5">
-                          <rect x="3" y="3" width="18" height="18" rx="3" /><path d="M3 16l5-5 4 4 3-3 6 6" />
-                        </svg>
-                      </div>
-                      <p className="text-[11px] text-white/20">{eyebrow} — image coming soon</p>
-                    </div>
+                    <img
+                      src={img}
+                      alt={`${title} — NIQS brand application`}
+                      loading="lazy"
+                      className="w-full h-full object-cover object-center"
+                    />
                   </div>
                 </div>
               </FadeUp>
@@ -499,22 +515,18 @@ const NIQSProject = () => (
         description="Selected touchpoint designs — the NIQS visual system at work across stationery, digital, and ceremonial applications."
         color={GOLD}
         images={[
-          { src: null, alt: "App UI",           label: "APP UI" },
-          { src: null, alt: "Website UI",        label: "WEBSITE UI" },
-          { src: null, alt: "Letterhead",        label: "LETTERHEAD" },
-          { src: null, alt: "Business Card",     label: "BUSINESS CARD" },
-          { src: null, alt: "Email Signature",   label: "EMAIL SIGNATURE" },
-          { src: null, alt: "Hoodie",            label: "HOODIE" },
-          { src: null, alt: "Event Backdrop",    label: "SIGNAGE" },
-          { src: null, alt: "Certificate",       label: "CERTIFICATE" },
-          { src: null, alt: "Social Banner",     label: "SOCIAL MEDIA" },
-          { src: null, alt: "Tote Bag",          label: "TOTE BAG" },
-          { src: null, alt: "Folder Design",     label: "FOLDER DESIGN" },
-          { src: null, alt: "Notebook",          label: "NOTEBOOK" },
-          { src: null, alt: "Poster Design",     label: "POSTER DESIGN" },
-          { src: null, alt: "T-Shirt",           label: "T-SHIRT" },
-          { src: null, alt: "Cup",               label: "CUP" },
-          { src: null, alt: "Bottle",            label: "BOTTLE" },
+          { src: imgBillboard,     alt: "Billboard — public awareness campaign in a transit environment", label: "BILLBOARD" },
+          { src: imgHoodie,        alt: "Hoodie — navy branded hoodie",           label: "HOODIE — NAVY" },
+          { src: imgToteBag,       alt: "Tote bag — branded tote",                label: "TOTE BAG" },
+          { src: imgCup,           alt: "Cup — branded ceramic mug",              label: "CUP" },
+          { src: imgJournal,       alt: "Notebook — branded journal",             label: "NOTEBOOK" },
+          { src: imgShirt,         alt: "T-shirt — branded tee",                  label: "T-SHIRT" },
+          { src: imgCapBlue,       alt: "Cap — navy branded cap",                 label: "CAP — NAVY" },
+          { src: imgFolder,        alt: "Folder — branded document folder",       label: "FOLDER DESIGN" },
+          { src: imgHoodieWhite,   alt: "Hoodie — white branded hoodie",          label: "HOODIE — WHITE" },
+          { src: imgCapWhite,      alt: "Cap — white branded cap",                label: "CAP — WHITE" },
+          { src: imgBottle,        alt: "Bottle — branded water bottle",          label: "BOTTLE" },
+          { src: imgToteBagLadies, alt: "Tote bag — ladies' branded tote",        label: "TOTE BAG — LADIES" },
         ]}
       />
 

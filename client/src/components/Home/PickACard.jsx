@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 import { Link } from "react-router-dom";
 
-import ydpayThumb    from "../../assets/YDpay/iphone15pro.png";
+import ydpayThumb    from "../../assets/YDpay/iphone15pro.webp";
 import bookrionThumb from "../../assets/Bookrion/mainSign.jpg";
 import wi1           from "../../assets/workImg/WI1.png";
 import wi2           from "../../assets/workImg/WI2.jpg";

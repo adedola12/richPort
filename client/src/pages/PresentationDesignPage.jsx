@@ -6,25 +6,25 @@ import BuildSection from "../components/Home/BuildSection";
 import PageMeta from "../components/common/PageMeta";
 
 // ── ADLM images
-import adlm1 from "../assets/PresentationDesigns/1.png";
-import adlm2 from "../assets/PresentationDesigns/2.png";
-import adlm3 from "../assets/PresentationDesigns/3.png";
-import adlm4 from "../assets/PresentationDesigns/4.png";
-import adlm6 from "../assets/PresentationDesigns/6.png";
+import adlm1 from "../assets/PresentationDesigns/1.webp";
+import adlm2 from "../assets/PresentationDesigns/2.webp";
+import adlm3 from "../assets/PresentationDesigns/3.webp";
+import adlm4 from "../assets/PresentationDesigns/4.webp";
+import adlm6 from "../assets/PresentationDesigns/6.webp";
 
 // ── Tradeflow images
-import tf01 from "../assets/PresentationDesigns/Tradeflow 01.png";
-import tf03 from "../assets/PresentationDesigns/Tradeflow 03.png";
-import tf05 from "../assets/PresentationDesigns/Tradeflow 05.png";
-import tf06 from "../assets/PresentationDesigns/Tradeflow 06.png";
+import tf01 from "../assets/PresentationDesigns/Tradeflow 01.webp";
+import tf03 from "../assets/PresentationDesigns/Tradeflow 03.webp";
+import tf05 from "../assets/PresentationDesigns/Tradeflow 05.webp";
+import tf06 from "../assets/PresentationDesigns/Tradeflow 06.webp";
 
 // ── AI2BC images
-import ai200 from "../assets/PresentationDesigns/200.png";
-import ai202 from "../assets/PresentationDesigns/202.png";
+import ai200 from "../assets/PresentationDesigns/200.webp";
+import ai202 from "../assets/PresentationDesigns/202.webp";
 
 // ── LinkedIn images
-import li196 from "../assets/PresentationDesigns/196.png";
-import li198 from "../assets/PresentationDesigns/198.png";
+import li196 from "../assets/PresentationDesigns/196.webp";
+import li198 from "../assets/PresentationDesigns/198.webp";
 
 const GR = "#a3e635";
 

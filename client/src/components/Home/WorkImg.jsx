@@ -5,7 +5,7 @@ import wi1 from "../../assets/workImg/WI1.png";
 import wi2 from "../../assets/workImg/WI2.jpg";
 import wi3 from "../../assets/workImg/WI3.jpg";
 import wi4 from "../../assets/workImg/WI4.jpg";
-import wi5 from "../../assets/workImg/WI5.png";
+import wi5 from "../../assets/workImg/WI5.webp";
 
 const cards = [wi1, wi2, wi3, wi4, wi5];
 

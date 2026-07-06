@@ -149,8 +149,50 @@ function BentoCell({ src, alt = "", label = "", style, color = "#a3e635", delay 
   );
 }
 
+/* ─── adaptive bento layout ───
+   Partitions N filled cells into full-width rows of 3 or 2 (never a ragged
+   last row), then assigns varied column spans per row for the bento feel. */
+const THREE_COL = [[5, 4, 3], [3, 4, 5], [4, 4, 4], [4, 5, 3]];
+const TWO_COL   = [[7, 5], [5, 7], [6, 6]];
+const ROW_H     = ["230px", "190px", "210px"];
+
+function buildRowSizes(count) {
+  const sizes = [];
+  let left = count;
+  while (left > 0) {
+    if (left === 4 || left === 2) { sizes.push(2); left -= 2; }
+    else if (left === 1) {
+      const i = sizes.lastIndexOf(3);
+      if (i !== -1) { sizes[i] = 2; sizes.push(2); }
+      else sizes.push(1);
+      left = 0;
+    }
+    else { sizes.push(3); left -= 3; }
+  }
+  return sizes;
+}
+
+function buildCells(count) {
+  const rowSizes = buildRowSizes(count);
+  const cells = [];
+  let t3 = 0, t2 = 0;
+  rowSizes.forEach((size, row) => {
+    const spans = size === 3 ? THREE_COL[t3++ % THREE_COL.length]
+                : size === 2 ? TWO_COL[t2++ % TWO_COL.length]
+                : [12];
+    let col = 1;
+    spans.forEach((span) => {
+      cells.push({ gridColumn: `${col} / ${col + span}`, gridRow: `${row + 1} / ${row + 2}` });
+      col += span;
+    });
+  });
+  return { cells, rowCount: rowSizes.length };
+}
+
 /* ═══════════════════════════════════════════════════════════
-   BrandGallery — 16-slot dynamic bento grid with lightbox
+   BrandGallery — adaptive bento grid with lightbox.
+   Renders however many images it's given; empty (src: null)
+   entries are dropped and the grid reflows to stay full.
    Reusable for any brand identity page.
 ═══════════════════════════════════════════════════════════ */
 export default function BrandGallery({
@@ -163,27 +205,21 @@ export default function BrandGallery({
   color = "#a3e635",
   cta = null,
 }) {
-  const img = (i) => images[i] || {};
   const navigate = useNavigate();
   const headerRef = useRef(null);
   const headerInView = useInView(headerRef, { once: true, amount: 0 });
 
-  /* lightbox — only navigate through filled slots */
-  const [lightboxNav, setLightboxNav] = useState(null); // index into filledImages
-  const filledImages = images
-    .map((item, i) => ({ ...item, originalIndex: i }))
-    .filter((item) => item.src);
+  const filled = images.filter((item) => item.src);
+  const { cells, rowCount } = buildCells(filled.length);
 
-  const openLightbox = useCallback((originalIndex) => {
-    const navIdx = filledImages.findIndex((item) => item.originalIndex === originalIndex);
-    if (navIdx !== -1) setLightboxNav(navIdx);
-  }, [filledImages]);
-
+  /* lightbox */
+  const [lightboxNav, setLightboxNav] = useState(null); // index into filled
+  const openLightbox = useCallback((i) => setLightboxNav(i), []);
   const closeLightbox = useCallback(() => setLightboxNav(null), []);
   const prevImage = useCallback(() =>
-    setLightboxNav((i) => (i - 1 + filledImages.length) % filledImages.length), [filledImages.length]);
+    setLightboxNav((i) => (i - 1 + filled.length) % filled.length), [filled.length]);
   const nextImage = useCallback(() =>
-    setLightboxNav((i) => (i + 1) % filledImages.length), [filledImages.length]);
+    setLightboxNav((i) => (i + 1) % filled.length), [filled.length]);
 
   /* stagger delay capped so late cells don't feel disconnected */
   const d = (i) => Math.min(i * 0.04, 0.35);
@@ -211,45 +247,41 @@ export default function BrandGallery({
           </p>
         </motion.div>
 
-        {/* desktop bento — 16 cells, 6 rows, columns AND rows vary */}
+        {/* desktop bento — adaptive: full rows of 3/2 cells, varied widths */}
         <div
           className="hidden sm:grid gap-3"
           style={{
             gridTemplateColumns: "repeat(12, 1fr)",
-            gridTemplateRows: "220px 220px 180px 220px 180px 200px",
+            gridTemplateRows: Array.from({ length: rowCount }, (_, i) => ROW_H[i % ROW_H.length]).join(" "),
           }}
         >
-          <BentoCell src={img(0).src}  alt={img(0).alt}  label={img(0).label}  color={color} delay={d(0)}  style={{ gridColumn: "1 / 5",  gridRow: "1 / 3" }} onClick={() => openLightbox(0)} />
-          <BentoCell src={img(1).src}  alt={img(1).alt}  label={img(1).label}  color={color} delay={d(1)}  style={{ gridColumn: "5 / 9",  gridRow: "1 / 2" }} onClick={() => openLightbox(1)} />
-          <BentoCell src={img(2).src}  alt={img(2).alt}  label={img(2).label}  color={color} delay={d(2)}  style={{ gridColumn: "9 / 13", gridRow: "1 / 2" }} onClick={() => openLightbox(2)} />
-          <BentoCell src={img(3).src}  alt={img(3).alt}  label={img(3).label}  color={color} delay={d(3)}  style={{ gridColumn: "5 / 9",  gridRow: "2 / 3" }} onClick={() => openLightbox(3)} />
-          <BentoCell src={img(4).src}  alt={img(4).alt}  label={img(4).label}  color={color} delay={d(4)}  style={{ gridColumn: "9 / 13", gridRow: "2 / 4" }} onClick={() => openLightbox(4)} />
-          <BentoCell src={img(5).src}  alt={img(5).alt}  label={img(5).label}  color={color} delay={d(5)}  style={{ gridColumn: "1 / 4",  gridRow: "3 / 4" }} onClick={() => openLightbox(5)} />
-          <BentoCell src={img(6).src}  alt={img(6).alt}  label={img(6).label}  color={color} delay={d(6)}  style={{ gridColumn: "4 / 9",  gridRow: "3 / 4" }} onClick={() => openLightbox(6)} />
-          <BentoCell src={img(7).src}  alt={img(7).alt}  label={img(7).label}  color={color} delay={d(7)}  style={{ gridColumn: "1 / 6",  gridRow: "4 / 5" }} onClick={() => openLightbox(7)} />
-          <BentoCell src={img(8).src}  alt={img(8).alt}  label={img(8).label}  color={color} delay={d(8)}  style={{ gridColumn: "6 / 9",  gridRow: "4 / 5" }} onClick={() => openLightbox(8)} />
-          <BentoCell src={img(9).src}  alt={img(9).alt}  label={img(9).label}  color={color} delay={d(9)}  style={{ gridColumn: "9 / 13", gridRow: "4 / 6" }} onClick={() => openLightbox(9)} />
-          <BentoCell src={img(10).src} alt={img(10).alt} label={img(10).label} color={color} delay={d(10)} style={{ gridColumn: "1 / 4",  gridRow: "5 / 6" }} onClick={() => openLightbox(10)} />
-          <BentoCell src={img(11).src} alt={img(11).alt} label={img(11).label} color={color} delay={d(11)} style={{ gridColumn: "4 / 7",  gridRow: "5 / 6" }} onClick={() => openLightbox(11)} />
-          <BentoCell src={img(12).src} alt={img(12).alt} label={img(12).label} color={color} delay={d(12)} style={{ gridColumn: "7 / 9",  gridRow: "5 / 6" }} onClick={() => openLightbox(12)} />
-          <BentoCell src={img(13).src} alt={img(13).alt} label={img(13).label} color={color} delay={d(13)} style={{ gridColumn: "1 / 5",  gridRow: "6 / 7" }} onClick={() => openLightbox(13)} />
-          <BentoCell src={img(14).src} alt={img(14).alt} label={img(14).label} color={color} delay={d(14)} style={{ gridColumn: "5 / 9",  gridRow: "6 / 7" }} onClick={() => openLightbox(14)} />
-          <BentoCell src={img(15).src} alt={img(15).alt} label={img(15).label} color={color} delay={d(15)} style={{ gridColumn: "9 / 13", gridRow: "6 / 7" }} onClick={() => openLightbox(15)} />
+          {filled.map((item, i) => (
+            <BentoCell
+              key={i}
+              src={item.src}
+              alt={item.alt}
+              label={item.label}
+              color={color}
+              delay={d(i)}
+              style={cells[i]}
+              onClick={() => openLightbox(i)}
+            />
+          ))}
         </div>
 
         {/* mobile: 2-col, first cell full-width */}
         <div className="sm:hidden grid grid-cols-2 gap-3">
-          {Array.from({ length: 16 }, (_, i) => (
+          {filled.map((item, i) => (
             <BentoCell
               key={i}
-              src={img(i).src}
-              alt={img(i).alt}
-              label={img(i).label}
+              src={item.src}
+              alt={item.alt}
+              label={item.label}
               color={color}
               delay={d(i)}
               onClick={() => openLightbox(i)}
               style={{
-                aspectRatio: i === 0 ? "16/9" : i === 4 || i === 9 ? "1/1" : "4/3",
+                aspectRatio: i === 0 ? "16/9" : i % 5 === 4 ? "1/1" : "4/3",
                 gridColumn: i === 0 ? "1 / 3" : undefined,
               }}
             />
@@ -274,9 +306,9 @@ export default function BrandGallery({
       </div>
 
       {/* lightbox */}
-      {lightboxNav !== null && filledImages.length > 0 && (
+      {lightboxNav !== null && filled.length > 0 && (
         <Lightbox
-          images={filledImages}
+          images={filled}
           index={lightboxNav}
           onClose={closeLightbox}
           onPrev={prevImage}

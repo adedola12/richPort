@@ -10,9 +10,9 @@ import {
 } from "react-icons/fa";
 
 // swap these imports for your real images
-import ownImg from "../../assets/ownImg.png";
+import ownImg from "../../assets/ownImg.webp";
 import ownImg1 from "../../assets/ownImg1.jpg";
-import ownImg2 from "../../assets/ownImg2.png";
+import ownImg2 from "../../assets/ownImg2.webp";
 
 /* --- CARD DATA --------------------------------------------------------- */
 

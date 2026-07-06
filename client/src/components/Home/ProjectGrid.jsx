@@ -4,14 +4,15 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { fetchJson } from "../../api/http";
 
-import GraphicHeroImg from "../../assets/Graphics/HeroImg.png";
-import ydpayThumb from "../../assets/YDpay/iphone15pro.png";
+import GraphicHeroImg from "../../assets/Graphics/HeroImg.webp";
+import ydpayThumb from "../../assets/YDpay/iphone15pro.webp";
 import ydpayBrandThumb from "../../assets/YDpay/brand-screens/hero.jpg";
 import webHeroImg from "../../assets/workImg/WI1.png";
 import adlmThumb from "../../assets/ADLMStudio/ADLM Studio -  Discount.jpg";
 import wsThumb from "../../assets/Whitespace/Colours and their meanings - Cover.jpg";
-import ydpayGfxThumb from "../../assets/YDpayDesigns/Card Design 1.png";
-import presThumb from "../../assets/PresentationDesigns/1.png";
+import ydpayGfxThumb from "../../assets/YDpayDesigns/Card Design 1.webp";
+import presThumb from "../../assets/PresentationDesigns/1.webp";
+import niqsBrandThumb from "../../assets/NIQS/conference.webp";
 
 const STATIC_GFX_PROJECTS = [
   {
@@ -135,6 +136,7 @@ const STATIC_UI_PROJECTS = [
     categories: ["Product UI/UX Designs"],
     id: "static-savedup",
   },
+  /* Snotes — toggled off; uncomment to bring it back on the site.
   {
     kind: "ui",
     slug: "snotes",
@@ -147,9 +149,23 @@ const STATIC_UI_PROJECTS = [
     categories: ["Product UI/UX Designs"],
     id: "static-snotes",
   },
+  */
 ];
 
 const STATIC_BRAND_PROJECTS = [
+  {
+    kind: "default",
+    slug: "niqs-brand",
+    route: "/projects/niqs",
+    name: "NIQS — Brand Identity & Guidelines",
+    description: "Brand identity and guidelines system for the Nigerian Institute of Quantity Surveyors — a 55-year institution. Navy, gold, and a heraldic identity built to last.",
+    url: "",
+    tags: ["Brand Identity", "Institutional"],
+    images: { main: niqsBrandThumb },
+    pageImg: niqsBrandThumb,
+    categories: ["Brand Identity Designs"],
+    id: "static-niqs-brand",
+  },
   {
     kind: "default",
     slug: "ydpay-brand",

@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import midImg from "../../assets/Bookrion/midImg.png";
+import midImg from "../../assets/Bookrion/midImg.webp";
 
 const imgVariants = {
   hidden: {

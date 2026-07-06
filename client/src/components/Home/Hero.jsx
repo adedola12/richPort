@@ -1,6 +1,6 @@
 ﻿import React from "react";
 import { motion } from "framer-motion";
-import ProjHero from "../../assets/ProjectHero.png";
+import ProjHero from "../../assets/ProjectHero.webp";
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 22 },

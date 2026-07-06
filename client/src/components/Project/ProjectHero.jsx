@@ -1,7 +1,7 @@
 ﻿// src/components/Project/ProjectHero.jsx
 import React from "react";
 import { Link } from "react-router-dom";
-import ProjHero from "../../assets/ProjectHero.png";
+import ProjHero from "../../assets/ProjectHero.webp";
 
 // Adjust this to move the background image up/down/left/right
 // e.g. "center top", "center 20%", "center bottom", "50% 40%", etc.

@@ -1,6 +1,6 @@
 import React from "react";
 import SafeImage from "../common/SafeImage";
-import HeroImgMock from "../../assets/UIPage/HeroImgMock.png";
+import HeroImgMock from "../../assets/UIPage/HeroImgMock.webp";
 
 const HeroImg = ({ src, alt = "Hero image" }) => {
   return (

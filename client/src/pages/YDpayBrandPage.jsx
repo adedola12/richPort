@@ -11,16 +11,16 @@ import BrandGallery from "../components/ProjectPage/BrandGallery";
 import imgHero         from "../assets/YDpay/brand-screens/hero.jpg";
 import imgTypography   from "../assets/YDpay/brand-screens/typography.png";
 import imgToneOfVoice  from "../assets/YDpay/brand-screens/tone-of-voice.jpg";
-import imgPosters      from "../assets/YDpay/brand-screens/posters.png";
-import imgSocial       from "../assets/YDpay/brand-screens/social-samples.png";
-import imgAppUi        from "../assets/YDpay/brand-screens/app-ui.png";
+import imgPosters      from "../assets/YDpay/brand-screens/posters.webp";
+import imgSocial       from "../assets/YDpay/brand-screens/social-samples.webp";
+import imgAppUi        from "../assets/YDpay/brand-screens/app-ui.webp";
 import imgMarkPalette  from "../assets/YDpay/brand-screens/mark-palette.png";
-import imgBillboard    from "../assets/YDpay/brand-screens/billboard.png";
-import imgMerch        from "../assets/YDpay/brand-screens/merch.png";
-import imgStationery   from "../assets/YDpay/brand-screens/stationery.png";
-import imgToteBag      from "../assets/YDpay/brand-screens/tote-bag.png";
-import imgLetterhead   from "../assets/YDpay/brand-screens/letterhead.png";
-import imgEmailSig     from "../assets/YDpay/brand-screens/email-signature.png";
+import imgBillboard    from "../assets/YDpay/brand-screens/billboard.webp";
+import imgMerch        from "../assets/YDpay/brand-screens/merch.webp";
+import imgStationery   from "../assets/YDpay/brand-screens/stationery.webp";
+import imgToteBag      from "../assets/YDpay/brand-screens/tote-bag.webp";
+import imgLetterhead   from "../assets/YDpay/brand-screens/letterhead.webp";
+import imgEmailSig     from "../assets/YDpay/brand-screens/email-signature.webp";
 import imgSocialMedia  from "../assets/YDpay/brand-screens/social-media.webp";
 import imgFolder       from "../assets/YDpay/brand-screens/folder.webp";
 import imgTshirt       from "../assets/YDpay/brand-screens/tshirt.webp";
@@ -28,24 +28,24 @@ import imgNotebook     from "../assets/YDpay/brand-screens/notebook.webp";
 import imgBottle       from "../assets/YDpay/brand-screens/bottle.webp";
 
 /* ── bento gallery ── */
-import gProduct    from "../assets/YDpay/guidelines/g9-product.png";
+import gProduct    from "../assets/YDpay/guidelines/g9-product.webp";
 
 /* ── guideline carousel images (15 fresh pages) ── */
-import gc1  from "../assets/YDpay/guidelines/c1-vision.png";
-import gc2  from "../assets/YDpay/guidelines/c2-core-values.png";
-import gc3  from "../assets/YDpay/guidelines/c3-touchpoints.png";
-import gc4  from "../assets/YDpay/guidelines/c4-billboard-move.png";
-import gc5  from "../assets/YDpay/guidelines/c5-billboard-ceiling.png";
-import gc6  from "../assets/YDpay/guidelines/c6-billboard-vertical.png";
+import gc1  from "../assets/YDpay/guidelines/c1-vision.webp";
+import gc2  from "../assets/YDpay/guidelines/c2-core-values.webp";
+import gc3  from "../assets/YDpay/guidelines/c3-touchpoints.webp";
+import gc4  from "../assets/YDpay/guidelines/c4-billboard-move.webp";
+import gc5  from "../assets/YDpay/guidelines/c5-billboard-ceiling.webp";
+import gc6  from "../assets/YDpay/guidelines/c6-billboard-vertical.webp";
 import gc7  from "../assets/YDpay/guidelines/c7-billboard-wall.png";
 import gc8  from "../assets/YDpay/guidelines/c8-poster-window.png";
 import gc9  from "../assets/YDpay/guidelines/c9-billboard-building.png";
 import gc10 from "../assets/YDpay/guidelines/c10-cards-marble.png";
 import gc11 from "../assets/YDpay/guidelines/c11-cards-flat.png";
 import gc12 from "../assets/YDpay/guidelines/c12-tote-bag.png";
-import gc13 from "../assets/YDpay/guidelines/c13-email-sig.png";
+import gc13 from "../assets/YDpay/guidelines/c13-email-sig.webp";
 import gc14 from "../assets/YDpay/guidelines/c14-letterhead.png";
-import gc15 from "../assets/YDpay/guidelines/c15-typography.png";
+import gc15 from "../assets/YDpay/guidelines/c15-typography.webp";
 
 const GR = "#a3e635"; // portfolio lime
 const RED = "#E05252";
@@ -677,38 +677,19 @@ export default function YDpayBrandPage() {
           description="Selected touchpoint designs across social, marketing, merch, and stationery — the brand system working in real-world contexts."
           color={GR}
           images={[
-            /* Slot 1 — big left portrait anchor */
             { src: imgAppUi,      alt: "App UI",           label: "APP UI" },
-            /* Slot 2 — wide landscape */
             { src: imgMerch,      alt: "Hoodie Design",    label: "HOODIE" },
-            /* Slot 3 — wide landscape */
             { src: imgBillboard,  alt: "Billboard",        label: "BILLBOARD" },
-            /* Slot 4 — mid landscape */
             { src: imgPosters,    alt: "Poster Design",    label: "POSTER DESIGN" },
-            /* Slot 5 — tall right portrait anchor */
             { src: imgToteBag,    alt: "Tote Bag",         label: "TOTE BAG" },
-            /* Slot 6 — narrow, portrait-ish */
             { src: imgStationery, alt: "Business Card",    label: "BUSINESS CARD" },
-            /* Slot 7 — 5-wide, landscape (email sigs are horizontal) */
             { src: imgEmailSig,   alt: "Email Signature",  label: "EMAIL SIGNATURE" },
-            /* Slot 8 — wide landscape */
             { src: imgLetterhead, alt: "Letterhead",       label: "LETTERHEAD" },
-            /* Slot 9 — medium, social media */
             { src: imgSocialMedia, alt: "Social Media Designs", label: "SOCIAL MEDIA" },
-            /* Slot 10 — tall right anchor */
-            { src: null,          alt: "Website UI",       label: "WEBSITE UI" },
-            /* Slot 11 */
             { src: imgFolder,     alt: "Folder Design",    label: "FOLDER DESIGN" },
-            /* Slot 12 */
             { src: imgTshirt,     alt: "T-Shirt",          label: "T-SHIRT" },
-            /* Slot 13 — small */
-            { src: null,          alt: "Cup",              label: "CUP" },
-            /* Slot 14 */
             { src: imgNotebook,   alt: "Notebook",         label: "NOTEBOOK" },
-            /* Slot 15 */
             { src: imgBottle,     alt: "Bottle",           label: "BOTTLE" },
-            /* Slot 16 */
-            { src: null,          alt: "Signage",          label: "SIGNAGE" },
           ]}
         />
 

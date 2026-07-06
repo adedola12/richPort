@@ -8,7 +8,7 @@ import BuildSection from "../components/Home/BuildSection";
 import PageMeta from "../components/common/PageMeta";
 
 import iphone12 from "../assets/YDpay/iphone12pro.png";
-import iphone15 from "../assets/YDpay/iphone15pro.png";
+import iphone15 from "../assets/YDpay/iphone15pro.webp";
 import iphone16 from "../assets/YDpay/iphone16pro.png";
 import mockup13 from "../assets/YDpay/mockup13.png";
 import heroBg from "../assets/YDpay/HeroBackground.png";
