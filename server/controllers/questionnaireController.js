@@ -1,4 +1,5 @@
 import Questionnaire from "../models/Questionnaire.js";
+import RateCategory from "../models/RateModel.js";
 import { nextSequence } from "../models/Counter.js";
 import { PLANS, OWNER, getFxRate, computeMoney } from "../config/plans.js";
 import { mailConfigured, sendMail } from "../utils/mailer.js";
@@ -50,9 +51,23 @@ export async function createQuestionnaire(req, res) {
     if (!responses.brand_name)
       return res.status(400).json({ ok: false, error: "Brand name is required." });
 
-    // money is recomputed here — client-sent figures are ignored
+    // money is recomputed here — client-sent figures are ignored.
+    // Admin-set pricing from the rate card overrides the config fallback.
     const fx = await getFxRate();
-    const money = computeMoney(planKey, fx.rate);
+    let priceOverride = null;
+    try {
+      const cat = await RateCategory.findOne({ id: "brand-identity" });
+      const dbPlan = cat?.plans?.find((p) => {
+        const nm = String(p.name || "").trim().toLowerCase();
+        return nm === planKey || nm.includes(planKey) || String(p.id || "").trim().toLowerCase() === planKey;
+      });
+      if (dbPlan && Number(dbPlan.price) > 0) {
+        priceOverride = { price: Number(dbPlan.price), currency: dbPlan.currency || "USD" };
+      }
+    } catch (rateErr) {
+      console.error("rate card lookup failed, using config pricing:", rateErr);
+    }
+    const money = computeMoney(planKey, fx.rate, priceOverride);
 
     const seq = await nextSequence("invoice", INVOICE_SEED);
     const invoiceNo = formatInvoiceNo(seq);

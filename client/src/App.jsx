@@ -42,7 +42,11 @@ function App() {
   /* Buttery smooth scrolling — Lenis eases native scroll, so
      scroll-driven framer-motion sections keep working untouched. */
   useEffect(() => {
-    const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    const lenis = new Lenis({ duration: 0.9, smoothWheel: true, wheelMultiplier: 1.2 });
+    // Exposed so route changes (ScrollToTop) can reset Lenis's internal
+    // target — a bare window.scrollTo leaves it stale and the next wheel
+    // input animates back from the old position (feels like a hang).
+    window.__lenis = lenis;
     let rafId;
     const raf = (time) => {
       lenis.raf(time);
@@ -52,6 +56,7 @@ function App() {
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
+      window.__lenis = null;
     };
   }, []);
 

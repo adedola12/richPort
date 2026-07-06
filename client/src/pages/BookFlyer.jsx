@@ -1,6 +1,6 @@
 // src/pages/BookFlyer.jsx — flyer / social-media design booking
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import PageMeta from "../components/common/PageMeta";
 import { fetchJson } from "../api/http";
@@ -33,8 +33,12 @@ const F = ({ label, optional, children }) => (
 
 const BookFlyer = () => {
   const hpRef = useRef(null);
+  const [searchParams] = useSearchParams();
   const [plans, setPlans] = useState(DEFAULT_PLANS);
-  const [plan, setPlan] = useState("");
+  const [plan, setPlan] = useState(() => {
+    const p = (searchParams.get("plan") || "").toLowerCase();
+    return DEFAULT_PLANS[p] ? p : "";
+  });
   const [form, setForm] = useState({
     name: "", email: "", phone: "", brand: "", purpose: "", deadline: "",
     headline: "", subtitle: "", bodyText: "", eventDetails: "", references: "", breakdown: "",

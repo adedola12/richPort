@@ -1,5 +1,6 @@
 // src/components/Rate/BrandIdentity.jsx
 import React, { useEffect, useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import PlanSelection from "./PlanSelection";
 import PlanDetails from "./PlanDetails";
 
@@ -24,6 +25,85 @@ const FALLBACK_CATEGORIES = [
   { id: "presentation-design",  label: "Presentation Design",       altLabels: [],                         heading: "Presentation Design",       description: "", plans: [], deliverables: [] },
 ];
 
+/* ── Flyer packages — shown under the Graphic Designs tab ──
+   Graphic design bookings are flyer/social designs, priced in NGN via
+   /api/flyer-requests/plans (server-owned), not the RateCategory plans. */
+const FLYER_FALLBACK = {
+  single: { label: "Single Design", designs: 1, priceNGN: 15000, perDesign: 15000, sourceFiles: false },
+  triple: { label: "3-Design Pack", designs: 3, priceNGN: 39000, perDesign: 13000, sourceFiles: false },
+  five:   { label: "5-Design Pack", designs: 5, priceNGN: 55000, perDesign: 11000, sourceFiles: true },
+  event:  { label: "Event Campaign (6+ designs)", designs: null, priceNGN: null, perDesign: 9000, sourceFiles: true },
+};
+const FLYER_ORDER = ["single", "triple", "five", "event"];
+const NGN = (v) => `₦${Number(v).toLocaleString("en-NG")}`;
+
+const FlyerPlans = () => {
+  const navigate = useNavigate();
+  const [plans, setPlans] = useState(FLYER_FALLBACK);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch(`${PUBLIC_RATES_API}/api/flyer-requests/plans`);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data && data.single) setPlans(data);
+      } catch {
+        /* keep fallback */
+      }
+    };
+    load();
+  }, []);
+
+  return (
+    <div className="mt-16">
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {FLYER_ORDER.map((key) => {
+          const p = plans[key];
+          const featured = key === "five";
+          return (
+            <div
+              key={key}
+              className={`flex flex-col rounded-[24px] border p-6 ${
+                featured
+                  ? "border-lime-500/70 bg-[radial-gradient(circle_at_top,_rgba(132,204,22,0.22),transparent_55%),_#050505] shadow-[0_0_40px_rgba(132,204,22,0.18)]"
+                  : "border-lime-500/25 bg-[#0b0b0e]"
+              }`}
+            >
+              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-neutral-400 mb-3">{p.label}</p>
+              <p className="text-3xl font-extrabold text-white">
+                {p.priceNGN != null ? NGN(p.priceNGN) : "Custom"}
+              </p>
+              <p className="mt-1 text-xs text-neutral-500">
+                {p.priceNGN != null ? `${NGN(p.perDesign)} per design` : `from ${NGN(p.perDesign)} per design`}
+              </p>
+              <ul className="mt-5 mb-6 space-y-1.5 text-[13px] text-neutral-300 flex-1">
+                <li>• {p.designs ? `${p.designs} flyer / social design${p.designs > 1 ? "s" : ""}` : "6+ designs — full event set"}</li>
+                <li>• Print + social-ready exports</li>
+                <li>• {p.sourceFiles ? "Source files included" : "No source files"}</li>
+              </ul>
+              <button
+                type="button"
+                onClick={() => navigate(`/book-flyer?plan=${key}`)}
+                className={`w-full rounded-xl px-4 py-3 text-sm font-bold text-white transition hover:brightness-110 ${
+                  featured
+                    ? "bg-gradient-to-b from-lime-500 to-lime-700 shadow-[0_12px_40px_rgba(132,204,22,0.5)]"
+                    : "bg-gradient-to-b from-slate-500 to-slate-800"
+                }`}
+              >
+                {p.priceNGN != null ? "Book this pack" : "Request a quote"}
+              </button>
+            </div>
+          );
+        })}
+      </div>
+      <p className="mt-8 text-center text-xs text-neutral-500">
+        The more designs you book, the less each one costs. Event campaigns cover anticipate, countdown, speaker, and thank-you designs.
+      </p>
+    </div>
+  );
+};
+
 const BrandIdentity = () => {
   const [rateCategories, setRateCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,16 +118,28 @@ const BrandIdentity = () => {
         if (!res.ok) throw new Error("Failed to fetch rate categories");
         const data = await res.json();
         const array = Array.isArray(data) ? data : [];
-        // Merge: backend data takes priority, fallbacks fill in missing categories
+        // Merge: backend data takes priority, fallbacks fill in missing
+        // categories. Match by id first, then label (case-insensitive),
+        // so admin edits always land on the right tab.
+        const eq = (a, b) => String(a || "").trim().toLowerCase() === String(b || "").trim().toLowerCase();
         const merged = FALLBACK_CATEGORIES.map((fallback) => {
           const fromBackend = array.find(
-            (c) => c.label === fallback.label || fallback.altLabels.includes(c.label)
+            (c) =>
+              eq(c.id, fallback.id) ||
+              eq(c.label, fallback.label) ||
+              fallback.altLabels.some((l) => eq(c.label, l))
           );
-          return fromBackend ? { ...fromBackend, label: fallback.label } : fallback;
+          return fromBackend ? { ...fromBackend, id: fallback.id, label: fallback.label } : fallback;
         });
-        setRateCategories(merged);
-        if (merged.length > 0 && !activeCategoryId) {
-          setActiveCategoryId(merged[0].id);
+        // Admin-created categories that don't map to a known tab still show.
+        const usedMongoIds = new Set(merged.map((m) => m.mongoId).filter(Boolean));
+        const extras = array
+          .filter((c) => c.mongoId && !usedMongoIds.has(c.mongoId))
+          .map((c) => ({ plans: [], deliverables: [], ...c }));
+        const all = [...merged, ...extras];
+        setRateCategories(all);
+        if (all.length > 0 && !activeCategoryId) {
+          setActiveCategoryId(all[0].id);
         }
       } catch (err) {
         console.error(err);
@@ -148,18 +240,25 @@ const BrandIdentity = () => {
         </div>
 
         {/* ── CARDS ── */}
-        <PlanSelection
-          plans={activeCategory.plans}
-          detailsOpen={showDetails}
-          onToggleDetails={() => setShowDetails((v) => !v)}
-        />
+        {activeCategory.id === "graphic-design" ? (
+          /* Graphic design bookings are flyer designs — server-priced packs */
+          <FlyerPlans />
+        ) : (
+          <>
+            <PlanSelection
+              plans={activeCategory.plans}
+              detailsOpen={showDetails}
+              onToggleDetails={() => setShowDetails((v) => !v)}
+            />
 
-        {/* ── DELIVERABLES TABLE ── */}
-        <PlanDetails
-          plans={activeCategory.plans}
-          deliverables={activeCategory.deliverables}
-          isOpen={showDetails}
-        />
+            {/* ── DELIVERABLES TABLE ── */}
+            <PlanDetails
+              plans={activeCategory.plans}
+              deliverables={activeCategory.deliverables}
+              isOpen={showDetails}
+            />
+          </>
+        )}
       </div>
     </section>
   );

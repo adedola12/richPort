@@ -86,10 +86,22 @@ export async function getFxRate() {
   return { rate: PRICING.FALLBACK_RATE, source: "fallback" };
 }
 
-export function computeMoney(planKey, fxRate) {
-  const usd = PRICING.USD[planKey];
+export function computeMoney(planKey, fxRate, override = null) {
   const r = PRICING.ROUND_TO || 1;
-  const price = Math.round((usd * fxRate) / r) * r;
+  let usd = PRICING.USD[planKey];
+  let price;
+  // Admin-set price from the rate card (RateCategory) wins over config.
+  if (override && Number(override.price) > 0) {
+    if ((override.currency || "USD") === "USD") {
+      usd = Number(override.price);
+      price = Math.round((usd * fxRate) / r) * r;
+    } else {
+      price = Number(override.price);
+      usd = Math.round(price / fxRate);
+    }
+  } else {
+    price = Math.round((usd * fxRate) / r) * r;
+  }
   const deposit = Math.round((price * DEPOSIT_PCT) / 100);
   return { price_usd: usd, price, deposit, balance: price - deposit };
 }

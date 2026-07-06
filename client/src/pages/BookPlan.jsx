@@ -6,7 +6,7 @@ import PageMeta from "../components/common/PageMeta";
 import { fetchJson } from "../api/http";
 import {
   OWNER, PLANS, DEPOSIT_PCT,
-  initialFx, fetchLiveRate, planPrice, planUSD, pct, formatNGN as N,
+  initialFx, fetchLiveRate, planPrice, planUSD, planKeyFromName, pct, formatNGN as N,
 } from "../config/plans";
 import goldBadge from "../assets/Gold.png";
 import silverBadge from "../assets/Silver.png";
@@ -195,8 +195,42 @@ const BookPlan = () => {
     return () => { on = false; };
   }, []);
 
+  /* ---------------- admin-set pricing from the rate card ----------------
+     Prices maintained in the admin panel (RateCategory "brand-identity")
+     override the hardcoded config; config stays as the offline fallback.
+     The server does the same lookup on submit, so displayed == charged. */
+  const [dbPrices, setDbPrices] = useState(null);
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    let on = true;
+    fetchJson("/api/rates/category/brand-identity")
+      .then((cat) => {
+        if (!on || !Array.isArray(cat?.plans) || cat.plans.length === 0) return;
+        const map = {};
+        cat.plans.forEach((p) => {
+          const k = planKeyFromName(p.name);
+          if (k && Number(p.price) > 0) map[k] = { price: Number(p.price), currency: p.currency || "USD" };
+        });
+        if (Object.keys(map).length) setDbPrices(map);
+      })
+      .catch(() => {});
+    return () => { on = false; };
+  }, []);
+
+  const usdOf = (key) => {
+    const d = dbPrices?.[key];
+    if (d) return d.currency === "USD" ? d.price : Math.round(d.price / fx.rate);
+    return planUSD(key);
+  };
+  const ngnOf = (key) => {
+    const d = dbPrices?.[key];
+    if (d && d.currency !== "USD") return d.price;
+    if (d) return Math.round((d.price * fx.rate) / 1000) * 1000;
+    return planPrice(key, fx.rate);
+  };
+
+  useEffect(() => {
+    if (window.__lenis) window.__lenis.scrollTo(0, { immediate: true, force: true });
+    else window.scrollTo({ top: 0, behavior: "instant" });
   }, [stepIdx]);
 
   /* ---------------- state helpers ---------------- */
@@ -235,13 +269,13 @@ const BookPlan = () => {
 
   /* ---------------- payload ---------------- */
   const collectResponses = () => {
-    const price = plan ? planPrice(selectedPlan, fx.rate) : 0;
+    const price = plan ? ngnOf(selectedPlan) : 0;
     const data = {
       _meta: {
         plan_key: selectedPlan,
         plan: plan ? plan.label : "",
         price,
-        price_usd: plan ? planUSD(selectedPlan) : 0,
+        price_usd: plan ? usdOf(selectedPlan) : 0,
         fx_rate: fx.rate,
         fx_source: fx.source,
         deposit: plan ? pct(price, DEPOSIT_PCT) : 0,
@@ -328,11 +362,11 @@ const BookPlan = () => {
         url="/book"
       />
 
-      <div className="mx-auto max-w-[880px] px-5 pb-20 pt-10 sm:px-6">
+      <div className="mx-auto max-w-[880px] px-5 pb-20 pt-28 sm:px-6 sm:pt-32">
         {/* ---------- header ---------- */}
         <div className="mb-9 text-center">
-          <div className="font-['Great_Vibes',cursive] text-3xl">Richard Enoch</div>
-          <h1 className="mt-2 text-2xl font-extrabold tracking-tight sm:text-4xl">
+          <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-lime-400">Book a Plan</p>
+          <h1 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-4xl">
             Book a plan &amp; tell me about <span className="text-lime-400">your brand</span>
           </h1>
           <p className="mx-auto mt-3 max-w-[580px] text-sm font-light leading-relaxed text-neutral-400">
@@ -342,7 +376,7 @@ const BookPlan = () => {
           {plan && (
             <div className="mt-4 inline-flex items-center gap-2 rounded-[10px] border border-lime-400/40 bg-lime-400/10 px-4 py-1.5 text-[13px] font-semibold text-lime-400">
               <span className="h-1.5 w-1.5 rounded-full bg-lime-400 shadow-[0_0_8px_rgba(163,230,53,0.9)]" />
-              {plan.label} Package — {N(planPrice(selectedPlan, fx.rate))}
+              {plan.label} Package — {N(ngnOf(selectedPlan))}
             </div>
           )}
         </div>
@@ -381,7 +415,7 @@ const BookPlan = () => {
             <div className="grid gap-4 md:grid-cols-3">
               {Object.entries(PLANS).map(([key, p]) => {
                 const sel = selectedPlan === key;
-                const price = planPrice(key, fx.rate);
+                const price = ngnOf(key);
                 return (
                   <button
                     type="button"
@@ -401,7 +435,7 @@ const BookPlan = () => {
                       {price.toLocaleString()}
                     </div>
                     <div className="mt-0.5 text-[11px] text-zinc-500">
-                      {DEPOSIT_PCT}% deposit: {N(pct(price, DEPOSIT_PCT))} • ${planUSD(key)}
+                      {DEPOSIT_PCT}% deposit: {N(pct(price, DEPOSIT_PCT))} • ${usdOf(key)}
                     </div>
                     <ul className="mt-3.5 border-t border-white/10 pt-3">
                       {p.deliverables.slice(0, 6).map((d) => (
