@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import Lenis from "lenis";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/common/ScrollToTop.jsx";
@@ -35,6 +36,22 @@ function App() {
     return () => {
       clearTimeout(fallback);
       window.removeEventListener("load", finish);
+    };
+  }, []);
+
+  /* Buttery smooth scrolling — Lenis eases native scroll, so
+     scroll-driven framer-motion sections keep working untouched. */
+  useEffect(() => {
+    const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+    let rafId;
+    const raf = (time) => {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    };
+    rafId = requestAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
     };
   }, []);
 

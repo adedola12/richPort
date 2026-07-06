@@ -8,24 +8,19 @@ const Preloader = () => (
     exit={{ opacity: 0 }}
     transition={{ duration: 0.65, ease: [0.22, 0.61, 0.36, 1] }}
   >
-    {/* Monogram */}
+    {/* Logo */}
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 0.61, 0.36, 1], delay: 0.1 }}
       className="mb-7"
     >
-      <span
-        className="text-[52px] font-bold tracking-[-0.04em]"
-        style={{
-          background: "linear-gradient(180deg, #ffffff 0%, #6b6b6b 100%)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
-        }}
-      >
-        RE
-      </span>
+      <img
+        src="/reni-logo.png"
+        alt=""
+        className="h-[72px] w-[72px] object-contain"
+        draggable="false"
+      />
     </motion.div>
 
     {/* Progress track */}

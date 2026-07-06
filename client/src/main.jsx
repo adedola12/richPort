@@ -33,7 +33,6 @@ import VerdeLuxeProject from "./pages/VerdeLuxeProject.jsx";
 import CleansteadProject from "./pages/CleansteadProject.jsx";
 import BookRionProject from "./pages/BookRionProject.jsx";
 import ADLMStudioPage from "./pages/ADLMStudioPage.jsx";
-import NIQSProject from "./pages/NIQSProject.jsx";
 import NiqsUIProject from "./pages/NiqsUIProject.jsx";
 import YDpayBrandPage from "./pages/YDpayBrandPage.jsx";
 import WhitespacePage from "./pages/WhitespacePage.jsx";
@@ -42,6 +41,7 @@ import Contact from "./pages/Contact.jsx";
 import PresentationDesignPage from "./pages/PresentationDesignPage.jsx";
 import BookPlan from "./pages/BookPlan.jsx";
 import TestimonialPage from "./pages/TestimonialPage.jsx";
+import BookFlyer from "./pages/BookFlyer.jsx";
 
 // Redirect component that preserves slug params
 const RedirectWithSlug = ({ basePath }) => {
@@ -58,7 +58,7 @@ const router = createBrowserRouter([
       { path: "about", element: <About /> },
 
       { path: "projects", element: <Projects /> },
-      { path: "projects/niqs", element: <NIQSProject /> },
+      { path: "projects/niqs", element: <Navigate to="/ui-projects/niqs" replace /> },
       { path: "projects/tabstudio", element: <TabStudioProject /> },
       { path: "projects/verde-luxe", element: <VerdeLuxeProject /> },
       { path: "projects/cleanstead", element: <CleansteadProject /> },
@@ -71,6 +71,7 @@ const router = createBrowserRouter([
       { path: "website-design", element: <WebsiteDesignPage /> },
       { path: "rate-details", element: <RateDetails /> },
       { path: "book", element: <BookPlan /> },
+      { path: "book-flyer", element: <BookFlyer /> },
       { path: "contact", element: <Contact /> },
       { path: "testimonial", element: <TestimonialPage /> },
       { path: "presentation-design", element: <PresentationDesignPage /> },

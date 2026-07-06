@@ -25,6 +25,7 @@ const LABELS = {
   audience: "Target audience", values: "Brand values & mission", perception: "Desired perception",
   aesthetic: "Design aesthetic", colors: "Colour preferences", existing_logo: "Existing logo",
   inspiration: "Brands admired", avoid: "Things to avoid", competitors: "Competitors", tagline: "Tagline",
+  name_story: "Idea behind the name", brand_vision: "Vision for the brand & logo", personality: "Brand personality",
   site_purpose: "Website purpose", site_actions: "Visitor actions", specialty_page: "Specialty page focus",
   content_status: "Content readiness", photos: "Project photos", site_refs: "Reference websites",
   features: "Website features", domain_1: "Domain — 1st choice", domain_2: "Domain — 2nd choice",
@@ -37,7 +38,7 @@ const LABELS = {
 
 const SECTIONS = [
   ["About You & Your Business", "about", ["first_name", "last_name", "email", "phone", "brand_name", "business_about", "focus", "service_areas", "trust_signals", "peculiarity", "goals_short", "goals_long"]],
-  ["Brand Identity", "brand", ["audience", "values", "perception", "aesthetic", "colors", "existing_logo", "inspiration", "avoid", "competitors", "tagline"]],
+  ["Brand Identity", "brand", ["name_story", "audience", "values", "brand_vision", "perception", "personality", "aesthetic", "colors", "existing_logo", "inspiration", "avoid", "competitors", "tagline"]],
   ["Your Website", "website", ["site_purpose", "site_actions", "specialty_page", "content_status", "photos", "site_refs", "features", "domain_1", "domain_2", "domain_3"]],
   ["Social Media", "social", ["social_active", "social_platforms", "social_content", "social_tone", "social_refs"]],
   ["Working Together", "working", ["duration", "comm", "updates", "approver", "anything_else"]],
@@ -461,9 +462,12 @@ const BookPlan = () => {
         {step === "brand" && (
           <div className={cardCls}>
             <SectionHead no={secNo("brand")} title="Brand Identity" sub="How your brand should look, feel and be perceived." />
-            <Field><Label text="Who is your target audience?" hint="Be specific — e.g. busy professionals, estate residents, offices, property managers." /><Area {...bind} name="audience" /></Field>
+            <Field><Label text="What's the idea behind your brand's name?" hint="The story, meaning, or inspiration behind the name — where it came from and what it stands for." /><Area {...bind} name="name_story" /></Field>
+            <Field><Label text="Who is your ideal target audience?" hint="Be specific — e.g. busy professionals, estate residents, offices, property managers." /><Area {...bind} name="audience" /></Field>
             <Field><Label text="What are your brand values and mission?" /><Area {...bind} name="values" /></Field>
+            <Field><Label text="Is there a vision you want the brand to paint?" hint="Describe the picture you see when you imagine the finished brand and logo — scenes, feelings, imagery, symbols." /><Area {...bind} name="brand_vision" /></Field>
             <Field><Label text="How do you want customers to perceive your brand?" hint="e.g. trustworthy, premium, friendly, professional." /><Input {...bind} name="perception" placeholder="3–5 words that should come to mind" /></Field>
+            <Field><Label text="If your brand were a person, how would you describe them?" hint="3–5 adjectives — e.g. confident, warm, meticulous, playful." /><Input {...bind} name="personality" /></Field>
             <Field><Label text="Describe your desired design aesthetic" hint="e.g. clean and minimal, bold and modern, premium and elegant." /><Input {...bind} name="aesthetic" /></Field>
             <Field><Label text="Any colour preferences?" hint="Colours you love, colours to avoid, and why." /><Input {...bind} name="colors" /></Field>
             <Field>

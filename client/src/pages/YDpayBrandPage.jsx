@@ -26,6 +26,7 @@ import imgFolder       from "../assets/YDpay/brand-screens/folder.webp";
 import imgTshirt       from "../assets/YDpay/brand-screens/tshirt.webp";
 import imgNotebook     from "../assets/YDpay/brand-screens/notebook.webp";
 import imgBottle       from "../assets/YDpay/brand-screens/bottle.webp";
+import imgCup          from "../assets/YDpay/brand-screens/cup.webp";
 
 /* ── bento gallery ── */
 import gProduct    from "../assets/YDpay/guidelines/g9-product.webp";
@@ -690,6 +691,7 @@ export default function YDpayBrandPage() {
             { src: imgTshirt,     alt: "T-Shirt",          label: "T-SHIRT" },
             { src: imgNotebook,   alt: "Notebook",         label: "NOTEBOOK" },
             { src: imgBottle,     alt: "Bottle",           label: "BOTTLE" },
+            { src: imgCup,        alt: "Cup",              label: "CUP" },
           ]}
         />
 

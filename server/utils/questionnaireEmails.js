@@ -19,6 +19,7 @@ const LABELS = {
   audience: "Target audience", values: "Brand values & mission", perception: "Desired perception",
   aesthetic: "Design aesthetic", colors: "Colour preferences", existing_logo: "Existing logo",
   inspiration: "Brands admired", avoid: "Things to avoid", competitors: "Competitors", tagline: "Tagline",
+  name_story: "Idea behind the name", brand_vision: "Vision for the brand & logo", personality: "Brand personality",
   site_purpose: "Website purpose", site_actions: "Visitor actions", specialty_page: "Specialty page focus",
   content_status: "Content readiness", photos: "Project photos", site_refs: "Reference websites",
   features: "Website features", domain_1: "Domain — 1st choice", domain_2: "Domain — 2nd choice",
@@ -33,7 +34,7 @@ export const QUESTION_KEYS = Object.keys(LABELS);
 
 const SECTIONS = [
   ["About You & Your Business", "about", ["first_name", "last_name", "email", "phone", "brand_name", "business_about", "focus", "service_areas", "trust_signals", "peculiarity", "goals_short", "goals_long"]],
-  ["Brand Identity", "brand", ["audience", "values", "perception", "aesthetic", "colors", "existing_logo", "inspiration", "avoid", "competitors", "tagline"]],
+  ["Brand Identity", "brand", ["name_story", "audience", "values", "brand_vision", "perception", "personality", "aesthetic", "colors", "existing_logo", "inspiration", "avoid", "competitors", "tagline"]],
   ["Your Website", "website", ["site_purpose", "site_actions", "specialty_page", "content_status", "photos", "site_refs", "features", "domain_1", "domain_2", "domain_3"]],
   ["Social Media", "social", ["social_active", "social_platforms", "social_content", "social_tone", "social_refs"]],
   ["Working Together", "working", ["duration", "comm", "updates", "approver", "anything_else"]],

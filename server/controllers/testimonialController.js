@@ -39,9 +39,11 @@ export const createTestimonial = async (req, res) => {
 /* Public: testimonials shown on the site — 4★+ and not hidden by admin */
 export const listPublicTestimonials = async (_req, res) => {
   try {
+    // Capped at 7 — the home section is scroll-driven, so more cards means
+    // a longer pinned scroll, which gets frustrating.
     const items = await Testimonial.find({ rating: { $gte: 4 }, hidden: false })
       .sort({ createdAt: -1 })
-      .limit(24);
+      .limit(7);
     return res.json(items);
   } catch (err) {
     console.error("listPublicTestimonials error:", err);

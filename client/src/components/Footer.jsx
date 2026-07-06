@@ -49,6 +49,7 @@ const WORK_COL_A = [
   { label: "Website Design",   to: "/website-design" },
   { label: "Graphic Design",   to: "/graphic-design" },
   { label: "UI / UX Projects", to: "/projects" },
+  { label: "Book a Flyer",     to: "/book-flyer" },
 ];
 
 const WORK_COL_B = [

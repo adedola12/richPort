@@ -4,6 +4,24 @@ import { motion, useMotionValue, useTransform, useSpring, useInView } from "fram
 import OtherProj from "../components/ProjectPage/OtherProj";
 import BuildSection from "../components/Home/BuildSection";
 import PageMeta from "../components/common/PageMeta";
+import BrandGallery from "../components/ProjectPage/BrandGallery";
+
+/* touchpoint mockups */
+import imgBillboard     from "../assets/NIQS/board.webp";
+import imgBottle        from "../assets/NIQS/bottle.webp";
+import imgCapBlue       from "../assets/NIQS/cap-blue.webp";
+import imgCapWhite      from "../assets/NIQS/cap-white.webp";
+import imgConference    from "../assets/NIQS/conference.webp";
+import imgCup           from "../assets/NIQS/cup.webp";
+import imgEmailSig      from "../assets/NIQS/email-signature.webp";
+import imgFolder        from "../assets/NIQS/folder.webp";
+import imgHoodie        from "../assets/NIQS/hoodie.webp";
+import imgHoodieWhite   from "../assets/NIQS/hoodie-white.webp";
+import imgJournal       from "../assets/NIQS/journal.webp";
+import imgLetterhead    from "../assets/NIQS/letterhead.webp";
+import imgShirt         from "../assets/NIQS/shirt.webp";
+import imgToteBag       from "../assets/NIQS/tote-bag.webp";
+import imgToteBagLadies from "../assets/NIQS/tote-bag-ladies.webp";
 
 const GR = "#a3e635";
 const NIQS_NAVY = "#000066";
@@ -139,27 +157,6 @@ const TiltFrame = ({ src, alt = "", className = "", style = {}, onClick }) => {
     </div>
   );
 };
-
-const BentoCell = ({ n, src = null, cap = "", style = {}, className = "" }) => (
-  <div
-    className={`relative rounded-lg sm:rounded-2xl overflow-hidden border border-white/8 bg-white/[0.025] group cursor-pointer ${className}`}
-    style={style}
-  >
-    {src ? (
-      <img src={src} alt={cap} className="w-full h-full object-cover" loading="lazy" />
-    ) : (
-      <div className="w-full h-full flex flex-col items-center justify-center gap-2 p-4">
-        <span className="text-[10px] font-mono text-white/10">{String(n).padStart(2, "0")}</span>
-        {cap && <p className="text-[10px] text-white/20 text-center leading-relaxed max-w-[200px]">{cap}</p>}
-      </div>
-    )}
-    <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-      <div className="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-      </div>
-    </div>
-  </div>
-);
 
 export default function NiqsUIProject() {
   const ph = useCallback(() => console.log("Image placeholder clicked — replace src in code"), []);
@@ -521,14 +518,15 @@ export default function NiqsUIProject() {
         <section className="py-10 sm:py-16 px-3 sm:px-6">
           <FadeUp className="max-w-[1100px] mx-auto">
             <div
-              className="rounded-2xl sm:rounded-3xl overflow-hidden border-2 flex items-center justify-center"
+              className="rounded-2xl sm:rounded-3xl overflow-hidden border-2"
               style={{ borderColor: `${GR}55`, height: "55vh", background: "#0A0D12" }}
             >
-              <p className="text-[11px] text-white/20 text-center px-8 leading-relaxed">
-                NIQS — Visual band (Figma TBD)
-                <br />
-                <span className="text-white/10">New NIQS website home page in desktop browser frame, or brand guideline open across multiple chapters (logo + color + typography)</span>
-              </p>
+              <img
+                src={imgBillboard}
+                alt="NIQS public awareness billboard — the new brand live in a transit environment"
+                className="w-full h-full object-cover object-center"
+                loading="lazy"
+              />
             </div>
           </FadeUp>
         </section>
@@ -713,6 +711,41 @@ export default function NiqsUIProject() {
               <p className="mt-5 text-[14px] text-white/35 leading-relaxed">
                 Tap any spread to view it full-size. The 2020 guideline was a static reference; this is a working system — every rule specified, every application shown, every chapter aligned.
               </p>
+            </FadeUp>
+
+            {/* 5.5 Brand in Application */}
+            <FadeUp delay={0.1} className="mt-16">
+              <p className="text-[11px] tracking-[0.28em] uppercase text-white/35 mb-2">5.5 — BRAND IN APPLICATION</p>
+              <p className="text-[18px] font-semibold text-white mb-6">Not a guideline on a shelf</p>
+              <div className="space-y-10">
+                {[
+                  {
+                    img: imgLetterhead,
+                    title: "Stationery Suite",
+                    body: "Letterhead, compliment slips, and envelopes built to carry institutional authority into every physical interaction — partner meetings, board communications, and formal correspondence.",
+                  },
+                  {
+                    img: imgEmailSig,
+                    title: "Digital Templates",
+                    body: "Email signatures and digital applications that keep the brand consistent across 37 chapters — no designer required, no brand drift possible.",
+                  },
+                  {
+                    img: imgConference,
+                    title: "Environment & Ceremonial",
+                    body: "Boardroom and event applications that carry the heraldic identity into the institution's physical spaces — authority and precision at every scale.",
+                  },
+                ].map(({ img, title, body }) => (
+                  <div key={title} className="flex flex-col gap-5">
+                    <div className="max-w-[520px]">
+                      <p className="text-[16px] font-semibold text-white mb-2">{title}</p>
+                      <p className="text-[15px] leading-[1.65] text-white/50">{body}</p>
+                    </div>
+                    <div className="w-full rounded-2xl border border-white/8 bg-white/[0.02] overflow-hidden" style={{ aspectRatio: "16/9" }}>
+                      <img src={img} alt={`${title} — NIQS brand application`} loading="lazy" className="w-full h-full object-cover object-center" />
+                    </div>
+                  </div>
+                ))}
+              </div>
             </FadeUp>
           </div>
         </section>
@@ -1147,56 +1180,28 @@ export default function NiqsUIProject() {
           </div>
         </section>
 
-        {/* ══ 14 — GALLERY ══ */}
-        <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 border-t border-white/5">
-          <div className="max-w-[1400px] mx-auto">
-            <FadeUp>
-              <SLabel n="14" t="GALLERY" />
-              <H2 white="The full" accent="system" />
-              <p className="mt-4 mb-10 text-[15px] sm:text-[16px] leading-[1.65] text-white/50 max-w-[520px]">
-                Selected screens, spreads, and mockups from across the NIQS digital ecosystem — brand guideline, website, portal, admin, and flyer engine.
-              </p>
-            </FadeUp>
-
-            {/* Desktop bento grid — 12 slots, 5 rows */}
-            <div
-              className="hidden sm:grid gap-3"
-              style={{
-                gridTemplateColumns: "repeat(12, 1fr)",
-                gridTemplateRows: "300px 300px 200px 240px 240px",
-              }}
-            >
-              {/* Row 1 — 3 uneven containers (5:4:3) */}
-              <BentoCell n={1}  style={{ gridColumn: "1 / 6",  gridRow: "1 / 2" }} cap="Website home — full desktop hero section" />
-              <BentoCell n={2}  style={{ gridColumn: "6 / 10", gridRow: "1 / 2" }} cap="Brand guideline cover spread" />
-              <BentoCell n={3}  style={{ gridColumn: "10 / 13",gridRow: "1 / 2" }} cap="Logo system — four lockup configurations" />
-              {/* Row 2 — 2 uneven (4:8) */}
-              <BentoCell n={4}  style={{ gridColumn: "1 / 5",  gridRow: "2 / 3" }} cap="Member portal — dashboard overview" />
-              <BentoCell n={5}  style={{ gridColumn: "5 / 13", gridRow: "2 / 3" }} cap="Admin dashboard — member database view" />
-              {/* Row 3 — 2 even halves (was single panoramic) */}
-              <BentoCell n={6}  style={{ gridColumn: "1 / 7",  gridRow: "3 / 4" }} cap="Website About page or brand story spread" />
-              <BentoCell n={7}  style={{ gridColumn: "7 / 13", gridRow: "3 / 4" }} cap="Colour & typography system spread" />
-              {/* Row 4 — 3 equal thirds */}
-              <BentoCell n={8}  style={{ gridColumn: "1 / 5",  gridRow: "4 / 5" }} cap="Flyer design engine — template select" />
-              <BentoCell n={9}  style={{ gridColumn: "5 / 9",  gridRow: "4 / 5" }} cap="Flyer engine — editing interface" />
-              <BentoCell n={10} style={{ gridColumn: "9 / 13", gridRow: "4 / 5" }} cap="Stationery — letterhead & business card" />
-              {/* Row 5 — 2 (8:4) */}
-              <BentoCell n={11} style={{ gridColumn: "1 / 9",  gridRow: "5 / 6" }} cap="Website news/events section or portal library" />
-              <BentoCell n={12} style={{ gridColumn: "9 / 13", gridRow: "5 / 6" }} cap="Mobile screen — membership or portal login" />
-            </div>
-
-            {/* Mobile: 2-col grid, all at 4:3 */}
-            <div className="sm:hidden grid grid-cols-2 gap-3">
-              {Array.from({ length: 12 }, (_, i) => (
-                <BentoCell
-                  key={i + 1}
-                  n={i + 1}
-                  style={{ aspectRatio: "4/3" }}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* ══ 14 — TOUCHPOINTS GALLERY ══ */}
+        <BrandGallery
+          n="14"
+          label="TOUCHPOINTS GALLERY"
+          white="The brand,"
+          accent="applied"
+          description="Merch and touchpoint mockups from the NIQS brand system in real-world contexts. Website, portal, and flyer-engine screens join this gallery as they're finalised."
+          color={GR}
+          images={[
+            { src: imgHoodie,        alt: "Hoodie — navy branded hoodie",     label: "HOODIE — NAVY" },
+            { src: imgToteBag,       alt: "Tote bag — branded tote",          label: "TOTE BAG" },
+            { src: imgCup,           alt: "Cup — branded ceramic mug",        label: "CUP" },
+            { src: imgJournal,       alt: "Notebook — branded journal",       label: "NOTEBOOK" },
+            { src: imgShirt,         alt: "T-shirt — branded tee",            label: "T-SHIRT" },
+            { src: imgCapBlue,       alt: "Cap — navy branded cap",           label: "CAP — NAVY" },
+            { src: imgFolder,        alt: "Folder — branded document folder", label: "FOLDER DESIGN" },
+            { src: imgHoodieWhite,   alt: "Hoodie — white branded hoodie",    label: "HOODIE — WHITE" },
+            { src: imgCapWhite,      alt: "Cap — white branded cap",          label: "CAP — WHITE" },
+            { src: imgBottle,        alt: "Bottle — branded water bottle",    label: "BOTTLE" },
+            { src: imgToteBagLadies, alt: "Tote bag — ladies' branded tote",  label: "TOTE BAG — LADIES" },
+          ]}
+        />
 
         {/* ══ 15 — FOOTER ══ */}
         <OtherProj currentSlug="niqs" currentKind="ui" />

@@ -12,7 +12,6 @@ import adlmThumb from "../../assets/ADLMStudio/ADLM Studio -  Discount.jpg";
 import wsThumb from "../../assets/Whitespace/Colours and their meanings - Cover.jpg";
 import ydpayGfxThumb from "../../assets/YDpayDesigns/Card Design 1.webp";
 import presThumb from "../../assets/PresentationDesigns/1.webp";
-import niqsBrandThumb from "../../assets/NIQS/conference.webp";
 
 const STATIC_GFX_PROJECTS = [
   {
@@ -153,19 +152,6 @@ const STATIC_UI_PROJECTS = [
 ];
 
 const STATIC_BRAND_PROJECTS = [
-  {
-    kind: "default",
-    slug: "niqs-brand",
-    route: "/projects/niqs",
-    name: "NIQS — Brand Identity & Guidelines",
-    description: "Brand identity and guidelines system for the Nigerian Institute of Quantity Surveyors — a 55-year institution. Navy, gold, and a heraldic identity built to last.",
-    url: "",
-    tags: ["Brand Identity", "Institutional"],
-    images: { main: niqsBrandThumb },
-    pageImg: niqsBrandThumb,
-    categories: ["Brand Identity Designs"],
-    id: "static-niqs-brand",
-  },
   {
     kind: "default",
     slug: "ydpay-brand",
