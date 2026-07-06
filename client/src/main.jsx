@@ -41,6 +41,7 @@ import YDpayDesignPage from "./pages/YDpayDesignPage.jsx";
 import Contact from "./pages/Contact.jsx";
 import PresentationDesignPage from "./pages/PresentationDesignPage.jsx";
 import BookPlan from "./pages/BookPlan.jsx";
+import TestimonialPage from "./pages/TestimonialPage.jsx";
 
 // Redirect component that preserves slug params
 const RedirectWithSlug = ({ basePath }) => {
@@ -71,6 +72,7 @@ const router = createBrowserRouter([
       { path: "rate-details", element: <RateDetails /> },
       { path: "book", element: <BookPlan /> },
       { path: "contact", element: <Contact /> },
+      { path: "testimonial", element: <TestimonialPage /> },
       { path: "presentation-design", element: <PresentationDesignPage /> },
       { path: "projects/:slug", element: <ProjectPage /> },
 

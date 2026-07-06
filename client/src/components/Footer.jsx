@@ -42,6 +42,7 @@ const NAVIGATE_LINKS = [
   { label: "Projects",  to: "/projects" },
   { label: "Rate Card", to: "/rate-details" },
   { label: "Contact",   to: "/contact" },
+  { label: "Leave a Testimonial", to: "/testimonial" },
 ];
 
 const WORK_COL_A = [

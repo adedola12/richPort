@@ -1,5 +1,8 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { fetchJson } from "../../api/http";
+import { serviceColor } from "../../data/testimonialOptions";
 
 /* ─── Data ─── */
 const TESTIMONIALS = [
@@ -11,24 +14,25 @@ const TESTIMONIALS = [
 ];
 
 /*
-  Cards fill the full scroll range — last card ends at 1.0 so the section
-  releases the instant card 5 finishes stacking. Zero dead space.
+  Cards fill the full scroll range — the last card ends at 1.0 so the section
+  releases the instant the final card finishes stacking. Ranges and resting
+  offsets are generated from the card count so live data of any size works.
 */
-const CARD_RANGES = [
-  [0.05, 0.24],
-  [0.24, 0.43],
-  [0.43, 0.62],
-  [0.62, 0.81],
-  [0.81, 1.00],
-];
+const RANGE_START = 0.05;
+const cardRanges = (n) =>
+  Array.from({ length: n }, (_, i) => [
+    RANGE_START + ((1 - RANGE_START) / n) * i,
+    RANGE_START + ((1 - RANGE_START) / n) * (i + 1),
+  ]);
 
-const RESTING = [
-  { y: 9,  rotate: -1.8, x: -5 },
-  { y: 6,  rotate:  1.2, x:  4 },
-  { y: 4,  rotate: -0.9, x: -3 },
-  { y: 2,  rotate:  0.5, x:  2 },
-  { y: 0,  rotate:  0,   x:  0 },
-];
+const REST_ROTS = [-1.8, 1.2, -0.9, 0.5, -1.3, 0.8, -0.5, 0.3];
+const REST_XS = [-5, 4, -3, 2, -4, 3, -2, 1];
+const restingFor = (n) =>
+  Array.from({ length: n }, (_, i) =>
+    i === n - 1
+      ? { y: 0, rotate: 0, x: 0 }
+      : { y: (n - 1 - i) * 2.25, rotate: REST_ROTS[i % REST_ROTS.length], x: REST_XS[i % REST_XS.length] }
+  );
 
 /* ─── Starfield ─── */
 const mkLCG = (s) => { s = s>>>0; return () => { s=(Math.imul(s,1664525)+1013904223)>>>0; return s/0x100000000; }; };
@@ -93,7 +97,7 @@ const TCard = ({ data, range, resting, zIndex, scrollProgress }) => {
   const x       = useTransform(scrollProgress, range, [0, resting.x]);
   const rotate  = useTransform(scrollProgress, range, [0, resting.rotate]);
 
-  const initials = data.name.split(" ").map(n => n[0]).join("");
+  const initials = data.initials || data.name.split(" ").map(n => n[0]).join("");
 
   return (
     <motion.div style={{position:"absolute", inset:0, zIndex, scale, opacity, y, x, rotate}}>
@@ -134,7 +138,9 @@ const TCard = ({ data, range, resting, zIndex, scrollProgress }) => {
           }}>{initials}</div>
           <div>
             <p style={{fontSize:14,fontWeight:600,color:"white",lineHeight:1.2}}>{data.name}</p>
-            <p style={{fontSize:11,color:"rgba(255,255,255,0.38)",marginTop:3}}>{data.title}</p>
+            {data.title ? (
+              <p style={{fontSize:11,color:"rgba(255,255,255,0.38)",marginTop:3}}>{data.title}</p>
+            ) : null}
           </div>
         </div>
       </div>
@@ -147,6 +153,38 @@ const TCard = ({ data, range, resting, zIndex, scrollProgress }) => {
    ════════════════════════════════════════════════════════ */
 const Testimonials = () => {
   const wrapperRef = useRef(null);
+  const [items, setItems] = useState(TESTIMONIALS);
+
+  /* Live testimonials (4★+, admin-approved) replace the placeholders
+     the moment any exist. */
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      try {
+        const data = await fetchJson("/api/testimonials/public");
+        if (alive && Array.isArray(data) && data.length > 0) {
+          setItems(
+            data.map((t) => ({
+              id: t.mongoId,
+              name: t.name || t.initials,
+              initials: t.initials,
+              title: "",
+              tag: t.service,
+              tagColor: serviceColor(t.service),
+              stars: t.rating,
+              text: t.feedback,
+            }))
+          );
+        }
+      } catch {
+        /* keep placeholders */
+      }
+    })();
+    return () => { alive = false; };
+  }, []);
+
+  const ranges = cardRanges(items.length);
+  const resting = restingFor(items.length);
 
   const { scrollYProgress } = useScroll({
     target: wrapperRef,
@@ -159,7 +197,7 @@ const Testimonials = () => {
   const nudgeOpacity   = useTransform(scrollYProgress, [0, 0.04, 0.12], [0, 1, 0]);
 
   return (
-    <section ref={wrapperRef} className="relative bg-[#050505]" style={{height:"320vh"}}>
+    <section ref={wrapperRef} className="relative bg-[#050505]" style={{height:`${Math.max(200, items.length * 64)}vh`}}>
 
       <div className="sticky top-0 h-screen overflow-hidden flex flex-col items-center justify-center gap-10">
 
@@ -188,16 +226,22 @@ const Testimonials = () => {
           <p className="mt-3 text-[15px] sm:text-[16px] text-neutral-400 max-w-sm mx-auto">
             Real words from real people who trusted the process.
           </p>
+          <Link
+            to="/testimonial"
+            className="pointer-events-auto mt-4 inline-block text-[13px] text-lime-400 hover:underline"
+          >
+            Worked with me? Leave a testimonial →
+          </Link>
         </motion.div>
 
         <div className="relative z-10"
           style={{width:640, maxWidth:"calc(100vw - 32px)", height:380}}>
-          {TESTIMONIALS.map((t, i) => (
+          {items.map((t, i) => (
             <TCard
               key={t.id}
               data={t}
-              range={CARD_RANGES[i]}
-              resting={RESTING[i]}
+              range={ranges[i]}
+              resting={resting[i]}
               zIndex={i + 1}
               scrollProgress={scrollYProgress}
             />

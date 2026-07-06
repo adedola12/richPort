@@ -7,6 +7,7 @@ import Services from "../components/Home/Services";
 import Partners from "../components/Home/Partners";
 import DesignProcess from "../components/Home/DesignProcess";
 import Testimonials from "../components/Home/Testimonials";
+import FaqSection from "../components/Home/FaqSection";
 import BuildSection from "../components/Home/BuildSection";
 import WorkExp from "../components/Home/WorkExp";
 import PageMeta from "../components/common/PageMeta";
@@ -27,6 +28,7 @@ const Home = () => {
       <WorkExp />
       <DesignProcess />
       <Testimonials />
+      <FaqSection />
       <BuildSection />
     </div>
   );

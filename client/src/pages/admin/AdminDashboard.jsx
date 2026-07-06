@@ -8,12 +8,16 @@ import ProjectsTab from "../../components/Admin/ProjectsTab.jsx";
 import JourneyTab from "../../components/Admin/JourneyTab.jsx";
 import RatesTab from "../../components/Admin/RatesTab.jsx";
 import CustomersTab from "../../components/Admin/CustomersTab.jsx";
+import TestimonialsTab from "../../components/Admin/TestimonialsTab.jsx";
+import FaqTab from "../../components/Admin/FaqTab.jsx";
 
 const tabs = [
   { id: "projects", label: "Projects" },
   { id: "journey", label: "Journey" },
   { id: "rates", label: "Rates" },
   { id: "customers", label: "Customers" },
+  { id: "testimonials", label: "Testimonials" },
+  { id: "faq", label: "FAQ" },
 ];
 
 const AdminDashboard = () => {
@@ -88,6 +92,8 @@ const AdminDashboard = () => {
           {activeTab === "journey" && <JourneyTab />}
           {activeTab === "rates" && <RatesTab />}
           {activeTab === "customers" && <CustomersTab />}
+          {activeTab === "testimonials" && <TestimonialsTab />}
+          {activeTab === "faq" && <FaqTab />}
         </div>
       </div>
     </div>
