@@ -1,7 +1,7 @@
 // src/pages/BookPlan.jsx — multi-step "Book a Plan" questionnaire
 // Ported from book-a-plan.html (source of truth for content, flow and copy).
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import PageMeta from "../components/common/PageMeta";
 import { fetchJson } from "../api/http";
 import {
@@ -132,6 +132,7 @@ const Chips = ({ name, options, multi, answers, setField, toggleMulti }) => {
 
 const BookPlan = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const [selectedPlan, setSelectedPlan] = useState(() => {
     const p = (searchParams.get("plan") || "").toLowerCase();
@@ -621,8 +622,14 @@ const BookPlan = () => {
 
       {/* ================= SUCCESS OVERLAY ================= */}
       {result && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-black/90 p-6 backdrop-blur-md">
-          <div className="m-auto w-full max-w-[580px] rounded-2xl border border-lime-400/40 bg-[#111318] px-7 py-10 text-center sm:px-10">
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-black/90 p-6 backdrop-blur-md"
+          onClick={() => navigate("/")}
+        >
+          <div
+            className="m-auto w-full max-w-[580px] rounded-2xl border border-lime-400/40 bg-[#111318] px-7 py-10 text-center sm:px-10"
+            onClick={(e) => e.stopPropagation()}
+          >
             {selectedPlan && <img src={BADGES[selectedPlan]} alt={`${plan?.label} plan badge`} className="mx-auto mb-4 h-20 w-auto object-contain" />}
             <div className="mx-auto mb-5 flex h-[74px] w-[74px] items-center justify-center rounded-full border-2 border-lime-400 shadow-[0_0_30px_rgba(163,230,53,0.3)]">
               <svg viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 stroke-lime-400">
@@ -661,7 +668,8 @@ const BookPlan = () => {
               </ol>
             </div>
             <div className="flex flex-wrap justify-center gap-3">
-              <button type="button" onClick={() => downloadResponses("txt")} className={btnPrimary}>Download responses (.txt)</button>
+              <button type="button" onClick={() => navigate("/")} className={btnPrimary}>Back to home →</button>
+              <button type="button" onClick={() => downloadResponses("txt")} className={btnGhost}>Download responses (.txt)</button>
               <button type="button" onClick={() => downloadResponses("json")} className={btnGhost}>Download .json</button>
             </div>
             <div className={`mt-3.5 text-xs ${result.ok ? "text-lime-400" : "text-orange-300"}`}>
