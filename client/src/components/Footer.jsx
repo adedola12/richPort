@@ -56,6 +56,7 @@ const WORK_COL_B = [
   { label: "Brand Identity",      to: "/projects" },
   { label: "Publication Design",  to: null },
   { label: "Presentation Design", to: "/presentation-design" },
+  { label: "Book a Website",      to: "/book-website" },
 ];
 
 /* ── MAGNETIC LINK ── */

@@ -202,12 +202,17 @@ const BookPlan = () => {
   const [dbPrices, setDbPrices] = useState(null);
   useEffect(() => {
     let on = true;
-    fetchJson("/api/rates/category/brand-identity")
-      .then((cat) => {
-        if (!on || !Array.isArray(cat?.plans) || cat.plans.length === 0) return;
+    fetchJson("/api/rates")
+      .then((cats) => {
+        if (!on || !Array.isArray(cats)) return;
+        // tolerant match — the admin category's id/label just has to mention brand identity
+        const cat = cats.find((c) => /brand\s*identity/i.test(`${c.id || ""} ${c.label || ""}`));
+        if (!Array.isArray(cat?.plans) || cat.plans.length === 0) return;
         const map = {};
         cat.plans.forEach((p) => {
-          const k = planKeyFromName(p.name);
+          const k =
+            planKeyFromName(p.name) ||
+            (String(`${p.name || ""} ${p.id || ""}`).toLowerCase().match(/silver|gold|platinum/) || [])[0];
           if (k && Number(p.price) > 0) map[k] = { price: Number(p.price), currency: p.currency || "USD" };
         });
         if (Object.keys(map).length) setDbPrices(map);

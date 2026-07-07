@@ -56,7 +56,9 @@ export async function createQuestionnaire(req, res) {
     const fx = await getFxRate();
     let priceOverride = null;
     try {
-      const cat = await RateCategory.findOne({ id: "brand-identity" });
+      const cat = await RateCategory.findOne({
+        $or: [{ id: "brand-identity" }, { label: /brand\s*identity/i }],
+      });
       const dbPlan = cat?.plans?.find((p) => {
         const nm = String(p.name || "").trim().toLowerCase();
         return nm === planKey || nm.includes(planKey) || String(p.id || "").trim().toLowerCase() === planKey;

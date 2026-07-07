@@ -104,6 +104,77 @@ const FlyerPlans = () => {
   );
 };
 
+/* ── Website packages — shown under the Websites tab ──
+   Tiered by page count, NGN-priced via /api/website-requests/plans. */
+const WEBSITE_FALLBACK = {
+  starter:  { label: "Starter",  pages: "Up to 5 pages",     priceNGN: 200000, from: false, timeline: "2–3 weeks",          deliverables: ["Up to 5 custom-designed pages", "Mobile-first responsive build", "Contact form + WhatsApp link", "Basic on-page SEO", "2 revision rounds"] },
+  business: { label: "Business", pages: "Up to 10 pages",    priceNGN: 380000, from: false, timeline: "3–5 weeks",          deliverables: ["Up to 10 custom-designed pages", "Everything in Starter", "Blog / CMS — edit your own content", "Analytics + SEO for every page", "3 revision rounds"] },
+  premium:  { label: "Premium",  pages: "15+ pages / custom", priceNGN: 650000, from: true,  timeline: "Scoped per project", deliverables: ["15+ pages or a custom web app", "Everything in Business", "Store, booking, payments, or member area", "Source files + handover docs", "Revisions until launch-ready"] },
+};
+const WEBSITE_ORDER = ["starter", "business", "premium"];
+
+const WebsitePlans = () => {
+  const navigate = useNavigate();
+  const [plans, setPlans] = useState(WEBSITE_FALLBACK);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch(`${PUBLIC_RATES_API}/api/website-requests/plans`);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data && data.starter) setPlans(data);
+      } catch {
+        /* keep fallback */
+      }
+    };
+    load();
+  }, []);
+
+  return (
+    <div className="mt-16">
+      <div className="grid gap-5 sm:grid-cols-3">
+        {WEBSITE_ORDER.map((key) => {
+          const p = plans[key];
+          const featured = key === "business";
+          return (
+            <div
+              key={key}
+              className={`flex flex-col rounded-[24px] border p-6 ${
+                featured
+                  ? "border-lime-500/70 bg-[radial-gradient(circle_at_top,_rgba(132,204,22,0.22),transparent_55%),_#050505] shadow-[0_0_40px_rgba(132,204,22,0.18)]"
+                  : "border-lime-500/25 bg-[#0b0b0e]"
+              }`}
+            >
+              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-neutral-400">{p.label}</p>
+              <p className="text-xs text-neutral-500 mb-3">{p.pages}</p>
+              <p className="text-3xl font-extrabold text-white">{p.from ? "From " : ""}{NGN(p.priceNGN)}</p>
+              <p className="mt-1 text-xs text-neutral-500">{p.timeline}</p>
+              <ul className="mt-5 mb-6 space-y-1.5 text-[13px] text-neutral-300 flex-1">
+                {(p.deliverables || []).slice(0, 5).map((d) => <li key={d}>• {d}</li>)}
+              </ul>
+              <button
+                type="button"
+                onClick={() => navigate(`/book-website?plan=${key}`)}
+                className={`w-full rounded-xl px-4 py-3 text-sm font-bold text-white transition hover:brightness-110 ${
+                  featured
+                    ? "bg-gradient-to-b from-lime-500 to-lime-700 shadow-[0_12px_40px_rgba(132,204,22,0.5)]"
+                    : "bg-gradient-to-b from-slate-500 to-slate-800"
+                }`}
+              >
+                Book this package
+              </button>
+            </div>
+          );
+        })}
+      </div>
+      <p className="mt-8 text-center text-xs text-neutral-500">
+        Every package covers design and build. Hosting & domain are billed separately — I can set both up on your behalf.
+      </p>
+    </div>
+  );
+};
+
 const BrandIdentity = () => {
   const [rateCategories, setRateCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -243,6 +314,9 @@ const BrandIdentity = () => {
         {activeCategory.id === "graphic-design" ? (
           /* Graphic design bookings are flyer designs — server-priced packs */
           <FlyerPlans />
+        ) : activeCategory.id === "websites" ? (
+          /* Website packages tiered by page count — server-priced */
+          <WebsitePlans />
         ) : (
           <>
             <PlanSelection

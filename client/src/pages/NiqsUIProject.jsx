@@ -5,6 +5,7 @@ import OtherProj from "../components/ProjectPage/OtherProj";
 import BuildSection from "../components/Home/BuildSection";
 import PageMeta from "../components/common/PageMeta";
 import BrandGallery from "../components/ProjectPage/BrandGallery";
+import GuidelineCarousel from "../components/ProjectPage/GuidelineCarousel";
 
 /* touchpoint mockups */
 import imgBillboard     from "../assets/NIQS/board.webp";
@@ -222,7 +223,7 @@ export default function NiqsUIProject() {
                   className="inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold mb-7"
                   style={{ borderColor: `${GR}44`, color: GR, background: `${GR}0D` }}
                 >
-                  UI / UX Case Study · Institutional Redesign
+                  Case Study · Digital Transformation
                 </span>
               </FadeUp>
 
@@ -545,19 +546,19 @@ export default function NiqsUIProject() {
             {/* 5.0 Logo System */}
             <FadeUp delay={0.05} className="mb-16">
               <p className="text-[11px] tracking-[0.28em] uppercase text-white/35 mb-2">5.0 — LOGO SYSTEM</p>
-              <p className="text-[18px] font-semibold text-white mb-6">Four lockups. One heraldic mark. Zero compromise.</p>
+              <p className="text-[18px] font-semibold text-white mb-6">One heraldic mark. Every surface. Zero compromise.</p>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="rounded-2xl border border-white/8 p-8 flex flex-col items-center justify-center gap-6" style={{ background: `${NIQS_NAVY}` }}>
                   <img src="/NIQSColor.svg" alt="NIQS Heraldic Emblem — colour" className="w-full max-w-[260px]" />
                   <p className="text-[10px] tracking-[0.2em] uppercase text-white/30">Primary Mark · Light on Dark</p>
                 </div>
-                <div className="rounded-2xl border border-white/8 p-8 flex flex-col items-center justify-center gap-6" style={{ background: `${NIQS_NAVY}` }}>
-                  <img src="/NIQSHorizontal.svg" alt="NIQS Horizontal Logo Lockup" className="w-full max-w-[360px]" />
-                  <p className="text-[10px] tracking-[0.2em] uppercase text-white/30">Horizontal Lockup · Light on Dark</p>
+                <div className="rounded-2xl border border-white/8 p-8 flex flex-col items-center justify-center gap-6" style={{ background: NIQS_OFFWHITE }}>
+                  <img src="/NIQSGrey.svg" alt="NIQS mark — monochrome on light" className="w-full max-w-[260px]" />
+                  <p className="text-[10px] tracking-[0.2em] uppercase text-black/40">Monochrome Mark · On Light</p>
                 </div>
               </div>
               <p className="mt-5 text-[15px] leading-[1.7] text-white/40 max-w-[680px]">
-                The heraldic mark — eagle, shield, chain — is the core institutional symbol. It appears alone when authority is the only message needed. The horizontal lockup pairs it with the full institute name for documents, headers, and web surfaces where the name needs to anchor the emblem.
+                The heraldic mark — eagle, shield, chain — is the core institutional symbol. It appears alone when authority is the only message needed, and the monochrome variant carries it onto light surfaces — documents, stationery, print — without losing that authority.
               </p>
             </FadeUp>
 
@@ -663,59 +664,9 @@ export default function NiqsUIProject() {
               </p>
             </FadeUp>
 
-            {/* 5.4 Inside the Guideline */}
-            <FadeUp delay={0.1}>
-              <p className="text-[11px] tracking-[0.28em] uppercase text-white/35 mb-2">5.4 — INSIDE THE GUIDELINE</p>
-              <p className="text-[18px] font-semibold text-white mb-2">The full system, 60 pages, one source of truth</p>
-              <p className="text-[14px] leading-[1.65] text-white/50 max-w-[620px] mb-8">
-                The complete brand guideline spans ~60 pages across 12 chapters — Brand Story, Personality & Voice, Logo & Mark, Colour, Typography, Imagery, Stationery, Digital, and Brand Voice & Copy. A selection of spreads below; the full document is the operating manual every NIQS chapter, staff member, and third-party vendor designs from.
-              </p>
-              <div className="hidden sm:grid grid-cols-3 gap-4">
-                {[
-                  "Cover — navy cover with NIQS emblem + 'Brand Guideline' title",
-                  "Brand Story — 'Who We Are' spread with 1969 founding + stat strip (1969 · 10,000+ · 37 · 15+)",
-                  "History Timeline — five decades, 1969 → 2025",
-                  "Logo & Mark — heraldic emblem on light + dark backplates",
-                  "Logo Lockups — four official configurations (horizontal/vertical × light/dark)",
-                  "Colour Palette — navy #000066 + gold #D9B650 with HEX/RGB/CMYK + tonal scales",
-                  "Typography — Bricolage Grotesque + Sora specimen spread",
-                  "Imagery Direction — photography do's/don'ts + treatment specs",
-                  "Stationery — letterhead + business card application spread",
-                ].map((cap, i) => (
-                  <TiltFrame
-                    key={i}
-                    src={null}
-                    alt={cap}
-                    className="w-full"
-                    style={{ aspectRatio: "3/4" }}
-                    onClick={ph}
-                  />
-                ))}
-              </div>
-              <div className="flex sm:hidden gap-3 overflow-x-auto pb-3 -mx-4 px-4">
-                {[
-                  "Cover", "Brand Story", "History Timeline",
-                  "Logo & Mark", "Logo Lockups", "Colour Palette",
-                  "Typography", "Imagery Direction", "Stationery",
-                ].map((cap, i) => (
-                  <div key={i} className="shrink-0 w-[160px]">
-                    <TiltFrame
-                      src={null}
-                      alt={`Spread ${i + 1} — ${cap}`}
-                      style={{ aspectRatio: "3/4" }}
-                      onClick={ph}
-                    />
-                  </div>
-                ))}
-              </div>
-              <p className="mt-5 text-[14px] text-white/35 leading-relaxed">
-                Tap any spread to view it full-size. The 2020 guideline was a static reference; this is a working system — every rule specified, every application shown, every chapter aligned.
-              </p>
-            </FadeUp>
-
-            {/* 5.5 Brand in Application */}
-            <FadeUp delay={0.1} className="mt-16">
-              <p className="text-[11px] tracking-[0.28em] uppercase text-white/35 mb-2">5.5 — BRAND IN APPLICATION</p>
+            {/* 5.4 Brand in Application */}
+            <FadeUp delay={0.1} className="mt-4">
+              <p className="text-[11px] tracking-[0.28em] uppercase text-white/35 mb-2">5.4 — BRAND IN APPLICATION</p>
               <p className="text-[18px] font-semibold text-white mb-6">Not a guideline on a shelf</p>
               <div className="space-y-10">
                 {[
@@ -750,6 +701,42 @@ export default function NiqsUIProject() {
           </div>
         </section>
 
+        {/* ══ 05.5 — INSIDE THE GUIDELINE (scroll carousel) ══ */}
+        <GuidelineCarousel
+          n="05"
+          label="INSIDE THE GUIDELINE"
+          white="The system,"
+          accent="documented"
+          description="~60 pages across 12 chapters — the operating manual every NIQS chapter, staff member, and vendor designs from. Spreads land here as they're finalised."
+          color={GR}
+          slides={[
+            { src: null, alt: "Cover — navy cover with NIQS emblem + 'Brand Guideline' title" },
+            { src: null, alt: "Brand story — 'Who We Are' spread with 1969 founding + stat strip" },
+            { src: null, alt: "History timeline — five decades, 1969 → 2025" },
+            { src: null, alt: "Logo & mark — heraldic emblem on light + dark backplates" },
+            { src: null, alt: "Logo lockups — official configurations across backgrounds" },
+            { src: null, alt: "Colour palette — navy #000066 + gold #D9B650 with tonal scales" },
+            { src: null, alt: "Typography — Bricolage Grotesque + Sora specimen spread" },
+            { src: null, alt: "Imagery direction — photography do's/don'ts + treatment specs" },
+            { src: null, alt: "Stationery — letterhead + business card application spread" },
+          ]}
+        />
+
+        {/* ══ PROJECT STATUS ══ */}
+        <section className="py-10 px-4 sm:px-8 lg:px-16">
+          <div className="max-w-[1100px] mx-auto">
+            <div className="rounded-2xl border p-6 sm:p-8" style={{ borderColor: `${GR}33`, background: `${GR}06` }}>
+              <div className="flex items-center gap-3 mb-3">
+                <span className="w-2 h-2 rounded-full" style={{ background: GR }} />
+                <p className="text-[11px] font-bold tracking-[0.25em] uppercase" style={{ color: GR }}>Project Status</p>
+              </div>
+              <p className="text-[15px] leading-[1.65] text-white/60">
+                This transformation is in production. The brand system is delivered and live; the website, portal, and flyer-engine visuals below are being prepared for publication and will land in their frames progressively.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* ══ 06 — PUBLIC WEBSITE WALKTHROUGH ══ */}
         <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 border-t border-white/5">
           <div className="max-w-[1300px] mx-auto">
@@ -766,35 +753,35 @@ export default function NiqsUIProject() {
                 {
                   n: "SCREEN 01",
                   title: "Home & Hero",
-                  body: `The home page leads with "Advancing Nigeria's Built Environment" — gold-accented headline over a deep navy hero, paired with a curated five-image strip of construction, conferences, and professionals. A statistics row below the fold anchors the institution's scale: 10,000+ members, 4,000+ corporate QS, 37 chapters, 56 years, 15+ international agreements. Visitors meet NIQS at full presence before they scroll.`,
+                  body: `"Advancing Nigeria's Built Environment" — a gold-accented headline over a deep navy hero, with a statistics row anchoring the institution's scale before the first scroll.`,
                   alt: "Desktop browser mockup of NIQS home page hero section",
                   flip: false,
                 },
                 {
                   n: "SCREEN 02",
                   title: "About & Heritage",
-                  body: "Eight sub-sections under About Us — President's office, National Executive Council, National Policy Committee, Past Presidents, State Chapters, WAQSN, YQSF, and Reciprocity Agreements. Each receives editorial treatment: large portrait, contextual sub-heading, accompanying bio or scope statement. Past Presidents becomes a timeline, not a list. The institution finally tells its own story.",
+                  body: "Eight sub-sections under About Us, each given editorial treatment — Past Presidents becomes a timeline, not a list. The institution finally tells its own story.",
                   alt: "Desktop mockup showing the About / President page",
                   flip: true,
                 },
                 {
                   n: "SCREEN 03",
                   title: "Membership & Public Search",
-                  body: 'Membership routes split cleanly: Requirements & Registration for the public, Member Portal / Induction Letter / Upgrade Letter behind the lock for authenticated users. A public "Search QS or QS Firm" lookup lets regulators, employers, and clients verify professional standing without needing to log in. Trust by design.',
+                  body: 'Public registration routes, locked member services, and a public "Search QS or QS Firm" lookup so regulators and clients can verify professional standing without logging in.',
                   alt: "Mobile mockup of the Membership page with the public QS search interface",
                   flip: false,
                 },
                 {
                   n: "SCREEN 04",
                   title: "Exams, Events & News",
-                  body: "A dedicated Exams section (Examinations · Published Results · Interview / TPC / Logbook results behind login). A live event calendar (Annual QS Conference, TPC/GDE Examinations, Chapter CPD Seminars). A news feed with editorial card treatment. The site no longer 'has' content — it is a living publication.",
+                  body: "A dedicated exams section, a live event calendar, and an editorial news feed — the site no longer 'has' content; it is a living publication.",
                   alt: "Desktop mockup of the Events + News combined view",
                   flip: true,
                 },
                 {
                   n: "SCREEN 05",
                   title: "Brand Materials, Jobs & Contact",
-                  body: "Brand Materials is a public download surface (logos, official assets). Jobs is an aggregated board. Contact provides the secretariat's direct line. Smaller surfaces, but treated with the same editorial polish as the marquee pages — a sign that the institution doesn't have 'minor' pages.",
+                  body: "Public brand downloads, an aggregated jobs board, and direct secretariat contact — smaller surfaces, treated with the same editorial polish as the marquee pages.",
                   alt: "Three phone mockups side-by-side: Brand Materials, Jobs, Contact",
                   flip: false,
                 },
@@ -802,7 +789,7 @@ export default function NiqsUIProject() {
                 <FadeUp key={n} delay={0.04 * i}>
                   <div className={`flex flex-col gap-6`}>
                     <div className={`flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 ${flip ? "sm:flex-row-reverse" : ""}`}>
-                      <div className="max-w-[420px]">
+                      <div className="max-w-[680px]">
                         <span
                           className="rounded-md px-2 py-0.5 text-[9px] font-bold tracking-widest uppercase mb-3 inline-block"
                           style={{ background: `${GR}15`, color: GR }}
@@ -1135,12 +1122,19 @@ export default function NiqsUIProject() {
               </StaggerGrid>
 
               <SlideIn direction="right" delay={0.1}>
-                <TiltFrame
-                  src={null}
-                  alt="Product family shot — website + portal + admin + flyer engine + brand guideline arranged as a system diagram or ecosystem"
-                  style={{ aspectRatio: "3/4", minHeight: "300px" }}
-                  onClick={ph}
-                />
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { src: imgJournal, alt: "Branded journal" },
+                    { src: imgCup, alt: "Branded cup" },
+                    { src: imgShirt, alt: "Branded t-shirt" },
+                    { src: imgFolder, alt: "Branded folder" },
+                  ].map(({ src, alt }) => (
+                    <div key={alt} className="rounded-xl overflow-hidden border border-white/8" style={{ aspectRatio: "4/3" }}>
+                      <img src={src} alt={`${alt} — NIQS brand system artifact`} loading="lazy" className="w-full h-full object-cover" />
+                    </div>
+                  ))}
+                </div>
+                <p className="mt-3 text-[11px] text-white/30 text-center">The system as physical artifacts — the brand working beyond the screen.</p>
               </SlideIn>
             </div>
           </div>
@@ -1191,11 +1185,7 @@ export default function NiqsUIProject() {
           images={[
             { src: imgHoodie,        alt: "Hoodie — navy branded hoodie",     label: "HOODIE — NAVY" },
             { src: imgToteBag,       alt: "Tote bag — branded tote",          label: "TOTE BAG" },
-            { src: imgCup,           alt: "Cup — branded ceramic mug",        label: "CUP" },
-            { src: imgJournal,       alt: "Notebook — branded journal",       label: "NOTEBOOK" },
-            { src: imgShirt,         alt: "T-shirt — branded tee",            label: "T-SHIRT" },
             { src: imgCapBlue,       alt: "Cap — navy branded cap",           label: "CAP — NAVY" },
-            { src: imgFolder,        alt: "Folder — branded document folder", label: "FOLDER DESIGN" },
             { src: imgHoodieWhite,   alt: "Hoodie — white branded hoodie",    label: "HOODIE — WHITE" },
             { src: imgCapWhite,      alt: "Cap — white branded cap",          label: "CAP — WHITE" },
             { src: imgBottle,        alt: "Bottle — branded water bottle",    label: "BOTTLE" },

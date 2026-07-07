@@ -141,7 +141,8 @@ export default function GuidelineCarousel({
     if (!el) return;
     const scrollable = el.offsetHeight - window.innerHeight;
     const target = el.offsetTop + (i / Math.max(1, activeSlides.length - 1)) * scrollable;
-    window.scrollTo({ top: target, behavior: "smooth" });
+    if (window.__lenis) window.__lenis.scrollTo(target);
+    else window.scrollTo({ top: target, behavior: "smooth" });
   };
 
   return (
