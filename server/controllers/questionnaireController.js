@@ -8,6 +8,7 @@ import {
   buildClientEmail,
   buildOwnerEmail,
 } from "../utils/questionnaireEmails.js";
+import { feedReniStudio } from "../utils/reniFeed.js";
 
 /* The invoice counter continues the existing manual sequence: it seeds at 3
    so the first booking gets 000-004. */
@@ -97,6 +98,12 @@ export async function createQuestionnaire(req, res) {
       preferredDuration: responses.duration || "",
       status: "submitted",
     });
+
+    // Reni Design Studio auto-feed — fire-and-forget; the booking never
+    // depends on it. Creates a logged (inactive) project in Reni.
+    feedReniStudio({ planKey, plan, money, responses, invoiceNo })
+      .then((r) => { if (r.fed) console.log("Reni feed: job created", r.jobId); })
+      .catch((err) => console.error("Reni feed failed:", err));
 
     // emails — a failure here must not lose the booking
     let emailsSent = false;
