@@ -108,7 +108,7 @@ export async function feedReniJob({
     service_type: serviceType,
     priority: "Medium",
     energy: "Medium Energy",
-    deadline: deadline || "",
+    deadline: deadline || null, // date column — empty string is rejected
     type,
     is_free: false,
     agreed_price: price,
