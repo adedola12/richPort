@@ -158,6 +158,13 @@ export async function feedReniStudio({ planKey, plan, money, responses, invoiceN
       planLabel: plan.label,
       preferredDuration: Array.isArray(responses.duration) ? responses.duration.join(", ") : responses.duration || "",
       comm: Array.isArray(responses.comm) ? responses.comm.join(", ") : responses.comm || "",
+      aboutBusiness: responses.business_about || "",
+      targetAudience: responses.audience || "",
+      brandValues: responses.values || "",
+      nameStory: responses.name_story || "",
+      brandVision: responses.brand_vision || "",
+      desiredPerception: responses.perception || "",
+      goals: responses.goals_short || "",
     },
   });
 }
@@ -184,6 +191,9 @@ export function feedReniWebsite({ doc, plan }) {
       contentStatus: doc.contentStatus,
       domainStatus: doc.domainStatus,
       preferredDuration: doc.duration,
+      aboutBusiness: doc.about,
+      references: doc.references,
+      extraNotes: doc.notes,
     },
   });
 }
@@ -211,8 +221,11 @@ export function feedReniFlyer({ doc, plan }) {
       planLabel: plan.label,
       purpose: doc.purpose,
       headline: doc.headline,
+      subtitle: doc.subtitle,
+      bodyText: doc.bodyText,
       eventDetails: doc.eventDetails,
       breakdown: doc.breakdown,
+      references: doc.references,
     },
   });
 }
