@@ -3,6 +3,7 @@ import FlyerRequest from "../models/FlyerRequest.js";
 import { FLYER_PLANS } from "../config/flyerPlans.js";
 import { OWNER, formatNGN as N } from "../config/plans.js";
 import { sendMail, mailConfigured } from "../utils/mailer.js";
+import { feedReniFlyer } from "../utils/reniFeed.js";
 
 const esc = (s = "") =>
   String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -127,6 +128,11 @@ export const createFlyerRequest = async (req, res) => {
       breakdown: pick("breakdown"),
       priceNGN: planDef.priceNGN, // null on the event plan — quoted manually
     });
+
+    // Reni Design Studio auto-feed — fire-and-forget
+    feedReniFlyer({ doc: doc.toJSON(), plan: planDef })
+      .then((r) => { if (r.fed) console.log("Reni feed: flyer job created", r.jobId); })
+      .catch((err) => console.error("Reni feed (flyer) failed:", err));
 
     if (mailConfigured()) {
       const json = doc.toJSON();

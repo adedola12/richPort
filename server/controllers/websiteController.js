@@ -4,6 +4,7 @@ import { nextSequence } from "../models/Counter.js";
 import { WEBSITE_PLANS } from "../config/websitePlans.js";
 import { OWNER, DEPOSIT_PCT, formatNGN as N } from "../config/plans.js";
 import { sendMail, mailConfigured } from "../utils/mailer.js";
+import { feedReniWebsite } from "../utils/reniFeed.js";
 
 const esc = (s = "") =>
   String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -150,6 +151,11 @@ export const createWebsiteRequest = async (req, res) => {
       deposit,
       balance: priceNGN - deposit,
     });
+
+    // Reni Design Studio auto-feed — fire-and-forget
+    feedReniWebsite({ doc: doc.toJSON(), plan: planDef })
+      .then((r) => { if (r.fed) console.log("Reni feed: website job created", r.jobId); })
+      .catch((err) => console.error("Reni feed (website) failed:", err));
 
     if (mailConfigured()) {
       const json = doc.toJSON();
