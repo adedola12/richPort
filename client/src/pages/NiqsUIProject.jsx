@@ -29,6 +29,22 @@ import imgScreenSearch1 from "../assets/NIQS/screen-search-1.webp";
 import imgScreenSearch2 from "../assets/NIQS/screen-search-2.webp";
 import imgScreenExams   from "../assets/NIQS/screen-exams.webp";
 
+/* brand guideline spreads (curated from the 60-page document) */
+import g01 from "../assets/NIQS/guideline/g01.webp";
+import g04 from "../assets/NIQS/guideline/g04.webp";
+import g06 from "../assets/NIQS/guideline/g06.webp";
+import g11 from "../assets/NIQS/guideline/g11.webp";
+import g16 from "../assets/NIQS/guideline/g16.webp";
+import g17 from "../assets/NIQS/guideline/g17.webp";
+import g20 from "../assets/NIQS/guideline/g20.webp";
+import g24 from "../assets/NIQS/guideline/g24.webp";
+import g27 from "../assets/NIQS/guideline/g27.webp";
+import g32 from "../assets/NIQS/guideline/g32.webp";
+import g35 from "../assets/NIQS/guideline/g35.webp";
+import g39 from "../assets/NIQS/guideline/g39.webp";
+import g52 from "../assets/NIQS/guideline/g52.webp";
+import g60 from "../assets/NIQS/guideline/g60.webp";
+
 const GR = "#a3e635";
 const NIQS_NAVY = "#000066";
 const NIQS_GOLD = "#D9B650";
@@ -717,18 +733,23 @@ export default function NiqsUIProject() {
           label="INSIDE THE GUIDELINE"
           white="The system,"
           accent="documented"
-          description="~60 pages across 12 chapters — the operating manual every NIQS chapter, staff member, and vendor designs from. Spreads land here as they're finalised."
+          description="Sixty pages across twelve chapters — the operating manual every NIQS chapter, staff member, and vendor designs from. A curated selection of spreads below."
           color={GR}
           slides={[
-            { src: null, alt: "Cover — navy cover with NIQS emblem + 'Brand Guideline' title" },
-            { src: null, alt: "Brand story — 'Who We Are' spread with 1969 founding + stat strip" },
-            { src: null, alt: "History timeline — five decades, 1969 → 2025" },
-            { src: null, alt: "Logo & mark — heraldic emblem on light + dark backplates" },
-            { src: null, alt: "Logo lockups — official configurations across backgrounds" },
-            { src: null, alt: "Colour palette — navy #000066 + gold #D9B650 with tonal scales" },
-            { src: null, alt: "Typography — Bricolage Grotesque + Sora specimen spread" },
-            { src: null, alt: "Imagery direction — photography do's/don'ts + treatment specs" },
-            { src: null, alt: "Stationery — letterhead + business card application spread" },
+            { src: g01, alt: "Cover — The Visual & Verbal Identity" },
+            { src: g04, alt: "Chapter 01 — Brand Story" },
+            { src: g06, alt: "Five decades of professional leadership — the NIQS timeline" },
+            { src: g11, alt: "Our brand personality — the six pillars" },
+            { src: g16, alt: "The NIQS mark, codified" },
+            { src: g17, alt: "Four official logo configurations" },
+            { src: g20, alt: "Navy & Gold — the official brand colours" },
+            { src: g24, alt: "Bricolage Grotesque — the display typeface" },
+            { src: g27, alt: "Chapter 06 — Imagery Direction" },
+            { src: g32, alt: "Chapter 08 — Design Foundations" },
+            { src: g35, alt: "Chapter 09 — Components & UI Patterns" },
+            { src: g39, alt: "Chapter 10 — Stationery & Applications" },
+            { src: g52, alt: "Social media & flyer applications" },
+            { src: g60, alt: "The Visual & Verbal Identity — closing spread" },
           ]}
         />
 
