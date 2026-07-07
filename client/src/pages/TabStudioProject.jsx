@@ -5,7 +5,7 @@
 
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import BrandGallery from "../components/ProjectPage/BrandGallery";
 import GuidelineCarousel from "../components/ProjectPage/GuidelineCarousel";
 import OtherProj from "../components/ProjectPage/OtherProj";
@@ -25,9 +25,6 @@ import imgSweatshirt from "../assets/TabStudio/sweatshirt.webp";
 import imgWristbands from "../assets/TabStudio/wristbands.webp";
 import imgTote from "../assets/TabStudio/tote.webp";
 import imgNotebook from "../assets/TabStudio/notebook.webp";
-import imgLanyards from "../assets/TabStudio/TS_3.jpg";
-import imgWristStack from "../assets/TabStudio/TS_5.jpg";
-import imgWristSpread from "../assets/TabStudio/TS_6.jpg";
 import imgWindowAlt from "../assets/TabStudio/TS_7.jpg";
 import imgRationale from "../assets/TabStudio/logo-rationale.webp";
 
@@ -40,21 +37,26 @@ import tg13 from "../assets/TabStudio/guideline/g13.webp";
 import tg15 from "../assets/TabStudio/guideline/g15.webp";
 import tg18 from "../assets/TabStudio/guideline/g18.webp";
 import tg19 from "../assets/TabStudio/guideline/g19.webp";
-import tg23 from "../assets/TabStudio/guideline/g23.webp";
+import tg23 from "../assets/TabStudio/guideline/g23.webp"; // Typography spread
 import tg29 from "../assets/TabStudio/guideline/g29.webp";
 import tg36 from "../assets/TabStudio/guideline/g36.webp";
 import tg44 from "../assets/TabStudio/guideline/g44.webp";
 import tg47 from "../assets/TabStudio/guideline/g47.webp";
 import tg48 from "../assets/TabStudio/guideline/g48.webp";
 
-/* ── official brand colours, from the guideline (page 15, Color Usage) ── */
-const GREEN = "#07D06F"; // Vibrant Green — primary accent
-const NAVY = "#024553";  // Deep Navy — core brand colour
-const LIME = "#B0E507";  // Citrus Lime — energy highlight
-const INK = "#171614";   // Jet Black — anchor & contrast
-const ICE = "#EAF4F6";   // Ice Blue — support & balance
+/* Portfolio accent (lime) drives the page's labels, headings and CTAs. */
+const G = "#a3e635";
 
-/* ─── animation primitives ─── */
+/* Tabstudio's own brand colours — from the guideline, shown as swatches only. */
+const SWATCHES = [
+  { hex: "#07D06F", name: "Vibrant Green", role: "Primary accent. Growth, creativity, fresh beginnings.", dark: true },
+  { hex: "#024553", name: "Deep Navy", role: "The core. Trust, structure, strategic focus.", dark: false },
+  { hex: "#B0E507", name: "Citrus Lime", role: "Energy highlight, used with restraint.", dark: true },
+  { hex: "#171614", name: "Jet Black", role: "Anchor and contrast for type and grids.", dark: false },
+  { hex: "#EAF4F6", name: "Ice Blue", role: "Calm, balance, breathing space.", dark: true },
+];
+
+/* ─── hero intro animation (plays once on load) ─── */
 const FadeUp = ({ children, delay = 0, className = "" }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0 });
@@ -71,8 +73,26 @@ const FadeUp = ({ children, delay = 0, className = "" }) => {
   );
 };
 
+/* ─── bidirectional scroll reveal ───
+   Fades and lifts in as the block enters from below, and out as it leaves
+   toward the top. Reverses cleanly when scrolling back up, so blocks reveal
+   from whichever edge they cross. A wide flat middle keeps them steady while
+   centred in the viewport. */
+const Reveal = ({ children, className = "" }) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const opacity = useTransform(scrollYProgress, [0, 0.16, 0.84, 1], [0, 1, 1, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.16, 0.84, 1], [46, 0, 0, -46]);
+  const filter = useTransform(scrollYProgress, [0, 0.16, 0.84, 1], ["blur(6px)", "blur(0px)", "blur(0px)", "blur(6px)"]);
+  return (
+    <motion.div ref={ref} className={className} style={{ opacity, y, filter }}>
+      {children}
+    </motion.div>
+  );
+};
+
 const SLabel = ({ n, t }) => (
-  <p className="text-[11px] font-bold tracking-[0.3em] uppercase mb-5" style={{ color: GREEN }}>
+  <p className="text-[11px] font-bold tracking-[0.3em] uppercase mb-5" style={{ color: G }}>
     {n} — {t}
   </p>
 );
@@ -80,13 +100,13 @@ const SLabel = ({ n, t }) => (
 const H2 = ({ white, accent }) => (
   <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-semibold leading-[1.08] tracking-[-0.02em]">
     <span className="text-white">{white} </span>
-    <span style={{ color: GREEN }}>{accent}</span>
+    <span style={{ color: G }}>{accent}</span>
   </h2>
 );
 
-const Frame = ({ src, alt, ratio = "16/9", className = "" }) => (
+const Frame = ({ src, alt, ratio = "16/9", className = "", fit = "cover" }) => (
   <div className={`w-full rounded-2xl border border-white/8 bg-white/[0.02] overflow-hidden ${className}`} style={{ aspectRatio: ratio }}>
-    <img src={src} alt={alt} loading="lazy" className="w-full h-full object-cover object-center" />
+    <img src={src} alt={alt} loading="lazy" className={`w-full h-full object-${fit} object-center`} />
   </div>
 );
 
@@ -100,8 +120,8 @@ const TabStudioProject = () => (
 
     {/* ambient glows */}
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-      <div className="absolute -left-60 -top-20 h-[500px] w-[500px] rounded-full blur-[160px]" style={{ background: `${NAVY}55` }} />
-      <div className="absolute -right-60 top-1/2 h-[400px] w-[400px] rounded-full blur-[140px]" style={{ background: `${GREEN}10` }} />
+      <div className="absolute -left-60 -top-20 h-[500px] w-[500px] rounded-full blur-[160px]" style={{ background: "#02455355" }} />
+      <div className="absolute -right-60 top-1/2 h-[400px] w-[400px] rounded-full blur-[140px]" style={{ background: `${G}10` }} />
     </div>
 
     <div className="relative z-10">
@@ -109,11 +129,7 @@ const TabStudioProject = () => (
       {/* ══ HERO ══ */}
       <section className="relative w-full min-h-[78vh] flex flex-col overflow-hidden">
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <img
-            src={imgStationeryDark}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover object-center"
-          />
+          <img src={imgStationeryDark} alt="" className="absolute inset-0 w-full h-full object-cover object-center" />
           <div
             className="absolute inset-0"
             style={{ background: "linear-gradient(to bottom, rgba(7,9,12,0.5) 0%, rgba(7,9,12,0.4) 35%, rgba(7,9,12,0.94) 70%, #07090C 100%)" }}
@@ -124,7 +140,7 @@ const TabStudioProject = () => (
           <div className="max-w-[820px] mx-auto flex flex-col items-center text-center">
             <FadeUp>
               <span className="inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold mb-7"
-                style={{ borderColor: `${GREEN}44`, color: GREEN, background: `${GREEN}0D` }}>
+                style={{ borderColor: `${G}44`, color: G, background: `${G}0D` }}>
                 Brand Identity Case Study
               </span>
             </FadeUp>
@@ -138,7 +154,7 @@ const TabStudioProject = () => (
               <p className="text-[16px] sm:text-[18px] leading-[1.65] text-white/65 max-w-[600px]">
                 Three founders, a video media agency, and a name carrying two ideas at once.
                 The mark that came out of it reads as a play button on the surface
-                and quietly spells <span style={{ color: GREEN }}>T, A and B</span> underneath.
+                and quietly spells <span style={{ color: G }}>T, A and B</span> underneath.
               </p>
             </FadeUp>
           </div>
@@ -148,33 +164,34 @@ const TabStudioProject = () => (
       {/* ══ SNAPSHOT + THE SHORT VERSION ══ */}
       <section className="py-14 sm:py-16 px-4 sm:px-8 lg:px-16">
         <div className="max-w-[1100px] mx-auto">
-          <FadeUp>
+          <Reveal>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-0 sm:divide-x divide-white/8 mb-12">
               {[
                 { label: "CLIENT", value: "Tab Studio" },
                 { label: "INDUSTRY", value: "Video & Motion", accent: true },
                 { label: "ROLE", value: "Sole Brand Designer" },
-                { label: "SCOPE", value: "Identity to Website" },
+                { label: "SCOPE", value: "Full Identity System" },
               ].map(({ label, value, accent }) => (
                 <div key={label} className="sm:px-8 first:pl-0">
                   <p className="text-[9px] tracking-[0.3em] uppercase text-white/30 mb-1">{label}</p>
-                  <p className="text-lg sm:text-xl font-bold" style={accent ? { color: GREEN } : {}}>{value}</p>
+                  <p className="text-lg sm:text-xl font-bold" style={accent ? { color: G } : {}}>{value}</p>
                 </div>
               ))}
             </div>
-          </FadeUp>
+          </Reveal>
 
-          <FadeUp delay={0.08}>
-            <div className="rounded-2xl border p-7 sm:p-9" style={{ borderColor: `${GREEN}30`, background: `${GREEN}07` }}>
-              <p className="text-[11px] font-bold tracking-[0.25em] uppercase mb-4" style={{ color: GREEN }}>The short version</p>
+          <Reveal>
+            <div className="rounded-2xl border p-7 sm:p-9" style={{ borderColor: `${G}30`, background: `${G}07` }}>
+              <p className="text-[11px] font-bold tracking-[0.25em] uppercase mb-4" style={{ color: G }}>The short version</p>
               <p className="text-[16px] sm:text-[18px] leading-[1.7] text-white/70">
                 Three founders started a video agency and needed a face for it.
                 I gave them one mark that works like a coin: look at it straight and it is a play button,
                 turn it and it spells their initials. That idea grew into a five colour system,
-                a 48 page guideline, and everything through to the website. Here is how it happened.
+                a 48 page guideline, and a modern, scalable identity the team can run without me.
+                Here is how it happened.
               </p>
             </div>
-          </FadeUp>
+          </Reveal>
         </div>
       </section>
 
@@ -182,26 +199,26 @@ const TabStudioProject = () => (
       <section className="py-16 sm:py-20 px-4 sm:px-8 lg:px-16 border-t border-white/5">
         <div className="max-w-[1100px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-            <FadeUp>
+            <Reveal>
               <SLabel n="01" t="THE CLIENT" />
               <H2 white="A video agency named after" accent="its own habits" />
-              <div className="mt-5 mb-8 h-[2px] w-16 rounded-full" style={{ background: GREEN }} />
+              <div className="mt-5 mb-8 h-[2px] w-16 rounded-full" style={{ background: G }} />
               <div className="space-y-5 text-[15px] sm:text-[16px] leading-[1.7] text-white/55">
                 <p>Tab Studio is a video media agency. Editing, animation, motion graphics, that whole lane. Three founders came together to build it, and the name carries two ideas at once: their initials, T, A and B, and the tabs you keep open when you are deep in work, jumping between projects.</p>
-                <p>What they wanted was an identity that felt like a real creative studio. Something that could hold its own in the African creative economy and signal what they do without spelling it out.</p>
+                <p>They serve startups, creators, media teams and tech brands, and they wanted an identity that felt like a real creative studio. Something modern and scalable that could hold its own in the African creative economy and signal what they do without spelling it out.</p>
               </div>
-            </FadeUp>
-            <FadeUp delay={0.1} className="h-full">
+            </Reveal>
+            <Reveal className="h-full">
               <Frame src={imgCardNotebook} alt="Tabstudio business card resting on a branded notebook" ratio="4/3" className="h-full" />
-            </FadeUp>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* ══ 02 — THE PROBLEM ══ */}
+      {/* ══ 02 — THE CHALLENGE ══ */}
       <section className="py-16 sm:py-20 px-4 sm:px-8 lg:px-16 border-t border-white/5">
         <div className="max-w-[1100px] mx-auto">
-          <FadeUp>
+          <Reveal>
             <SLabel n="02" t="THE CHALLENGE" />
             <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-semibold leading-[1.08] tracking-[-0.02em]">
               <span className="text-white">The problem was not taste.</span><br />
@@ -209,68 +226,62 @@ const TabStudioProject = () => (
             </h2>
             <div className="mt-5 mb-8 h-[2px] w-16 rounded-full bg-[#E05252]" />
             <div className="max-w-[720px] space-y-5 text-[15px] sm:text-[16px] leading-[1.7] text-white/55">
-              <p>I had a name loaded with meaning and a firm with a clear personality, and the job was to compress all of it into one mark. The video work. The multitasking idea. The three founders. All in a single shape, without going literal.</p>
-              <p>Honestly, most of this project was the hunt for the cleanest way to say all of that at once. Round after round of directions until the shape finally clicked.</p>
+              <p>The earlier direction was not bad, it was just unfocused. It lacked cohesion and visual meaning, the kind of thing that looks fine until you ask it to stand for something. And I had a name loaded with meaning and a firm with a clear personality, and the job was to compress all of it into one mark. The video work. The multitasking idea. The three founders. All in a single shape, without going literal.</p>
+              <p>Honestly, most of this project was the hunt for the cleanest way to say all of that at once. It was an intensive logo iteration, round after round of directions, geometric, fluid, symbol-based, typographic, until the shape finally clicked.</p>
             </div>
-          </FadeUp>
+          </Reveal>
         </div>
       </section>
 
       {/* ══ 03 — THE IDEA ══ */}
       <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 border-t border-white/5">
         <div className="max-w-[1100px] mx-auto">
-          <FadeUp>
+          <Reveal>
             <SLabel n="03" t="THE IDEA" />
             <H2 white="One icon that reads" accent="three ways" />
-            <div className="mt-5 mb-8 h-[2px] w-16 rounded-full" style={{ background: GREEN }} />
+            <div className="mt-5 mb-8 h-[2px] w-16 rounded-full" style={{ background: G }} />
             <div className="max-w-[720px] space-y-5 text-[15px] sm:text-[16px] leading-[1.7] text-white/55 mb-10">
               <p>The mark starts as a rounded triangle, which your eye instantly reads as a play button. Everything video lives under that symbol. It is where every story starts.</p>
               <p>But turn it, look closer, and the same shape resolves into T, A and B. The founders' initials are woven in as a quiet signature rather than a literal spell-out. People who look once see play. People who look twice find the name. That double read is the whole logo.</p>
               <p>The triangular form brings stability and structure, and the rounded edges keep it friendly and human. Which is Tab Studio in one sentence: structured execution wrapped around human-centered creativity.</p>
             </div>
-          </FadeUp>
+          </Reveal>
 
-          <FadeUp delay={0.08}>
+          <Reveal>
             <div className="rounded-2xl overflow-hidden border border-white/8">
               <img src={imgRationale} alt="The Tabstudio logo rationale: play icon, forward movement, human avatar, and the letters T, a and b, all read from one mark" loading="lazy" className="w-full h-auto" />
             </div>
             <p className="mt-4 text-[14px] text-white/40 leading-relaxed max-w-[640px]">
               The rationale spread from the guideline. Same icon, different angles: play, forward movement, a human avatar, then T, a and b.
             </p>
-          </FadeUp>
+          </Reveal>
 
-          <FadeUp delay={0.1}>
+          <Reveal>
             <div className="mt-14 text-center py-8">
               <p className="text-[13px] tracking-[0.25em] uppercase text-white/30 mb-4">The voice, in one line</p>
               <p className="text-2xl sm:text-3xl lg:text-[38px] font-semibold tracking-[-0.02em] leading-tight">
                 <span className="text-white">"The studio where creativity</span>{" "}
-                <span style={{ color: GREEN }}>becomes clarity."</span>
+                <span style={{ color: G }}>becomes clarity."</span>
               </p>
             </div>
-          </FadeUp>
+          </Reveal>
         </div>
       </section>
 
       {/* ══ 04 — THE SYSTEM ══ */}
       <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 border-t border-white/5">
         <div className="max-w-[1100px] mx-auto">
-          <FadeUp>
+          <Reveal>
             <SLabel n="04" t="THE SYSTEM" />
             <H2 white="Five colours with" accent="assigned jobs" />
             <p className="mt-5 text-[15px] sm:text-[16px] leading-[1.7] text-white/55 max-w-[680px] mb-12">
               Fun fact: I originally pitched an orange direction. The client kept pulling toward a deep, moody green, the Diary of a CEO kind of green. They were right, and once we committed I made sure we committed properly. Every colour in the system has one defined job, so the green always leads.
             </p>
-          </FadeUp>
+          </Reveal>
 
-          <FadeUp delay={0.06}>
+          <Reveal>
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-4">
-              {[
-                { hex: GREEN, name: "Vibrant Green", role: "Primary accent. Growth, creativity, fresh beginnings.", dark: true },
-                { hex: NAVY, name: "Deep Navy", role: "The core. Trust, structure, strategic focus.", dark: false },
-                { hex: LIME, name: "Citrus Lime", role: "Energy highlight, used with restraint.", dark: true },
-                { hex: INK, name: "Jet Black", role: "Anchor and contrast for type and grids.", dark: false },
-                { hex: ICE, name: "Ice Blue", role: "Calm, balance, breathing space.", dark: true },
-              ].map(({ hex, name, role, dark }) => (
+              {SWATCHES.map(({ hex, name, role, dark }) => (
                 <div key={hex} className="rounded-2xl overflow-hidden border border-white/8">
                   <div className="h-20 sm:h-24 flex items-end p-3" style={{ background: hex }}>
                     <span className="text-[10px] font-mono font-bold" style={{ color: dark ? "#0b0b0b" : "#ffffff" }}>{hex}</span>
@@ -283,20 +294,22 @@ const TabStudioProject = () => (
               ))}
             </div>
             <p className="text-[11px] text-white/25 mb-14">Names, roles and values from the official guideline.</p>
-          </FadeUp>
+          </Reveal>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-            <FadeUp delay={0.08} className="h-full">
-              <Frame src={imgBizCard} alt="Tabstudio business cards on deep navy" ratio="4/3" className="h-full" />
-            </FadeUp>
-            <FadeUp delay={0.12}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <Reveal>
+              <div className="w-full rounded-2xl border border-white/8 bg-[#0d0f13] overflow-hidden flex items-center justify-center p-3" style={{ aspectRatio: "210/297", maxHeight: "560px" }}>
+                <img src={tg23} alt="Typography spread from the Tabstudio brand guideline" loading="lazy" className="w-full h-full object-contain" />
+              </div>
+            </Reveal>
+            <Reveal>
               <p className="text-[11px] tracking-[0.28em] uppercase text-white/35 mb-3">TYPOGRAPHY</p>
               <p className="text-[18px] font-semibold text-white mb-4">Col Sans and Urbanist</p>
               <div className="space-y-4 text-[15px] sm:text-[16px] leading-[1.7] text-white/55">
                 <p>Col Sans leads the display work. It carries clarity and warmth at the same time, which is exactly the balance the brand voice asks for. Urbanist handles the supporting text, versatile enough for anything from captions to long paragraphs.</p>
                 <p>Together with the colour rules and the background interaction system in the guideline, any collaborator can put a Tabstudio layout together and it will still feel like the same studio.</p>
               </div>
-            </FadeUp>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -304,13 +317,13 @@ const TabStudioProject = () => (
       {/* ══ 05 — IN THE WILD ══ */}
       <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 border-t border-white/5">
         <div className="max-w-[1100px] mx-auto">
-          <FadeUp>
+          <Reveal>
             <SLabel n="05" t="IN THE WILD" />
             <H2 white="A brand is not real until" accent="you can hold it" />
             <p className="mt-5 text-[15px] sm:text-[16px] leading-[1.7] text-white/55 max-w-[620px] mb-14">
               Mockups are the stress test. If an identity only works on a slide, it does not work.
             </p>
-          </FadeUp>
+          </Reveal>
 
           <div className="space-y-16">
             {[
@@ -330,7 +343,7 @@ const TabStudioProject = () => (
                 body: "The outlined mark wraps the apparel so the clothes feel designed, not just printed. Merch people actually want to wear does more marketing than most ads.",
               },
             ].map(({ img, title, body }) => (
-              <FadeUp key={title}>
+              <Reveal key={title}>
                 <div className="flex flex-col gap-5">
                   <div className="max-w-[560px]">
                     <p className="text-[17px] font-semibold text-white mb-2">{title}</p>
@@ -338,7 +351,7 @@ const TabStudioProject = () => (
                   </div>
                   <Frame src={img} alt={`${title}. Tabstudio brand application`} />
                 </div>
-              </FadeUp>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -347,13 +360,13 @@ const TabStudioProject = () => (
       {/* ══ 06 — DECISIONS ══ */}
       <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 border-t border-white/5">
         <div className="max-w-[1100px] mx-auto">
-          <FadeUp>
+          <Reveal>
             <SLabel n="06" t="DECISIONS" />
             <H2 white="Three calls I" accent="stood by" />
             <p className="mt-5 text-[15px] sm:text-[16px] leading-[1.7] text-white/55 max-w-[560px] mb-12">
               Every identity is a series of small arguments. These are the three that shaped this one.
             </p>
-          </FadeUp>
+          </Reveal>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
@@ -370,15 +383,15 @@ const TabStudioProject = () => (
                 a: "I did not hand over a logo file and hope. I built a presentation that walked the founders through the play button, the movement, and the hidden initials, step by step. The story earned the buy-in. The shape just confirmed it.",
               },
             ].map(({ q, a }, i) => (
-              <FadeUp key={q} delay={i * 0.05}>
+              <Reveal key={q}>
                 <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-6 h-full flex flex-col gap-3">
-                  <span className="rounded-md px-2 py-0.5 text-[9px] font-bold tracking-widest uppercase w-fit" style={{ background: `${GREEN}15`, color: GREEN }}>
+                  <span className="rounded-md px-2 py-0.5 text-[9px] font-bold tracking-widest uppercase w-fit" style={{ background: `${G}15`, color: G }}>
                     Decision 0{i + 1}
                   </span>
                   <p className="text-[15px] font-semibold text-white leading-snug">{q}</p>
                   <p className="text-[14px] sm:text-[15px] leading-[1.65] text-white/50 flex-1">{a}</p>
                 </div>
-              </FadeUp>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -390,8 +403,9 @@ const TabStudioProject = () => (
         label="INSIDE THE GUIDELINE"
         white="48 pages,"
         accent="documented"
-        description="Voice, logo system, colour rules, typography and usage, all written down so the brand survives without me in the room. A curated selection of spreads below."
-        color={GREEN}
+        description="Voice, logo system, colour rules, typography and usage, all written down so the brand survives without me in the room. Scroll through the spreads, or skip ahead to the rest of the project."
+        color={G}
+        skipLabel="Skip to gallery"
         slides={[
           { src: tg01, alt: "Cover. Defining the visual foundation of Tabstudio" },
           { src: tg05, alt: "Brand overview" },
@@ -417,7 +431,7 @@ const TabStudioProject = () => (
         white="Everything the project"
         accent="produced"
         description="Every application designed for Tab Studio, in one place. Tap any piece to view it full size."
-        color={GREEN}
+        color={G}
         images={[
           { src: imgBuildingWall, alt: "Building wall branding with the studio tagline", label: "BUILDING WALL" },
           { src: imgBillboard, alt: "Open a New Tab launch billboard", label: "BILLBOARD" },
@@ -426,12 +440,9 @@ const TabStudioProject = () => (
           { src: imgCardNotebook, alt: "Business card on branded notebook", label: "CARD & NOTEBOOK" },
           { src: imgStationeryDark, alt: "Full stationery suite on dark", label: "STATIONERY" },
           { src: imgIdCards, alt: "Staff ID cards on lanyards", label: "ID CARDS" },
-          { src: imgLanyards, alt: "Lanyard set", label: "LANYARDS" },
           { src: imgTees, alt: "Team t-shirts with the outlined mark", label: "T-SHIRTS" },
-          { src: imgSweatshirt, alt: "Mint sweatshirt", label: "SWEATSHIRT" },
+          { src: imgSweatshirt, alt: "Branded sweatshirt", label: "SWEATSHIRT" },
           { src: imgWristbands, alt: "Wristbands in the brand colours", label: "WRISTBANDS" },
-          { src: imgWristStack, alt: "Wristbands stacked", label: "WRISTBANDS II" },
-          { src: imgWristSpread, alt: "Wristbands spread", label: "WRISTBANDS III" },
           { src: imgTote, alt: "Tote bag with the studio tagline", label: "TOTE BAG" },
           { src: imgNotebook, alt: "Navy branded notebook", label: "NOTEBOOK" },
           { src: imgWindowAlt, alt: "Window poster, alternate angle", label: "WINDOW II" },
@@ -441,17 +452,17 @@ const TabStudioProject = () => (
       {/* ══ 09 — WHAT IT DID ══ */}
       <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 border-t border-white/5">
         <div className="max-w-[860px] mx-auto">
-          <FadeUp>
+          <Reveal>
             <SLabel n="09" t="WHAT IT DID" />
             <H2 white="The coin still" accent="flips" />
             <div className="mt-8 space-y-5 text-[15px] sm:text-[16px] leading-[1.75] text-white/60">
-              <p>The founders loved it, and the mark became the foundation for everything after: the full identity, the guideline, the merch, and eventually the website. Tab Studio now walks into the African creative economy looking like what it actually is, a studio with structure under its creativity.</p>
+              <p>The founders loved it, and the mark became the foundation for the full identity: the logo system, the green palette, the guideline, and the merch. Tab Studio now walks into the African creative economy looking like what it actually is, a studio with structure under its creativity.</p>
               <p>It is one of the projects I am proudest of, mostly because of that coin. Same icon, different angles. You get T, A and B, and it still reads as play. When a mark can hold that much meaning and still stay simple, the rest of the system almost designs itself.</p>
             </div>
-          </FadeUp>
+          </Reveal>
 
-          <FadeUp delay={0.1}>
-            <div className="mt-12 rounded-2xl border p-7 sm:p-9 text-center" style={{ borderColor: `${GREEN}30`, background: `${GREEN}07` }}>
+          <Reveal>
+            <div className="mt-12 rounded-2xl border p-7 sm:p-9 text-center" style={{ borderColor: `${G}30`, background: `${G}07` }}>
               <p className="text-[17px] sm:text-[19px] font-semibold text-white mb-2">Your brand could be the next case study here.</p>
               <p className="text-[14px] text-white/50 mb-6">Every project like this starts the same way: pick a plan, answer a short questionnaire, and we begin.</p>
               <Link
@@ -461,7 +472,7 @@ const TabStudioProject = () => (
                 See the plans
               </Link>
             </div>
-          </FadeUp>
+          </Reveal>
         </div>
       </section>
 

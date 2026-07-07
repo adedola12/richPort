@@ -7,7 +7,7 @@ import {
 } from "framer-motion";
 
 /* detect the Tailwind `sm` breakpoint (640px) so the carousel can switch from
-   horizontal scrolling on desktop to vertical scrolling on mobile */
+   horizontal fan on desktop to a vertical stack on mobile */
 function useIsMobile() {
   const query = "(max-width: 639px)";
   const [isMobile, setIsMobile] = useState(() =>
@@ -31,24 +31,25 @@ function useIsMobile() {
   return isMobile;
 }
 
-/* ─── single slide card — separate component so it can call hooks ─── */
+/* ─── single slide card ─── */
 function SlideCard({ slide, index, rawIndex, isMobile }) {
-  // desktop: cards fan out horizontally (translateX, 55vw apart)
-  // mobile:  cards stack vertically (translateY, 50vw apart) → scroll up/down
-  // scale 0.72 + blur 14px = strong depth-behind effect; revolves smoothly into center
-  const x = useTransform(rawIndex, v => (isMobile ? 0 : `${(index - v) * 55}vw`));
-  const y = useTransform(rawIndex, v => (isMobile ? `${(index - v) * 50}vw` : 0));
-  const scale = useTransform(rawIndex, v => Math.max(0.72, 1 - Math.min(Math.abs(index - v), 1) * 0.28));
-  const opacity = useTransform(rawIndex, v => {
+  // Tight fan: neighbours sit close and far behind (small offset, hard blur,
+  // strong scale-down) so only the centre page reads clearly.
+  const x = useTransform(rawIndex, (v) => (isMobile ? 0 : `${(index - v) * 22}vw`));
+  const y = useTransform(rawIndex, (v) => (isMobile ? `${(index - v) * 58}vw` : 0));
+  const scale = useTransform(rawIndex, (v) =>
+    Math.max(0.66, 1 - Math.min(Math.abs(index - v), 1) * 0.34)
+  );
+  const opacity = useTransform(rawIndex, (v) => {
     const d = Math.abs(index - v);
-    if (d > 1.6) return 0;
-    return Math.max(0.60, 1 - d * 0.40);
+    if (d > 1.7) return 0;
+    return Math.max(0.28, 1 - d * 0.55);
   });
-  const blur = useTransform(rawIndex, v => {
+  const blur = useTransform(rawIndex, (v) => {
     const d = Math.min(Math.abs(index - v), 1);
-    return `blur(${d * 14}px)`;
+    return `blur(${d * 18}px)`;
   });
-  const zIndex = useTransform(rawIndex, v =>
+  const zIndex = useTransform(rawIndex, (v) =>
     Math.round(20 - Math.abs(index - v) * 10)
   );
 
@@ -56,13 +57,8 @@ function SlideCard({ slide, index, rawIndex, isMobile }) {
     <motion.div
       style={{
         position: "absolute",
-        left: 0,
-        right: 0,
-        margin: "0 auto",
-        width: isMobile ? "88%" : "65%",
-        maxWidth: isMobile ? "560px" : "900px",
-        top: 0,
-        bottom: 0,
+        inset: 0,
+        margin: "auto",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -74,12 +70,23 @@ function SlideCard({ slide, index, rawIndex, isMobile }) {
         zIndex,
       }}
     >
-      <div className="w-full aspect-video rounded-lg sm:rounded-2xl overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.75)] border border-white/10">
+      {/* A4 portrait page */}
+      <div
+        className="rounded-xl sm:rounded-2xl overflow-hidden border border-white/10 shadow-[0_24px_80px_rgba(0,0,0,0.7)]"
+        style={{
+          aspectRatio: "210 / 297",
+          height: isMobile ? "auto" : "96%",
+          width: isMobile ? "80%" : "auto",
+          maxWidth: "92vw",
+          maxHeight: "96%",
+          background: "#0d0f13",
+        }}
+      >
         {slide.src ? (
           <img
             src={slide.src}
             alt={slide.alt}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
             loading="lazy"
           />
         ) : (
@@ -107,6 +114,7 @@ export default function GuidelineCarousel({
   accent = "documented",
   description = "Everything captured in a brand guideline — the single source of truth.",
   color = "#a3e635",
+  skipLabel = "Skip ahead",
 }) {
   /* only use slides that have an actual image */
   const filledSlides = slides.filter((s) => s.src);
@@ -117,15 +125,17 @@ export default function GuidelineCarousel({
   const [activeIndex, setActiveIndex] = useState(0);
   const isMobile = useIsMobile();
 
-  /* scroll drives the carousel */
+  /* scroll drives the carousel — the last slide settles at 90% so there's a
+     short buffer before the sticky releases (kills the abrupt hand-off to the
+     next section) */
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
-  const rawIndex = useTransform(scrollYProgress, [0, 1], [0, Math.max(1, activeSlides.length - 1)]);
+  const rawIndex = useTransform(scrollYProgress, [0, 0.9], [0, Math.max(1, activeSlides.length - 1)]);
 
-  useMotionValueEvent(rawIndex, "change", v => {
-    setActiveIndex(Math.round(v));
+  useMotionValueEvent(rawIndex, "change", (v) => {
+    setActiveIndex(Math.max(0, Math.min(activeSlides.length - 1, Math.round(v))));
   });
 
   /* gentle fade-in as section enters viewport */
@@ -135,7 +145,7 @@ export default function GuidelineCarousel({
   });
   const entryOpacity = useTransform(entryProg, [0, 1], [0, 1]);
 
-  /* jump to slide by scrolling */
+  /* jump to a specific slide by scrolling */
   const goTo = (i) => {
     const el = containerRef.current;
     if (!el) return;
@@ -145,11 +155,20 @@ export default function GuidelineCarousel({
     else window.scrollTo({ top: target, behavior: "smooth" });
   };
 
+  /* escape hatch — skip the rest of the guideline and land in the next section */
+  const skipAhead = () => {
+    const el = containerRef.current;
+    if (!el) return;
+    const target = el.offsetTop + el.offsetHeight - window.innerHeight + 2;
+    if (window.__lenis) window.__lenis.scrollTo(target);
+    else window.scrollTo({ top: target, behavior: "smooth" });
+  };
+
   return (
     <div
       ref={containerRef}
       className="relative border-t border-white/5"
-      style={{ height: `${activeSlides.length * 100}vh` }}
+      style={{ height: `${activeSlides.length * 64}vh` }}
     >
       <motion.div
         className="sticky top-0 h-screen overflow-hidden flex flex-col"
@@ -157,19 +176,24 @@ export default function GuidelineCarousel({
       >
 
         {/* ── header ── */}
-        <div className="px-4 sm:px-8 lg:px-16 pt-12 pb-3 shrink-0 max-w-[1100px] mx-auto w-full">
-          <p
-            className="text-[11px] font-bold tracking-[0.3em] uppercase mb-4"
-            style={{ color }}
-          >
+        <div className="px-4 sm:px-8 lg:px-16 pt-10 pb-2 shrink-0 max-w-[1100px] mx-auto w-full">
+          <p className="text-[11px] font-bold tracking-[0.3em] uppercase mb-3" style={{ color }}>
             {n} — {label}
           </p>
-          <h2 className="text-3xl sm:text-[44px] font-semibold leading-tight tracking-[-0.03em] mb-3">
+          <h2 className="text-2xl sm:text-[38px] font-semibold leading-tight tracking-[-0.03em] mb-2">
             <span className="text-white">{white} </span>
             <span style={{ color }}>{accent}</span>
           </h2>
-          <p className="text-[15px] leading-[1.65] text-white/50 max-w-[560px]">{description}</p>
+          <p className="text-[14px] leading-[1.6] text-white/45 max-w-[560px]">{description}</p>
         </div>
+
+        {/* ── skip / escape button ── */}
+        <button
+          onClick={skipAhead}
+          className="absolute top-5 right-4 sm:right-8 z-30 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-black/40 backdrop-blur px-3.5 py-1.5 text-[11px] font-semibold text-white/60 transition hover:text-white hover:border-white/30"
+        >
+          {skipLabel} <span className="text-white/40">↓</span>
+        </button>
 
         {/* ── slide track ── */}
         <div className="relative flex-1 w-full overflow-hidden">
@@ -185,14 +209,12 @@ export default function GuidelineCarousel({
         </div>
 
         {/* ── footer: counter + dots + mobile arrows ── */}
-        <div className="shrink-0 pb-6 pt-2">
-          {/* slide counter */}
+        <div className="shrink-0 pb-5 pt-2">
           <p className="text-center text-[11px] font-mono text-white/25 mb-3 tracking-widest">
             {String(activeIndex + 1).padStart(2, "0")} / {String(activeSlides.length).padStart(2, "0")}
           </p>
 
-          {/* progress dots */}
-          <div className="flex items-center justify-center gap-2">
+          <div className="flex items-center justify-center gap-2 flex-wrap px-4">
             {activeSlides.map((_, i) => (
               <button
                 key={i}
@@ -209,7 +231,6 @@ export default function GuidelineCarousel({
             ))}
           </div>
 
-          {/* mobile prev/next arrows */}
           <div className="sm:hidden flex items-center justify-center gap-4 mt-5">
             <button
               onClick={() => goTo(Math.max(0, activeIndex - 1))}
@@ -219,7 +240,7 @@ export default function GuidelineCarousel({
               ←
             </button>
             <span className="text-[11px] text-white/30 font-mono tabular-nums">
-              {activeIndex + 1} of {slides.length}
+              {activeIndex + 1} of {activeSlides.length}
             </span>
             <button
               onClick={() => goTo(Math.min(activeSlides.length - 1, activeIndex + 1))}
