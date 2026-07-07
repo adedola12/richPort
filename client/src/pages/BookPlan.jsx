@@ -58,7 +58,7 @@ const inputCls = (invalid) =>
   }`;
 const cardCls = "rounded-2xl border border-white/10 bg-[#111318] px-5 py-8 sm:px-10";
 const btnPrimary =
-  "rounded-[10px] bg-gradient-to-b from-lime-500 to-lime-700 px-7 py-3 text-sm font-bold text-white shadow-[0_12px_40px_rgba(132,204,22,0.35)] transition hover:brightness-110 disabled:cursor-wait disabled:opacity-50";
+  "rounded-[10px] bg-gradient-to-b from-lime-400 to-lime-600 px-7 py-3 text-sm font-bold text-black shadow-[0_0_18px_rgba(132,204,22,0.5)] transition hover:from-lime-300 hover:to-lime-500 hover:-translate-y-[1px] active:scale-[0.97] disabled:cursor-wait disabled:opacity-50";
 const btnBack =
   "rounded-[10px] border border-white/15 bg-transparent px-7 py-3 text-sm font-semibold text-neutral-400 transition hover:border-lime-400/40 hover:text-white";
 const btnGhost =

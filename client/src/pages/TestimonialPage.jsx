@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import PageMeta from "../components/common/PageMeta";
+import GlowButton from "../components/common/GlowButton";
 import { fetchJson } from "../api/http";
 import { TESTIMONIAL_SERVICES } from "../data/testimonialOptions";
 
@@ -106,7 +107,7 @@ const TestimonialPage = () => {
             <p className="mt-3 text-[15px] leading-relaxed text-white/55">
               Your feedback means a lot — it's what keeps this studio growing.
             </p>
-            <Link to="/" className="mt-8 inline-block rounded-xl bg-lime-400 px-6 py-3 text-[14px] font-semibold text-black transition hover:bg-lime-300">
+            <Link to="/" className="mt-8 inline-block rounded-xl bg-gradient-to-b from-lime-400 to-lime-600 px-6 py-3 text-[14px] font-bold text-black shadow-[0_0_18px_rgba(132,204,22,0.5)] transition hover:from-lime-300 hover:to-lime-500 hover:-translate-y-0.5 active:scale-95">
               Back to home →
             </Link>
           </motion.div>
@@ -189,13 +190,9 @@ const TestimonialPage = () => {
                 </p>
               )}
 
-              <button
-                type="submit"
-                disabled={submitting}
-                className="w-full rounded-xl bg-lime-400 py-3.5 text-[15px] font-semibold text-black transition hover:bg-lime-300 disabled:opacity-50"
-              >
+              <GlowButton type="submit" disabled={submitting} className="w-full py-3.5 text-[15px]">
                 {submitting ? "Sending…" : "Submit testimonial"}
-              </button>
+              </GlowButton>
             </form>
           </motion.div>
         )}

@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import PageMeta from "../components/common/PageMeta";
+import GlowButton from "../components/common/GlowButton";
 import { fetchJson } from "../api/http";
 
 /* Display fallback for server/config/websitePlans.js — live values come
@@ -152,7 +153,7 @@ const BookWebsite = () => {
             <p className="mt-3 text-[15px] leading-relaxed text-white/55 max-w-[460px] mx-auto">
               Check your email{done.invoiceNo ? <> — invoice <span className="text-lime-400 font-semibold">{done.invoiceNo}</span></> : ""} with your next steps, the terms, and a copy of your answers. The project starts once the deposit is confirmed.
             </p>
-            <Link to="/" className="mt-8 inline-block rounded-xl bg-lime-400 px-6 py-3 text-[14px] font-semibold text-black transition hover:bg-lime-300">
+            <Link to="/" className="mt-8 inline-block rounded-xl bg-gradient-to-b from-lime-400 to-lime-600 px-6 py-3 text-[14px] font-bold text-black shadow-[0_0_18px_rgba(132,204,22,0.5)] transition hover:from-lime-300 hover:to-lime-500 hover:-translate-y-0.5 active:scale-95">
               Back to home →
             </Link>
           </motion.div>
@@ -257,10 +258,9 @@ const BookWebsite = () => {
                 <p className="rounded-xl border border-orange-400/30 bg-orange-400/10 px-4 py-3 text-[13px] text-orange-300">{error}</p>
               )}
 
-              <button type="submit" disabled={submitting}
-                className="w-full rounded-xl bg-lime-400 py-3.5 text-[15px] font-semibold text-black transition hover:bg-lime-300 disabled:opacity-50">
+              <GlowButton type="submit" disabled={submitting} className="w-full py-3.5 text-[15px]">
                 {submitting ? "Sending…" : "Book this website"}
-              </button>
+              </GlowButton>
             </form>
           </motion.div>
         )}

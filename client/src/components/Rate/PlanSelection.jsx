@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { HiFire } from "react-icons/hi";
 import { planKeyFromName } from "../../config/plans";
+import GlowButton from "../common/GlowButton";
 import goldBadge    from "../../assets/Gold.png";
 import silverBadge  from "../../assets/Silver.png";
 import platinumBadge from "../../assets/Platinum.png";
@@ -164,19 +165,13 @@ const PlanSelection = ({
 
                     {/* CTA */}
                     <div className="mt-auto pt-6">
-                      <button
+                      <GlowButton
                         type="button"
                         onClick={() => bookPlan(plan)}
-                        className="
-                          inline-flex w-full items-center justify-center
-                          rounded-xl bg-gradient-to-b from-lime-500 to-lime-700
-                          px-4 py-3 text-sm font-bold text-white
-                          shadow-[0_12px_40px_rgba(132,204,22,0.7)]
-                          transition hover:brightness-110
-                        "
+                        className="inline-flex w-full items-center justify-center px-4 py-3 text-sm"
                       >
                         Book this plan
-                      </button>
+                      </GlowButton>
                     </div>
                   </div>
                 </div>
@@ -226,19 +221,13 @@ const PlanSelection = ({
 
                 {/* CTA */}
                 <div className="mt-auto pt-6">
-                  <button
+                  <GlowButton
                     type="button"
                     onClick={() => bookPlan(plan)}
-                    className="
-                      inline-flex w-full items-center justify-center
-                      rounded-xl bg-gradient-to-b from-slate-500 to-slate-800
-                      px-4 py-3 text-sm font-bold text-white
-                      shadow-[0_10px_35px_rgba(0,0,0,0.8)]
-                      transition hover:from-slate-400 hover:to-slate-700
-                    "
+                    className="inline-flex w-full items-center justify-center px-4 py-3 text-sm"
                   >
                     Book this plan
-                  </button>
+                  </GlowButton>
                 </div>
               </div>
             </motion.div>

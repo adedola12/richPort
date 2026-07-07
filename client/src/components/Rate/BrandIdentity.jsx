@@ -3,6 +3,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import PlanSelection from "./PlanSelection";
 import PlanDetails from "./PlanDetails";
+import GlowButton from "../common/GlowButton";
 
 const PUBLIC_RATES_API = import.meta.env.VITE_AUTH_ENDPOINT || "";
 
@@ -82,17 +83,13 @@ const FlyerPlans = () => {
                 <li>• Print + social-ready exports</li>
                 <li>• {p.sourceFiles ? "Source files included" : "No source files"}</li>
               </ul>
-              <button
+              <GlowButton
                 type="button"
                 onClick={() => navigate(`/book-flyer?plan=${key}`)}
-                className={`w-full rounded-xl px-4 py-3 text-sm font-bold text-white transition hover:brightness-110 ${
-                  featured
-                    ? "bg-gradient-to-b from-lime-500 to-lime-700 shadow-[0_12px_40px_rgba(132,204,22,0.5)]"
-                    : "bg-gradient-to-b from-slate-500 to-slate-800"
-                }`}
+                className="w-full px-4 py-3 text-sm"
               >
                 {p.priceNGN != null ? "Book this pack" : "Request a quote"}
-              </button>
+              </GlowButton>
             </div>
           );
         })}
@@ -153,17 +150,13 @@ const WebsitePlans = () => {
               <ul className="mt-5 mb-6 space-y-1.5 text-[13px] text-neutral-300 flex-1">
                 {(p.deliverables || []).slice(0, 5).map((d) => <li key={d}>• {d}</li>)}
               </ul>
-              <button
+              <GlowButton
                 type="button"
                 onClick={() => navigate(`/book-website?plan=${key}`)}
-                className={`w-full rounded-xl px-4 py-3 text-sm font-bold text-white transition hover:brightness-110 ${
-                  featured
-                    ? "bg-gradient-to-b from-lime-500 to-lime-700 shadow-[0_12px_40px_rgba(132,204,22,0.5)]"
-                    : "bg-gradient-to-b from-slate-500 to-slate-800"
-                }`}
+                className="w-full px-4 py-3 text-sm"
               >
                 Book this package
-              </button>
+              </GlowButton>
             </div>
           );
         })}

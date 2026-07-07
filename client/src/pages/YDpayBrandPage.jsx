@@ -28,9 +28,6 @@ import imgNotebook     from "../assets/YDpay/brand-screens/notebook.webp";
 import imgBottle       from "../assets/YDpay/brand-screens/bottle.webp";
 import imgCup          from "../assets/YDpay/brand-screens/cup.webp";
 
-/* ── bento gallery ── */
-import gProduct    from "../assets/YDpay/guidelines/g9-product.webp";
-
 /* ── guideline carousel images (15 fresh pages) ── */
 import gc1  from "../assets/YDpay/guidelines/c1-vision.webp";
 import gc2  from "../assets/YDpay/guidelines/c2-core-values.webp";
