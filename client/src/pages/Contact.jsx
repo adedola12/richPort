@@ -403,7 +403,7 @@ const SuccessScreen = ({ onDiveBack }) => {
       </div>
       <motion.button
         onClick={onDiveBack}
-        className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-b from-lime-400 to-lime-500 px-8 py-3.5 text-sm font-bold text-black shadow-[0_0_24px_rgba(132,204,22,0.45)] transition hover:brightness-110 active:scale-[0.97]"
+        className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-b from-lime-400 to-lime-600 px-8 py-3.5 text-sm font-bold text-black shadow-[0_0_18px_rgba(132,204,22,0.5)] transition hover:from-lime-300 hover:to-lime-500 active:scale-[0.97]"
         whileHover={{ y: -1 }}
         whileTap={{ scale: 0.97 }}
       >
@@ -637,7 +637,7 @@ const Contact = () => {
                   <button
                     type="submit"
                     disabled={status === "loading"}
-                    className="w-full rounded-xl bg-gradient-to-b from-lime-400 to-lime-500 py-3.5 text-sm font-bold text-black shadow-[0_0_24px_rgba(132,204,22,0.45)] transition hover:brightness-110 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
+                    className="w-full rounded-xl bg-gradient-to-b from-lime-400 to-lime-600 py-3.5 text-sm font-bold text-black shadow-[0_0_18px_rgba(132,204,22,0.5)] transition hover:from-lime-300 hover:to-lime-500 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {status === "loading" ? "Sending…" : "Send Message"}
                   </button>

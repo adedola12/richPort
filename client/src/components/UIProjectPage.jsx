@@ -196,7 +196,7 @@ const UIProjectPage = () => {
               {status.error}
             </p>
             <button
-              className="mt-4 rounded-xl border border-white/20 bg-white/5 px-4 py-2 text-xs hover:bg-white/10"
+              className="mt-4 rounded-xl bg-gradient-to-b from-lime-400 to-lime-600 px-4 py-2 text-xs font-bold text-black shadow-[0_0_16px_rgba(132,204,22,0.45)] transition hover:from-lime-300 hover:to-lime-500 active:scale-95"
               onClick={() => navigate("/ui-projects")}
               type="button"
             >

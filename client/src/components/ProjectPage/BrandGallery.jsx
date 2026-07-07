@@ -318,7 +318,7 @@ export default function BrandGallery({
           <div className="mt-10 flex justify-start">
             <button
               onClick={() => navigate(cta.to)}
-              className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 py-3 text-[13px] font-medium text-white/75 transition hover:border-white/35 hover:bg-white/10 hover:text-white"
+              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-b from-lime-400 to-lime-600 px-6 py-3 text-[13px] font-bold text-black shadow-[0_0_18px_rgba(132,204,22,0.5)] transition hover:from-lime-300 hover:to-lime-500 hover:-translate-y-[1px] active:scale-95"
             >
               {cta.label}
               <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">

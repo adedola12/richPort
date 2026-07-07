@@ -242,10 +242,10 @@ const PlanSelection = ({
           onClick={handleViewDeliverables}
           className="
             inline-flex items-center justify-center gap-2
-            rounded-2xl bg-gradient-to-b from-[#343747] to-[#1d1f27]
-            px-10 py-3 text-sm sm:text-base font-semibold text-white
-            shadow-[0_18px_70px_rgba(0,0,0,0.9)]
-            transition hover:-translate-y-[1px]
+            rounded-2xl bg-gradient-to-b from-lime-400 to-lime-600
+            px-10 py-3 text-sm sm:text-base font-bold text-black
+            shadow-[0_0_22px_rgba(132,204,22,0.5)]
+            transition hover:from-lime-300 hover:to-lime-500 hover:-translate-y-[1px] active:scale-[0.97]
           "
         >
           {detailsOpen ? "Hide Deliverables" : "View Deliverables"}

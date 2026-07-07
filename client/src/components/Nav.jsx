@@ -151,7 +151,7 @@ const Nav = () => {
         <div className="hidden sm:flex items-center gap-3">
           <Link
             to="/projects"
-            className="px-4 py-2 rounded-lg border border-white/60 bg-white/10 text-xs font-normal text-white hover:bg-white/15 transition"
+            className="px-4 py-2 rounded-lg bg-gradient-to-b from-lime-400 to-lime-600 text-xs font-bold text-black shadow-[0_0_18px_rgba(132,204,22,0.5)] hover:from-lime-300 hover:to-lime-500 hover:-translate-y-[1px] active:scale-95 transition"
           >
             View Works
           </Link>
@@ -286,7 +286,7 @@ const Nav = () => {
                 <Link
                   to="/projects"
                   onClick={closeMenu}
-                  className="flex-1 text-center px-4 py-2.5 rounded-lg border border-white/30 bg-white/8 text-xs font-medium text-white hover:bg-white/15 transition"
+                  className="flex-1 text-center px-4 py-2.5 rounded-lg bg-gradient-to-b from-lime-400 to-lime-600 text-xs font-bold text-black shadow-[0_0_16px_rgba(132,204,22,0.45)] hover:from-lime-300 hover:to-lime-500 active:scale-95 transition"
                 >
                   View Works
                 </Link>

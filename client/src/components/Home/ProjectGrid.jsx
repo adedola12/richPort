@@ -264,7 +264,7 @@ function WebsiteDesignHeroCard({ onView }) {
             <button
               type="button"
               onClick={(e) => { e.stopPropagation(); onView(); }}
-              className="mt-5 inline-flex items-center justify-center h-9 rounded-md px-4 border border-white/40 bg-white/10 text-[11px] font-semibold text-white/85 hover:bg-white/15 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/35"
+              className="mt-5 inline-flex items-center justify-center h-9 rounded-md px-4 bg-gradient-to-b from-lime-400 to-lime-600 text-[11px] font-bold text-black shadow-[0_0_16px_rgba(132,204,22,0.45)] hover:from-lime-300 hover:to-lime-500 active:scale-95 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/40"
             >
               View Projects
             </button>

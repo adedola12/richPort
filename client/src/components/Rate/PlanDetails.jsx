@@ -194,13 +194,13 @@ const PlanDetails = ({ plans = [], deliverables = [], isOpen = false }) => {
                       type="button"
                       onClick={() => bookPlan(plan)}
                       className="
-                        w-full rounded-xl border border-lime-500
-                        bg-gradient-to-b from-lime-500/10 to-lime-700/10
-                        px-4 py-2 text-xs font-bold text-white/90
-                        shadow-[0_8px_28px_rgba(0,0,0,0.7)]
+                        w-full rounded-xl
+                        bg-gradient-to-b from-lime-400 to-lime-600
+                        px-4 py-2 text-xs font-bold text-black
+                        shadow-[0_0_18px_rgba(132,204,22,0.5)]
                         transition-all duration-300 transform
-                        hover:-translate-y-[2px] hover:brightness-110
-                        hover:shadow-[0_14px_45px_rgba(0,0,0,0.9)]
+                        hover:-translate-y-[2px] hover:from-lime-300 hover:to-lime-500 active:scale-[0.97]
+                        hover:shadow-[0_0_28px_rgba(132,204,22,0.65)]
                       "
                     >
                       Book this plan
@@ -318,11 +318,12 @@ const PlanDetails = ({ plans = [], deliverables = [], isOpen = false }) => {
                   type="button"
                   onClick={() => bookPlan(plan)}
                   className="
-                    mt-4 w-full rounded-xl border border-lime-500
-                    bg-gradient-to-b from-lime-500/10 to-lime-700/10
-                    px-4 py-2 text-xs sm:text-sm font-bold text-white/90
+                    mt-4 w-full rounded-xl
+                    bg-gradient-to-b from-lime-400 to-lime-600
+                    px-4 py-2 text-xs sm:text-sm font-bold text-black
+                    shadow-[0_0_18px_rgba(132,204,22,0.5)]
                     transition-all duration-300
-                    hover:-translate-y-[1px] hover:brightness-110
+                    hover:-translate-y-[1px] hover:from-lime-300 hover:to-lime-500 active:scale-[0.97]
                   "
                 >
                   Book this plan
