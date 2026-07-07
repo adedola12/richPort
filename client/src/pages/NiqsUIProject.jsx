@@ -23,6 +23,11 @@ import imgLetterhead    from "../assets/NIQS/letterhead.webp";
 import imgShirt         from "../assets/NIQS/shirt.webp";
 import imgToteBag       from "../assets/NIQS/tote-bag.webp";
 import imgToteBagLadies from "../assets/NIQS/tote-bag-ladies.webp";
+import imgSocialMedia   from "../assets/NIQS/social-media.webp";
+import imgScreenAbout   from "../assets/NIQS/screen-about.webp";
+import imgScreenSearch1 from "../assets/NIQS/screen-search-1.webp";
+import imgScreenSearch2 from "../assets/NIQS/screen-search-2.webp";
+import imgScreenExams   from "../assets/NIQS/screen-exams.webp";
 
 const GR = "#a3e635";
 const NIQS_NAVY = "#000066";
@@ -371,7 +376,7 @@ export default function NiqsUIProject() {
         {/* ══ 02 — THE PROBLEM ══ */}
         <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 border-t border-white/5">
           <div className="max-w-[1100px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
               <FadeUp>
                 <SLabel n="02" t="THE PROBLEM" />
                 <H2 white="What didn't" accent="match the institution" accentColor="#E05252" />
@@ -414,12 +419,12 @@ export default function NiqsUIProject() {
                   ))}
                 </div>
               </FadeUp>
-              <SlideIn direction="right" delay={0.1}>
+              <SlideIn direction="right" delay={0.1} className="h-full">
                 <TiltFrame
                   src={null}
                   alt="56 years of institutional heritage. A new digital chapter. Before/after split: left side shows 2020 NIQS materials (Annual Report cover, Staff Handbook, old WordPress homepage); right side shows new 2026 materials (brand guideline cover, new website hero, portal dashboard)."
-                  className="w-full"
-                  style={{ aspectRatio: "4/5" }}
+                  className="w-full h-full"
+                  style={{ minHeight: "420px" }}
                   onClick={ph}
                 />
               </SlideIn>
@@ -681,6 +686,11 @@ export default function NiqsUIProject() {
                     body: "Email signatures and digital applications that keep the brand consistent across 37 chapters — no designer required, no brand drift possible.",
                   },
                   {
+                    img: imgSocialMedia,
+                    title: "Social Media Templates",
+                    body: "Feed and story templates that keep all 37 chapters publishing on-brand — the visual system doing daily duty on social.",
+                  },
+                  {
                     img: imgConference,
                     title: "Environment & Ceremonial",
                     body: "Boardroom and event applications that carry the heraldic identity into the institution's physical spaces — authority and precision at every scale.",
@@ -763,6 +773,7 @@ export default function NiqsUIProject() {
                   body: "Eight sub-sections under About Us, each given editorial treatment — Past Presidents becomes a timeline, not a list. The institution finally tells its own story.",
                   alt: "Desktop mockup showing the About / President page",
                   flip: true,
+                  img: imgScreenAbout,
                 },
                 {
                   n: "SCREEN 03",
@@ -770,6 +781,7 @@ export default function NiqsUIProject() {
                   body: 'Public registration routes, locked member services, and a public "Search QS or QS Firm" lookup so regulators and clients can verify professional standing without logging in.',
                   alt: "Mobile mockup of the Membership page with the public QS search interface",
                   flip: false,
+                  img: imgScreenSearch1,
                 },
                 {
                   n: "SCREEN 04",
@@ -777,6 +789,7 @@ export default function NiqsUIProject() {
                   body: "A dedicated exams section, a live event calendar, and an editorial news feed — the site no longer 'has' content; it is a living publication.",
                   alt: "Desktop mockup of the Events + News combined view",
                   flip: true,
+                  img: imgScreenExams,
                 },
                 {
                   n: "SCREEN 05",
@@ -785,7 +798,7 @@ export default function NiqsUIProject() {
                   alt: "Three phone mockups side-by-side: Brand Materials, Jobs, Contact",
                   flip: false,
                 },
-              ].map(({ n, title, body, alt, flip }, i) => (
+              ].map(({ n, title, body, alt, flip, img }, i) => (
                 <FadeUp key={n} delay={0.04 * i}>
                   <div className={`flex flex-col gap-6`}>
                     <div className={`flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 ${flip ? "sm:flex-row-reverse" : ""}`}>
@@ -801,10 +814,10 @@ export default function NiqsUIProject() {
                       </div>
                     </div>
                     <TiltFrame
-                      src={null}
+                      src={img || null}
                       alt={alt}
                       className="w-full"
-                      style={{ aspectRatio: "16/9", maxHeight: "70vh" }}
+                      style={{ aspectRatio: img ? "4/3" : "16/9", maxHeight: "78vh" }}
                       onClick={ph}
                     />
                   </div>
@@ -817,40 +830,45 @@ export default function NiqsUIProject() {
         {/* ══ 07 — MEMBER PORTAL & ADMIN DASHBOARD ══ */}
         <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 border-t border-white/5">
           <div className="max-w-[1100px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
               <FadeUp>
                 <SLabel n="07" t="PORTAL & ADMIN" />
                 <H2 white="Built for the" accent="people who run NIQS" />
                 <div className="mt-5 mb-8 h-[2px] w-16 rounded-full" style={{ background: GR }} />
-                <div className="space-y-5 text-[15px] sm:text-[16px] leading-[1.65] text-white/55 mb-8">
+                <div className="space-y-5 text-[15px] sm:text-[16px] leading-[1.65] text-white/55">
                   <p>The public website is the front door. The portal and admin dashboard are where the institution actually operates day-to-day — and they are designed to a different bar: clarity over flourish, density over decoration, repeated use over first-impression.</p>
                   <p>A NIQS staff member who logs into the admin dashboard isn't looking for a hero treatment. They're trying to publish an announcement, approve a membership upgrade, upload a CPD recording, or export a chapter list to Excel before a 4pm deadline. The interface respects that.</p>
                 </div>
-                <ul className="space-y-3">
-                  {[
-                    { title: "Member portal", desc: "secure login, profile dashboard (membership category, chapter, status, dates), members-only digital library access, CPD records, event registrations" },
-                    { title: "Admin dashboard", desc: "member database (search/filter/edit/export), events creation, news/publications publishing, library uploads with access controls, staff accounts with role-based permissions" },
-                    { title: "Role-based access", desc: "three tiers (Admin / Staff / Member) governing every screen, every action, every dataset" },
-                    { title: "Digital library", desc: "public-facing section (press releases, public publications, newsletters) and members-only section (CPD recordings, NIQS templates, standards, searchable catalogue with tags)" },
-                  ].map(({ title, desc }) => (
-                    <li key={title} className="flex items-start gap-3 rounded-xl border border-white/6 bg-white/[0.025] px-4 py-3">
-                      <span className="mt-[6px] w-2 h-2 rounded-full shrink-0" style={{ background: GR }} />
-                      <p className="text-[15px] sm:text-[16px] leading-[1.6] text-white/55">
-                        <span className="text-white font-semibold">{title}</span> — {desc}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
               </FadeUp>
-              <SlideIn direction="right" delay={0.1}>
+              <SlideIn direction="right" delay={0.1} className="h-full">
                 <TiltFrame
                   src={null}
                   alt="Vertical composite: admin dashboard on desktop + member portal on mobile. Lime accent glow."
-                  style={{ aspectRatio: "4/5" }}
+                  className="w-full h-full"
+                  style={{ minHeight: "280px" }}
                   onClick={ph}
                 />
               </SlideIn>
             </div>
+
+            {/* the four surfaces — full-width 2×2 grid */}
+            <FadeUp delay={0.1} className="mt-10">
+              <div className="grid sm:grid-cols-2 gap-4">
+                {[
+                  { title: "Member portal", desc: "secure login, profile dashboard (membership category, chapter, status, dates), members-only digital library access, CPD records, event registrations" },
+                  { title: "Admin dashboard", desc: "member database (search/filter/edit/export), events creation, news/publications publishing, library uploads with access controls, staff accounts with role-based permissions" },
+                  { title: "Role-based access", desc: "three tiers (Admin / Staff / Member) governing every screen, every action, every dataset" },
+                  { title: "Digital library", desc: "public-facing section (press releases, public publications, newsletters) and members-only section (CPD recordings, NIQS templates, standards, searchable catalogue with tags)" },
+                ].map(({ title, desc }) => (
+                  <div key={title} className="flex items-start gap-3 rounded-xl border border-white/6 bg-white/[0.025] px-5 py-4">
+                    <span className="mt-[6px] w-2 h-2 rounded-full shrink-0" style={{ background: GR }} />
+                    <p className="text-[15px] sm:text-[16px] leading-[1.6] text-white/55">
+                      <span className="text-white font-semibold">{title}</span> — {desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </FadeUp>
           </div>
         </section>
 
@@ -1041,12 +1059,13 @@ export default function NiqsUIProject() {
         {/* ══ 11 — TESTING & ITERATION ══ */}
         <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 border-t border-white/5">
           <div className="max-w-[1100px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-              <SlideIn direction="left" delay={0.05}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              <SlideIn direction="left" delay={0.05} className="h-full">
                 <TiltFrame
                   src={null}
                   alt="Before/after comparison of home hero draft vs. final version, with annotation arrows. Or Figma file thumbnail showing version history."
-                  style={{ aspectRatio: "4/5" }}
+                  className="w-full h-full"
+                  style={{ minHeight: "420px" }}
                   onClick={ph}
                 />
               </SlideIn>
@@ -1100,7 +1119,7 @@ export default function NiqsUIProject() {
               </p>
             </FadeUp>
 
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10">
               <StaggerGrid className="space-y-3">
                 {[
                   { metric: "Self-serve communications",             color: GR,         desc: "Secretariat staff produce on-brand flyers in under a minute. Eliminates the designer-bottleneck for the ~12 weekly recurring outputs." },
@@ -1121,20 +1140,14 @@ export default function NiqsUIProject() {
                 ))}
               </StaggerGrid>
 
-              <SlideIn direction="right" delay={0.1}>
-                <div className="grid grid-cols-2 gap-3">
-                  {[
-                    { src: imgJournal, alt: "Branded journal" },
-                    { src: imgCup, alt: "Branded cup" },
-                    { src: imgShirt, alt: "Branded t-shirt" },
-                    { src: imgFolder, alt: "Branded folder" },
-                  ].map(({ src, alt }) => (
-                    <div key={alt} className="rounded-xl overflow-hidden border border-white/8" style={{ aspectRatio: "4/3" }}>
-                      <img src={src} alt={`${alt} — NIQS brand system artifact`} loading="lazy" className="w-full h-full object-cover" />
-                    </div>
-                  ))}
-                </div>
-                <p className="mt-3 text-[11px] text-white/30 text-center">The system as physical artifacts — the brand working beyond the screen.</p>
+              <SlideIn direction="right" delay={0.1} className="h-full">
+                <TiltFrame
+                  src={null}
+                  alt="Product family shot — website + portal + admin + flyer engine + brand guideline arranged as a system diagram or ecosystem"
+                  className="w-full h-full"
+                  style={{ minHeight: "300px" }}
+                  onClick={ph}
+                />
               </SlideIn>
             </div>
           </div>
@@ -1180,12 +1193,20 @@ export default function NiqsUIProject() {
           label="TOUCHPOINTS GALLERY"
           white="The brand,"
           accent="applied"
-          description="Merch and touchpoint mockups from the NIQS brand system in real-world contexts. Website, portal, and flyer-engine screens join this gallery as they're finalised."
+          description="Screens, templates, and merch from across the NIQS system — more landing here as the build progresses."
           color={GR}
           images={[
+            { src: imgScreenAbout,   alt: "Website — About NIQS page",        label: "ABOUT PAGE" },
+            { src: imgScreenSearch2, alt: "Website — public QS search",       label: "QS SEARCH" },
+            { src: imgScreenExams,   alt: "Website — professional examination", label: "EXAMS" },
+            { src: imgSocialMedia,   alt: "Social media template designs",    label: "SOCIAL MEDIA" },
             { src: imgHoodie,        alt: "Hoodie — navy branded hoodie",     label: "HOODIE — NAVY" },
             { src: imgToteBag,       alt: "Tote bag — branded tote",          label: "TOTE BAG" },
+            { src: imgCup,           alt: "Cup — branded ceramic mug",        label: "CUP" },
+            { src: imgJournal,       alt: "Notebook — branded journal",       label: "NOTEBOOK" },
+            { src: imgShirt,         alt: "T-shirt — branded tee",            label: "T-SHIRT" },
             { src: imgCapBlue,       alt: "Cap — navy branded cap",           label: "CAP — NAVY" },
+            { src: imgFolder,        alt: "Folder — branded document folder", label: "FOLDER DESIGN" },
             { src: imgHoodieWhite,   alt: "Hoodie — white branded hoodie",    label: "HOODIE — WHITE" },
             { src: imgCapWhite,      alt: "Cap — white branded cap",          label: "CAP — WHITE" },
             { src: imgBottle,        alt: "Bottle — branded water bottle",    label: "BOTTLE" },

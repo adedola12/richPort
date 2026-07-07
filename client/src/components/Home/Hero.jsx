@@ -10,11 +10,16 @@ const fadeUp = (delay = 0) => ({
 
 const Hero = () => (
   <section className="relative w-full overflow-hidden bg-[#050505]">
-    {/* BACKGROUND LAYER */}
+    {/* BACKGROUND LAYER — looping showreel, poster shows until it loads */}
     <div className="absolute inset-0 z-0 overflow-hidden">
-      <div
-        className="absolute inset-0 bg-no-repeat bg-[center_top] [background-size:cover] md:[background-size:100%_auto]"
-        style={{ backgroundImage: `url(${ProjHero})` }}
+      <video
+        className="absolute inset-0 h-full w-full object-cover object-top"
+        src="/hero-loop.mp4"
+        poster={ProjHero}
+        autoPlay
+        muted
+        loop
+        playsInline
       />
       <div
         className="absolute inset-0"
