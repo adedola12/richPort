@@ -30,7 +30,8 @@ const whitelist = (process.env.CORS_ORIGINS || "")
   .filter(Boolean);
 
 const allowedOrigins = new Set(whitelist);
-allowedOrigins.add("https://rich-port.vercel.app"); // safety pin
+allowedOrigins.add("https://richardenoch.vercel.app"); // safety pin
+allowedOrigins.add("https://rich-port.vercel.app"); // legacy — remove once the rename settles
 
 function isAllowedOrigin(origin) {
   if (!origin) return true;
@@ -38,7 +39,9 @@ function isAllowedOrigin(origin) {
 
   try {
     const u = new URL(origin);
-    if (u.hostname === "rich-port.vercel.app" || u.hostname.endsWith("-rich-port.vercel.app")) return true;
+    if (u.hostname === "richardenoch.vercel.app" || u.hostname.endsWith("-richardenoch.vercel.app")) return true;
+    if (u.hostname === "richardenoch.com" || u.hostname === "www.richardenoch.com") return true; // future custom domain
+    if (u.hostname === "rich-port.vercel.app" || u.hostname.endsWith("-rich-port.vercel.app")) return true; // legacy
     if (allowedOrigins.has(origin)) return true;
     return false;
   } catch {

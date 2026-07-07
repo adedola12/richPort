@@ -3,8 +3,8 @@ import { Helmet } from "react-helmet-async";
 const SITE = "Richard Enoch — Multidisciplinary Designer";
 const DEFAULT_DESC =
   "Portfolio of Richard Enoch — brand identity, UI/UX, graphic design, and web design.";
-const DEFAULT_IMG = "https://rich-port.vercel.app/og-default.jpg";
-const BASE_URL = "https://rich-port.vercel.app";
+const DEFAULT_IMG = "https://richardenoch.vercel.app/og-default.jpg";
+const BASE_URL = "https://richardenoch.vercel.app";
 
 const PageMeta = ({ title, description = DEFAULT_DESC, image = DEFAULT_IMG, url }) => {
   const fullTitle = title ? `${title} | Richard Enoch` : SITE;

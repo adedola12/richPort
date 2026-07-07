@@ -9,7 +9,7 @@ export const OWNER = {
   email: "des.richardenoch@gmail.com",
   whatsapp: "0903 852 2066",
   whatsappIntl: "2349038522066",
-  site: "rich-port.vercel.app",
+  site: "richardenoch.vercel.app",
 };
 
 /* PRICING — USD rate-card prices, converted to NGN.

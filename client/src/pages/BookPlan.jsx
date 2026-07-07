@@ -656,7 +656,7 @@ const BookPlan = () => {
         </div>
 
         <div className="mt-10 text-center text-xs text-zinc-600">
-          <a href="https://rich-port.vercel.app" className="text-neutral-400 hover:text-lime-400">rich-port.vercel.app</a>
+          <a href="https://richardenoch.vercel.app" className="text-neutral-400 hover:text-lime-400">richardenoch.vercel.app</a>
           &nbsp;•&nbsp; {OWNER.email} &nbsp;•&nbsp; Designed &amp; built by Richard Enoch
         </div>
       </div>

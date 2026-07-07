@@ -12,7 +12,7 @@ export const OWNER = {
   notifyEmail: process.env.OWNER_EMAIL || "des.richardenoch@gmail.com",
   whatsapp: "0903 852 2066",
   whatsappIntl: "2349038522066",
-  site: "rich-port.vercel.app",
+  site: "richardenoch.vercel.app",
   banks: [
     { bank: "Access Bank", acc: "0774365963", name: "Adesiyan Richard Enoch" },
     { bank: "Guaranty Trust Bank", acc: "0324882817", name: "Adesiyan Richard Enoch" },
