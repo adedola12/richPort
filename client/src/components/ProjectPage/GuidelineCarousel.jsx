@@ -32,7 +32,7 @@ function useIsMobile() {
 }
 
 /* ─── single slide card ─── */
-function SlideCard({ slide, index, rawIndex, isMobile }) {
+function SlideCard({ slide, index, rawIndex, isMobile, portrait }) {
   // Tight fan: neighbours sit close and far behind (small offset, hard blur,
   // strong scale-down) so only the centre page reads clearly.
   const x = useTransform(rawIndex, (v) => (isMobile ? 0 : `${(index - v) * 22}vw`));
@@ -70,17 +70,28 @@ function SlideCard({ slide, index, rawIndex, isMobile }) {
         zIndex,
       }}
     >
-      {/* A4 portrait page */}
+      {/* page — portrait (A4) or landscape (16:9), sized to hug the image */}
       <div
         className="rounded-xl sm:rounded-2xl overflow-hidden border border-white/10 shadow-[0_24px_80px_rgba(0,0,0,0.7)]"
-        style={{
-          aspectRatio: "210 / 297",
-          height: isMobile ? "auto" : "96%",
-          width: isMobile ? "80%" : "auto",
-          maxWidth: "92vw",
-          maxHeight: "96%",
-          background: "#0d0f13",
-        }}
+        style={
+          portrait
+            ? {
+                aspectRatio: "210 / 297",
+                height: isMobile ? "auto" : "96%",
+                width: isMobile ? "78%" : "auto",
+                maxWidth: "92vw",
+                maxHeight: "96%",
+                background: "#0d0f13",
+              }
+            : {
+                aspectRatio: "16 / 9",
+                width: isMobile ? "90%" : "78%",
+                height: "auto",
+                maxWidth: "92vw",
+                maxHeight: "88%",
+                background: "#0d0f13",
+              }
+        }
       >
         {slide.src ? (
           <img
@@ -115,7 +126,9 @@ export default function GuidelineCarousel({
   description = "Everything captured in a brand guideline — the single source of truth.",
   color = "#a3e635",
   skipLabel = "Skip ahead",
+  orientation = "portrait",
 }) {
+  const portrait = orientation !== "landscape";
   /* only use slides that have an actual image */
   const filledSlides = slides.filter((s) => s.src);
   const hasContent = filledSlides.length > 0;
@@ -132,7 +145,10 @@ export default function GuidelineCarousel({
     target: containerRef,
     offset: ["start start", "end end"],
   });
-  const rawIndex = useTransform(scrollYProgress, [0, 0.9], [0, Math.max(1, activeSlides.length - 1)]);
+  // Map the full scroll range straight onto the slides — the last page lands
+  // exactly as the sticky releases, so there's no static dead-scroll before
+  // the next section (that gap read as "empty space").
+  const rawIndex = useTransform(scrollYProgress, [0, 1], [0, Math.max(1, activeSlides.length - 1)]);
 
   useMotionValueEvent(rawIndex, "change", (v) => {
     setActiveIndex(Math.max(0, Math.min(activeSlides.length - 1, Math.round(v))));
@@ -168,7 +184,7 @@ export default function GuidelineCarousel({
     <div
       ref={containerRef}
       className="relative border-t border-white/5"
-      style={{ height: `${activeSlides.length * 64}vh` }}
+      style={{ height: `${activeSlides.length * 52}vh` }}
     >
       <motion.div
         className="sticky top-0 h-screen overflow-hidden flex flex-col"
@@ -204,6 +220,7 @@ export default function GuidelineCarousel({
               index={i}
               rawIndex={rawIndex}
               isMobile={isMobile}
+              portrait={portrait}
             />
           ))}
         </div>

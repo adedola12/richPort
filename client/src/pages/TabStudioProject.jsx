@@ -28,26 +28,25 @@ import imgNotebook from "../assets/TabStudio/notebook.webp";
 import imgWindowAlt from "../assets/TabStudio/TS_7.jpg";
 import imgRationale from "../assets/TabStudio/logo-rationale.webp";
 
-/* ── guideline spreads (curated from the 48-page document) ── */
-import tg01 from "../assets/TabStudio/guideline/g01.webp";
-import tg05 from "../assets/TabStudio/guideline/g05.webp";
-import tg07 from "../assets/TabStudio/guideline/g07.webp";
-import tg09 from "../assets/TabStudio/guideline/g09.webp";
-import tg13 from "../assets/TabStudio/guideline/g13.webp";
-import tg15 from "../assets/TabStudio/guideline/g15.webp";
-import tg18 from "../assets/TabStudio/guideline/g18.webp";
-import tg19 from "../assets/TabStudio/guideline/g19.webp";
-import tg23 from "../assets/TabStudio/guideline/g23.webp"; // Typography spread
-import tg29 from "../assets/TabStudio/guideline/g29.webp";
-import tg36 from "../assets/TabStudio/guideline/g36.webp";
-import tg44 from "../assets/TabStudio/guideline/g44.webp";
-import tg47 from "../assets/TabStudio/guideline/g47.webp";
-import tg48 from "../assets/TabStudio/guideline/g48.webp";
+/* ── guideline spreads (verified pages from the 48-page document) ── */
+import gp01 from "../assets/TabStudio/guideline/p01.webp";
+import gp07 from "../assets/TabStudio/guideline/p07.webp";
+import gp09 from "../assets/TabStudio/guideline/p09.webp";
+import gp11 from "../assets/TabStudio/guideline/p11.webp";
+import gp15 from "../assets/TabStudio/guideline/p15.webp";
+import gp19 from "../assets/TabStudio/guideline/p19.webp";
+import gp20 from "../assets/TabStudio/guideline/p20.webp";
+import gpCal from "../assets/TabStudio/guideline/p28.webp"; // Cal Sans
+import gpUrb from "../assets/TabStudio/guideline/p29.webp"; // Urbanist
+import gp35 from "../assets/TabStudio/guideline/p35.webp";
+import gp41 from "../assets/TabStudio/guideline/p41.webp";
+import gp45 from "../assets/TabStudio/guideline/p45.webp";
+import gp48 from "../assets/TabStudio/guideline/p48.webp";
 
 /* Portfolio accent (lime) drives the page's labels, headings and CTAs. */
 const G = "#a3e635";
 
-/* Tabstudio's own brand colours — from the guideline, shown as swatches only. */
+/* Tabstudio's own brand colours, from the guideline, shown as swatches only. */
 const SWATCHES = [
   { hex: "#07D06F", name: "Vibrant Green", role: "Primary accent. Growth, creativity, fresh beginnings.", dark: true },
   { hex: "#024553", name: "Deep Navy", role: "The core. Trust, structure, strategic focus.", dark: false },
@@ -104,9 +103,9 @@ const H2 = ({ white, accent }) => (
   </h2>
 );
 
-const Frame = ({ src, alt, ratio = "16/9", className = "", fit = "cover" }) => (
+const Frame = ({ src, alt, ratio = "16/9", className = "" }) => (
   <div className={`w-full rounded-2xl border border-white/8 bg-white/[0.02] overflow-hidden ${className}`} style={{ aspectRatio: ratio }}>
-    <img src={src} alt={alt} loading="lazy" className={`w-full h-full object-${fit} object-center`} />
+    <img src={src} alt={alt} loading="lazy" className="w-full h-full object-cover object-center" />
   </div>
 );
 
@@ -186,7 +185,7 @@ const TabStudioProject = () => (
               <p className="text-[16px] sm:text-[18px] leading-[1.7] text-white/70">
                 Three founders started a video agency and needed a face for it.
                 I gave them one mark that works like a coin: look at it straight and it is a play button,
-                turn it and it spells their initials. That idea grew into a five colour system,
+                turn it and it spells their initials. That single idea grew into a five colour system,
                 a 48 page guideline, and a modern, scalable identity the team can run without me.
                 Here is how it happened.
               </p>
@@ -226,8 +225,8 @@ const TabStudioProject = () => (
             </h2>
             <div className="mt-5 mb-8 h-[2px] w-16 rounded-full bg-[#E05252]" />
             <div className="max-w-[720px] space-y-5 text-[15px] sm:text-[16px] leading-[1.7] text-white/55">
-              <p>The earlier direction was not bad, it was just unfocused. It lacked cohesion and visual meaning, the kind of thing that looks fine until you ask it to stand for something. And I had a name loaded with meaning and a firm with a clear personality, and the job was to compress all of it into one mark. The video work. The multitasking idea. The three founders. All in a single shape, without going literal.</p>
-              <p>Honestly, most of this project was the hunt for the cleanest way to say all of that at once. It was an intensive logo iteration, round after round of directions, geometric, fluid, symbol-based, typographic, until the shape finally clicked.</p>
+              <p>Tab Studio came to me as three founders and a name, not a brand yet. And that name was already doing a lot of work. It held their initials, T, A and B, and it held the way they actually operate, tabs open, moving between projects. My job was to take all of that, the video craft, the multitasking, the three people behind it, and press it into one mark. Say it in a single shape, and say it without being literal.</p>
+              <p>That is a harder brief than it sounds. Most of this project was not drawing, it was searching. Round after round of directions, geometric, fluid, symbolic, typographic, until one shape finally carried everything at once.</p>
             </div>
           </Reveal>
         </div>
@@ -238,21 +237,21 @@ const TabStudioProject = () => (
         <div className="max-w-[1100px] mx-auto">
           <Reveal>
             <SLabel n="03" t="THE IDEA" />
-            <H2 white="One icon that reads" accent="three ways" />
+            <H2 white="A mark you keep" accent="discovering" />
             <div className="mt-5 mb-8 h-[2px] w-16 rounded-full" style={{ background: G }} />
             <div className="max-w-[720px] space-y-5 text-[15px] sm:text-[16px] leading-[1.7] text-white/55 mb-10">
-              <p>The mark starts as a rounded triangle, which your eye instantly reads as a play button. Everything video lives under that symbol. It is where every story starts.</p>
-              <p>But turn it, look closer, and the same shape resolves into T, A and B. The founders' initials are woven in as a quiet signature rather than a literal spell-out. People who look once see play. People who look twice find the name. That double read is the whole logo.</p>
-              <p>The triangular form brings stability and structure, and the rounded edges keep it friendly and human. Which is Tab Studio in one sentence: structured execution wrapped around human-centered creativity.</p>
+              <p>The breakthrough was a rounded triangle. At first glance it is a play button, and for a video studio that is the entire world. It is the symbol every story sits under, the click that starts everything. That alone would have made a clean logo. It is not where I stopped.</p>
+              <p>Sit with the shape and it keeps giving. The triangle reads as forward motion, then as a human figure leaning in, and then, from the right angle, the form resolves into T, A and B. The founders are signed into their own mark without a single letter spelled out loud. Someone glances and sees play. Someone leans in and finds the name. In a creative industry, the people who look twice are exactly the people worth rewarding.</p>
+              <p>The geometry is doing quiet work too. A triangle is the most stable shape there is, which is the promise sitting under the creativity: ideas here do not just spark, they get built. The rounded corners keep it human instead of clinical. Structured execution, wrapped in a shape that still feels warm. That is Tab Studio, held in one mark.</p>
             </div>
           </Reveal>
 
           <Reveal>
             <div className="rounded-2xl overflow-hidden border border-white/8">
-              <img src={imgRationale} alt="The Tabstudio logo rationale: play icon, forward movement, human avatar, and the letters T, a and b, all read from one mark" loading="lazy" className="w-full h-auto" />
+              <img src={imgRationale} alt="The Tabstudio logo rationale showing the play icon, forward movement, a human avatar, and the letters T, a and b, all read from one mark" loading="lazy" className="w-full h-auto" />
             </div>
             <p className="mt-4 text-[14px] text-white/40 leading-relaxed max-w-[640px]">
-              The rationale spread from the guideline. Same icon, different angles: play, forward movement, a human avatar, then T, a and b.
+              The rationale spread from the guideline. One mark, six ways to read it: play, forward movement, a human figure, then T, a and b.
             </p>
           </Reveal>
 
@@ -274,9 +273,11 @@ const TabStudioProject = () => (
           <Reveal>
             <SLabel n="04" t="THE SYSTEM" />
             <H2 white="Five colours with" accent="assigned jobs" />
-            <p className="mt-5 text-[15px] sm:text-[16px] leading-[1.7] text-white/55 max-w-[680px] mb-12">
-              Fun fact: I originally pitched an orange direction. The client kept pulling toward a deep, moody green, the Diary of a CEO kind of green. They were right, and once we committed I made sure we committed properly. Every colour in the system has one defined job, so the green always leads.
-            </p>
+            <div className="mt-6 max-w-[720px] space-y-5 text-[15px] sm:text-[16px] leading-[1.7] text-white/55 mb-12">
+              <p>I will be honest, I did not start here. My first instinct was an orange direction, warm and loud. The founders kept pulling toward a deep, considered green, and instead of defending my pitch, I went looking for whether they were onto something. They were.</p>
+              <p>Green is not just a nice colour. Think about what it actually signals: growth, success, fresh beginnings, something alive and built to last. For a young studio whose whole promise is helping clients grow and stay relevant as trends shift, that is not decoration, it is the thesis. Once I could see the reasoning, the palette stopped being a preference and turned into a system.</p>
+              <p>So I built one where every colour has a job. Nothing sits in the palette by accident.</p>
+            </div>
           </Reveal>
 
           <Reveal>
@@ -293,24 +294,26 @@ const TabStudioProject = () => (
                 </div>
               ))}
             </div>
-            <p className="text-[11px] text-white/25 mb-14">Names, roles and values from the official guideline.</p>
+            <p className="text-[11px] text-white/25 mb-16">Names, roles and values from the official guideline.</p>
           </Reveal>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <Reveal>
-              <div className="w-full rounded-2xl border border-white/8 bg-[#0d0f13] overflow-hidden flex items-center justify-center p-3" style={{ aspectRatio: "210/297", maxHeight: "560px" }}>
-                <img src={tg23} alt="Typography spread from the Tabstudio brand guideline" loading="lazy" className="w-full h-full object-contain" />
+          {/* Typography */}
+          <Reveal>
+            <p className="text-[11px] tracking-[0.28em] uppercase text-white/35 mb-3">TYPOGRAPHY</p>
+            <p className="text-[20px] sm:text-[22px] font-semibold text-white mb-5">Cal Sans leads, Urbanist supports</p>
+            <div className="max-w-[720px] space-y-5 text-[15px] sm:text-[16px] leading-[1.7] text-white/55 mb-10">
+              <p>Cal Sans carries the display work. Its geometric structure gives the brand a clean, contemporary presence, but the smooth curves and balanced proportions keep it from feeling cold, which matters, because Tab Studio is warm and human, not corporate. It holds its weight at large sizes without shouting, so titles and statements land with just enough personality.</p>
+              <p>Urbanist does the quiet, heavy lifting underneath: body copy, captions, UI labels, motion graphics. Clean, modern and endlessly versatile, readable everywhere from a phone screen to a printed poster. Cal Sans for the moments that need presence, Urbanist for everything that simply needs to work. Together they give the studio a voice that is modern, cohesive, and unmistakably its own.</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="rounded-2xl overflow-hidden border border-white/8" style={{ aspectRatio: "210 / 297" }}>
+                <img src={gpCal} alt="Cal Sans, the primary display typeface, from the Tabstudio guideline" loading="lazy" className="w-full h-full object-cover object-top" />
               </div>
-            </Reveal>
-            <Reveal>
-              <p className="text-[11px] tracking-[0.28em] uppercase text-white/35 mb-3">TYPOGRAPHY</p>
-              <p className="text-[18px] font-semibold text-white mb-4">Col Sans and Urbanist</p>
-              <div className="space-y-4 text-[15px] sm:text-[16px] leading-[1.7] text-white/55">
-                <p>Col Sans leads the display work. It carries clarity and warmth at the same time, which is exactly the balance the brand voice asks for. Urbanist handles the supporting text, versatile enough for anything from captions to long paragraphs.</p>
-                <p>Together with the colour rules and the background interaction system in the guideline, any collaborator can put a Tabstudio layout together and it will still feel like the same studio.</p>
+              <div className="rounded-2xl overflow-hidden border border-white/8" style={{ aspectRatio: "210 / 297" }}>
+                <img src={gpUrb} alt="Urbanist, the secondary typeface, from the Tabstudio guideline" loading="lazy" className="w-full h-full object-cover object-top" />
               </div>
-            </Reveal>
-          </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -362,9 +365,9 @@ const TabStudioProject = () => (
         <div className="max-w-[1100px] mx-auto">
           <Reveal>
             <SLabel n="06" t="DECISIONS" />
-            <H2 white="Three calls I" accent="stood by" />
+            <H2 white="Three calls that" accent="shaped it" />
             <p className="mt-5 text-[15px] sm:text-[16px] leading-[1.7] text-white/55 max-w-[560px] mb-12">
-              Every identity is a series of small arguments. These are the three that shaped this one.
+              Every identity is a series of small choices. These are the three that mattered most here.
             </p>
           </Reveal>
 
@@ -372,15 +375,15 @@ const TabStudioProject = () => (
             {[
               {
                 q: "The mark had to earn a second look",
-                a: "A video agency logo that is just a play button is a cliche. A monogram that is just initials says nothing about the work. Weaving one into the other gave the mark a surface read for everyone and a hidden read for the curious. Depth without noise.",
+                a: "A video agency logo that is only a play button is a cliche. A monogram that is only initials says nothing about the work. Weaving one into the other gave the mark a surface read for everyone and a hidden read for the curious. Depth without noise.",
               },
               {
-                q: "Losing the colour argument, then winning it",
-                a: "I pitched orange. The client pulled toward that deep, moody green, and they were right. But once we committed, I fought to keep the palette tight and let that one green carry the brand, instead of drifting back or piling on extra colours. Discipline is what makes a colour feel owned.",
+                q: "Trusting the client's instinct, then proving it",
+                a: "I pitched orange. They pulled toward green. Rather than defend my idea, I went and found the reasoning behind theirs, growth, success, longevity, and it held up. So I committed fully and built a tight system around that one green instead of hedging with extra colours. The best call I made here was knowing when the client was right.",
               },
               {
                 q: "Selling the idea, not just the shape",
-                a: "I did not hand over a logo file and hope. I built a presentation that walked the founders through the play button, the movement, and the hidden initials, step by step. The story earned the buy-in. The shape just confirmed it.",
+                a: "I did not hand over a logo file and hope. I built a presentation that walked the founders through the play button, the motion, and the hidden initials, one layer at a time. The story earned the buy in. The shape only confirmed it.",
               },
             ].map(({ q, a }, i) => (
               <Reveal key={q}>
@@ -405,22 +408,22 @@ const TabStudioProject = () => (
         accent="documented"
         description="Voice, logo system, colour rules, typography and usage, all written down so the brand survives without me in the room. Scroll through the spreads, or skip ahead to the rest of the project."
         color={G}
+        orientation="portrait"
         skipLabel="Skip to gallery"
         slides={[
-          { src: tg01, alt: "Cover. Defining the visual foundation of Tabstudio" },
-          { src: tg05, alt: "Brand overview" },
-          { src: tg07, alt: "Brand tone and voice" },
-          { src: tg09, alt: "Logo rationale" },
-          { src: tg13, alt: "Primary logo" },
-          { src: tg15, alt: "Icon mark" },
-          { src: tg18, alt: "Colour rationale" },
-          { src: tg19, alt: "Colour usage and the official palette" },
-          { src: tg23, alt: "Typography. Col Sans" },
-          { src: tg29, alt: "Text and colour pairing" },
-          { src: tg36, alt: "Brand in use" },
-          { src: tg44, alt: "Brand in use, applications" },
-          { src: tg47, alt: "Closing note" },
-          { src: tg48, alt: "Back cover" },
+          { src: gp01, alt: "Cover. Defining the visual foundation of Tabstudio" },
+          { src: gp07, alt: "Brand tone and voice" },
+          { src: gp09, alt: "Logo rationale" },
+          { src: gp11, alt: "Logo spacing and clear space" },
+          { src: gp15, alt: "The icon mark" },
+          { src: gp19, alt: "Colour rationale" },
+          { src: gp20, alt: "Colour usage and the official palette" },
+          { src: gpCal, alt: "Typography. Cal Sans" },
+          { src: gpUrb, alt: "Typography. Urbanist" },
+          { src: gp35, alt: "Brand in use. Apparel" },
+          { src: gp41, alt: "Brand in use. Open a New Tab billboard" },
+          { src: gp45, alt: "Brand in use. Stationery" },
+          { src: gp48, alt: "Back cover" },
         ]}
       />
 
@@ -457,7 +460,7 @@ const TabStudioProject = () => (
             <H2 white="The coin still" accent="flips" />
             <div className="mt-8 space-y-5 text-[15px] sm:text-[16px] leading-[1.75] text-white/60">
               <p>The founders loved it, and the mark became the foundation for the full identity: the logo system, the green palette, the guideline, and the merch. Tab Studio now walks into the African creative economy looking like what it actually is, a studio with structure under its creativity.</p>
-              <p>It is one of the projects I am proudest of, mostly because of that coin. Same icon, different angles. You get T, A and B, and it still reads as play. When a mark can hold that much meaning and still stay simple, the rest of the system almost designs itself.</p>
+              <p>It is one of the projects I am proudest of, mostly because of that coin. Same icon, different angles. You get T, A and B, and it still reads as play. When a mark can hold that much meaning and stay that simple, the rest of the system almost designs itself.</p>
             </div>
           </Reveal>
 

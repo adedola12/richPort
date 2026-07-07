@@ -735,6 +735,7 @@ export default function NiqsUIProject() {
           accent="documented"
           description="Sixty pages across twelve chapters — the operating manual every NIQS chapter, staff member, and vendor designs from. A curated selection of spreads below."
           color={GR}
+          orientation="landscape"
           slides={[
             { src: g01, alt: "Cover — The Visual & Verbal Identity" },
             { src: g04, alt: "Chapter 01 — Brand Story" },
