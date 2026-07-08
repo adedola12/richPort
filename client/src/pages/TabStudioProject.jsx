@@ -421,9 +421,8 @@ const TabStudioProject = () => (
           { src: gpCal, alt: "Typography. Cal Sans" },
           { src: gpUrb, alt: "Typography. Urbanist" },
           { src: gp35, alt: "Brand in use. Apparel" },
-          { src: gp41, alt: "Brand in use. Open a New Tab billboard" },
           { src: gp45, alt: "Brand in use. Stationery" },
-          { src: gp48, alt: "Back cover" },
+          { src: gp41, alt: "Brand in use. Open a New Tab billboard" },
         ]}
       />
 

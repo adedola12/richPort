@@ -206,9 +206,10 @@ export default function GuidelineCarousel({
         {/* ── skip / escape button ── */}
         <button
           onClick={skipAhead}
-          className="absolute top-5 right-4 sm:right-8 z-30 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-black/40 backdrop-blur px-3.5 py-1.5 text-[11px] font-semibold text-white/60 transition hover:text-white hover:border-white/30"
+          className="absolute top-5 right-4 sm:right-8 z-30 inline-flex items-center gap-1.5 rounded-full border bg-black/50 backdrop-blur px-4 py-2 text-[12px] font-bold transition hover:brightness-110"
+          style={{ borderColor: `${color}66`, color }}
         >
-          {skipLabel} <span className="text-white/40">↓</span>
+          {skipLabel} <span>↓</span>
         </button>
 
         {/* ── slide track ── */}
