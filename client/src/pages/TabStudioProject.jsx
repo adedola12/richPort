@@ -110,7 +110,7 @@ const Frame = ({ src, alt, ratio = "16/9", className = "" }) => (
 );
 
 const TabStudioProject = () => (
-  <div className="relative min-h-screen bg-[#07090C] text-white overflow-x-hidden font-['Outfit']">
+  <div className="relative min-h-screen bg-[#07090C] text-white font-['Outfit']">
     <PageMeta
       title="Tabstudio — Brand Identity"
       description="Brand identity case study for Tabstudio, a video media agency founded by three creatives. One mark that reads as a play button on the surface and spells T, A and B underneath."
