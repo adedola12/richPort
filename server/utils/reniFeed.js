@@ -10,11 +10,64 @@
 //   RENI_SUPABASE_SERVICE_KEY  service_role key (Supabase dashboard → API)
 //   RENI_USER_ID               the Reni account's auth user id
 
-const PHASES_BRAND = [
-  "Booking", "Payment", "Understanding the Brief", "Research",
-  "Direction & Concept", "Design Assets", "First Deliverables",
-  "Review", "Packaging", "Final Review", "Follow-Up",
+/* The agreed phase framework (mirrors Reni desktop, 2026-07-09):
+   a phase is a journey stage, deliverables are the client's exit ticket,
+   tasks are Richard's work. Booking arrives done — the booking that created
+   this row IS phase 1. Money gates ("Payment received", "Balance received")
+   tick themselves in Reni when milestones are marked received. */
+const BRAND_TEMPLATE = [
+  { name: "Booking", auto: true, tasks: [], deliverables: [] },
+  { name: "Payment",
+    tasks: ["Confirm the upfront payment", "Write and send the acknowledgment email with receipt"],
+    deliverables: ["Payment received (upfront)", "Acknowledgment email + receipt sent"] },
+  { name: "Understanding the Brief",
+    tasks: ["Review the intake answers", "Draft the consolidated brief with the project roadmap", "Send the consolidated brief"],
+    deliverables: ["Consolidated brief"] },
+  { name: "Research & Direction",
+    tasks: ["Gather inspiration and references", "Curate the moodboard", "Send the moodboard to the client"],
+    deliverables: ["Moodboard", "Direction confirmed by client"] },
+  { name: "Design",
+    tasks: ["Design the logo", "Build the color palette", "Set the typography system", "Create the brand pattern"],
+    deliverables: ["Logo", "Color palette", "Typography system", "Brand pattern"] },
+  { name: "Presentation",
+    tasks: ["Assemble the first delivery presentation", "Send the presentation"],
+    deliverables: ["First deliverables presentation"] },
+  { name: "Review & Refinement",
+    tasks: ["Collect client feedback", "Apply revisions"],
+    deliverables: ["Revised assets", "Client approval"] },
+  { name: "Packaging",
+    tasks: ["Prepare the brand guidelines document", "Export and organize all file formats"],
+    deliverables: ["Brand guidelines (PDF)", "Final files (all formats)"] },
+  { name: "Final Delivery & Payment",
+    tasks: ["Send the final handover package", "Confirm the balance payment", "Send the balance receipt"],
+    deliverables: ["Final handover package", "Balance received", "Balance receipt sent"] },
+  { name: "Follow-Up",
+    tasks: ["Check in with the client", "Ask for a testimonial"],
+    deliverables: ["Follow-up done + testimonial asked"] },
 ];
+
+/* Build the full plan for a brand booking: framework phases/deliverables/
+   tasks plus the plan's tier items, dropped into the phase where that work
+   happens (docs → Packaging, design work → Design). */
+function buildBrandPlan(tierDeliverables = []) {
+  const phases = BRAND_TEMPLATE.map((p, i) => ({ id: i + 1, name: p.name, ...(p.auto ? { done: true } : {}) }));
+  const deliverables = [];
+  const plannedTasks = [];
+  BRAND_TEMPLATE.forEach((p, i) => {
+    const phaseId = i + 1;
+    p.deliverables.forEach((text, di) => deliverables.push({ id: `p${phaseId}d${di + 1}`, text, phaseId, done: false }));
+    p.tasks.forEach((title) => plannedTasks.push({ title, phaseId }));
+  });
+  const covered = new Set(deliverables.map((d) => d.text.toLowerCase()));
+  const byName = (n) => phases.find((p) => p.name === n)?.id ?? null;
+  tierDeliverables
+    .filter((text) => text && !covered.has(String(text).toLowerCase()))
+    .forEach((text, i) => {
+      const phaseId = /(guideline|style guide|strategy|handoff|final file)/i.test(text) ? byName("Packaging") : byName("Design");
+      deliverables.push({ id: `t${i + 1}`, text, phaseId, done: false });
+    });
+  return { phases, deliverables, plannedTasks };
+}
 
 export function reniConfigured() {
   return Boolean(
@@ -119,10 +172,10 @@ export async function feedReniJob({
     deliverables,
     milestones,
     task_ids: [],
-    planned_tasks: plannedTasks ?? deliverables.map((d) => ({ title: d })),
+    planned_tasks: plannedTasks ?? deliverables.map((d) => (typeof d === "string" ? { title: d } : { title: d.text })),
     is_active: false, // logged, not active — the toggle in Reni starts the clock
     phases,
-    current_phase_idx: 0,
+    current_phase_idx: phases.length && phases[0]?.done ? 1 : 0,
     intake_meta: { submittedAt: now, ...meta },
     created_at: now,
   });
@@ -143,8 +196,10 @@ export async function feedReniStudio({ planKey, plan, money, responses, invoiceN
     deposit: money.deposit,
     balance: money.balance,
     invoiceNo,
-    deliverables: plan.deliverables || [],
-    phases: PHASES_BRAND.map((name, i) => ({ id: i + 1, name })),
+    ...(() => {
+      const bp = buildBrandPlan(plan.deliverables || []);
+      return { deliverables: bp.deliverables, phases: bp.phases, plannedTasks: bp.plannedTasks };
+    })(),
     client: {
       name: clientName,
       company: responses.brand_name || "",
