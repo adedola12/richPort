@@ -22,6 +22,7 @@ const PLAN_KEYS = { brand: ["silver", "gold", "platinum"], website: ["starter", 
 export default function DiscountsTab() {
   const [data, setData] = useState({ codes: [], offers: [] });
   const [msg, setMsg] = useState("");
+  const [busy, setBusy] = useState(false);
   const [codeForm, setCodeForm] = useState({ code: "", type: "percent", value: "", service: "any", note: "", expiresAt: "", maxUses: "" });
   const [offerForm, setOfferForm] = useState({ clientName: "", clientEmail: "", note: "", expiresAt: "", items: [{ service: "brand", planKey: "gold", price: "" }] });
 
@@ -34,11 +35,14 @@ export default function DiscountsTab() {
   const flash = (m) => { setMsg(m); setTimeout(() => setMsg(""), 3500); };
 
   const createCode = async () => {
+    if (busy) return;
+    setBusy(true);
     try {
       await fetchJson("/api/discounts/admin/codes", { method: "POST", body: JSON.stringify(codeForm) });
       setCodeForm({ code: "", type: "percent", value: "", service: "any", note: "", expiresAt: "", maxUses: "" });
       flash("✓ Code created"); load();
     } catch (e) { flash(e.message || "Couldn't create the code."); }
+    finally { setBusy(false); }
   };
 
   const toggleCode = async (c) => {
@@ -56,13 +60,16 @@ export default function DiscountsTab() {
     setOfferForm((f) => ({ ...f, items: f.items.map((it, j) => (j === i ? { ...it, ...patch } : it)) }));
 
   const createOffer = async () => {
+    if (busy) return;
+    setBusy(true);
     try {
       const items = offerForm.items.filter((i) => Number(i.price) > 0);
-      if (!items.length) return flash("Give each offer item a price.");
+      if (!items.length) { flash("Give each offer item a price."); return; }
       await fetchJson("/api/discounts/admin/offers", { method: "POST", body: JSON.stringify({ ...offerForm, items }) });
       setOfferForm({ clientName: "", clientEmail: "", note: "", expiresAt: "", items: [{ service: "brand", planKey: "gold", price: "" }] });
       flash("✓ Offer created — copy the link below"); load();
     } catch (e) { flash(e.message || "Couldn't create the offer."); }
+    finally { setBusy(false); }
   };
 
   const deleteOffer = async (o) => {
@@ -97,7 +104,7 @@ export default function DiscountsTab() {
           </select>
           <input className={input} type="date" value={codeForm.expiresAt} onChange={(e) => setCodeForm({ ...codeForm, expiresAt: e.target.value })} title="Expiry (optional)" />
           <input className={input} type="number" placeholder="Max uses" value={codeForm.maxUses} onChange={(e) => setCodeForm({ ...codeForm, maxUses: e.target.value })} />
-          <button className={btn} onClick={createCode} disabled={!codeForm.code || !(Number(codeForm.value) > 0)}>Create</button>
+          <button className={btn} onClick={createCode} disabled={busy || !codeForm.code || !(Number(codeForm.value) > 0)}>{busy ? "…" : "Create"}</button>
         </div>
         <div className="overflow-x-auto rounded-xl border border-white/10">
           <table className="w-full text-left text-sm">
@@ -159,7 +166,7 @@ export default function DiscountsTab() {
             <span className="text-xs text-white/35">
               Bundle total: {N(offerForm.items.reduce((s, i) => s + (Number(i.price) || 0), 0))}
             </span>
-            <button className={btn} onClick={createOffer}>Create offer</button>
+            <button className={btn} onClick={createOffer} disabled={busy}>{busy ? "…" : "Create offer"}</button>
           </div>
         </div>
         <div className="space-y-2.5">

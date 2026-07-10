@@ -13,6 +13,7 @@
 //        header must match).
 
 import { Router } from "express";
+import crypto from "crypto";
 import RateCategory from "../models/RateModel.js";
 import { PLANS, getFxRate, computeMoney, formatNGN, OWNER } from "../config/plans.js";
 import { WEBSITE_PLANS } from "../config/websitePlans.js";
@@ -54,7 +55,10 @@ router.get("/templates", async (_req, res) => {
 });
 
 /* ── Receipt / acknowledgment email ── */
+const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const receiptHTML = ({ kind, clientName, projectTitle, amount, invoiceNo, milestoneName }) => {
+  clientName = esc(clientName); projectTitle = esc(projectTitle);
+  invoiceNo = esc(invoiceNo); milestoneName = esc(milestoneName);
   const isDeposit = kind !== "balance";
   const heading = isDeposit ? "Payment received — thank you!" : "Final payment received — thank you!";
   const nextLine = isDeposit
@@ -81,7 +85,11 @@ const receiptHTML = ({ kind, clientName, projectTitle, amount, invoiceNo, milest
 router.post("/receipt", async (req, res) => {
   const secret = process.env.STUDIO_WEBHOOK_SECRET;
   if (!secret) return res.status(503).json({ ok: false, error: "not configured" });
-  if (req.get("x-studio-secret") !== secret) return res.status(401).json({ ok: false, error: "unauthorized" });
+  // constant-time comparison — response timing must not leak the secret
+  const given = Buffer.from(String(req.get("x-studio-secret") || ""));
+  const expected = Buffer.from(secret);
+  const authorized = given.length === expected.length && crypto.timingSafeEqual(given, expected);
+  if (!authorized) return res.status(401).json({ ok: false, error: "unauthorized" });
   if (!mailConfigured()) return res.status(503).json({ ok: false, error: "mail not configured" });
 
   const { kind, clientName, clientEmail, projectTitle, amount, invoiceNo, milestoneName } = req.body || {};
@@ -99,7 +107,7 @@ router.post("/receipt", async (req, res) => {
     sendMail({
       to: OWNER.notifyEmail,
       subject: `Receipt sent → ${clientName || clientEmail} — ${formatNGN(amount)}`,
-      html: `<p>Receipt emailed to <b>${clientName || ""} &lt;${clientEmail}&gt;</b> for <b>${projectTitle || "—"}</b>: ${formatNGN(amount)} (${milestoneName || kind || "payment"}).</p>`,
+      html: `<p>Receipt emailed to <b>${esc(clientName)} &lt;${esc(clientEmail)}&gt;</b> for <b>${esc(projectTitle) || "—"}</b>: ${formatNGN(amount)} (${esc(milestoneName || kind || "payment")}).</p>`,
     }).catch(() => {});
     res.json({ ok: true });
   } catch (e) {

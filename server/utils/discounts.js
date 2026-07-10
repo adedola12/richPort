@@ -50,16 +50,31 @@ export async function resolveDiscount({ code, offerToken, service, planKey, base
 }
 
 /* Stamp usage AFTER the booking saved successfully, so a failed booking
-   never burns a single-use code or an offer. */
+   never burns a single-use code or an offer. Both writes are atomic
+   (findOneAndUpdate / conditional update), so two bookings landing in the
+   same instant can't both slip past a maxUses cap or double-book an offer
+   service — the loser's booking stands at the discounted price (accepted:
+   Richard sees both bookings either way), but the code/offer can't be
+   over-consumed in the records. */
 export async function consumeDiscount({ discount, offer, service }) {
   try {
     if (offer) {
-      offer.usedServices = [...new Set([...(offer.usedServices || []), service])];
-      // an offer is spent when every item's service has been booked
-      if ((offer.items || []).every((i) => offer.usedServices.includes(i.service))) offer.active = false;
-      await offer.save();
+      const updated = await CustomOffer.findOneAndUpdate(
+        { _id: offer._id, usedServices: { $ne: service } },
+        { $addToSet: { usedServices: service } },
+        { new: true }
+      );
+      if (updated && (updated.items || []).every((i) => (updated.usedServices || []).includes(i.service))) {
+        await CustomOffer.updateOne({ _id: updated._id }, { active: false });
+      }
     } else if (discount?.code) {
-      await DiscountCode.updateOne({ code: discount.code }, { $inc: { uses: 1 } });
+      await DiscountCode.updateOne(
+        {
+          code: discount.code,
+          $or: [{ maxUses: null }, { $expr: { $lt: ["$uses", "$maxUses"] } }],
+        },
+        { $inc: { uses: 1 } }
+      );
     }
   } catch (e) {
     console.error("consumeDiscount failed (booking unaffected):", e.message);

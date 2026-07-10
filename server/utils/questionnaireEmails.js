@@ -74,7 +74,7 @@ export function buildInvoiceHTML(data, meta) {
         <b>Brand Identity Design${plan.website ? " + Website" : ""} — ${meta.plan} Package</b><br>
         <span style="font-size:12px;color:#666;">Includes: ${plan.deliverables.join("; ")}.</span></td>
         <td align="right" style="padding:12px 14px;border:1px solid #dfe6d2;font-weight:700;">${N(meta.discount_amount ? meta.base_price : meta.price)}</td></tr>
-      ${meta.discount_amount ? `<tr><td align="right" style="padding:6px 14px;font-size:13px;color:#2e7d32;">${meta.discount_label || "Discount"}</td>
+      ${meta.discount_amount ? `<tr><td align="right" style="padding:6px 14px;font-size:13px;color:#2e7d32;">${esc(meta.discount_label || "Discount")}</td>
         <td align="right" style="padding:6px 14px;font-weight:700;color:#2e7d32;">− ${N(meta.discount_amount)}</td></tr>` : ""}
       ${plan.website ? `<tr><td style="padding:12px 14px;border:1px solid #dfe6d2;font-size:13.5px;">
         <b>Website Hosting &amp; Domain Name</b><br><span style="font-size:12px;color:#666;">Paid directly by the Client to providers; accounts created under the Client's own credentials.</span></td>

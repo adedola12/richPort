@@ -267,6 +267,9 @@ const BookPlan = () => {
       setDiscountInfo({ ok: false, error: "Couldn't check that code — try again." });
     }
   };
+  // A validated discount is priced against ONE plan — switching plans voids it
+  // so a Silver discount can never display against a Gold total.
+  useEffect(() => { setDiscountInfo(null); }, [selectedPlan]);
   const effectivePrice = plan
     ? (offer && offer.planKey === selectedPlan ? offer.price : discountInfo?.ok ? discountInfo.finalPrice : ngnOf(selectedPlan))
     : 0;

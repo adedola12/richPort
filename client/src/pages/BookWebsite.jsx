@@ -133,6 +133,8 @@ const BookWebsite = () => {
       setDiscountInfo({ ok: false, error: "Couldn't check that code — try again." });
     }
   };
+  // A validated discount is priced against ONE plan — switching plans voids it
+  useEffect(() => { setDiscountInfo(null); }, [plan]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
