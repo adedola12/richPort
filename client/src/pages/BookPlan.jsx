@@ -57,10 +57,14 @@ const inputCls = (invalid) =>
     invalid ? "border-orange-400" : "border-white/10"
   }`;
 const cardCls = "rounded-2xl border border-white/10 bg-[#111318] px-5 py-8 sm:px-10";
+/* Button hierarchy: ONE primary action per view gets the green gradient;
+   everything secondary (back, cancel, edit) stays a quiet outline so the
+   page keeps a single visual rank. */
 const btnPrimary =
   "rounded-[10px] bg-gradient-to-b from-lime-400 to-lime-600 px-7 py-3 text-sm font-bold text-black shadow-[0_0_18px_rgba(132,204,22,0.5)] transition hover:from-lime-300 hover:to-lime-500 hover:-translate-y-[1px] active:scale-[0.97] disabled:cursor-wait disabled:opacity-50";
-const btnBack = btnPrimary;
-const btnGhost = btnPrimary;
+const btnBack =
+  "rounded-[10px] border border-white/15 px-7 py-3 text-sm font-semibold text-white/70 transition hover:border-lime-400/50 hover:text-lime-400 active:scale-[0.97]";
+const btnGhost = btnBack;
 
 /* ---------------- small render helpers ---------------- */
 const Label = ({ text, required, hint }) => (

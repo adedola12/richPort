@@ -18,11 +18,18 @@ import imgRationale from "../assets/VerdeLuxe/rationale.webp";
 import gInterior from "../assets/VerdeLuxe/gallery/g04.webp";
 import gLogo from "../assets/VerdeLuxe/gallery/g05.webp";
 import gLetterhead from "../assets/VerdeLuxe/gallery/g09.webp";
-import gSignage from "../assets/VerdeLuxe/gallery/g11.webp";
-import gMug from "../assets/VerdeLuxe/gallery/g13.webp";
 import gCards from "../assets/VerdeLuxe/gallery/g15.webp";
-import gBottle from "../assets/VerdeLuxe/gallery/g17.webp";
-import gTee from "../assets/VerdeLuxe/gallery/g19.webp";
+/* the original application mockups — banners, signage, merch, the book */
+import aBanners from "../assets/VerdeLuxe/apps/a01.webp";
+import aWindowPosters from "../assets/VerdeLuxe/apps/a02.webp";
+import aOpenBook from "../assets/VerdeLuxe/apps/a03.webp";
+import aHangingBanner from "../assets/VerdeLuxe/apps/a04.webp";
+import aBottle from "../assets/VerdeLuxe/apps/a05.webp";
+import aEntrance from "../assets/VerdeLuxe/apps/a06.webp";
+import aTee from "../assets/VerdeLuxe/apps/a07.webp";
+import aMug from "../assets/VerdeLuxe/apps/a08.webp";
+import aBookCover from "../assets/VerdeLuxe/apps/a09.webp";
+import aSignage from "../assets/VerdeLuxe/apps/a10.webp";
 
 /* ── look book pages (from the 30-page document) ── */
 import gp01 from "../assets/VerdeLuxe/guideline/p01.webp";
@@ -201,7 +208,7 @@ const VerdeLuxeProject = () => (
               </div>
             </Reveal>
             <Reveal className="h-full">
-              <Frame src={gLogo} alt="The Verde Luxe logo presented over a deep green interior scene" ratio="4/5" className="h-full" />
+              <Frame src={aBookCover} alt="The Verde Luxe logo look book, printed" ratio="4/5" className="h-full" />
             </Reveal>
           </div>
         </div>
@@ -323,28 +330,31 @@ const VerdeLuxeProject = () => (
           <div className="space-y-16">
             {[
               {
-                img: gSignage,
+                img: aSignage,
+                ratio: "16/9",
                 title: "On the building",
                 body: "The dimensional mark over the entrance closes the loop on the whole idea. A logo built as a doorway, doing its job above one. In brushed metal on dark panelling it reads exactly the way the brand should: present, assured, never loud.",
               },
               {
-                img: gBottle,
+                img: aEntrance,
+                ratio: "16/9",
+                title: "On the street",
+                body: "Luxury, Redefined, over the entrance of a space the brand would actually design. The campaign line works because the identity underneath it does. Deep green, gold light and a serif holding the promise steady at street scale.",
+              },
+              {
+                img: aBottle,
+                ratio: "4/5",
                 title: "On the shelf",
                 body: "Verde Luxe sells products, so the identity has to work at retail distance. Deep green with the mark sitting quietly in warm gold reads premium from across a room, which is the whole point of a brand that lives on shelves as much as in spaces.",
               },
-              {
-                img: gCards,
-                title: "In the hand",
-                body: "Thank you cards in green and warm beige, the note that goes out after a project wraps. Quiet money is really about manners, and the follow through after delivery is where a luxury brand proves it has them.",
-              },
-            ].map(({ img, title, body }) => (
+            ].map(({ img, ratio, title, body }) => (
               <Reveal key={title}>
                 <div className="flex flex-col gap-5">
                   <div className="max-w-[560px]">
                     <p className="text-[17px] font-semibold text-white mb-2">{title}</p>
                     <p className="text-[15px] sm:text-[16px] leading-[1.7] text-white/50">{body}</p>
                   </div>
-                  <Frame src={img} alt={`${title}. Verde Luxe brand application`} ratio="4/5" className="max-w-[720px]" />
+                  <Frame src={img} alt={`${title}. Verde Luxe brand application`} ratio={ratio} className={ratio === "4/5" ? "max-w-[720px]" : ""} />
                 </div>
               </Reveal>
             ))}
@@ -430,12 +440,18 @@ const VerdeLuxeProject = () => (
         images={[
           { src: gInterior, alt: "A deep green interior in the Verde Luxe mood", label: "THE MOOD" },
           { src: gLogo, alt: "The Verde Luxe logo presentation", label: "THE LOGO" },
+          { src: aBookCover, alt: "The printed logo look book", label: "LOOK BOOK" },
+          { src: aOpenBook, alt: "The look book open on the logo rationale spread", label: "INSIDE THE BOOK" },
           { src: gLetterhead, alt: "Branded letterhead", label: "LETTERHEAD" },
-          { src: gSignage, alt: "Entrance signage in brushed metal", label: "SIGNAGE" },
-          { src: gMug, alt: "Branded mug in deep green and gold", label: "MUG" },
+          { src: aSignage, alt: "Entrance signage in brushed metal", label: "SIGNAGE" },
+          { src: aEntrance, alt: "Luxury Redefined billboard over the entrance", label: "THE ENTRANCE" },
+          { src: aWindowPosters, alt: "Window posters on the storefront", label: "WINDOW POSTERS" },
+          { src: aBanners, alt: "Street banners: Illuminate Your World", label: "STREET BANNERS" },
+          { src: aHangingBanner, alt: "Curated for Timeless Interiors hanging banner", label: "HANGING BANNER" },
+          { src: aBottle, alt: "Branded bottle in deep green and gold", label: "BOTTLE" },
+          { src: aMug, alt: "Branded mug in deep green and gold", label: "MUG" },
+          { src: aTee, alt: "Team t-shirt with the logo mark", label: "T-SHIRT" },
           { src: gCards, alt: "Thank you cards in green and beige", label: "THANK YOU CARDS" },
-          { src: gBottle, alt: "Branded bottle in deep green", label: "BOTTLE" },
-          { src: gTee, alt: "Team t-shirt with the logo mark", label: "T-SHIRT" },
         ]}
       />
 

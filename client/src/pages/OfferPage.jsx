@@ -64,7 +64,7 @@ export default function OfferPage() {
                   ) : (
                     <Link
                       to={`${meta.path}?offer=${token}`}
-                      className="rounded-lg border border-lime-400/50 px-4 py-2 text-xs font-semibold text-lime-400 hover:bg-lime-400/10"
+                      className="rounded-[10px] bg-gradient-to-b from-lime-400 to-lime-600 px-5 py-2.5 text-xs font-bold text-black shadow-[0_0_14px_rgba(132,204,22,0.45)] transition hover:from-lime-300 hover:to-lime-500 hover:-translate-y-[1px] active:scale-95"
                     >
                       Book this →
                     </Link>
