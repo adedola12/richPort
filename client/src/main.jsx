@@ -43,6 +43,7 @@ import BookPlan from "./pages/BookPlan.jsx";
 import TestimonialPage from "./pages/TestimonialPage.jsx";
 import BookFlyer from "./pages/BookFlyer.jsx";
 import BookWebsite from "./pages/BookWebsite.jsx";
+import OfferPage from "./pages/OfferPage.jsx";
 
 // Redirect component that preserves slug params
 const RedirectWithSlug = ({ basePath }) => {
@@ -74,6 +75,7 @@ const router = createBrowserRouter([
       { path: "book", element: <BookPlan /> },
       { path: "book-flyer", element: <BookFlyer /> },
       { path: "book-website", element: <BookWebsite /> },
+      { path: "offer/:token", element: <OfferPage /> },
       { path: "contact", element: <Contact /> },
       { path: "testimonial", element: <TestimonialPage /> },
       { path: "presentation-design", element: <PresentationDesignPage /> },

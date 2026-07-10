@@ -97,8 +97,42 @@ const BookWebsite = () => {
     })();
   }, []);
 
+  /* Discount code / private offer (?offer=token) — server re-resolves on
+     submit, so what's shown is what the invoice says. */
+  const [discountCode, setDiscountCode] = useState("");
+  const [discountInfo, setDiscountInfo] = useState(null);
+  const [offer, setOffer] = useState(null);
+  useEffect(() => {
+    const token = searchParams.get("offer");
+    if (!token) return;
+    let on = true;
+    fetchJson(`/api/discounts/offer/${token}`)
+      .then((o) => {
+        if (!on || !o?.ok) return;
+        const item = (o.items || []).find((i) => i.service === "website" && !i.booked);
+        if (!item) return;
+        setOffer({ token, price: item.price, planKey: item.planKey, clientName: o.clientName || "" });
+        setPlan(item.planKey);
+      })
+      .catch(() => {});
+    return () => { on = false; };
+  }, [searchParams]);
+
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
   const selected = plan ? plans[plan] : null;
+  const effectivePrice = selected
+    ? (offer && offer.planKey === plan ? offer.price : discountInfo?.ok ? discountInfo.finalPrice : selected.priceNGN)
+    : 0;
+  const applyCode = async () => {
+    const code = discountCode.trim();
+    if (!code || !selected) return;
+    try {
+      const r = await fetchJson(`/api/discounts/validate?code=${encodeURIComponent(code)}&service=website&price=${selected.priceNGN}`);
+      setDiscountInfo(r);
+    } catch {
+      setDiscountInfo({ ok: false, error: "Couldn't check that code — try again." });
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -119,6 +153,8 @@ const BookWebsite = () => {
           features: features.join(", "),
           contentStatus,
           domainStatus,
+          discount_code: !offer && discountInfo?.ok ? discountCode.trim() : "",
+          offer_token: offer?.token || "",
           _hp: hpRef.current?.value || "",
         }),
       });
@@ -247,11 +283,43 @@ const BookWebsite = () => {
               </F>
 
               {selected && (
-                <p className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-[13px] text-white/55">
-                  Selected: <span className="text-white font-semibold">{selected.label} — {selected.pages}</span> at{" "}
-                  <span className="text-lime-400 font-semibold">{selected.from ? "from " : ""}{N(selected.priceNGN)}</span>.
-                  Your invoice (70% deposit) and terms arrive by email after you submit.
-                </p>
+                <div className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-[13px] text-white/55">
+                  <p>
+                    Selected: <span className="text-white font-semibold">{selected.label} — {selected.pages}</span> at{" "}
+                    <span className="text-lime-400 font-semibold">{selected.from ? "from " : ""}{N(effectivePrice)}</span>
+                    {effectivePrice !== selected.priceNGN && (
+                      <span className="ml-1.5 text-xs text-white/35 line-through">{N(selected.priceNGN)}</span>
+                    )}.
+                    Your invoice (70% deposit) and terms arrive by email after you submit.
+                  </p>
+                  {offer ? (
+                    <p className="mt-2 rounded-lg border border-lime-400/30 bg-lime-400/5 px-3 py-2 text-xs text-lime-300">
+                      ✓ Private offer applied{offer.clientName ? ` for ${offer.clientName}` : ""} — your agreed price is {N(offer.price)}.
+                    </p>
+                  ) : (
+                    <div className="mt-2.5 border-t border-dashed border-white/10 pt-2.5">
+                      <div className="mb-1.5 text-xs text-white/45">Have a discount code?</div>
+                      <div className="flex gap-2">
+                        <input
+                          value={discountCode}
+                          onChange={(e) => { setDiscountCode(e.target.value.toUpperCase()); setDiscountInfo(null); }}
+                          placeholder="e.g. GRACE10"
+                          className="w-40 rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-xs uppercase tracking-wide text-white outline-none focus:border-lime-400/60"
+                        />
+                        <button type="button" onClick={applyCode} disabled={!discountCode.trim()}
+                          className="rounded-lg border border-lime-400/40 px-3.5 py-2 text-xs text-lime-400 hover:bg-lime-400/10 disabled:opacity-40">
+                          Apply
+                        </button>
+                      </div>
+                      {discountInfo?.ok && (
+                        <p className="mt-2 text-xs text-lime-300">✓ {discountInfo.label} — you save {N(discountInfo.amount)}. New total: {N(discountInfo.finalPrice)}.</p>
+                      )}
+                      {discountInfo && !discountInfo.ok && (
+                        <p className="mt-2 text-xs text-red-400">{discountInfo.error}</p>
+                      )}
+                    </div>
+                  )}
+                </div>
               )}
 
               {error && (

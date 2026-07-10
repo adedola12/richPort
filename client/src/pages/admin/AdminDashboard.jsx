@@ -10,11 +10,13 @@ import RatesTab from "../../components/Admin/RatesTab.jsx";
 import CustomersTab from "../../components/Admin/CustomersTab.jsx";
 import TestimonialsTab from "../../components/Admin/TestimonialsTab.jsx";
 import FaqTab from "../../components/Admin/FaqTab.jsx";
+import DiscountsTab from "../../components/Admin/DiscountsTab.jsx";
 
 const tabs = [
   { id: "projects", label: "Projects" },
   { id: "journey", label: "Journey" },
   { id: "rates", label: "Rates" },
+  { id: "discounts", label: "Discounts" },
   { id: "customers", label: "Customers" },
   { id: "testimonials", label: "Testimonials" },
   { id: "faq", label: "FAQ" },
@@ -91,6 +93,7 @@ const AdminDashboard = () => {
           {activeTab === "projects" && <ProjectsTab />}
           {activeTab === "journey" && <JourneyTab />}
           {activeTab === "rates" && <RatesTab />}
+          {activeTab === "discounts" && <DiscountsTab />}
           {activeTab === "customers" && <CustomersTab />}
           {activeTab === "testimonials" && <TestimonialsTab />}
           {activeTab === "faq" && <FaqTab />}

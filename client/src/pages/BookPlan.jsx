@@ -231,6 +231,42 @@ const BookPlan = () => {
     return planPrice(key, fx.rate);
   };
 
+  /* ---------------- discount code / custom offer ----------------
+     A code adjusts the package price; an offer link (?offer=token) IS the
+     negotiated price and locks the plan it covers. The server re-resolves
+     both on submit, so what's shown here is what the invoice says. */
+  const [discountCode, setDiscountCode] = useState("");
+  const [discountInfo, setDiscountInfo] = useState(null); // {ok,label,amount,finalPrice} | {ok:false,error}
+  const [offer, setOffer] = useState(null); // {token, price, planKey, clientName}
+  useEffect(() => {
+    const token = new URLSearchParams(window.location.search).get("offer");
+    if (!token) return;
+    let on = true;
+    fetchJson(`/api/discounts/offer/${token}`)
+      .then((o) => {
+        if (!on || !o?.ok) return;
+        const item = (o.items || []).find((i) => i.service === "brand" && !i.booked);
+        if (!item) return;
+        setOffer({ token, price: item.price, planKey: item.planKey, clientName: o.clientName || "" });
+        setSelectedPlan(item.planKey);
+      })
+      .catch(() => {});
+    return () => { on = false; };
+  }, []);
+  const applyCode = async () => {
+    const code = discountCode.trim();
+    if (!code || !selectedPlan) return;
+    try {
+      const r = await fetchJson(`/api/discounts/validate?code=${encodeURIComponent(code)}&service=brand&price=${ngnOf(selectedPlan)}`);
+      setDiscountInfo(r);
+    } catch {
+      setDiscountInfo({ ok: false, error: "Couldn't check that code — try again." });
+    }
+  };
+  const effectivePrice = plan
+    ? (offer && offer.planKey === selectedPlan ? offer.price : discountInfo?.ok ? discountInfo.finalPrice : ngnOf(selectedPlan))
+    : 0;
+
   useEffect(() => {
     if (window.__lenis) window.__lenis.scrollTo(0, { immediate: true, force: true });
     else window.scrollTo({ top: 0, behavior: "instant" });
@@ -300,7 +336,12 @@ const BookPlan = () => {
     try {
       const res = await fetchJson("/api/questionnaire", {
         method: "POST",
-        body: JSON.stringify({ ...data, _hp: hpRef.current?.value || "" }),
+        body: JSON.stringify({
+          ...data,
+          discount_code: !offer && discountInfo?.ok ? discountCode.trim() : "",
+          offer_token: offer?.token || "",
+          _hp: hpRef.current?.value || "",
+        }),
       });
       setResult({ ok: true, invoiceNo: res?.invoice_no || "", emailsSent: res?.emails_sent !== false });
       localStorage.removeItem(STORE_KEY); // clear draft only on success
@@ -618,9 +659,39 @@ const BookPlan = () => {
                 <div className="flex gap-3.5 py-2">
                   <div className="w-[42%] shrink-0 font-light text-neutral-400">Package</div>
                   <div>
-                    {data._meta.plan} — {N(data._meta.price)} ({DEPOSIT_PCT}% deposit: <span className="text-[#c7b6ff]">{N(data._meta.deposit)}</span>)
+                    {data._meta.plan} — {N(effectivePrice)} ({DEPOSIT_PCT}% deposit: <span className="text-[#c7b6ff]">{N(pct(effectivePrice, DEPOSIT_PCT))}</span>)
+                    {effectivePrice !== data._meta.price && (
+                      <span className="ml-2 text-xs text-neutral-500 line-through">{N(data._meta.price)}</span>
+                    )}
                   </div>
                 </div>
+                {offer ? (
+                  <div className="mt-1 rounded-lg border border-lime-400/30 bg-lime-400/5 px-3.5 py-2.5 text-xs text-lime-300">
+                    ✓ Private offer applied{offer.clientName ? ` for ${offer.clientName}` : ""} — your agreed price is {N(offer.price)}.
+                  </div>
+                ) : (
+                  <div className="mt-1 border-t border-dashed border-white/10 pt-3">
+                    <div className="mb-1.5 text-xs text-neutral-400">Have a discount code?</div>
+                    <div className="flex gap-2">
+                      <input
+                        value={discountCode}
+                        onChange={(e) => { setDiscountCode(e.target.value.toUpperCase()); setDiscountInfo(null); }}
+                        placeholder="e.g. GRACE10"
+                        className="w-40 rounded-lg border border-white/15 bg-[#0c0e12] px-3 py-2 text-xs uppercase tracking-wide text-white outline-none focus:border-lime-400/60"
+                      />
+                      <button type="button" onClick={applyCode} disabled={!discountCode.trim()}
+                        className="rounded-lg border border-lime-400/40 px-3.5 py-2 text-xs text-lime-400 hover:bg-lime-400/10 disabled:opacity-40">
+                        Apply
+                      </button>
+                    </div>
+                    {discountInfo?.ok && (
+                      <div className="mt-2 text-xs text-lime-300">✓ {discountInfo.label} — you save {N(discountInfo.amount)}. New total: {N(discountInfo.finalPrice)}.</div>
+                    )}
+                    {discountInfo && !discountInfo.ok && (
+                      <div className="mt-2 text-xs text-red-400">{discountInfo.error}</div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
             {SECTIONS.filter(([, key]) => key !== "website" || hasWeb).map(([title, key, fields]) => (
