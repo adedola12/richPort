@@ -97,15 +97,18 @@ function Lightbox({ images, index, onClose, onPrev, onNext }) {
   );
 }
 
-/* ─── single bento cell ─── */
-function BentoCell({ src, alt = "", label = "", style, color = "#a3e635", delay = 0, onClick }) {
+/* ─── single masonry cell ───
+   The image keeps its natural aspect ratio — a portrait bottle stays tall,
+   a square tote stays square, a wide billboard stays wide. Nothing is
+   cropped before the click; the shape of the work decides the shape of
+   the cell. */
+function BentoCell({ src, alt = "", label = "", color = "#a3e635", delay = 0, onClick }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0 });
 
   return (
     <motion.div
       ref={ref}
-      style={style}
       className={`relative rounded-lg sm:rounded-2xl overflow-hidden border border-white/8 bg-white/[0.02] group ${src ? "cursor-pointer" : "cursor-default"}`}
       initial={{ opacity: 0, scale: 0.97, filter: "blur(4px)" }}
       animate={inView ? { opacity: 1, scale: 1, filter: "blur(0px)" } : {}}
@@ -120,11 +123,11 @@ function BentoCell({ src, alt = "", label = "", style, color = "#a3e635", delay 
         <img
           src={src}
           alt={alt}
-          className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.04]"
+          className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.04]"
           loading="lazy"
         />
       ) : (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 px-4">
+        <div className="flex flex-col items-center justify-center gap-2 px-4 py-16">
           <div className="w-8 h-8 rounded-full border border-dashed border-white/15 flex items-center justify-center">
             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.2)" strokeWidth="1.5">
               <rect x="3" y="3" width="18" height="18" rx="3" />
@@ -149,71 +152,6 @@ function BentoCell({ src, alt = "", label = "", style, color = "#a3e635", delay 
   );
 }
 
-/* ─── adaptive bento layout ───
-   Proper bento: each chunk of 5 images forms an "anchor block" — one tall
-   anchor cell spanning 2 rows (~2.5× the area of its neighbours, so the eye
-   reads hierarchy from size) plus four supporting cells with varied widths.
-   Anchors alternate left/right for rhythm. Remaining images fill full-width
-   rows of 3 or 2 with varied column spans — the grid always packs solid,
-   never leaving holes or a ragged last row. */
-const ROW_H = 220; // uniform row unit keeps the size ratios deliberate
-
-const anchorBlock = (row, left) =>
-  left
-    ? [
-        { c: [1, 6], r: [row, row + 2] }, // anchor — tall left
-        { c: [6, 10], r: [row, row + 1] },
-        { c: [10, 13], r: [row, row + 1] },
-        { c: [6, 9], r: [row + 1, row + 2] },
-        { c: [9, 13], r: [row + 1, row + 2] },
-      ]
-    : [
-        { c: [8, 13], r: [row, row + 2] }, // anchor — tall right
-        { c: [1, 4], r: [row, row + 1] },
-        { c: [4, 8], r: [row, row + 1] },
-        { c: [1, 5], r: [row + 1, row + 2] },
-        { c: [5, 8], r: [row + 1, row + 2] },
-      ];
-
-const THREE_COL = [[5, 4, 3], [3, 4, 5], [4, 4, 4]];
-const TWO_COL = [[7, 5], [5, 7], [6, 6]];
-
-function buildCells(count) {
-  const cells = [];
-  let row = 1, left = count, anchorLeft = true, t3 = 0, t2 = 0;
-
-  // anchor blocks eat 5 images each; back off one block if it would strand
-  // a single leftover image (6 remaining lays out as two 3-rows instead)
-  let anchors = Math.floor(left / 5);
-  if (anchors > 0 && left - anchors * 5 === 1) anchors -= 1;
-
-  const pushRow = (spans) => {
-    let col = 1;
-    spans.forEach((s) => {
-      cells.push({ gridColumn: `${col} / ${col + s}`, gridRow: `${row} / ${row + 1}` });
-      col += s;
-    });
-    row += 1;
-  };
-
-  for (let i = 0; i < anchors; i++) {
-    anchorBlock(row, anchorLeft).forEach(({ c, r }) =>
-      cells.push({ gridColumn: `${c[0]} / ${c[1]}`, gridRow: `${r[0]} / ${r[1]}` })
-    );
-    anchorLeft = !anchorLeft;
-    row += 2;
-    left -= 5;
-  }
-
-  while (left > 0) {
-    if (left === 4 || left === 2) { pushRow(TWO_COL[t2++ % TWO_COL.length]); left -= 2; }
-    else if (left === 1) { pushRow([12]); left = 0; }
-    else { pushRow(THREE_COL[t3++ % THREE_COL.length]); left -= 3; }
-  }
-
-  return { cells, rowCount: row - 1 };
-}
-
 /* ═══════════════════════════════════════════════════════════
    BrandGallery — adaptive bento grid with lightbox.
    Renders however many images it's given; empty (src: null)
@@ -235,7 +173,6 @@ export default function BrandGallery({
   const headerInView = useInView(headerRef, { once: true, amount: 0 });
 
   const filled = images.filter((item) => item.src);
-  const { cells, rowCount } = buildCells(filled.length);
 
   /* lightbox */
   const [lightboxNav, setLightboxNav] = useState(null); // index into filled
@@ -272,44 +209,19 @@ export default function BrandGallery({
           </p>
         </motion.div>
 
-        {/* desktop bento — tall anchors + supporting cells, packed solid */}
-        <div
-          className="hidden sm:grid gap-3"
-          style={{
-            gridTemplateColumns: "repeat(12, 1fr)",
-            gridTemplateRows: `repeat(${rowCount}, ${ROW_H}px)`,
-          }}
-        >
+        {/* masonry — columns pack naturally, every image keeps its own shape */}
+        <div className="columns-2 lg:columns-3 gap-3">
           {filled.map((item, i) => (
-            <BentoCell
-              key={i}
-              src={item.src}
-              alt={item.alt}
-              label={item.label}
-              color={color}
-              delay={d(i)}
-              style={cells[i]}
-              onClick={() => openLightbox(i)}
-            />
-          ))}
-        </div>
-
-        {/* mobile: 2-col, first cell full-width */}
-        <div className="sm:hidden grid grid-cols-2 gap-3">
-          {filled.map((item, i) => (
-            <BentoCell
-              key={i}
-              src={item.src}
-              alt={item.alt}
-              label={item.label}
-              color={color}
-              delay={d(i)}
-              onClick={() => openLightbox(i)}
-              style={{
-                aspectRatio: i === 0 ? "16/9" : i % 5 === 4 ? "1/1" : "4/3",
-                gridColumn: i === 0 ? "1 / 3" : undefined,
-              }}
-            />
+            <div key={i} className="mb-3 break-inside-avoid">
+              <BentoCell
+                src={item.src}
+                alt={item.alt}
+                label={item.label}
+                color={color}
+                delay={d(i)}
+                onClick={() => openLightbox(i)}
+              />
+            </div>
           ))}
         </div>
 

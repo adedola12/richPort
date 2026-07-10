@@ -21,6 +21,7 @@ import imgNotebook from "../assets/Bookrion/g4.jpg";
 import imgCardsAlt from "../assets/Bookrion/g5.jpg";
 import imgAppIcon from "../assets/Bookrion/img1.jpg";
 import imgLetterhead from "../assets/Bookrion/concImg.jpg";
+import imgBMark from "../assets/Bookrion/bmark.webp";
 
 /* Portfolio accent (lime) drives the page's labels, headings and CTAs. */
 const G = "#a3e635";
@@ -215,18 +216,18 @@ const BookRionProject = () => (
             <H2 white="Read the name literally," accent="then draw it" />
             <div className="mt-5 mb-8 h-[2px] w-16 rounded-full" style={{ background: G }} />
             <div className="max-w-[720px] space-y-5 text-[15px] sm:text-[16px] leading-[1.7] text-white/55 mb-10">
-              <p>The rebuild started with the name itself. Rion sounds like royalty, so a crown went on top. Books stack, so two rounded book forms sit together underneath, and their shared curve builds the letter B. That is the whole logic: the name read literally, then drawn.</p>
-              <p>And the eyes survived. Reading and discovery happen through the eyes, and that was the truest part of the mascot, so I folded them back in as the double letters. Look once and you see a crowned B. Look again and the mark is quietly watching you back. Crown on top, books underneath, a face you almost miss.</p>
-              <p>It landed warm and a little cheeky, which is exactly what a habit product wants, without tipping into childish. The playfulness the brief asked for is still there. It just wears a crown now.</p>
+              <p>The rebuild started with the name itself. Rion sounds like royalty, so a crown went on top. Books stack, so two rounded book forms sit together underneath, and their shared curve builds a lowercase b, for Book. That is the whole logic: the name read literally, then drawn.</p>
+              <p>And the eyes survived. Reading and discovery happen through the eyes, and that was the truest part of the mascot, so I folded them back in as the double letters, with a small bookmark ribbon tucked inside the shape for purpose and focused reading. Look once and you see a crowned b. Look again and the mark is quietly watching you back. Crown on top, books underneath, a face you almost miss.</p>
+              <p>It landed warm and a little cheeky, which is exactly what a habit product wants, without tipping into childish. The playfulness the brief asked for is still there. It just wears a crown now. The BMark, as the look book names it, shows what BookRion is all about: reading, learning, and leading.</p>
             </div>
           </Reveal>
 
           <Reveal>
             <div className="rounded-2xl overflow-hidden border border-white/8">
-              <img src={imgNotebook} alt="The crowned B mark, built from two stacked book forms with the eyes folded into the letters, on a branded notebook" loading="lazy" className="w-full h-auto" />
+              <img src={imgBMark} alt="The BMark rationale from the look book: the book forms, the bookmark ribbon, and the crown for Rion, annotated" loading="lazy" className="w-full h-auto" />
             </div>
             <p className="mt-4 text-[14px] text-white/40 leading-relaxed max-w-[640px]">
-              The mark at full size. Two book forms curve into the B, the crown claims the name, and the eyes sit inside the letters.
+              The BMark rationale from the look book. The book is the central motif, the ribbon is the bookmark, and the crown carries the Rion.
             </p>
           </Reveal>
 
