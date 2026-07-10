@@ -21,6 +21,12 @@ const WebsiteRequestSchema = new mongoose.Schema(
     priceNGN: { type: Number, default: 0 },
     deposit: { type: Number, default: 0 },
     balance: { type: Number, default: 0 },
+    basePriceNGN: { type: Number, default: null },
+    discount: {
+      code: { type: String, default: "" },
+      label: { type: String, default: "" },
+      amount: { type: Number, default: 0 },
+    },
     status: { type: String, default: "new" },
   },
   { timestamps: true }

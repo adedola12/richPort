@@ -31,6 +31,15 @@ const questionnaireSchema = new Schema(
     deposit: { type: Number, required: true },
     balance: { type: Number, required: true },
 
+    // set when a discount code or custom offer changed the price — the
+    // invoice shows base → reduction → final, and Reni logs the final
+    basePriceNGN: { type: Number, default: null },
+    discount: {
+      code: { type: String, default: "" },
+      label: { type: String, default: "" },
+      amount: { type: Number, default: 0 },
+    },
+
     // full questionnaire answers (label-keyed values, strings or arrays)
     responses: { type: Schema.Types.Mixed, default: {} },
 

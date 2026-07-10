@@ -184,7 +184,7 @@ export async function feedReniJob({
 }
 
 /* Brand-identity bookings (the /api/questionnaire flow) */
-export async function feedReniStudio({ planKey, plan, money, responses, invoiceNo }) {
+export async function feedReniStudio({ planKey, plan, money, responses, invoiceNo, discount = null }) {
   const clientName =
     [responses.first_name, responses.last_name].filter(Boolean).join(" ") ||
     responses.brand_name || "Portfolio client";
@@ -211,6 +211,7 @@ export async function feedReniStudio({ planKey, plan, money, responses, invoiceN
       invoiceNo,
       planKey,
       planLabel: plan.label,
+      ...(discount ? { basePrice: discount.basePrice, discountLabel: discount.label, discountAmount: discount.amount, discountCode: discount.code } : {}),
       preferredDuration: Array.isArray(responses.duration) ? responses.duration.join(", ") : responses.duration || "",
       comm: Array.isArray(responses.comm) ? responses.comm.join(", ") : responses.comm || "",
       aboutBusiness: responses.business_about || "",

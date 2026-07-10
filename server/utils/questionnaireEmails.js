@@ -73,7 +73,9 @@ export function buildInvoiceHTML(data, meta) {
       <tr><td style="padding:12px 14px;border:1px solid #dfe6d2;font-size:13.5px;">
         <b>Brand Identity Design${plan.website ? " + Website" : ""} — ${meta.plan} Package</b><br>
         <span style="font-size:12px;color:#666;">Includes: ${plan.deliverables.join("; ")}.</span></td>
-        <td align="right" style="padding:12px 14px;border:1px solid #dfe6d2;font-weight:700;">${N(meta.price)}</td></tr>
+        <td align="right" style="padding:12px 14px;border:1px solid #dfe6d2;font-weight:700;">${N(meta.discount_amount ? meta.base_price : meta.price)}</td></tr>
+      ${meta.discount_amount ? `<tr><td align="right" style="padding:6px 14px;font-size:13px;color:#2e7d32;">${meta.discount_label || "Discount"}</td>
+        <td align="right" style="padding:6px 14px;font-weight:700;color:#2e7d32;">− ${N(meta.discount_amount)}</td></tr>` : ""}
       ${plan.website ? `<tr><td style="padding:12px 14px;border:1px solid #dfe6d2;font-size:13.5px;">
         <b>Website Hosting &amp; Domain Name</b><br><span style="font-size:12px;color:#666;">Paid directly by the Client to providers; accounts created under the Client's own credentials.</span></td>
         <td align="right" style="padding:12px 14px;border:1px solid #dfe6d2;color:#7a5db0;font-weight:600;font-size:12.5px;">Billed separately</td></tr>` : ""}
@@ -85,7 +87,7 @@ export function buildInvoiceHTML(data, meta) {
         <td align="right" style="padding:4px 14px 12px;font-weight:700;">${N(meta.balance)}</td></tr>
     </table>
 
-    <div style="font-size:11px;color:#999;margin-top:6px;">${meta.plan} Package list price $${meta.price_usd} USD, converted at NGN ${Math.round(meta.fx_rate).toLocaleString()}/USD${meta.fx_source === "live" ? " (market rate, " + today() + ")" : ""}.</div>
+    <div style="font-size:11px;color:#999;margin-top:6px;">${meta.plan} Package list price $${meta.price_usd} USD, converted at NGN ${Math.round(meta.fx_rate).toLocaleString()}/USD${meta.fx_source === "live" ? " (market rate, " + today() + ")" : ""}.${meta.discount_amount ? " Total reflects your agreed reduction." : ""}</div>
     <div style="font-size:12px;font-weight:700;color:${D};margin:14px 0 8px;">PAYMENT DETAILS</div>
     <table style="border-collapse:separate;"><tr>${banks}</tr></table>
     <div style="font-size:12px;color:#b35e00;margin-top:14px;line-height:1.7;font-style:italic;">

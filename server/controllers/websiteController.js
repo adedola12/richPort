@@ -5,6 +5,7 @@ import { WEBSITE_PLANS } from "../config/websitePlans.js";
 import { OWNER, DEPOSIT_PCT, formatNGN as N } from "../config/plans.js";
 import { sendMail, mailConfigured } from "../utils/mailer.js";
 import { feedReniWebsite } from "../utils/reniFeed.js";
+import { resolveDiscount, consumeDiscount } from "../utils/discounts.js";
 
 const esc = (s = "") =>
   String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -49,6 +50,8 @@ const invoiceHTML = (doc, plan) => `
     <div style="font-size:13px;font-weight:700;color:#1a1f12;margin-bottom:10px;">INVOICE ${esc(doc.invoiceNo)}</div>
     <table width="100%" style="border-collapse:collapse;font-size:13px;color:#333;">
       <tr><td style="padding:5px 0;">Package</td><td style="text-align:right;font-weight:700;">${esc(plan.label)} — ${esc(plan.pages)}</td></tr>
+      ${doc.discount?.amount ? `<tr><td style="padding:5px 0;">List price</td><td style="text-align:right;">${N(doc.basePriceNGN)}</td></tr>
+      <tr><td style="padding:5px 0;color:#2e7d32;">${esc(doc.discount.label || "Discount")}</td><td style="text-align:right;font-weight:700;color:#2e7d32;">− ${N(doc.discount.amount)}</td></tr>` : ""}
       <tr><td style="padding:5px 0;">Total${plan.from ? " (from)" : ""}</td><td style="text-align:right;font-weight:700;">${N(doc.priceNGN)}</td></tr>
       <tr><td style="padding:5px 0;">Deposit due now (${DEPOSIT_PCT}%)</td><td style="text-align:right;font-weight:700;color:#3f5c00;">${N(doc.deposit)}</td></tr>
       <tr><td style="padding:5px 0;">Balance on completion</td><td style="text-align:right;">${N(doc.balance)}</td></tr>
@@ -126,7 +129,18 @@ export const createWebsiteRequest = async (req, res) => {
 
     const pick = (k, max = 2000) => String(req.body?.[k] || "").trim().slice(0, max);
 
-    const priceNGN = planDef.priceNGN;
+    // Discount code / custom offer — negotiated price enters before the invoice
+    const basePrice = planDef.priceNGN;
+    const disc = await resolveDiscount({
+      code: pick("discount_code", 40),
+      offerToken: pick("offer_token", 40),
+      service: "website",
+      planKey: plan,
+      basePrice,
+    });
+    if (disc.error) return res.status(400).json({ message: disc.error });
+
+    const priceNGN = disc.finalPrice;
     const deposit = Math.round((priceNGN * DEPOSIT_PCT) / 100);
     const seq = await nextSequence("website-invoice", 0);
     const invoiceNo = `WEB-${String(seq).padStart(3, "0")}`;
@@ -150,7 +164,11 @@ export const createWebsiteRequest = async (req, res) => {
       priceNGN,
       deposit,
       balance: priceNGN - deposit,
+      ...(disc.discount ? { basePriceNGN: basePrice, discount: disc.discount } : {}),
     });
+
+    // Only spend the code/offer once the booking is safely saved
+    await consumeDiscount({ discount: disc.discount, offer: disc.offer, service: "website" });
 
     // Reni Design Studio auto-feed — fire-and-forget
     feedReniWebsite({ doc: doc.toJSON(), plan: planDef })

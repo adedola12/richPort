@@ -18,6 +18,7 @@ import faqRoutes from "./routes/faqRoutes.js";
 import flyerRoutes from "./routes/flyerRoutes.js";
 import websiteRoutes from "./routes/websiteRoutes.js";
 import studioRoutes from "./routes/studioRoutes.js";
+import discountRoutes from "./routes/discountRoutes.js";
 
 import { connectToDatabase } from "./db.js";
 
@@ -100,6 +101,7 @@ app.use("/api/faqs", faqRoutes);
 app.use("/api/flyer-requests", flyerRoutes);
 app.use("/api/website-requests", websiteRoutes);
 app.use("/api/studio", studioRoutes);
+app.use("/api/discounts", discountRoutes);
 
 
 app.get("/", (_req, res) => res.json({ status: "ok" }));

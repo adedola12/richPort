@@ -1,7 +1,8 @@
 import Questionnaire from "../models/Questionnaire.js";
 import RateCategory from "../models/RateModel.js";
 import { nextSequence } from "../models/Counter.js";
-import { PLANS, OWNER, getFxRate, computeMoney } from "../config/plans.js";
+import { PLANS, OWNER, getFxRate, computeMoney, DEPOSIT_PCT } from "../config/plans.js";
+import { resolveDiscount, consumeDiscount } from "../utils/discounts.js";
 import { mailConfigured, sendMail } from "../utils/mailer.js";
 import {
   QUESTION_KEYS,
@@ -72,6 +73,23 @@ export async function createQuestionnaire(req, res) {
     }
     const money = computeMoney(planKey, fx.rate, priceOverride);
 
+    // Discount code / custom offer — the negotiated price enters HERE, before
+    // the invoice exists, so invoice, emails and the Reni job all agree.
+    const basePrice = money.price;
+    const disc = await resolveDiscount({
+      code: clean(body.discount_code),
+      offerToken: clean(body.offer_token),
+      service: "brand",
+      planKey,
+      basePrice,
+    });
+    if (disc.error) return res.status(400).json({ ok: false, error: disc.error });
+    if (disc.finalPrice !== money.price) {
+      money.price = disc.finalPrice;
+      money.deposit = Math.round((disc.finalPrice * DEPOSIT_PCT) / 100);
+      money.balance = disc.finalPrice - money.deposit;
+    }
+
     const seq = await nextSequence("invoice", INVOICE_SEED);
     const invoiceNo = formatInvoiceNo(seq);
 
@@ -94,14 +112,18 @@ export async function createQuestionnaire(req, res) {
       priceNGN: money.price,
       deposit: money.deposit,
       balance: money.balance,
+      ...(disc.discount ? { basePriceNGN: basePrice, discount: disc.discount } : {}),
       responses,
       preferredDuration: responses.duration || "",
       status: "submitted",
     });
 
+    // The code/offer is only "spent" once the booking is safely saved.
+    await consumeDiscount({ discount: disc.discount, offer: disc.offer, service: "brand" });
+
     // Reni Design Studio auto-feed — fire-and-forget; the booking never
     // depends on it. Creates a logged (inactive) project in Reni.
-    feedReniStudio({ planKey, plan, money, responses, invoiceNo })
+    feedReniStudio({ planKey, plan, money, responses, invoiceNo, discount: disc.discount ? { ...disc.discount, basePrice } : null })
       .then((r) => { if (r.fed) console.log("Reni feed: job created", r.jobId); })
       .catch((err) => console.error("Reni feed failed:", err));
 
@@ -119,6 +141,7 @@ export async function createQuestionnaire(req, res) {
         balance: money.balance,
         invoice_no: invoiceNo,
         submitted_at: record.createdAt,
+        ...(disc.discount ? { base_price: basePrice, discount_label: disc.discount.label, discount_amount: disc.discount.amount } : {}),
       };
       const subj = `${plan.label} Package — ${responses.brand_name} — Invoice ${invoiceNo}`;
       const results = await Promise.allSettled([
