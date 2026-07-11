@@ -48,8 +48,10 @@ const BRAND_TEMPLATE = [
 
 /* Build the full plan for a brand booking: framework phases/deliverables/
    tasks plus the plan's tier items, dropped into the phase where that work
-   happens (docs → Packaging, design work → Design). */
-function buildBrandPlan(tierDeliverables = []) {
+   happens (docs → Packaging, design work → Design). When the client picked
+   specific merch designs on the form, the tier's generic "N Merch Designs"
+   line is replaced by one named deliverable per pick. */
+function buildBrandPlan(tierDeliverables = [], merchPicks = []) {
   const phases = BRAND_TEMPLATE.map((p, i) => ({ id: i + 1, name: p.name, ...(p.auto ? { done: true } : {}) }));
   const deliverables = [];
   const plannedTasks = [];
@@ -60,12 +62,17 @@ function buildBrandPlan(tierDeliverables = []) {
   });
   const covered = new Set(deliverables.map((d) => d.text.toLowerCase()));
   const byName = (n) => phases.find((p) => p.name === n)?.id ?? null;
+  const picks = (Array.isArray(merchPicks) ? merchPicks : []).map((m) => String(m).trim()).filter(Boolean);
   tierDeliverables
     .filter((text) => text && !covered.has(String(text).toLowerCase()))
+    .filter((text) => !(picks.length && /^\d+\s*merch/i.test(String(text).trim())))
     .forEach((text, i) => {
       const phaseId = /(guideline|style guide|strategy|handoff|final file)/i.test(text) ? byName("Packaging") : byName("Design");
       deliverables.push({ id: `t${i + 1}`, text, phaseId, done: false });
     });
+  picks.forEach((m, i) => {
+    deliverables.push({ id: `m${i + 1}`, text: `Merch: ${m}`, phaseId: byName("Design"), done: false });
+  });
   return { phases, deliverables, plannedTasks };
 }
 
@@ -197,7 +204,7 @@ export async function feedReniStudio({ planKey, plan, money, responses, invoiceN
     balance: money.balance,
     invoiceNo,
     ...(() => {
-      const bp = buildBrandPlan(plan.deliverables || []);
+      const bp = buildBrandPlan(plan.deliverables || [], responses.merch_designs);
       return { deliverables: bp.deliverables, phases: bp.phases, plannedTasks: bp.plannedTasks };
     })(),
     client: {
@@ -212,6 +219,7 @@ export async function feedReniStudio({ planKey, plan, money, responses, invoiceN
       planKey,
       planLabel: plan.label,
       ...(discount ? { basePrice: discount.basePrice, discountLabel: discount.label, discountAmount: discount.amount, discountCode: discount.code } : {}),
+      merchDesigns: Array.isArray(responses.merch_designs) ? responses.merch_designs.join(", ") : responses.merch_designs || "",
       preferredDuration: Array.isArray(responses.duration) ? responses.duration.join(", ") : responses.duration || "",
       comm: Array.isArray(responses.comm) ? responses.comm.join(", ") : responses.comm || "",
       aboutBusiness: responses.business_about || "",

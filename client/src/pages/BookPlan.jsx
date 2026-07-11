@@ -26,6 +26,7 @@ const LABELS = {
   aesthetic: "Design aesthetic", colors: "Colour preferences", existing_logo: "Existing logo",
   inspiration: "Brands admired", avoid: "Things to avoid", competitors: "Competitors", tagline: "Tagline",
   name_story: "Idea behind the name", brand_vision: "Vision for the brand & logo", personality: "Brand personality",
+  merch_designs: "Merch designs picked",
   site_purpose: "Website purpose", site_actions: "Visitor actions", specialty_page: "Specialty page focus",
   content_status: "Content readiness", photos: "Project photos", site_refs: "Reference websites",
   features: "Website features", domain_1: "Domain — 1st choice", domain_2: "Domain — 2nd choice",
@@ -38,13 +39,33 @@ const LABELS = {
 
 const SECTIONS = [
   ["About You & Your Business", "about", ["first_name", "last_name", "email", "phone", "brand_name", "business_about", "focus", "service_areas", "trust_signals", "peculiarity", "goals_short", "goals_long"]],
-  ["Brand Identity", "brand", ["name_story", "audience", "values", "brand_vision", "perception", "personality", "aesthetic", "colors", "existing_logo", "inspiration", "avoid", "competitors", "tagline"]],
+  ["Brand Identity", "brand", ["name_story", "audience", "values", "brand_vision", "perception", "personality", "aesthetic", "colors", "existing_logo", "inspiration", "avoid", "competitors", "tagline", "merch_designs"]],
   ["Your Website", "website", ["site_purpose", "site_actions", "specialty_page", "content_status", "photos", "site_refs", "features", "domain_1", "domain_2", "domain_3"]],
   ["Social Media", "social", ["social_active", "social_platforms", "social_content", "social_tone", "social_refs"]],
   ["Working Together", "working", ["duration", "comm", "updates", "approver", "anything_else"]],
 ];
 
-const MULTI_FIELDS = ["focus", "site_purpose", "features", "social_platforms", "comm"];
+const MULTI_FIELDS = ["focus", "site_purpose", "features", "social_platforms", "comm", "merch_designs"];
+
+/* ── Merch designs ──
+   Every package includes a number of merch designs (parsed from the plan's
+   own deliverables list, so admin changes flow through). The client picks
+   the pieces that fit their brand from a generic list, or types their own —
+   a construction firm can add "Construction Jacket" even though it isn't
+   listed. Custom entries count against the same allowance. */
+const MERCH_OPTIONS = [
+  "T-Shirt", "Polo Shirt", "Hoodie", "Face Cap", "Mug Cup", "Water Bottle",
+  "Notepad", "Pen", "Folder", "Paper Bag", "Tote Bag", "Lanyard & ID Card",
+  "Keychain", "Sticker Pack", "Umbrella", "Wristband", "Desk Calendar",
+  "Mouse Pad", "Apron", "Branded Flash Drive",
+];
+const merchAllowance = (plan) => {
+  for (const d of plan?.deliverables || []) {
+    const m = String(d).match(/(\d+)\s*merch/i);
+    if (m) return Number(m[1]);
+  }
+  return 0;
+};
 
 const STEP_NAMES = {
   plan: "Choose Your Plan", about: "About You & Your Business", brand: "Brand Identity",
@@ -292,6 +313,28 @@ const BookPlan = () => {
     setTimeout(() => setInvalid([]), 1800);
   };
 
+  /* ── merch picker state ── */
+  const merchMax = plan ? merchAllowance(plan) : 0;
+  const merchPicked = Array.isArray(answers.merch_designs) ? answers.merch_designs : [];
+  const [customMerch, setCustomMerch] = useState("");
+  const toggleMerch = (item) =>
+    setAnswers((a) => {
+      const cur = Array.isArray(a.merch_designs) ? a.merch_designs : [];
+      if (cur.includes(item)) return { ...a, merch_designs: cur.filter((x) => x !== item) };
+      if (cur.length >= merchMax) return a;
+      return { ...a, merch_designs: [...cur, item] };
+    });
+  const addCustomMerch = () => {
+    const item = customMerch.trim().slice(0, 60);
+    if (!item) return;
+    if (merchPicked.some((x) => x.toLowerCase() === item.toLowerCase())) { setCustomMerch(""); return; }
+    if (merchPicked.length >= merchMax) return;
+    toggleMerch(item);
+    setCustomMerch("");
+  };
+  // custom picks are anything selected that isn't on the standard list
+  const customPicks = merchPicked.filter((x) => !MERCH_OPTIONS.includes(x));
+
   const validateStep = () => {
     if (step === "plan" && !selectedPlan) {
       flash(["plan"]);
@@ -304,6 +347,11 @@ const BookPlan = () => {
         document.querySelector(`[name="${missing[0]}"]`)?.focus();
         return false;
       }
+    }
+    // switching to a smaller package can leave too many merch picks selected
+    if (step === "brand" && merchPicked.length > merchMax) {
+      flash(["merch_designs"]);
+      return false;
     }
     return true;
   };
@@ -563,6 +611,68 @@ const BookPlan = () => {
             <Field><Label text="Anything you definitely don't want in your design?" /><Input {...bind} name="avoid" /></Field>
             <Field><Label text="Who are your key competitors?" /><Input {...bind} name="competitors" /></Field>
             <Field><Label text="Do you have a slogan or tagline?" hint="If not, I can help craft one." /><Input {...bind} name="tagline" /></Field>
+
+            {/* ── Merch designs picker — allowance comes from the chosen package ── */}
+            {merchMax > 0 && (
+              <Field>
+                <Label
+                  text={`Pick your merch designs (${merchPicked.length} of ${merchMax})`}
+                  hint={`Your ${plan?.label || ""} package includes ${merchMax} merch design${merchMax > 1 ? "s" : ""}. Choose the pieces that actually fit your brand — a spa wants robes, not construction jackets. Don't see yours? Add it below.`}
+                />
+                <div className="flex flex-wrap gap-2">
+                  {[...MERCH_OPTIONS, ...customPicks].map((opt) => {
+                    const picked = merchPicked.includes(opt);
+                    const full = !picked && merchPicked.length >= merchMax;
+                    const isCustom = customPicks.includes(opt);
+                    return (
+                      <button
+                        type="button"
+                        key={opt}
+                        onClick={() => toggleMerch(opt)}
+                        disabled={full}
+                        className={`rounded-full border px-4 py-2 text-[13px] transition ${
+                          picked
+                            ? "border-lime-400 bg-lime-400/15 text-lime-300"
+                            : full
+                            ? "border-white/5 text-zinc-600 cursor-not-allowed"
+                            : "border-white/15 text-neutral-300 hover:border-lime-400/50 hover:text-lime-300"
+                        }`}
+                      >
+                        {picked ? "✓ " : ""}{opt}{isCustom ? " ✎" : ""}
+                      </button>
+                    );
+                  })}
+                </div>
+                <div className="mt-3 flex gap-2">
+                  <input
+                    value={customMerch}
+                    onChange={(e) => setCustomMerch(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomMerch(); } }}
+                    placeholder="Something specific? e.g. Construction Jacket, Branded Robe..."
+                    className={inputCls(false) + " flex-1"}
+                    disabled={merchPicked.length >= merchMax}
+                  />
+                  <button
+                    type="button"
+                    onClick={addCustomMerch}
+                    disabled={!customMerch.trim() || merchPicked.length >= merchMax}
+                    className="rounded-[10px] border border-lime-400/40 px-5 text-sm text-lime-400 transition hover:bg-lime-400/10 disabled:opacity-40"
+                  >
+                    Add
+                  </button>
+                </div>
+                {merchPicked.length >= merchMax && (
+                  <p className="mt-2 text-xs text-neutral-500">
+                    That's all {merchMax} used — tap a selected item to swap it out.
+                  </p>
+                )}
+                {merchPicked.length > merchMax && (
+                  <p className="mt-2 text-xs text-orange-400">
+                    Your {plan?.label} package includes {merchMax} — remove {merchPicked.length - merchMax} to continue.
+                  </p>
+                )}
+              </Field>
+            )}
           </div>
         )}
 
