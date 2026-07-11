@@ -109,7 +109,7 @@ const TiltFrame = ({ src, alt = "", caption = "", className = "", style = {}, on
     >
       <motion.div
         ref={ref}
-        className="rounded-2xl overflow-hidden border border-white/10 bg-white/[0.02] relative h-full"
+        className="rounded-2xl overflow-hidden border border-white/10 bg-white/[0.02] relative h-full mx-auto"
         style={{ ...style, rotateX, rotateY, scale, transformStyle: "preserve-3d" }}
         onMouseMove={onMove}
         onMouseLeave={onLeave}

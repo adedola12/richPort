@@ -71,48 +71,41 @@ function SlideCard({ slide, index, rawIndex, isMobile, portrait }) {
         zIndex,
       }}
     >
-      {/* page — portrait (A4) or landscape (16:9), sized to hug the image */}
-      <div
-        className="rounded-xl sm:rounded-2xl overflow-hidden border border-white/10 shadow-[0_24px_80px_rgba(0,0,0,0.7)]"
-        style={
-          portrait
-            ? {
-                aspectRatio: "210 / 297",
-                height: isMobile ? "auto" : "96%",
-                width: isMobile ? "78%" : "auto",
-                maxWidth: "92vw",
-                maxHeight: "96%",
-                background: "#0d0f13",
-              }
-            : {
-                aspectRatio: "16 / 9",
-                width: isMobile ? "94%" : "90%",
-                height: "auto",
-                maxWidth: "96vw",
-                maxHeight: "92%",
-                background: "#0d0f13",
-              }
-        }
-      >
-        {slide.src ? (
-          <img
-            src={slide.src}
-            alt={slide.alt}
-            className="w-full h-full object-contain"
-            loading="lazy"
-          />
-        ) : (
-          <div className="w-full h-full bg-white/[0.03] flex flex-col items-center justify-center gap-3 px-10">
-            <div className="w-10 h-10 rounded-full border border-dashed border-white/15 flex items-center justify-center">
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.25)" strokeWidth="1.5">
-                <rect x="3" y="3" width="18" height="18" rx="3" />
-                <path d="M3 16l5-5 4 4 3-3 6 6" />
-              </svg>
-            </div>
-            <p className="text-[11px] text-white/20 text-center leading-relaxed max-w-[300px]">{slide.alt}</p>
+      {/* page — the frame IS the image: the img sizes itself to fit the track
+          at its natural aspect, so the border hugs the guideline page exactly
+          with zero letterbox space beside it */}
+      {slide.src ? (
+        <img
+          src={slide.src}
+          alt={slide.alt}
+          loading="lazy"
+          className="rounded-xl sm:rounded-2xl border border-white/10 shadow-[0_24px_80px_rgba(0,0,0,0.7)]"
+          style={{
+            maxWidth: "94%",
+            maxHeight: isMobile ? "92%" : "96%",
+            width: "auto",
+            height: "auto",
+            background: "#0d0f13",
+          }}
+        />
+      ) : (
+        <div
+          className="rounded-xl sm:rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03] flex flex-col items-center justify-center gap-3 px-10"
+          style={{
+            aspectRatio: portrait ? "210 / 297" : "16 / 9",
+            [portrait ? "height" : "width"]: portrait ? "90%" : "90%",
+            background: "#0d0f13",
+          }}
+        >
+          <div className="w-10 h-10 rounded-full border border-dashed border-white/15 flex items-center justify-center">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="rgba(255,255,255,0.25)" strokeWidth="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="3" />
+              <path d="M3 16l5-5 4 4 3-3 6 6" />
+            </svg>
           </div>
-        )}
-      </div>
+          <p className="text-[11px] text-white/20 text-center leading-relaxed max-w-[300px]">{slide.alt}</p>
+        </div>
+      )}
     </motion.div>
   );
 }

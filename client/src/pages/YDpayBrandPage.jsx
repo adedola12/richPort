@@ -151,7 +151,7 @@ const TiltFrame = ({ src, alt = "", className = "", style = {}, onClick }) => {
     >
       <motion.div
         ref={ref}
-        className="rounded-lg sm:rounded-2xl overflow-hidden border border-white/10 bg-black/20 relative h-full"
+        className="rounded-lg sm:rounded-2xl overflow-hidden border border-white/10 bg-black/20 relative h-full mx-auto"
         style={{ ...style, rotateX, rotateY, scale, transformStyle: "preserve-3d" }}
         onMouseMove={onMove}
         onMouseLeave={onLeave}
