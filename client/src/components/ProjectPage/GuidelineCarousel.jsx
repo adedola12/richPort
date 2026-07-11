@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import {
   motion,
   useScroll,
+  useSpring,
   useTransform,
   useMotionValueEvent,
 } from "framer-motion";
@@ -85,10 +86,10 @@ function SlideCard({ slide, index, rawIndex, isMobile, portrait }) {
               }
             : {
                 aspectRatio: "16 / 9",
-                width: isMobile ? "90%" : "78%",
+                width: isMobile ? "94%" : "90%",
                 height: "auto",
-                maxWidth: "92vw",
-                maxHeight: "88%",
+                maxWidth: "96vw",
+                maxHeight: "92%",
                 background: "#0d0f13",
               }
         }
@@ -149,6 +150,13 @@ export default function GuidelineCarousel({
   // exactly as the sticky releases, so there's no static dead-scroll before
   // the next section (that gap read as "empty space").
   const rawIndex = useTransform(scrollYProgress, [0, 1], [0, Math.max(1, activeSlides.length - 1)]);
+
+  /* SNAP: the scroll position commits to one slide at a time. Rounding the
+     raw index makes each scroll band own a single page, and the spring eases
+     the hand-off — so the deck clicks from slide to slide like a swiped
+     carousel instead of rolling freely under the wheel. */
+  const snapTarget = useTransform(rawIndex, (v) => Math.round(v));
+  const slideIndex = useSpring(snapTarget, { stiffness: 200, damping: 30, mass: 0.7 });
 
   useMotionValueEvent(rawIndex, "change", (v) => {
     setActiveIndex(Math.max(0, Math.min(activeSlides.length - 1, Math.round(v))));
@@ -219,7 +227,7 @@ export default function GuidelineCarousel({
               key={`${i}-${isMobile ? "m" : "d"}`}
               slide={slide}
               index={i}
-              rawIndex={rawIndex}
+              rawIndex={slideIndex}
               isMobile={isMobile}
               portrait={portrait}
             />

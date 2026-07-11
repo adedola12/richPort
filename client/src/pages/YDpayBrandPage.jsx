@@ -334,52 +334,48 @@ export default function YDpayBrandPage() {
               <H2 white="A mark is not" accent="a brand" accentColor={RED} />
               <div className="mt-5 mb-8 h-[2px] w-16 rounded-full bg-[#E05252]" />
             </FadeUp>
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
-              <FadeUp>
-                <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/55 mb-8">
-                  YDPay had a logo and a color palette. What it didn't have was a brand — the system that makes those elements add up to something a market recognizes, trusts, and remembers. Three gaps defined the work:
-                </p>
-                <div className="space-y-4">
-                  {[
-                    {
-                      n: "01",
-                      title: "No typographic voice",
-                      body: "A logo and two colors can't carry a brand across an app, a deck, a billboard, and an Instagram post. Without a defined type system, every new piece of YDPay communication would look slightly different — and a fintech asking people to trust it with money cannot afford to look inconsistent.",
-                    },
-                    {
-                      n: "02",
-                      title: "No application system or tone",
-                      body: "The brand existed as raw ingredients, not as a usable system. There were no rules for how it shows up, no defined voice for how it speaks, and no templates for the social and marketing work a growing fintech produces constantly.",
-                    },
-                    {
-                      n: "03",
-                      title: "No foundation for the product",
-                      body: "The product UI still had to be designed — and without a coherent brand system feeding it, the app risked looking disconnected from the brand that marketed it. The brand had to be built first, deliberately, so the product could inherit a real visual language.",
-                    },
-                  ].map(({ n, title, body }) => (
-                    <div key={n} className="rounded-2xl border border-[#E0525222] bg-[#1A0A0A] p-5">
-                      <div className="flex items-start justify-between gap-2 mb-3">
-                        <h3 className="text-[15px] font-semibold text-white leading-snug">{title}</h3>
-                        <span className="shrink-0 w-6 h-6 rounded-full border border-[#E0525244] flex items-center justify-center text-[10px] font-bold text-[#E05252]">
-                          {n}
-                        </span>
-                      </div>
-                      <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50">{body}</p>
+            <FadeUp>
+              <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/55 mb-8 max-w-[720px]">
+                YDPay had a logo and a color palette. What it didn't have was a brand — the system that makes those elements add up to something a market recognizes, trusts, and remembers. Three gaps defined the work:
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+                {[
+                  {
+                    n: "01",
+                    title: "No typographic voice",
+                    body: "A logo and two colors can't carry a brand across an app, a deck, a billboard, and an Instagram post. Without a defined type system, every new piece of YDPay communication would look slightly different — and a fintech asking people to trust it with money cannot afford to look inconsistent.",
+                  },
+                  {
+                    n: "02",
+                    title: "No application system or tone",
+                    body: "The brand existed as raw ingredients, not as a usable system. There were no rules for how it shows up, no defined voice for how it speaks, and no templates for the social and marketing work a growing fintech produces constantly.",
+                  },
+                  {
+                    n: "03",
+                    title: "No foundation for the product",
+                    body: "The product UI still had to be designed — and without a coherent brand system feeding it, the app risked looking disconnected from the brand that marketed it. The brand had to be built first, deliberately, so the product could inherit a real visual language.",
+                  },
+                ].map(({ n, title, body }) => (
+                  <div key={n} className="rounded-2xl border border-[#E0525222] bg-[#1A0A0A] p-5 h-full flex flex-col">
+                    <div className="flex items-start justify-between gap-2 mb-3">
+                      <h3 className="text-[15px] font-semibold text-white leading-snug">{title}</h3>
+                      <span className="shrink-0 w-6 h-6 rounded-full border border-[#E0525244] flex items-center justify-center text-[10px] font-bold text-[#E05252]">
+                        {n}
+                      </span>
                     </div>
-                  ))}
-                </div>
-              </FadeUp>
+                    <p className="text-[14px] sm:text-[15px] leading-[1.65] text-white/50 flex-1">{body}</p>
+                  </div>
+                ))}
+              </div>
+            </FadeUp>
 
-              <SlideIn direction="right" delay={0.1} className="flex flex-col">
-                <TiltFrame
-                  src={null}
-                  alt="'Raw ingredients vs. working system' — left: just the logo and color swatches floating alone; right: the full system applied across touchpoints. From a mark and a palette → to a working brand."
-                  className="w-full flex-1"
-                  style={{ minAspectRatio: "4/5" }}
-                  onClick={ph}
-                />
-              </SlideIn>
-            </div>
+            <SlideIn direction="right" delay={0.1}>
+              <TiltFrame
+                src={imgSocialMedia}
+                alt="The kind of communications a growing fintech produces constantly — the work that had no system behind it when this project started."
+                className="w-full"
+              />
+            </SlideIn>
           </div>
         </section>
 
@@ -548,11 +544,9 @@ export default function YDpayBrandPage() {
                 The system defines how the brand shows up consistently — spacing, layout rhythm, the visual devices that make a YDPay piece recognizable at a glance, whether it's a story, a post, or a print piece.
               </p>
               <TiltFrame
-                src={null}
-                alt="The application system — grid showing the YDPay brand applied consistently across multiple surface types: social, print, digital, and print marketing."
+                src={imgSocial}
+                alt="The application system at work — YDPay social pieces built from the same rules, recognizable at a glance."
                 className="w-full"
-                style={{ aspectRatio: "16/9" }}
-                onClick={ph}
               />
             </FadeUp>
           </div>
@@ -647,6 +641,7 @@ export default function YDpayBrandPage() {
           accent="documented"
           description="Everything captured in a brand guideline — the single source of truth that lets the whole team use the brand correctly without a designer in the room for every piece."
           color={GR}
+          orientation="landscape"
           slides={[
             { src: gc1,  alt: "Brand guideline cover — introducing the YDPay brand system" },
             { src: gc2,  alt: "Mission statement — democratising digital finance across Africa" },

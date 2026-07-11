@@ -392,15 +392,14 @@ export default function NiqsUIProject() {
         {/* ══ 02 — THE PROBLEM ══ */}
         <section className="py-16 sm:py-24 px-4 sm:px-8 lg:px-16 border-t border-white/5">
           <div className="max-w-[1100px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
-              <FadeUp>
-                <SLabel n="02" t="THE PROBLEM" />
-                <H2 white="What didn't" accent="match the institution" accentColor="#E05252" />
-                <div className="mt-5 mb-8 h-[2px] w-16 rounded-full bg-[#E05252]" />
-                <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/55 mb-8">
-                  The 2020 brand work served NIQS for a season, but five years of institutional growth, digital expansion, and member service evolution had outpaced it. Four core problems shaped this redesign:
-                </p>
-                <div className="space-y-4">
+            <FadeUp>
+              <SLabel n="02" t="THE PROBLEM" />
+              <H2 white="What didn't" accent="match the institution" accentColor="#E05252" />
+              <div className="mt-5 mb-8 h-[2px] w-16 rounded-full bg-[#E05252]" />
+              <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/55 mb-8 max-w-[720px]">
+                The 2020 brand work served NIQS for a season, but five years of institutional growth, digital expansion, and member service evolution had outpaced it. Four core problems shaped this redesign:
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
                   {[
                     {
                       n: "01",
@@ -422,29 +421,26 @@ export default function NiqsUIProject() {
                       title: "Inconsistent communications",
                       body: "Without a templates system or a content discipline, NIQS chapters across all 37 states produced communications in wildly different styles. The national brand and the chapter brand didn't look like one institution.",
                     },
-                  ].map(({ n, title, body }) => (
-                    <div key={n} className="rounded-2xl border border-[#E0525222] bg-[#1A0A0A] p-5">
-                      <div className="flex items-start justify-between gap-2 mb-3">
-                        <h3 className="text-[15px] font-semibold text-white leading-snug">{title}</h3>
-                        <span className="shrink-0 w-6 h-6 rounded-full border border-[#E0525244] flex items-center justify-center text-[10px] font-bold text-[#E05252]">
-                          {n}
-                        </span>
-                      </div>
-                      <p className="text-[15px] sm:text-[16px] leading-[1.65] text-white/50">{body}</p>
+                ].map(({ n, title, body }) => (
+                  <div key={n} className="rounded-2xl border border-[#E0525222] bg-[#1A0A0A] p-5 h-full flex flex-col">
+                    <div className="flex items-start justify-between gap-2 mb-3">
+                      <h3 className="text-[15px] font-semibold text-white leading-snug">{title}</h3>
+                      <span className="shrink-0 w-6 h-6 rounded-full border border-[#E0525244] flex items-center justify-center text-[10px] font-bold text-[#E05252]">
+                        {n}
+                      </span>
                     </div>
-                  ))}
-                </div>
-              </FadeUp>
-              <SlideIn direction="right" delay={0.1} className="h-full">
-                <TiltFrame
-                  src={null}
-                  alt="56 years of institutional heritage. A new digital chapter. Before/after split: left side shows 2020 NIQS materials (Annual Report cover, Staff Handbook, old WordPress homepage); right side shows new 2026 materials (brand guideline cover, new website hero, portal dashboard)."
-                  className="w-full h-full"
-                  style={{ minHeight: "420px" }}
-                  onClick={ph}
-                />
-              </SlideIn>
-            </div>
+                    <p className="text-[14px] sm:text-[15px] leading-[1.65] text-white/50 flex-1">{body}</p>
+                  </div>
+                ))}
+              </div>
+            </FadeUp>
+            <SlideIn direction="right" delay={0.1}>
+              <TiltFrame
+                src={imgConference}
+                alt="56 years of institutional heritage stepping into a new digital chapter — the refreshed NIQS brand live at the institution's own conference."
+                className="w-full"
+              />
+            </SlideIn>
           </div>
         </section>
 
@@ -707,9 +703,9 @@ export default function NiqsUIProject() {
                     body: "Feed and story templates that keep all 37 chapters publishing on-brand — the visual system doing daily duty on social.",
                   },
                   {
-                    img: imgConference,
+                    img: imgBillboard,
                     title: "Environment & Ceremonial",
-                    body: "Boardroom and event applications that carry the heraldic identity into the institution's physical spaces — authority and precision at every scale.",
+                    body: "Signage and event applications that carry the heraldic identity into the institution's physical spaces — authority and precision at every scale.",
                   },
                 ].map(({ img, title, body }) => (
                   <div key={title} className="flex flex-col gap-5">
@@ -864,11 +860,9 @@ export default function NiqsUIProject() {
               </FadeUp>
               <SlideIn direction="right" delay={0.1} className="h-full">
                 <TiltFrame
-                  src={null}
-                  alt="Vertical composite: admin dashboard on desktop + member portal on mobile. Lime accent glow."
+                  src={imgScreenExams}
+                  alt="The professional examination flow — one of the member-facing surfaces the portal serves."
                   className="w-full h-full"
-                  style={{ minHeight: "280px" }}
-                  onClick={ph}
                 />
               </SlideIn>
             </div>
@@ -952,11 +946,9 @@ export default function NiqsUIProject() {
 
             <FadeUp delay={0.2}>
               <TiltFrame
-                src={null}
-                alt="Flyer Design Engine in use — select template → edit fields → export PDF. Animated GIF or 3-frame storyboard: empty template · mid-edit · exported flyer. (Figma TBD)"
+                src={imgSocialMedia}
+                alt="On-brand outputs from the template system — the kind of communications the Flyer Engine puts in staff hands."
                 className="w-full"
-                style={{ aspectRatio: "16/9" }}
-                onClick={ph}
               />
             </FadeUp>
           </div>
@@ -1084,11 +1076,9 @@ export default function NiqsUIProject() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               <SlideIn direction="left" delay={0.05} className="h-full">
                 <TiltFrame
-                  src={null}
-                  alt="Before/after comparison of home hero draft vs. final version, with annotation arrows. Or Figma file thumbnail showing version history."
+                  src={imgScreenAbout}
+                  alt="The About page after review — photography darkened, typography carrying the weight, the institutional tone the reviews pushed for."
                   className="w-full h-full"
-                  style={{ minHeight: "420px" }}
-                  onClick={ph}
                 />
               </SlideIn>
               <FadeUp delay={0.1}>
@@ -1164,11 +1154,9 @@ export default function NiqsUIProject() {
 
               <SlideIn direction="right" delay={0.1} className="h-full">
                 <TiltFrame
-                  src={null}
-                  alt="Product family shot — website + portal + admin + flyer engine + brand guideline arranged as a system diagram or ecosystem"
+                  src={imgScreenSearch2}
+                  alt="The public QS search — a capability the institution simply did not have before this system."
                   className="w-full h-full"
-                  style={{ minHeight: "300px" }}
-                  onClick={ph}
                 />
               </SlideIn>
             </div>
