@@ -99,18 +99,7 @@ const STATIC_UI_PROJECTS = [
     categories: ["Product UI/UX Designs", "Brand Identity Designs"],
     id: "static-niqs-ui",
   },
-  {
-    kind: "ui",
-    slug: "quiv",
-    name: "Quiv — QS Take-Off Software",
-    description: "Standalone desktop app replacing manual quantity take-off for Nigerian construction professionals. PDF-based measurement, BESMM-aligned, offline-first.",
-    url: "",
-    tags: ["Product Design", "Desktop App", "Construction Tech"],
-    images: { main: QUIV_THUMB },
-    pageImg: QUIV_THUMB,
-    categories: ["Product UI/UX Designs"],
-    id: "static-quiv",
-  },
+  // Quiv hidden from the grid until real screens exist — re-add this object to relist it.
   {
     kind: "ui",
     slug: "ydpay-mobile-redesign",

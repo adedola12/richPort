@@ -87,7 +87,8 @@ const router = createBrowserRouter([
       { path: "ui-projects/savedup", element: <SavedupProject /> },
       { path: "ui-projects/niqs", element: <NiqsUIProject /> },
       { path: "ui-projects/snotes", element: <SnotesProject /> },
-      { path: "ui-projects/quiv", element: <QuivProject /> },
+      // Quiv deactivated until real screens exist — redirect to the projects index
+      { path: "ui-projects/quiv", element: <Navigate to="/ui-projects" replace /> },
       { path: "ui-projects/:slug", element: <UIProjectPage /> },
 
       // keep old links working by redirecting (preserving slug)
