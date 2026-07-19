@@ -8,7 +8,7 @@ const Field = ({ label, hint, error, required, className = "", children }) => (
     {label ? (
       <Label>
         {label}
-        {required ? <span className="ml-1 text-lime-400">*</span> : null}
+        {required ? <span className="ml-1 text-[#7BF003]">*</span> : null}
       </Label>
     ) : null}
     {children}

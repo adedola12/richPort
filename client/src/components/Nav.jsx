@@ -152,7 +152,7 @@ const Nav = () => {
         <div className="hidden sm:flex items-center gap-3">
           <Link
             to="/projects"
-            className={buttonClasses("primary", "sm")}
+            className={buttonClasses("secondary", "sm")}
           >
             View Works
           </Link>
@@ -287,7 +287,7 @@ const Nav = () => {
                 <Link
                   to="/projects"
                   onClick={closeMenu}
-                  className={buttonClasses("primary", "sm", "flex-1 text-center")}
+                  className={buttonClasses("secondary", "sm", "flex-1 text-center")}
                 >
                   View Works
                 </Link>

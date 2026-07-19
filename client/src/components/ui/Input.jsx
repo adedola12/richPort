@@ -7,7 +7,7 @@ export const fieldClasses = (className = "") =>
     "w-full rounded-xl border border-white/10 bg-white/[0.05] px-4 py-3.5",
     "text-[15px] text-white placeholder:text-white/35",
     "outline-none transition",
-    "focus:border-lime-400/60 focus:ring-2 focus:ring-lime-400/15",
+    "focus:border-[#7BF003]/60 focus:ring-2 focus:ring-[#7BF003]/15",
     "disabled:cursor-not-allowed disabled:opacity-50",
     className,
   ]

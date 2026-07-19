@@ -6,13 +6,15 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const VARIANTS = {
+  // Brand gradient from the Figma spec: #7BF003 (top) → #3E7B00 (bottom).
   primary:
-    "bg-gradient-to-b from-lime-400 to-lime-600 font-bold text-black " +
-    "shadow-[0_0_18px_rgba(132,204,22,0.5)] " +
-    "hover:from-lime-300 hover:to-lime-500 hover:shadow-[0_0_28px_rgba(132,204,22,0.65)]",
+    "bg-gradient-to-b from-[#7BF003] to-[#3E7B00] font-bold text-black " +
+    "shadow-[0_0_18px_rgba(123,240,3,0.4)] " +
+    "hover:from-[#8DFF1F] hover:to-[#4A9400] hover:shadow-[0_0_28px_rgba(123,240,3,0.55)]",
+  // Outline partner to primary (the "Rate Card" style): green border, green text.
   secondary:
-    "border border-white/12 bg-white/[0.06] font-semibold text-white " +
-    "hover:border-white/25 hover:bg-white/[0.1]",
+    "border-2 border-[#5DB402] bg-transparent font-bold text-[#7BF003] " +
+    "hover:bg-[#7BF003]/10 hover:border-[#7BF003]",
   ghost:
     "font-semibold text-white/65 hover:bg-white/[0.06] hover:text-white",
   danger:
@@ -30,7 +32,7 @@ const SIZES = {
 // For <a> / <Link> elements that need to look like a button.
 export const buttonClasses = (variant = "primary", size = "md", className = "") =>
   [
-    "inline-flex cursor-pointer select-none items-center justify-center gap-2 rounded-xl transition",
+    "inline-flex cursor-pointer select-none items-center justify-center gap-2 rounded-lg transition",
     "disabled:pointer-events-none disabled:opacity-50",
     VARIANTS[variant] || VARIANTS.primary,
     SIZES[size] ?? SIZES.md,
