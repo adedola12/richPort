@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Fire02Icon } from "hugeicons-react";
 import { planKeyFromName } from "../../config/plans";
