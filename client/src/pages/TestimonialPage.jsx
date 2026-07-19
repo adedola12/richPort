@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import PageMeta from "../components/common/PageMeta";
-import GlowButton from "../components/common/GlowButton";
+import { Button, Input, Textarea, Select, Label, Field, buttonClasses } from "../components/ui";
 import { fetchJson } from "../api/http";
 import { TESTIMONIAL_SERVICES } from "../data/testimonialOptions";
 
@@ -22,9 +22,6 @@ const StarButton = ({ filled, onClick, onHover, onLeave }) => (
   </button>
 );
 
-const inputCls =
-  "w-full rounded-xl border border-white/12 bg-white/[0.04] px-4 py-3 text-[15px] text-white placeholder:text-white/30 outline-none transition focus:border-lime-400/60 focus:bg-white/[0.06]";
-const labelCls = "mb-2 block text-[12px] font-semibold uppercase tracking-[0.16em] text-white/50";
 
 const deriveInitials = (name) =>
   name
@@ -107,7 +104,7 @@ const TestimonialPage = () => {
             <p className="mt-3 text-[15px] leading-relaxed text-white/55">
               Your feedback means a lot — it's what keeps this studio growing.
             </p>
-            <Link to="/" className="mt-8 inline-block rounded-xl bg-gradient-to-b from-lime-400 to-lime-600 px-6 py-3 text-[14px] font-bold text-black shadow-[0_0_18px_rgba(132,204,22,0.5)] transition hover:from-lime-300 hover:to-lime-500 hover:-translate-y-0.5 active:scale-95">
+            <Link to="/" className={buttonClasses("primary", "lg", "mt-8 inline-flex items-center gap-1")}>
               Back to home →
             </Link>
           </motion.div>
@@ -129,22 +126,18 @@ const TestimonialPage = () => {
                 className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden="true" />
 
               <div className="grid grid-cols-1 sm:grid-cols-[1fr_140px] gap-4">
-                <div>
-                  <label className={labelCls}>Name <span className="normal-case text-white/30">(optional)</span></label>
-                  <input className={inputCls} value={name} placeholder="Your name"
+                <Field label="Name (optional)">
+                  <Input value={name} placeholder="Your name"
                     maxLength={80} onChange={(e) => onNameChange(e.target.value)} />
-                </div>
-                <div>
-                  <label className={labelCls}>Initials *</label>
-                  <input className={inputCls} value={initials} placeholder="e.g. DA" maxLength={4}
+                </Field>
+                <Field label="Initials *">
+                  <Input value={initials} placeholder="e.g. DA" maxLength={4}
                     onChange={(e) => { setInitialsTouched(true); setInitials(e.target.value.toUpperCase()); }} />
-                </div>
+                </Field>
               </div>
 
-              <div>
-                <label className={labelCls}>The project we worked on *</label>
-                <select
-                  className={`${inputCls} appearance-none ${service ? "" : "text-white/30"}`}
+              <Field label="The project we worked on *">
+                <Select
                   value={service}
                   onChange={(e) => setService(e.target.value)}
                 >
@@ -152,11 +145,11 @@ const TestimonialPage = () => {
                   {TESTIMONIAL_SERVICES.map((s) => (
                     <option key={s} value={s} className="bg-[#111318] text-white">{s}</option>
                   ))}
-                </select>
-              </div>
+                </Select>
+              </Field>
 
               <div>
-                <label className={labelCls}>Rating *</label>
+                <Label>Rating *</Label>
                 <div className="flex items-center gap-1">
                   {[1, 2, 3, 4, 5].map((n) => (
                     <StarButton
@@ -173,16 +166,14 @@ const TestimonialPage = () => {
                 </div>
               </div>
 
-              <div>
-                <label className={labelCls}>Your feedback *</label>
-                <textarea
-                  className={`${inputCls} min-h-[140px] resize-y`}
+              <Field label="Your feedback *">
+                <Textarea
                   value={feedback}
                   maxLength={1200}
                   placeholder="What was the experience like? What did the work do for you?"
                   onChange={(e) => setFeedback(e.target.value)}
                 />
-              </div>
+              </Field>
 
               {error && (
                 <p className="rounded-xl border border-orange-400/30 bg-orange-400/10 px-4 py-3 text-[13px] text-orange-300">
@@ -190,9 +181,9 @@ const TestimonialPage = () => {
                 </p>
               )}
 
-              <GlowButton type="submit" disabled={submitting} className="w-full py-3.5 text-[15px]">
+              <Button type="submit" disabled={submitting} variant="primary" size="lg" className="w-full">
                 {submitting ? "Sending…" : "Submit testimonial"}
-              </GlowButton>
+              </Button>
             </form>
           </motion.div>
         )}

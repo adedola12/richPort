@@ -3,7 +3,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import PlanSelection from "./PlanSelection";
 import PlanDetails from "./PlanDetails";
-import GlowButton from "../common/GlowButton";
+import { Button } from "../ui";
 
 const PUBLIC_RATES_API = import.meta.env.VITE_AUTH_ENDPOINT || "";
 
@@ -83,13 +83,15 @@ const FlyerPlans = () => {
                 <li>• Print + social-ready exports</li>
                 <li>• {p.sourceFiles ? "Source files included" : "No source files"}</li>
               </ul>
-              <GlowButton
+              <Button
                 type="button"
                 onClick={() => navigate(`/book-flyer?plan=${key}`)}
-                className="w-full px-4 py-3 text-sm"
+                variant="primary"
+                size="md"
+                className="w-full"
               >
                 {p.priceNGN != null ? "Book this pack" : "Request a quote"}
-              </GlowButton>
+              </Button>
             </div>
           );
         })}
@@ -150,13 +152,15 @@ const WebsitePlans = () => {
               <ul className="mt-5 mb-6 space-y-1.5 text-[13px] text-neutral-300 flex-1">
                 {(p.deliverables || []).slice(0, 5).map((d) => <li key={d}>• {d}</li>)}
               </ul>
-              <GlowButton
+              <Button
                 type="button"
                 onClick={() => navigate(`/book-website?plan=${key}`)}
-                className="w-full px-4 py-3 text-sm"
+                variant="primary"
+                size="md"
+                className="w-full"
               >
                 Book this package
-              </GlowButton>
+              </Button>
             </div>
           );
         })}

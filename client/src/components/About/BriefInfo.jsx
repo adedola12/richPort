@@ -3,11 +3,11 @@ import { motion } from "framer-motion";
 import TypingText from "../common/TypingText";
 import { useNavigate } from "react-router-dom";
 import {
-  FaDownload,
-  FaLinkedinIn,
-  FaTwitter,
-  FaInstagram,
-} from "react-icons/fa";
+  Download01Icon,
+  Linkedin01Icon,
+  TwitterIcon,
+  InstagramIcon,
+} from "hugeicons-react";
 
 // swap these imports for your real images
 import ownImg from "../../assets/ownImg.webp";
@@ -305,7 +305,7 @@ const BriefInfo = () => {
                     hover:-translate-y-0.5 active:translate-y-0
                   "
                 >
-                  <FaDownload className="text-lime-400 transition-colors group-hover:text-black" />
+                  <Download01Icon size={16} className="text-lime-400 transition-colors group-hover:text-black" />
                   Download Resume
                 </a>
 
@@ -335,7 +335,7 @@ const BriefInfo = () => {
                         bg-gradient-to-b from-lime-400 to-lime-600
                       "
                     >
-                      <FaLinkedinIn className="text-black text-sm" />
+                      <Linkedin01Icon size={18} className="text-black" />
                     </span>
                   </a>
 
@@ -363,7 +363,7 @@ const BriefInfo = () => {
                         bg-gradient-to-b from-lime-400 to-lime-600
                       "
                     >
-                      <FaTwitter className="text-black text-sm" />
+                      <TwitterIcon size={18} className="text-black" />
                     </span>
                   </a>
 
@@ -391,7 +391,7 @@ const BriefInfo = () => {
                         bg-gradient-to-b from-lime-400 to-lime-600
                       "
                     >
-                      <FaInstagram className="text-black text-sm" />
+                      <InstagramIcon size={18} className="text-black" />
                     </span>
                   </a>
                 </div>

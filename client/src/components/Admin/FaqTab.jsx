@@ -1,9 +1,7 @@
 // client/src/components/Admin/FaqTab.jsx
 import React, { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-
-const inputCls =
-  "w-full rounded-lg border border-white/15 bg-black/40 px-3 py-2 text-sm text-white placeholder:text-white/30 outline-none focus:border-lime-400/60";
+import { Button, Input, Textarea, Label } from "../ui";
 
 const emptyForm = { question: "", answer: "", order: 0, published: true };
 
@@ -110,14 +108,14 @@ const FaqTab = () => {
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-lime-300">
           {editingId ? "Edit FAQ" : "New FAQ"}
         </p>
-        <input className={inputCls} placeholder="Question" value={form.question} maxLength={200}
+        <Input placeholder="Question" value={form.question} maxLength={200}
           onChange={(e) => setForm((f) => ({ ...f, question: e.target.value }))} />
-        <textarea className={`${inputCls} min-h-[90px] resize-y`} placeholder="Answer" value={form.answer} maxLength={2000}
+        <Textarea placeholder="Answer" value={form.answer} maxLength={2000} className="min-h-[90px] resize-y"
           onChange={(e) => setForm((f) => ({ ...f, answer: e.target.value }))} />
         <div className="flex flex-wrap items-center gap-4">
           <label className="flex items-center gap-2 text-xs text-neutral-300">
             Order
-            <input type="number" className={`${inputCls} w-20`} value={form.order}
+            <Input type="number" className="w-20" value={form.order}
               onChange={(e) => setForm((f) => ({ ...f, order: Number(e.target.value) }))} />
           </label>
           <label className="flex items-center gap-2 text-xs text-neutral-300">
@@ -127,15 +125,13 @@ const FaqTab = () => {
           </label>
           <div className="ml-auto flex gap-2">
             {editingId && (
-              <button type="button" onClick={cancelEdit}
-                className="rounded-lg border border-white/15 bg-white/5 px-4 py-2 text-xs text-white/70 hover:bg-white/10">
+              <Button type="button" variant="secondary" size="sm" onClick={cancelEdit}>
                 Cancel
-              </button>
+              </Button>
             )}
-            <button type="submit" disabled={saving}
-              className="rounded-lg bg-lime-400 px-4 py-2 text-xs font-semibold text-black hover:bg-lime-300 disabled:opacity-50">
+            <Button type="submit" variant="primary" size="sm" disabled={saving}>
               {saving ? "Saving…" : editingId ? "Save changes" : "Add FAQ"}
-            </button>
+            </Button>
           </div>
         </div>
       </form>
@@ -165,18 +161,15 @@ const FaqTab = () => {
                 </span>
               </div>
               <div className="mt-3 flex gap-2">
-                <button type="button" onClick={() => startEdit(f)}
-                  className="rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-white/70 hover:bg-white/10">
+                <Button type="button" variant="secondary" size="sm" onClick={() => startEdit(f)}>
                   Edit
-                </button>
-                <button type="button" onClick={() => togglePublished(f)}
-                  className="rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-white/70 hover:bg-white/10">
+                </Button>
+                <Button type="button" variant="secondary" size="sm" onClick={() => togglePublished(f)}>
                   {f.published !== false ? "Unpublish" : "Publish"}
-                </button>
-                <button type="button" onClick={() => remove(f)}
-                  className="rounded-lg border border-red-400/40 bg-red-500/10 px-3 py-1.5 text-xs text-red-300 hover:bg-red-500/20">
+                </Button>
+                <Button type="button" variant="danger" size="sm" onClick={() => remove(f)}>
                   Delete
-                </button>
+                </Button>
               </div>
             </div>
           ))}

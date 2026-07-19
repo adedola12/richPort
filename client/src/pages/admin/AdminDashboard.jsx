@@ -1,7 +1,7 @@
 ﻿// client/src/pages/admin/AdminDashboard.jsx
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { FiLogOut } from "react-icons/fi";
+import { Logout01Icon } from "hugeicons-react";
 import { useAuth } from "../../context/AuthContext";
 
 import ProjectsTab from "../../components/Admin/ProjectsTab.jsx";
@@ -63,7 +63,7 @@ const AdminDashboard = () => {
                 "
                 title="Sign out"
               >
-                <FiLogOut className="h-4 w-4" />
+                <Logout01Icon size={16} />
               </motion.button>
             </div>
           )}

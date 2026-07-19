@@ -1,5 +1,6 @@
 ﻿import React from "react";
-import { FaTrash } from "react-icons/fa";
+import { Delete02Icon } from "hugeicons-react";
+import { Button, Input, Textarea, Label } from "../ui";
 
 const newBlock = () => ({
   id: crypto?.randomUUID?.() || String(Date.now()),
@@ -38,42 +39,36 @@ const BlockCard = ({
         <div className="flex items-center gap-3">
           <span className="text-[11px] text-white/60">Show</span>
           {block.toggleUI}
-          <button
-            type="button"
+          <Button
+            variant="danger"
+            size="sm"
             onClick={onRemove}
-            className="p-2 rounded-lg border border-red-500/30 bg-red-500/10 text-red-300 hover:bg-red-500/20"
             title="Remove block"
           >
-            <FaTrash className="h-3 w-3" />
-          </button>
+            <Delete02Icon size={16} />
+          </Button>
         </div>
       </div>
 
       <div className="mt-4 grid gap-4">
         {/* Headline */}
         <div className="flex items-center justify-between gap-3">
-          <label className="text-xs font-semibold">
-            Headline
-          </label>
+          <Label>Headline</Label>
         </div>
-        <input
+        <Input
           value={block.headline}
           onChange={(e) => onUpdate({ headline: e.target.value })}
-          className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
           placeholder="e.g. Research & Insights"
         />
 
         {/* Body */}
         <div className="flex items-center justify-between gap-3">
-          <label className="text-xs font-semibold">
-            Body Text
-          </label>
+          <Label>Body Text</Label>
         </div>
-        <textarea
+        <Textarea
           value={block.body}
           onChange={(e) => onUpdate({ body: e.target.value })}
           rows={6}
-          className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
           placeholder={`Write here...\nUse "-" for bullets if you want a list.`}
         />
 
@@ -160,12 +155,12 @@ const BlockCard = ({
         {/* Images */}
         <div className="rounded-xl border border-white/10 bg-black/40 p-3">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-semibold">
+            <Label>
               Images{" "}
               <span className="text-[10px] font-normal text-white/50">
                 (max {MAX_IMAGE_MB}MB)
               </span>
-            </p>
+            </Label>
           </div>
 
           <div className="mt-3 flex flex-col gap-3">
@@ -188,14 +183,15 @@ const BlockCard = ({
                       alt=""
                       className="h-28 w-full rounded-xl object-cover border border-white/10"
                     />
-                    <button
-                      type="button"
+                    <Button
+                      variant="danger"
+                      size="sm"
                       onClick={() => onRemoveImage(i)}
-                      className="absolute -top-2 -right-2 rounded-full bg-black/80 p-1 text-red-400 hover:bg-red-600 hover:text-white transition"
+                      className="absolute -top-2 -right-2 rounded-full p-1"
                       title="Delete image"
                     >
-                      <FaTrash className="h-3 w-3" />
-                    </button>
+                      <Delete02Icon size={16} />
+                    </Button>
                   </div>
                 ))}
               </div>
@@ -261,13 +257,9 @@ export default function WriteUpBlocksEditor({
             layout.
           </p>
         </div>
-        <button
-          type="button"
-          onClick={addBlock}
-          className="text-xs px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white/80 hover:bg-white/15"
-        >
+        <Button variant="secondary" size="sm" onClick={addBlock}>
           + Add Content Block
-        </button>
+        </Button>
       </div>
 
       <div className="space-y-4">

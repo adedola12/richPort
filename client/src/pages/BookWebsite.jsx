@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import PageMeta from "../components/common/PageMeta";
-import GlowButton from "../components/common/GlowButton";
+import { Button, Input, Textarea, Field, buttonClasses } from "../components/ui";
 import { fetchJson } from "../api/http";
 
 /* Display fallback for server/config/websitePlans.js — live values come
@@ -33,17 +33,14 @@ const FEATURES = ["Blog / CMS", "Online store", "Booking / scheduling", "Payment
 const CONTENT_STATUS = ["Content is ready", "Partially ready", "I need help with content"];
 const DOMAIN_STATUS = ["I have domain & hosting", "I have the domain only", "I need both"];
 
-const inputCls =
-  "w-full rounded-xl border border-white/12 bg-white/[0.04] px-4 py-3 text-[15px] text-white placeholder:text-white/30 outline-none transition focus:border-lime-400/60 focus:bg-white/[0.06]";
-const labelCls = "mb-2 block text-[12px] font-semibold uppercase tracking-[0.16em] text-white/50";
-
 const F = ({ label, optional, children }) => (
-  <div>
-    <label className={labelCls}>
-      {label} {optional && <span className="normal-case text-white/30">(optional)</span>}
-    </label>
+  <Field
+    label={label}
+    hint={optional ? "(optional)" : ""}
+    className={optional ? "" : ""}
+  >
     {children}
-  </div>
+  </Field>
 );
 
 const Chips = ({ options, value, onChange, multi }) => {
@@ -191,7 +188,7 @@ const BookWebsite = () => {
             <p className="mt-3 text-[15px] leading-relaxed text-white/55 max-w-[460px] mx-auto">
               Check your email{done.invoiceNo ? <> — invoice <span className="text-lime-400 font-semibold">{done.invoiceNo}</span></> : ""} with your next steps, the terms, and a copy of your answers. The project starts once the deposit is confirmed.
             </p>
-            <Link to="/" className="mt-8 inline-block rounded-xl bg-gradient-to-b from-lime-400 to-lime-600 px-6 py-3 text-[14px] font-bold text-black shadow-[0_0_18px_rgba(132,204,22,0.5)] transition hover:from-lime-300 hover:to-lime-500 hover:-translate-y-0.5 active:scale-95">
+            <Link to="/" className={buttonClasses("primary", "md", "mt-8")}>
               Back to home →
             </Link>
           </motion.div>
@@ -237,14 +234,14 @@ const BookWebsite = () => {
                 className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden="true" />
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <F label="Your name *"><input className={inputCls} value={form.name} maxLength={120} onChange={set("name")} placeholder="Full name" /></F>
-                <F label="Email *"><input className={inputCls} type="email" value={form.email} maxLength={160} onChange={set("email")} placeholder="you@example.com" /></F>
-                <F label="Phone / WhatsApp" optional><input className={inputCls} value={form.phone} maxLength={40} onChange={set("phone")} placeholder="+234…" /></F>
-                <F label="Brand / organisation" optional><input className={inputCls} value={form.brand} maxLength={120} onChange={set("brand")} placeholder="Who is the site for?" /></F>
+                <F label="Your name *"><Input value={form.name} maxLength={120} onChange={set("name")} placeholder="Full name" /></F>
+                <F label="Email *"><Input type="email" value={form.email} maxLength={160} onChange={set("email")} placeholder="you@example.com" /></F>
+                <F label="Phone / WhatsApp" optional><Input value={form.phone} maxLength={40} onChange={set("phone")} placeholder="+234…" /></F>
+                <F label="Brand / organisation" optional><Input value={form.brand} maxLength={120} onChange={set("brand")} placeholder="Who is the site for?" /></F>
               </div>
 
               <F label="What does the business do?" optional>
-                <textarea className={`${inputCls} min-h-[80px] resize-y`} value={form.about} maxLength={2000} onChange={set("about")}
+                <Textarea value={form.about} maxLength={2000} onChange={set("about")}
                   placeholder="A few sentences about the business and what the site should achieve." />
               </F>
 
@@ -253,7 +250,7 @@ const BookWebsite = () => {
               </F>
 
               <F label="Which pages does the site need? *">
-                <textarea className={`${inputCls} min-h-[90px] resize-y`} value={form.pages} maxLength={2000} onChange={set("pages")}
+                <Textarea value={form.pages} maxLength={2000} onChange={set("pages")}
                   placeholder="e.g. Home, About, Services, Portfolio, Blog, Contact… a rough list is fine." />
               </F>
 
@@ -272,15 +269,15 @@ const BookWebsite = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <F label="Reference websites" optional>
-                  <input className={inputCls} value={form.references} maxLength={1000} onChange={set("references")} placeholder="Links to sites you like" />
+                  <Input value={form.references} maxLength={1000} onChange={set("references")} placeholder="Links to sites you like" />
                 </F>
                 <F label="Preferred timeline" optional>
-                  <input className={inputCls} value={form.duration} maxLength={120} onChange={set("duration")} placeholder="e.g. within a month" />
+                  <Input value={form.duration} maxLength={120} onChange={set("duration")} placeholder="e.g. within a month" />
                 </F>
               </div>
 
               <F label="Anything else?" optional>
-                <textarea className={`${inputCls} min-h-[70px] resize-y`} value={form.notes} maxLength={2000} onChange={set("notes")}
+                <Textarea value={form.notes} maxLength={2000} onChange={set("notes")}
                   placeholder="Anything that helps me understand the project better." />
               </F>
 
@@ -302,16 +299,15 @@ const BookWebsite = () => {
                     <div className="mt-2.5 border-t border-dashed border-white/10 pt-2.5">
                       <div className="mb-1.5 text-xs text-white/45">Have a discount code?</div>
                       <div className="flex gap-2">
-                        <input
+                        <Input
                           value={discountCode}
                           onChange={(e) => { setDiscountCode(e.target.value.toUpperCase()); setDiscountInfo(null); }}
                           placeholder="e.g. GRACE10"
-                          className="w-40 rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-xs uppercase tracking-wide text-white outline-none focus:border-lime-400/60"
+                          className="w-40 !text-xs uppercase tracking-wide"
                         />
-                        <button type="button" onClick={applyCode} disabled={!discountCode.trim()}
-                          className="rounded-lg border border-lime-400/40 px-3.5 py-2 text-xs text-lime-400 hover:bg-lime-400/10 disabled:opacity-40">
+                        <Button type="button" variant="secondary" size="sm" onClick={applyCode} disabled={!discountCode.trim()}>
                           Apply
-                        </button>
+                        </Button>
                       </div>
                       {discountInfo?.ok && (
                         <p className="mt-2 text-xs text-lime-300">✓ {discountInfo.label} — you save {N(discountInfo.amount)}. New total: {N(discountInfo.finalPrice)}.</p>
@@ -328,9 +324,9 @@ const BookWebsite = () => {
                 <p className="rounded-xl border border-orange-400/30 bg-orange-400/10 px-4 py-3 text-[13px] text-orange-300">{error}</p>
               )}
 
-              <GlowButton type="submit" disabled={submitting} className="w-full py-3.5 text-[15px]">
+              <Button type="submit" variant="primary" size="lg" disabled={submitting} className="w-full">
                 {submitting ? "Sending…" : "Book this website"}
-              </GlowButton>
+              </Button>
             </form>
           </motion.div>
         )}

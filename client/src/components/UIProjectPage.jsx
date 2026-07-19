@@ -7,6 +7,7 @@ import ProjectHero from "../components/UIProjectPage/ProjectHero";
 import ImgGal from "../components/UIProjectPage/ImgGal";
 import BuildSection from "../components/Home/BuildSection";
 import OtherProj from "../components/ProjectPage/OtherProj";
+import Button from "./ui/Button";
 
 import { uiProjectsApi } from "../api/uiProjects";
 
@@ -195,13 +196,14 @@ const UIProjectPage = () => {
             <p className="text-sm text-red-400">
               {status.error}
             </p>
-            <button
-              className="mt-4 rounded-xl bg-gradient-to-b from-lime-400 to-lime-600 px-4 py-2 text-xs font-bold text-black shadow-[0_0_16px_rgba(132,204,22,0.45)] transition hover:from-lime-300 hover:to-lime-500 active:scale-95"
+            <Button
+              className="mt-4"
+              variant="primary"
+              size="sm"
               onClick={() => navigate("/ui-projects")}
-              type="button"
             >
               Open UI Projects
-            </button>
+            </Button>
           </section>
         ) : (
           <>

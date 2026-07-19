@@ -1,9 +1,10 @@
 ﻿// src/components/admin/UIProjectsTab.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { FaTrash, FaTimes } from "react-icons/fa";
+import { Delete02Icon } from "hugeicons-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { uploadImage, MAX_IMAGE_MB } from "../../utils/uploadImage";
+import { Button, Input, Textarea, Select, Label } from "../ui";
 
 const API = import.meta.env.VITE_AUTH_ENDPOINT || "";
 
@@ -296,7 +297,7 @@ function FileNameRow({ name, onRemove }) {
         className="shrink-0 inline-flex items-center justify-center h-8 w-8 rounded-lg border border-red-500/30 bg-red-500/10 text-red-200 hover:bg-red-500/20 transition"
         title="Remove image"
       >
-        <FaTimes className="h-3.5 w-3.5" />
+        <Delete02Icon size={16} />
       </button>
     </div>
   );
@@ -1379,11 +1380,9 @@ export default function UIProjectsTab() {
             {/* Row 1 */}
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <label className="block text-xs font-semibold text-white/80">
-                  Project Name
-                </label>
+                <Label>Project Name</Label>
 
-                <select
+                <Select
                   value={selectedProjectId}
                   onChange={(e) => {
                     const val = e.target.value;
@@ -1397,7 +1396,6 @@ export default function UIProjectsTab() {
                     const found = items.find((x) => (x._id || x.id) === val);
                     if (found) startEditing(found);
                   }}
-                  className={selectBase}
                 >
                   <option value="">Create new…</option>
                   {items.map((p) => (
@@ -1405,7 +1403,7 @@ export default function UIProjectsTab() {
                       {p.name || p.slug}
                     </option>
                   ))}
-                </select>
+                </Select>
 
                 {!selectedProjectId && (
                   <input
@@ -1419,9 +1417,7 @@ export default function UIProjectsTab() {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-xs font-semibold text-white/80">
-                  Subtitle
-                </label>
+                <Label>Subtitle</Label>
                 <input
                   {...GRAMMARLY_OFF_PROPS}
                   value={form.heroSubtitle}
@@ -1435,9 +1431,7 @@ export default function UIProjectsTab() {
             {/* Row 2 */}
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <label className="block text-xs font-semibold text-white/80">
-                  Date
-                </label>
+                <Label>Date</Label>
                 <input
                   {...GRAMMARLY_OFF_PROPS}
                   type="date"
@@ -1451,10 +1445,8 @@ export default function UIProjectsTab() {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-xs font-semibold text-white/80">
-                  Timeline
-                </label>
-                <select
+                <Label>Timeline</Label>
+                <Select
                   value={form.timelineLabel}
                   onChange={(e) => setField("timelineLabel", e.target.value)}
                   className={selectBase}
@@ -1464,15 +1456,13 @@ export default function UIProjectsTab() {
                       {t}
                     </option>
                   ))}
-                </select>
+                </Select>
               </div>
             </div>
 
             <div className="grid gap-4 md:grid-cols-3">
               <div className="space-y-2">
-                <label className="block text-xs font-semibold text-white/80">
-                  Slug
-                </label>
+                <Label>Slug</Label>
                 <input
                   {...GRAMMARLY_OFF_PROPS}
                   value={form.slug}
@@ -1483,17 +1473,15 @@ export default function UIProjectsTab() {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-xs font-semibold text-white/80">
-                  Status
-                </label>
-                <select
+                <Label>Status</Label>
+                <Select
                   value={form.status}
                   onChange={(e) => setField("status", e.target.value)}
                   className={selectBase}
                 >
                   <option value="published">Published</option>
                   <option value="draft">Draft</option>
-                </select>
+                </Select>
               </div>
 
               <div className="flex items-center gap-3 pt-7">
@@ -1507,15 +1495,12 @@ export default function UIProjectsTab() {
               </div>
 
               <div className="md:col-span-3 space-y-2">
-                <label className="block text-xs font-semibold text-white/80">
-                  Role Bullets (one per line)
-                </label>
-                <textarea
+                <Label>Role Bullets (one per line)</Label>
+                <Textarea
                   {...GRAMMARLY_OFF_PROPS}
                   value={form.roleBulletsText}
                   onChange={(e) => setField("roleBulletsText", e.target.value)}
                   rows={4}
-                  className={textareaBase}
                   placeholder={`UX research & synthesis\nUser personas\nUser flows & information architecture`}
                 />
               </div>
@@ -1550,9 +1535,7 @@ export default function UIProjectsTab() {
               </div>
 
               <div className="space-y-3">
-                <label className="block text-xs font-semibold text-white/80">
-                  Hero Title
-                </label>
+                <Label>Hero Title</Label>
                 <input
                   {...GRAMMARLY_OFF_PROPS}
                   value={form.heroTitle}
@@ -1562,9 +1545,7 @@ export default function UIProjectsTab() {
                   required
                 />
 
-                <label className="block text-xs font-semibold text-white/80">
-                  Hero Date Label (optional)
-                </label>
+                <Label>Hero Date Label (optional)</Label>
                 <input
                   {...GRAMMARLY_OFF_PROPS}
                   value={form.heroDateLabel}
@@ -1629,11 +1610,9 @@ export default function UIProjectsTab() {
                         <div className="grid gap-3 md:grid-cols-[minmax(260px,1fr)_auto_auto] md:items-end">
                           {/* Placement */}
                           <div className="space-y-1">
-                            <label className="block text-xs font-semibold text-white/80">
-                              Placement
-                            </label>
+                            <Label>Placement</Label>
 
-                            <select
+                            <Select
                               value={b.placement || "beforePersonas"}
                               disabled={blockDisabled}
                               onChange={(e) =>
@@ -1655,7 +1634,7 @@ export default function UIProjectsTab() {
                               <option value="afterPersonas">
                                 Below User Personas
                               </option>
-                            </select>
+                            </Select>
 
                             <p className="text-[10px] text-white/35">
                               Choose where this block shows on the UI project
@@ -1693,9 +1672,7 @@ export default function UIProjectsTab() {
                     {/* Headline */}
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <label className="block text-xs font-semibold text-white/80">
-                          Headline
-                        </label>
+                        <Label>Headline</Label>
                         <div className="flex items-center gap-2">
                           <span className="text-[11px] text-white/55">
                             Show
@@ -1732,9 +1709,7 @@ export default function UIProjectsTab() {
                     {/* Body Text */}
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <label className="block text-xs font-semibold text-white/80">
-                          Body Text
-                        </label>
+                        <Label>Body Text</Label>
                         <div className="flex items-center gap-2">
                           <span className="text-[11px] text-white/55">
                             Show
@@ -1762,9 +1737,7 @@ export default function UIProjectsTab() {
                     {/* Images */}
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <label className="block text-xs font-semibold text-white/80">
-                          Images
-                        </label>
+                        <Label>Images</Label>
                         <div className="flex items-center gap-2">
                           <span className="text-[11px] text-white/55">
                             Show
@@ -1818,7 +1791,7 @@ export default function UIProjectsTab() {
                                 className="absolute -top-2 -right-2 rounded-full bg-black/80 p-1.5 text-red-300 hover:bg-red-600 hover:text-white transition"
                                 title="Delete image"
                               >
-                                <FaTrash className="h-3.5 w-3.5" />
+                                <Delete02Icon size={16} />
                               </button>
                             </div>
                           ))}
@@ -1860,31 +1833,25 @@ export default function UIProjectsTab() {
                 >
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-2">
-                      <label className="block text-xs font-semibold text-white/80">
-                        Name
-                      </label>
-                      <input
+                      <Label>Name</Label>
+                      <Input
                         {...GRAMMARLY_OFF_PROPS}
                         value={p.name || ""}
                         onChange={(e) =>
                           updatePersona(idx, { name: e.target.value })
                         }
-                        className={inputBase}
                         placeholder="Name"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <label className="block text-xs font-semibold text-white/80">
-                        Subtitle
-                      </label>
-                      <input
+                      <Label>Subtitle</Label>
+                      <Input
                         {...GRAMMARLY_OFF_PROPS}
                         value={p.subtitle || ""}
                         onChange={(e) =>
                           updatePersona(idx, { subtitle: e.target.value })
                         }
-                        className={inputBase}
                         placeholder="Subtitle"
                       />
                     </div>
@@ -1999,7 +1966,7 @@ export default function UIProjectsTab() {
                           className="absolute -top-2 -right-2 rounded-full bg-black/80 p-1.5 text-red-300 hover:bg-red-600 hover:text-white transition"
                           title="Delete image"
                         >
-                          <FaTrash className="h-3.5 w-3.5" />
+                          <Delete02Icon size={16} />
                         </button>
                       ) : null}
 
@@ -2049,71 +2016,56 @@ export default function UIProjectsTab() {
               ].join(" ")}
             >
               <div className="space-y-2">
-                <label className="block text-xs font-semibold text-white/80">
-                  Client / Company Name (optional)
-                </label>
-                <input
+                <Label>Client / Company Name (optional)</Label>
+                <Input
                   {...GRAMMARLY_OFF_PROPS}
                   value={form.workExpClientName}
                   onChange={(e) =>
                     setField("workExpClientName", e.target.value)
                   }
-                  className={inputBase}
                   placeholder="FinTech Startup / Personal Project"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="block text-xs font-semibold text-white/80">
-                  Role (optional)
-                </label>
-                <input
+                <Label>Role (optional)</Label>
+                <Input
                   {...GRAMMARLY_OFF_PROPS}
                   value={form.workExpRole}
                   onChange={(e) => setField("workExpRole", e.target.value)}
-                  className={inputBase}
                   placeholder="Product Designer (UI/UX)"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="block text-xs font-semibold text-white/80">
-                  Start Date
-                </label>
-                <input
+                <Label>Start Date</Label>
+                <Input
                   {...GRAMMARLY_OFF_PROPS}
                   type="date"
                   value={form.workExpStartDate}
                   onChange={(e) => setField("workExpStartDate", e.target.value)}
-                  className={inputBase}
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="block text-xs font-semibold text-white/80">
-                  End Date (leave empty if Present)
-                </label>
-                <input
+                <Label>End Date (leave empty if Present)</Label>
+                <Input
                   {...GRAMMARLY_OFF_PROPS}
                   type="date"
                   value={form.workExpEndDate}
                   onChange={(e) => setField("workExpEndDate", e.target.value)}
-                  className={inputBase}
                 />
               </div>
 
               <div className="md:col-span-2 space-y-2">
-                <label className="block text-xs font-semibold text-white/80">
-                  Work Experience bullets (one per line)
-                </label>
-                <textarea
+                <Label>Work Experience bullets (one per line)</Label>
+                <Textarea
                   {...GRAMMARLY_OFF_PROPS}
                   value={form.workExperienceText}
                   onChange={(e) =>
                     setField("workExperienceText", e.target.value)
                   }
                   rows={5}
-                  className={textareaBase}
                   placeholder={`Led end-to-end UI for onboarding and savings flows\nCreated design system components for consistency\nImproved usability via iteration + feedback`}
                 />
               </div>
@@ -2265,14 +2217,15 @@ export default function UIProjectsTab() {
                                 Edit
                               </button>
 
-                              <button
-                                type="button"
+                              <Button
+                                variant="danger"
+                                size="sm"
                                 onClick={() => handleDelete(p._id || p.id)}
-                                className="p-2 rounded-xl border border-red-500/40 bg-red-500/10 text-red-300 hover:bg-red-500/20 transition"
                                 title="Delete"
+                                className="p-2"
                               >
-                                <FaTrash className="h-3.5 w-3.5" />
-                              </button>
+                                <Delete02Icon size={16} />
+                              </Button>
                             </div>
                           </td>
                         </tr>

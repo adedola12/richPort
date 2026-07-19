@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import PageMeta from "../components/common/PageMeta";
-import GlowButton from "../components/common/GlowButton";
+import { Button, Input, Textarea, Field, buttonClasses } from "../components/ui";
 import { fetchJson } from "../api/http";
 
 /* Fallback mirror of server/config/flyerPlans.js — the live values are
@@ -19,17 +19,13 @@ const PLAN_ORDER = ["single", "triple", "five", "event"];
 
 const N = (v) => `₦${Number(v).toLocaleString("en-NG")}`;
 
-const inputCls =
-  "w-full rounded-xl border border-white/12 bg-white/[0.04] px-4 py-3 text-[15px] text-white placeholder:text-white/30 outline-none transition focus:border-lime-400/60 focus:bg-white/[0.06]";
-const labelCls = "mb-2 block text-[12px] font-semibold uppercase tracking-[0.16em] text-white/50";
-
 const F = ({ label, optional, children }) => (
-  <div>
-    <label className={labelCls}>
-      {label} {optional && <span className="normal-case text-white/30">(optional)</span>}
-    </label>
+  <Field
+    label={label}
+    hint={optional ? "(optional)" : ""}
+  >
     {children}
-  </div>
+  </Field>
 );
 
 const BookFlyer = () => {
@@ -111,7 +107,7 @@ const BookFlyer = () => {
                 ? "Check your email for a copy of your request. I'll review your design list and reach out within 24 hours with a full quote."
                 : "Check your email — it contains a copy of your request, the amount due, and the payment details. Design begins once payment is confirmed."}
             </p>
-            <Link to="/" className="mt-8 inline-block rounded-xl bg-gradient-to-b from-lime-400 to-lime-600 px-6 py-3 text-[14px] font-bold text-black shadow-[0_0_18px_rgba(132,204,22,0.5)] transition hover:from-lime-300 hover:to-lime-500 hover:-translate-y-0.5 active:scale-95">
+            <Link to="/" className={buttonClasses("primary", "md", "mt-8")}>
               Back to home →
             </Link>
           </motion.div>
@@ -168,41 +164,41 @@ const BookFlyer = () => {
                 className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden="true" />
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <F label="Your name *"><input className={inputCls} value={form.name} maxLength={120} onChange={set("name")} placeholder="Full name" /></F>
-                <F label="Email *"><input className={inputCls} type="email" value={form.email} maxLength={160} onChange={set("email")} placeholder="you@example.com" /></F>
-                <F label="Phone / WhatsApp" optional><input className={inputCls} value={form.phone} maxLength={40} onChange={set("phone")} placeholder="+234…" /></F>
-                <F label="Brand / organisation" optional><input className={inputCls} value={form.brand} maxLength={120} onChange={set("brand")} placeholder="Who is this for?" /></F>
+                <F label="Your name *"><Input value={form.name} maxLength={120} onChange={set("name")} placeholder="Full name" /></F>
+                <F label="Email *"><Input type="email" value={form.email} maxLength={160} onChange={set("email")} placeholder="you@example.com" /></F>
+                <F label="Phone / WhatsApp" optional><Input value={form.phone} maxLength={40} onChange={set("phone")} placeholder="+234…" /></F>
+                <F label="Brand / organisation" optional><Input value={form.brand} maxLength={120} onChange={set("brand")} placeholder="Who is this for?" /></F>
               </div>
 
               <F label="What is the flyer for? *">
-                <textarea className={`${inputCls} min-h-[90px] resize-y`} value={form.purpose} maxLength={1000} onChange={set("purpose")}
+                <Textarea value={form.purpose} maxLength={1000} onChange={set("purpose")}
                   placeholder="e.g. church program announcement, product promo, birthday, webinar…" />
               </F>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <F label="When do you need it?" optional><input className={inputCls} type="date" value={form.deadline} onChange={set("deadline")} /></F>
-                <F label="Headline text" optional><input className={inputCls} value={form.headline} maxLength={300} onChange={set("headline")} placeholder="The big text on the flyer" /></F>
+                <F label="When do you need it?" optional><Input type="date" value={form.deadline} onChange={set("deadline")} /></F>
+                <F label="Headline text" optional><Input value={form.headline} maxLength={300} onChange={set("headline")} placeholder="The big text on the flyer" /></F>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <F label="Subtitle text" optional><input className={inputCls} value={form.subtitle} maxLength={300} onChange={set("subtitle")} placeholder="Supporting line" /></F>
-                <F label="Date / time / venue" optional><input className={inputCls} value={form.eventDetails} maxLength={1000} onChange={set("eventDetails")} placeholder="If the flyer needs them" /></F>
+                <F label="Subtitle text" optional><Input value={form.subtitle} maxLength={300} onChange={set("subtitle")} placeholder="Supporting line" /></F>
+                <F label="Date / time / venue" optional><Input value={form.eventDetails} maxLength={1000} onChange={set("eventDetails")} placeholder="If the flyer needs them" /></F>
               </div>
 
               <F label="Additional text" optional>
-                <textarea className={`${inputCls} min-h-[90px] resize-y`} value={form.bodyText} maxLength={2000} onChange={set("bodyText")}
+                <Textarea value={form.bodyText} maxLength={2000} onChange={set("bodyText")}
                   placeholder="Any other text that must appear — contact lines, prices, speakers, dress code…" />
               </F>
 
               {isEvent && (
                 <F label="List the designs your event needs *">
-                  <textarea className={`${inputCls} min-h-[110px] resize-y`} value={form.breakdown} maxLength={2000} onChange={set("breakdown")}
+                  <Textarea value={form.breakdown} maxLength={2000} onChange={set("breakdown")}
                     placeholder={"e.g. main event flyer (2 versions), anticipate design, countdown set, speaker lineup, individual speaker flyers, thank-you design…"} />
                 </F>
               )}
 
               <F label="References / inspiration" optional>
-                <textarea className={`${inputCls} min-h-[70px] resize-y`} value={form.references} maxLength={1000} onChange={set("references")}
+                <Textarea value={form.references} maxLength={1000} onChange={set("references")}
                   placeholder="Links or descriptions of styles you like" />
               </F>
 
@@ -218,9 +214,9 @@ const BookFlyer = () => {
                 <p className="rounded-xl border border-orange-400/30 bg-orange-400/10 px-4 py-3 text-[13px] text-orange-300">{error}</p>
               )}
 
-              <GlowButton type="submit" disabled={submitting} className="w-full py-3.5 text-[15px]">
+              <Button type="submit" variant="primary" size="lg" disabled={submitting} className="w-full">
                 {submitting ? "Sending…" : "Submit request"}
-              </GlowButton>
+              </Button>
             </form>
           </motion.div>
         )}

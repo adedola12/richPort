@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { uploadImage, MAX_IMAGE_MB } from "../../utils/uploadImage";
 import { useAuth } from "../../context/AuthContext";
-import { FaTrash } from "react-icons/fa";
+import { Delete02Icon } from "hugeicons-react";
+import { Button, Input, Textarea, Label } from "../ui";
 
 const PROJECTS_API = import.meta.env.VITE_AUTH_ENDPOINT || "";
 
@@ -649,81 +650,69 @@ useEffect(() => {
         {/* Basic meta */}
         <div className="grid gap-4 md:grid-cols-2">
           <div>
-            <label className="block text-xs mb-1 font-semibold">
-              Project Name
-            </label>
-            <input
+            <Label htmlFor="name">Project Name</Label>
+            <Input
+              id="name"
               name="name"
               value={form.name}
               onChange={handleTextChange}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
               placeholder="Book Rion"
               required
             />
           </div>
           <div>
-            <label className="block text-xs mb-1 font-semibold">
-              Slug
-            </label>
-            <input
+            <Label htmlFor="slug">Slug</Label>
+            <Input
+              id="slug"
               name="slug"
               value={form.slug}
               onChange={handleTextChange}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
               placeholder="book-rion"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-xs mb-1 font-semibold">
-            Project URL
-          </label>
-          <input
+          <Label htmlFor="url">Project URL</Label>
+          <Input
+            id="url"
             name="url"
             value={form.url}
             onChange={handleTextChange}
-            className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
             placeholder="https://project-site.com"
           />
         </div>
 
         <div>
-          <label className="block text-xs mb-1 font-semibold">
-            Short Description
-          </label>
-          <textarea
+          <Label htmlFor="shortDescription">Short Description</Label>
+          <Textarea
+            id="shortDescription"
             name="shortDescription"
             value={form.shortDescription}
             onChange={handleTextChange}
             rows={3}
-            className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
             placeholder="One or two sentences describing the project..."
           />
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
           <div>
-            <label className="block text-xs mb-1 font-semibold">
-              Tags (comma separated)
-            </label>
-            <input
+            <Label htmlFor="tags">Tags (comma separated)</Label>
+            <Input
+              id="tags"
               name="tags"
               value={form.tags}
               onChange={handleTextChange}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
               placeholder="Brand Identity, UX, Website"
             />
           </div>
           <div>
-            <label className="block text-xs mb-1 font-semibold">
-              Categories (comma separated)
-            </label>
-            <input
+            <Label htmlFor="categories">Categories (comma separated)</Label>
+            <Input
+              id="categories"
               name="categories"
               value={form.categories}
               onChange={handleTextChange}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
               placeholder="Brand Identity, Website Designs"
             />
           </div>
@@ -737,27 +726,23 @@ useEffect(() => {
 
           <div className="grid gap-4 md:grid-cols-2">
             <div>
-              <label className="block text-xs mb-1 font-semibold">
-                Client Name
-              </label>
-              <input
+              <Label htmlFor="clientName">Client Name</Label>
+              <Input
+                id="clientName"
                 name="clientName"
                 value={form.clientName}
                 onChange={handleTextChange}
-                className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
                 placeholder="Book Rion"
               />
             </div>
 
             <div>
-              <label className="block text-xs mb-1 font-semibold">
-                Timeline (short text)
-              </label>
-              <input
+              <Label htmlFor="heroTimeline">Timeline (short text)</Label>
+              <Input
+                id="heroTimeline"
                 name="heroTimeline"
                 value={form.heroTimeline}
                 onChange={handleTextChange}
-                className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
                 placeholder="4 weeks"
               />
             </div>
@@ -766,87 +751,77 @@ useEffect(() => {
           {/* duration dates */}
           <div className="grid gap-4 md:grid-cols-2">
             <div>
-              <label className="block text-xs mb-1 font-semibold">
-                Project Start Date
-              </label>
-              <input
+              <Label htmlFor="projectStartDate">Project Start Date</Label>
+              <Input
+                id="projectStartDate"
                 type="date"
                 name="projectStartDate"
                 value={form.projectStartDate}
                 onChange={handleTextChange}
-                className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
               />
             </div>
             <div>
-              <label className="block text-xs mb-1 font-semibold">
-                Project End Date
-              </label>
-              <input
+              <Label htmlFor="projectEndDate">Project End Date</Label>
+              <Input
+                id="projectEndDate"
                 type="date"
                 name="projectEndDate"
                 value={form.projectEndDate}
                 onChange={handleTextChange}
-                className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
               />
             </div>
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
             <div>
-              <label className="block text-xs mb-1 font-semibold">
-                Categories shown in hero (comma separated)
-              </label>
-              <input
+              <Label htmlFor="heroCategories">Categories shown in hero (comma separated)</Label>
+              <Input
+                id="heroCategories"
                 name="heroCategories"
                 value={form.heroCategories}
                 onChange={handleTextChange}
-                className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
                 placeholder="Brand Identity Design, UI/UX Design, Graphic Design, Website Design"
               />
             </div>
             <div>
-              <label className="block text-xs mb-1 font-semibold">
-                Deliverables (hero row)
-              </label>
-              <textarea
+              <Label htmlFor="heroDeliverables">Deliverables (hero row)</Label>
+              <Textarea
+                id="heroDeliverables"
                 name="heroDeliverables"
                 value={form.heroDeliverables}
                 onChange={handleTextChange}
                 rows={2}
-                className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
                 placeholder="Art Direction, User Interface, Branding Strategy, Print Design, 3D Render"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs mb-1 font-semibold">
-              Team members initials (comma separated)
-            </label>
-            <input
+            <Label htmlFor="heroTeamInitials">Team members initials (comma separated)</Label>
+            <Input
+              id="heroTeamInitials"
               name="heroTeamInitials"
               value={form.heroTeamInitials}
               onChange={handleTextChange}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
               placeholder="AQ, JS, MK, ..."
             />
           </div>
 
           {/* Work experience list */}
           <div>
-            <label className="block text-xs mb-1 font-semibold">
-              Work Experience on this Project
-              <span className="ml-1 text-[10px] font-normal text-neutral-400">
+            <div className="flex items-baseline gap-1">
+              <Label htmlFor="workExperienceText">Work Experience on this Project</Label>
+              <span className="text-[10px] font-normal text-neutral-400">
                 (one item per line – each line becomes a bullet in the
                 case-study)
               </span>
-            </label>
-            <textarea
+            </div>
+            <Textarea
+              id="workExperienceText"
               name="workExperienceText"
               value={form.workExperienceText}
               onChange={handleTextChange}
               rows={4}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
               placeholder={`Lead UI/UX design for booking flow
 Collaborated with dev team on design system
 Conducted usability tests with 8 participants`}
@@ -855,15 +830,13 @@ Conducted usability tests with 8 participants`}
 
           {/* My Role */}
           <div>
-            <label className="block text-xs mb-1 font-semibold">
-              My Role on this Project
-            </label>
-            <textarea
+            <Label htmlFor="myRole">My Role on this Project</Label>
+            <Textarea
+              id="myRole"
               name="myRole"
               value={form.myRole}
               onChange={handleTextChange}
               rows={3}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
               placeholder="e.g. Lead Product Designer and BIM Strategist..."
             />
           </div>
@@ -917,19 +890,17 @@ Conducted usability tests with 8 participants`}
                 <span>Show on main page</span>
               </label>
             </div>
-            <input
+            <Input
               name="discoverTitle"
               value={form.discoverTitle}
               onChange={handleTextChange}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm mb-1 focus:outline-none focus:ring-2 focus:ring-lime-400/70"
               placeholder="Understanding the Problem"
             />
-            <textarea
+            <Textarea
               name="discoverBody"
               value={form.discoverBody}
               onChange={handleTextChange}
               rows={3}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
               placeholder="Body text for the Discover step..."
             />
           </div>
@@ -951,19 +922,17 @@ Conducted usability tests with 8 participants`}
                 <span>Show on main page</span>
               </label>
             </div>
-            <input
+            <Input
               name="ideateTitle"
               value={form.ideateTitle}
               onChange={handleTextChange}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm mb-1 focus:outline-none focus:ring-2 focus:ring-lime-400/70"
               placeholder="Exploring Concepts"
             />
-            <textarea
+            <Textarea
               name="ideateBody"
               value={form.ideateBody}
               onChange={handleTextChange}
               rows={3}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
               placeholder="Body text for the Ideate step..."
             />
           </div>
@@ -985,19 +954,17 @@ Conducted usability tests with 8 participants`}
                 <span>Show on main page</span>
               </label>
             </div>
-            <input
+            <Input
               name="designTitle"
               value={form.designTitle}
               onChange={handleTextChange}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm mb-1 focus:outline-none focus:ring-2 focus:ring-lime-400/70"
               placeholder="Bringing the Concept to Life"
             />
-            <textarea
+            <Textarea
               name="designBody"
               value={form.designBody}
               onChange={handleTextChange}
               rows={3}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
               placeholder="Body text for the Design step..."
             />
           </div>
@@ -1019,19 +986,17 @@ Conducted usability tests with 8 participants`}
                 <span>Show on main page</span>
               </label>
             </div>
-            <input
+            <Input
               name="testTitle"
               value={form.testTitle}
               onChange={handleTextChange}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm mb-1 focus:outline-none focus:ring-2 focus:ring-lime-400/70"
               placeholder="Perfecting the Details"
             />
-            <textarea
+            <Textarea
               name="testBody"
               value={form.testBody}
               onChange={handleTextChange}
               rows={3}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
               placeholder="Body text for the Test & Refine step..."
             />
           </div>
@@ -1045,12 +1010,12 @@ Conducted usability tests with 8 participants`}
           <div className="grid gap-4 md:grid-cols-2">
             {/* Main image */}
             <div>
-              <label className="block text-xs mb-1 font-semibold">
-                Main Image (Hero)
-                <span className="ml-1 text-[10px] font-normal text-neutral-400">
+              <div className="flex items-baseline gap-1">
+                <Label htmlFor="mainImageFile">Main Image (Hero)</Label>
+                <span className="text-[10px] font-normal text-neutral-400">
                   (max {MAX_IMAGE_MB}MB)
                 </span>
-              </label>
+              </div>
               <input
                 type="file"
                 accept="image/*"
@@ -1077,7 +1042,7 @@ Conducted usability tests with 8 participants`}
       "
                     title="Delete image"
                   >
-                    <FaTrash className="h-3 w-3" />
+                    <Delete02Icon size={16} />
                   </button>
                 </div>
               )}
@@ -1085,12 +1050,12 @@ Conducted usability tests with 8 participants`}
 
             {/* Mid image */}
             <div>
-              <label className="block text-xs mb-1 font-semibold">
-                Mid Section Image
-                <span className="ml-1 text-[10px] font-normal text-neutral-400">
+              <div className="flex items-baseline gap-1">
+                <Label htmlFor="midImageFile">Mid Section Image</Label>
+                <span className="text-[10px] font-normal text-neutral-400">
                   (max {MAX_IMAGE_MB}MB)
                 </span>
-              </label>
+              </div>
               <input
                 type="file"
                 accept="image/*"
@@ -1117,7 +1082,7 @@ Conducted usability tests with 8 participants`}
       "
                     title="Delete image"
                   >
-                    <FaTrash className="h-3 w-3" />
+                    <Delete02Icon size={16} />
                   </button>
                 </div>
               )}
@@ -1125,12 +1090,12 @@ Conducted usability tests with 8 participants`}
 
             {/* Conclusion image */}
             <div>
-              <label className="block text-xs mb-1 font-semibold">
-                Conclusion Image
-                <span className="ml-1 text-[10px] font-normal text-neutral-400">
+              <div className="flex items-baseline gap-1">
+                <Label htmlFor="conclusionImageFile">Conclusion Image</Label>
+                <span className="text-[10px] font-normal text-neutral-400">
                   (max {MAX_IMAGE_MB}MB)
                 </span>
-              </label>
+              </div>
               <input
                 type="file"
                 accept="image/*"
@@ -1160,7 +1125,7 @@ Conducted usability tests with 8 participants`}
       "
                     title="Delete image"
                   >
-                    <FaTrash className="h-3 w-3" />
+                    <Delete02Icon size={16} />
                   </button>
                 </div>
               )}
@@ -1168,12 +1133,12 @@ Conducted usability tests with 8 participants`}
 
             {/* Inline / case-study image */}
             <div>
-              <label className="block text-xs mb-1 font-semibold">
-                In-text / Process Image
-                <span className="ml-1 text-[10px] font-normal text-neutral-400">
+              <div className="flex items-baseline gap-1">
+                <Label htmlFor="inlineImageFile">In-text / Process Image</Label>
+                <span className="text-[10px] font-normal text-neutral-400">
                   (max {MAX_IMAGE_MB}MB)
                 </span>
-              </label>
+              </div>
               <input
                 type="file"
                 accept="image/*"
@@ -1200,7 +1165,7 @@ Conducted usability tests with 8 participants`}
       "
                     title="Delete image"
                   >
-                    <FaTrash className="h-3 w-3" />
+                    <Delete02Icon size={16} />
                   </button>
                 </div>
               )}
@@ -1209,22 +1174,20 @@ Conducted usability tests with 8 participants`}
 
           {/* Bento gallery images */}
           <div className="space-y-2">
-            <p className="text-xs font-semibold">
-              Bento Gallery Images (5–7)
-              <span className="ml-1 text-[10px] font-normal text-neutral-400">
+            <div className="flex items-baseline gap-1">
+              <p className="text-xs font-semibold">Bento Gallery Images (5–7)</p>
+              <span className="text-[10px] font-normal text-neutral-400">
                 These map to the bento grid in the case study page. Upload 5, 6
                 or 7 images – they will appear in slots #1–#
                 {form.galleryImageUrls.length}.
               </span>
-            </p>
+            </div>
             <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-5">
               {form.galleryImageUrls.map((url, index) => {
                 const key = `gallery-${index}`;
                 return (
                   <div key={key} className="space-y-1">
-                    <label className="block text-[10px] mb-0.5 font-semibold">
-                      Bento Image #{index + 1}
-                    </label>
+                    <Label htmlFor={key} className="text-[10px] mb-0.5">Bento Image #{index + 1}</Label>
                     <input
                       type="file"
                       accept="image/*"
@@ -1255,7 +1218,7 @@ Conducted usability tests with 8 participants`}
                 "
                           title="Delete gallery image"
                         >
-                          <FaTrash className="h-3 w-3" />
+                          <Delete02Icon size={16} />
                         </button>
                       </div>
                     )}
@@ -1273,54 +1236,46 @@ Conducted usability tests with 8 participants`}
           </h3>
 
           <div>
-            <label className="block text-xs mb-1 font-semibold">
-              Conclusion Heading
-            </label>
-            <input
+            <Label htmlFor="conclusionTitle">Conclusion Heading</Label>
+            <Input
+              id="conclusionTitle"
               name="conclusionTitle"
               value={form.conclusionTitle}
               onChange={handleTextChange}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
               placeholder="Conclusion"
             />
           </div>
 
           <div>
-            <label className="block text-xs mb-1 font-semibold">
-              Conclusion Body
-            </label>
-            <textarea
+            <Label htmlFor="conclusionBody">Conclusion Body</Label>
+            <Textarea
+              id="conclusionBody"
               name="conclusionBody"
               value={form.conclusionBody}
               onChange={handleTextChange}
               rows={4}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
               placeholder="Final summary of results and impact..."
             />
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
             <div>
-              <label className="block text-xs mb-1 font-semibold">
-                CTA Label
-              </label>
-              <input
+              <Label htmlFor="conclusionCtaLabel">CTA Label</Label>
+              <Input
+                id="conclusionCtaLabel"
                 name="conclusionCtaLabel"
                 value={form.conclusionCtaLabel}
                 onChange={handleTextChange}
-                className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
                 placeholder="View product case study"
               />
             </div>
             <div>
-              <label className="block text-xs mb-1 font-semibold">
-                CTA URL
-              </label>
-              <input
+              <Label htmlFor="conclusionCtaUrl">CTA URL</Label>
+              <Input
+                id="conclusionCtaUrl"
                 name="conclusionCtaUrl"
                 value={form.conclusionCtaUrl}
                 onChange={handleTextChange}
-                className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
                 placeholder="https://..."
               />
             </div>
@@ -1329,37 +1284,31 @@ Conducted usability tests with 8 participants`}
 
         {/* Case study notes */}
         <div className="pt-4 border-t border-white/10">
-          <label className="block text-xs mb-1 font-semibold">
-            Case Study Notes (optional)
-          </label>
-          <textarea
+          <Label htmlFor="caseStudyNotes">Case Study Notes (optional)</Label>
+          <Textarea
+            id="caseStudyNotes"
             name="caseStudyNotes"
             value={form.caseStudyNotes}
             onChange={handleTextChange}
             rows={4}
-            className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
             placeholder="Internal notes about steps, process, etc. (not necessarily shown on the public page)."
           />
         </div>
 
         {/* Submit button + status */}
-        <button
+        <Button
           type="submit"
           disabled={status.type === "loading"}
-          className="
-            mt-2 inline-flex items-center justify-center rounded-md
-            bg-gradient-to-b from-lime-400 to-lime-600
-            px-6 py-2.5 text-sm font-semibold text-black
-            shadow-[0_18px_60px_rgba(132,204,22,0.7)]
-            hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed
-          "
+          variant="primary"
+          size="md"
+          className="mt-2"
         >
           {status.type === "loading"
             ? "Saving..."
             : editingId
             ? "Update Project"
             : "Save Project"}
-        </button>
+        </Button>
 
         {status.type !== "idle" && (
           <p
@@ -1470,13 +1419,14 @@ Conducted usability tests with 8 participants`}
                       {/* Actions */}
                       <td className="px-3 py-2">
                         <div className="flex items-center gap-2">
-                          <button
+                          <Button
                             type="button"
                             onClick={() => startEditing(p)}
-                            className="text-[11px] px-3 py-1 rounded-md bg-white/10 border border-white/20 hover:bg-white/20"
+                            variant="secondary"
+                            size="sm"
                           >
                             Edit
-                          </button>
+                          </Button>
 
                           <button
                             type="button"
@@ -1484,7 +1434,7 @@ Conducted usability tests with 8 participants`}
                             className="p-1.5 rounded-md border border-red-500/40 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition"
                             title="Delete"
                           >
-                            <FaTrash className="h-3 w-3" />
+                            <Delete02Icon size={16} />
                           </button>
                         </div>
                       </td>

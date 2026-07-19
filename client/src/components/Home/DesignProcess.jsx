@@ -1,32 +1,32 @@
 ﻿import React from "react";
 import { motion } from "framer-motion";
 import {
-  FaSearch,
-  FaRegLightbulb,
-  FaPencilRuler,
-  FaFlask,
-} from "react-icons/fa";
+  Search01Icon,
+  BulbIcon,
+  PencilEdit01Icon,
+  TestTubeIcon,
+} from "hugeicons-react";
 
 const steps = [
   {
     title: "Discover",
     desc: "Understanding the problem and defining the goal.",
-    icon: FaSearch,
+    icon: Search01Icon,
   },
   {
     title: "Ideate",
     desc: "Brainstorm ideas and explore multiple design directions.",
-    icon: FaRegLightbulb,
+    icon: BulbIcon,
   },
   {
     title: "Design",
     desc: "Develop high-fidelity designs, focusing on usability and aesthetics.",
-    icon: FaPencilRuler,
+    icon: PencilEdit01Icon,
   },
   {
     title: "Test & Refine",
     desc: "Conduct usability testing to identify potential pain points.",
-    icon: FaFlask,
+    icon: TestTubeIcon,
   },
 ];
 
@@ -99,7 +99,7 @@ const DesignProcess = () => {
               >
                 {/* icon box */}
                 <div className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-md  bg-black/60">
-                  <Icon className="text-[28px] text-lime-400" />
+                  <Icon size={24} className="text-lime-400" />
                 </div>
 
                 {/* text */}

@@ -8,6 +8,7 @@ import {
   OWNER, PLANS, DEPOSIT_PCT,
   initialFx, fetchLiveRate, planPrice, planUSD, planKeyFromName, pct, formatNGN as N,
 } from "../config/plans";
+import { Button, Input, Textarea, Field } from "../components/ui";
 import goldBadge from "../assets/Gold.png";
 import silverBadge from "../assets/Silver.png";
 import platinumBadge from "../assets/Platinum.png";
@@ -73,34 +74,10 @@ const STEP_NAMES = {
 };
 
 /* ---------------- shared styles ---------------- */
-const inputCls = (invalid) =>
-  `w-full rounded-[10px] border bg-[#0c0e12] px-4 py-3 text-sm font-light text-white placeholder:text-zinc-500 outline-none transition-colors duration-200 focus:border-lime-400 focus:ring-2 focus:ring-lime-400/15 ${
-    invalid ? "border-orange-400" : "border-white/10"
-  }`;
 const cardCls = "rounded-2xl border border-white/10 bg-[#111318] px-5 py-8 sm:px-10";
-/* Button hierarchy: ONE primary action per view gets the green gradient;
-   everything secondary (back, cancel, edit) stays a quiet outline so the
-   page keeps a single visual rank. */
-const btnPrimary =
-  "rounded-[10px] bg-gradient-to-b from-lime-400 to-lime-600 px-7 py-3 text-sm font-bold text-black shadow-[0_0_18px_rgba(132,204,22,0.5)] transition hover:from-lime-300 hover:to-lime-500 hover:-translate-y-[1px] active:scale-[0.97] disabled:cursor-wait disabled:opacity-50";
-const btnBack =
-  "rounded-[10px] border border-white/15 px-7 py-3 text-sm font-semibold text-white/70 transition hover:border-lime-400/50 hover:text-lime-400 active:scale-[0.97]";
-const btnGhost = btnBack;
 
 /* ---------------- small render helpers ---------------- */
-const Label = ({ text, required, hint }) => (
-  <label className="mb-2 block text-sm font-medium text-white">
-    {text} {required && <span className="text-lime-400">*</span>}
-    {hint && <span className="mt-1 block text-xs font-light leading-relaxed text-zinc-500">{hint}</span>}
-  </label>
-);
-
 const fmt = (v) => (Array.isArray(v) ? v.join(", ") : v || "");
-
-/* Field primitives live at module level so their identity is stable across
-   renders — defining them inside the page component would remount the DOM
-   nodes on every keystroke and drop input focus. */
-const Field = ({ children }) => <div className="mb-6">{children}</div>;
 
 const SectionHead = ({ no, title, sub }) => (
   <>
@@ -110,24 +87,24 @@ const SectionHead = ({ no, title, sub }) => (
   </>
 );
 
-const Input = ({ name, type = "text", placeholder, answers, setField, invalid }) => (
-  <input
+const FormInput = ({ name, type = "text", placeholder, answers, setField, invalid }) => (
+  <Input
     type={type}
     name={name}
     placeholder={placeholder}
     value={answers[name] ?? ""}
     onChange={(e) => setField(name, e.target.value)}
-    className={inputCls(invalid.includes(name))}
+    className={invalid.includes(name) ? "border-orange-400" : ""}
   />
 );
 
-const Area = ({ name, placeholder, answers, setField, invalid }) => (
-  <textarea
+const FormArea = ({ name, placeholder, answers, setField, invalid }) => (
+  <Textarea
     name={name}
     placeholder={placeholder}
     value={answers[name] ?? ""}
     onChange={(e) => setField(name, e.target.value)}
-    className={`${inputCls(invalid.includes(name))} min-h-24 resize-y leading-relaxed`}
+    className={invalid.includes(name) ? "border-orange-400" : ""}
   />
 );
 
@@ -568,25 +545,24 @@ const BookPlan = () => {
           <div className={cardCls}>
             <SectionHead no={secNo("about")} title="About You & Your Business" sub="The basics — who you are and what your business does." />
             <div className="grid gap-x-4 sm:grid-cols-2">
-              <Field><Label text="First name" /><Input {...bind} name="first_name" /></Field>
-              <Field><Label text="Last name" /><Input {...bind} name="last_name" /></Field>
+              <Field label="First name"><FormInput {...bind} name="first_name" /></Field>
+              <Field label="Last name"><FormInput {...bind} name="last_name" /></Field>
             </div>
             <div className="grid gap-x-4 sm:grid-cols-2">
-              <Field><Label text="Email" required /><Input {...bind} name="email" type="email" placeholder="you@example.com" /></Field>
-              <Field><Label text="Phone / WhatsApp" required /><Input {...bind} name="phone" type="tel" placeholder="0800 000 0000" /></Field>
+              <Field label="Email" required><FormInput {...bind} name="email" type="email" placeholder="you@example.com" /></Field>
+              <Field label="Phone / WhatsApp" required><FormInput {...bind} name="phone" type="tel" placeholder="0800 000 0000" /></Field>
             </div>
-            <Field><Label text="Name of your brand / business" required /><Input {...bind} name="brand_name" placeholder="The name your customers will know you by" /></Field>
-            <Field><Label text="Tell me about your business and what it offers" hint="What services do you provide, and how? The more detail, the better." /><Area {...bind} name="business_about" /></Field>
-            <Field>
-              <Label text="What does your business focus on?" hint="Select all that apply." />
+            <Field label="Name of your brand / business" required><FormInput {...bind} name="brand_name" placeholder="The name your customers will know you by" /></Field>
+            <Field label="Tell me about your business and what it offers" hint="What services do you provide, and how? The more detail, the better."><FormArea {...bind} name="business_about" /></Field>
+            <Field label="What does your business focus on?" hint="Select all that apply.">
               <Chips {...cbind} name="focus" multi options={["Residential", "Commercial / Offices", "Industrial", "Post-construction", "Deep / Specialized", "Other"]} />
             </Field>
-            <Field><Label text="Which areas / locations do you serve?" /><Input {...bind} name="service_areas" placeholder="e.g. Okota, Lekki, V.I. — or nationwide" /></Field>
-            <Field><Label text="Certifications, training or insurance" hint="Anything that builds customer trust — business registration, trained staff, insurance cover." /><Area {...bind} name="trust_signals" /></Field>
-            <Field><Label text="What makes your firm different from every other company in your industry?" hint="Your method, your guarantee, your story, your standards — this can power a dedicated page on your website." /><Area {...bind} name="peculiarity" /></Field>
+            <Field label="Which areas / locations do you serve?"><FormInput {...bind} name="service_areas" placeholder="e.g. Okota, Lekki, V.I. — or nationwide" /></Field>
+            <Field label="Certifications, training or insurance" hint="Anything that builds customer trust — business registration, trained staff, insurance cover."><FormArea {...bind} name="trust_signals" /></Field>
+            <Field label="What makes your firm different from every other company in your industry?" hint="Your method, your guarantee, your story, your standards — this can power a dedicated page on your website."><FormArea {...bind} name="peculiarity" /></Field>
             <div className="grid gap-x-4 sm:grid-cols-2">
-              <Field><Label text="Short-term business goals" /><Area {...bind} name="goals_short" placeholder="Next 6–12 months" /></Field>
-              <Field><Label text="Long-term business goals" /><Area {...bind} name="goals_long" placeholder="The big picture" /></Field>
+              <Field label="Short-term business goals"><FormArea {...bind} name="goals_short" placeholder="Next 6–12 months" /></Field>
+              <Field label="Long-term business goals"><FormArea {...bind} name="goals_long" placeholder="The big picture" /></Field>
             </div>
           </div>
         )}
@@ -595,30 +571,28 @@ const BookPlan = () => {
         {step === "brand" && (
           <div className={cardCls}>
             <SectionHead no={secNo("brand")} title="Brand Identity" sub="How your brand should look, feel and be perceived." />
-            <Field><Label text="What's the idea behind your brand's name?" hint="The story, meaning, or inspiration behind the name — where it came from and what it stands for." /><Area {...bind} name="name_story" /></Field>
-            <Field><Label text="Who is your ideal target audience?" hint="Be specific — e.g. busy professionals, estate residents, offices, property managers." /><Area {...bind} name="audience" /></Field>
-            <Field><Label text="What are your brand values and mission?" /><Area {...bind} name="values" /></Field>
-            <Field><Label text="Is there a vision you want the brand to paint?" hint="Describe the picture you see when you imagine the finished brand and logo — scenes, feelings, imagery, symbols." /><Area {...bind} name="brand_vision" /></Field>
-            <Field><Label text="How do you want customers to perceive your brand?" hint="e.g. trustworthy, premium, friendly, professional." /><Input {...bind} name="perception" placeholder="3–5 words that should come to mind" /></Field>
-            <Field><Label text="If your brand were a person, how would you describe them?" hint="3–5 adjectives — e.g. confident, warm, meticulous, playful." /><Input {...bind} name="personality" /></Field>
-            <Field><Label text="Describe your desired design aesthetic" hint="e.g. clean and minimal, bold and modern, premium and elegant." /><Input {...bind} name="aesthetic" /></Field>
-            <Field><Label text="Any colour preferences?" hint="Colours you love, colours to avoid, and why." /><Input {...bind} name="colors" /></Field>
-            <Field>
-              <Label text="Do you have an existing logo or visual identity?" />
+            <Field label="What's the idea behind your brand's name?" hint="The story, meaning, or inspiration behind the name — where it came from and what it stands for."><FormArea {...bind} name="name_story" /></Field>
+            <Field label="Who is your ideal target audience?" hint="Be specific — e.g. busy professionals, estate residents, offices, property managers."><FormArea {...bind} name="audience" /></Field>
+            <Field label="What are your brand values and mission?"><FormArea {...bind} name="values" /></Field>
+            <Field label="Is there a vision you want the brand to paint?" hint="Describe the picture you see when you imagine the finished brand and logo — scenes, feelings, imagery, symbols."><FormArea {...bind} name="brand_vision" /></Field>
+            <Field label="How do you want customers to perceive your brand?" hint="e.g. trustworthy, premium, friendly, professional."><FormInput {...bind} name="perception" placeholder="3–5 words that should come to mind" /></Field>
+            <Field label="If your brand were a person, how would you describe them?" hint="3–5 adjectives — e.g. confident, warm, meticulous, playful."><FormInput {...bind} name="personality" /></Field>
+            <Field label="Describe your desired design aesthetic" hint="e.g. clean and minimal, bold and modern, premium and elegant."><FormInput {...bind} name="aesthetic" /></Field>
+            <Field label="Any colour preferences?" hint="Colours you love, colours to avoid, and why."><FormInput {...bind} name="colors" /></Field>
+            <Field label="Do you have an existing logo or visual identity?">
               <Chips {...cbind} name="existing_logo" options={["No — starting from scratch", "Yes — wants a revamp", "Yes — open to fresh direction"]} />
             </Field>
-            <Field><Label text="Brands or designs you admire" hint="Any industry. Names or links, and what you like about them." /><Area {...bind} name="inspiration" /></Field>
-            <Field><Label text="Anything you definitely don't want in your design?" /><Input {...bind} name="avoid" /></Field>
-            <Field><Label text="Who are your key competitors?" /><Input {...bind} name="competitors" /></Field>
-            <Field><Label text="Do you have a slogan or tagline?" hint="If not, I can help craft one." /><Input {...bind} name="tagline" /></Field>
+            <Field label="Brands or designs you admire" hint="Any industry. Names or links, and what you like about them."><FormArea {...bind} name="inspiration" /></Field>
+            <Field label="Anything you definitely don't want in your design?"><FormInput {...bind} name="avoid" /></Field>
+            <Field label="Who are your key competitors?"><FormInput {...bind} name="competitors" /></Field>
+            <Field label="Do you have a slogan or tagline?" hint="If not, I can help craft one."><FormInput {...bind} name="tagline" /></Field>
 
             {/* ── Merch designs picker — allowance comes from the chosen package ── */}
             {merchMax > 0 && (
-              <Field>
-                <Label
-                  text={`Pick your merch designs (${merchPicked.length} of ${merchMax})`}
-                  hint={`Your ${plan?.label || ""} package includes ${merchMax} merch design${merchMax > 1 ? "s" : ""}. Choose the pieces that actually fit your brand — a spa wants robes, not construction jackets. Don't see yours? Add it below.`}
-                />
+              <Field
+                label={`Pick your merch designs (${merchPicked.length} of ${merchMax})`}
+                hint={`Your ${plan?.label || ""} package includes ${merchMax} merch design${merchMax > 1 ? "s" : ""}. Choose the pieces that actually fit your brand — a spa wants robes, not construction jackets. Don't see yours? Add it below.`}
+              >
                 <div className="flex flex-wrap gap-2">
                   {[...MERCH_OPTIONS, ...customPicks].map((opt) => {
                     const picked = merchPicked.includes(opt);
@@ -644,22 +618,23 @@ const BookPlan = () => {
                   })}
                 </div>
                 <div className="mt-3 flex gap-2">
-                  <input
+                  <Input
                     value={customMerch}
                     onChange={(e) => setCustomMerch(e.target.value)}
                     onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomMerch(); } }}
                     placeholder="Something specific? e.g. Construction Jacket, Branded Robe..."
-                    className={inputCls(false) + " flex-1"}
+                    className="flex-1"
                     disabled={merchPicked.length >= merchMax}
                   />
-                  <button
+                  <Button
                     type="button"
+                    variant="secondary"
+                    size="md"
                     onClick={addCustomMerch}
                     disabled={!customMerch.trim() || merchPicked.length >= merchMax}
-                    className="rounded-[10px] border border-lime-400/40 px-5 text-sm text-lime-400 transition hover:bg-lime-400/10 disabled:opacity-40"
                   >
                     Add
-                  </button>
+                  </Button>
                 </div>
                 {merchPicked.length >= merchMax && (
                   <p className="mt-2 text-xs text-neutral-500">
@@ -690,31 +665,26 @@ const BookPlan = () => {
                 )
               }
             />
-            <Field>
-              <Label text="What is the primary purpose of your website?" />
+            <Field label="What is the primary purpose of your website?">
               <Chips {...cbind} name="site_purpose" multi options={["Attract new clients", "Showcase services", "Build credibility", "Generate quote requests", "Other"]} />
             </Field>
-            <Field><Label text="What actions should visitors take on the site?" /><Input {...bind} name="site_actions" placeholder="e.g. request a quote, call, book a service" /></Field>
-            <Field><Label text="The specialty page — what should it showcase?" hint="Building on what makes your firm different: your process, standards, a signature service, your guarantee." /><Area {...bind} name="specialty_page" /></Field>
-            <Field>
-              <Label text="Do you have website content ready?" hint="Text about your business, service descriptions, team info." />
+            <Field label="What actions should visitors take on the site?"><FormInput {...bind} name="site_actions" placeholder="e.g. request a quote, call, book a service" /></Field>
+            <Field label="The specialty page — what should it showcase?" hint="Building on what makes your firm different: your process, standards, a signature service, your guarantee."><FormArea {...bind} name="specialty_page" /></Field>
+            <Field label="Do you have website content ready?" hint="Text about your business, service descriptions, team info.">
               <Chips {...cbind} name="content_status" options={["Finalized and ready", "Have some — needs revision", "Needs to be created"]} />
             </Field>
-            <Field>
-              <Label text="Do you have photos of past projects?" hint="Before/after shots, your team at work — these power the portfolio page." />
+            <Field label="Do you have photos of past projects?" hint="Before/after shots, your team at work — these power the portfolio page.">
               <Chips {...cbind} name="photos" options={["Yes — plenty", "A few", "None yet"]} />
             </Field>
-            <Field><Label text="Websites you like" hint="Any industry — links and what you like about them." /><Area {...bind} name="site_refs" /></Field>
-            <Field>
-              <Label text="Features you'd like on the site" />
+            <Field label="Websites you like" hint="Any industry — links and what you like about them."><FormArea {...bind} name="site_refs" /></Field>
+            <Field label="Features you'd like on the site">
               <Chips {...cbind} name="features" multi options={["Contact form", "Quote request form", "WhatsApp chat button", "Image gallery", "Testimonials", "Social media links"]} />
             </Field>
-            <Field>
-              <Label text="Preferred domain names — in order of preference" hint="e.g. yourbrand.com / yourbrand.ng — I'll check availability and advise." />
+            <Field label="Preferred domain names — in order of preference" hint="e.g. yourbrand.com / yourbrand.ng — I'll check availability and advise.">
               <div className="grid gap-3 sm:grid-cols-3">
-                <Input {...bind} name="domain_1" placeholder="1st choice" />
-                <Input {...bind} name="domain_2" placeholder="2nd choice" />
-                <Input {...bind} name="domain_3" placeholder="3rd choice" />
+                <FormInput {...bind} name="domain_1" placeholder="1st choice" />
+                <FormInput {...bind} name="domain_2" placeholder="2nd choice" />
+                <FormInput {...bind} name="domain_3" placeholder="3rd choice" />
               </div>
             </Field>
             <div className="rounded-[10px] border border-lime-400/40 bg-lime-400/10 px-4 py-3.5 text-[13px] font-light leading-relaxed">
@@ -727,14 +697,13 @@ const BookPlan = () => {
         {step === "social" && (
           <div className={cardCls}>
             <SectionHead no={secNo("social")} title="Social Media" sub="Your package includes social media designs — let's make sure they hit the right note." />
-            <Field><Label text="Which platforms are you currently active on?" hint="Share handles or links if available." /><Input {...bind} name="social_active" /></Field>
-            <Field>
-              <Label text="Which platforms does your audience use the most?" />
+            <Field label="Which platforms are you currently active on?" hint="Share handles or links if available."><FormInput {...bind} name="social_active" /></Field>
+            <Field label="Which platforms does your audience use the most?">
               <Chips {...cbind} name="social_platforms" multi options={["Instagram", "Facebook", "WhatsApp", "LinkedIn", "TikTok", "X (Twitter)"]} />
             </Field>
-            <Field><Label text="What should the social media designs promote or announce?" /><Input {...bind} name="social_content" /></Field>
-            <Field><Label text="Preferred tone of voice" hint="e.g. professional, friendly, premium, playful." /><Input {...bind} name="social_tone" /></Field>
-            <Field><Label text="Any social media accounts you admire?" /><Input {...bind} name="social_refs" /></Field>
+            <Field label="What should the social media designs promote or announce?"><FormInput {...bind} name="social_content" /></Field>
+            <Field label="Preferred tone of voice" hint="e.g. professional, friendly, premium, playful."><FormInput {...bind} name="social_tone" /></Field>
+            <Field label="Any social media accounts you admire?"><FormInput {...bind} name="social_refs" /></Field>
           </div>
         )}
 
@@ -742,20 +711,17 @@ const BookPlan = () => {
         {step === "working" && (
           <div className={cardCls}>
             <SectionHead no={secNo("working")} title="Working Together" sub="How you'd like the project to run, day to day." />
-            <Field>
-              <Label text="How long would you like the project to take?" hint="Your preference — the final timeline is confirmed with you after I review your answers and scope." />
+            <Field label="How long would you like the project to take?" hint="Your preference — the final timeline is confirmed with you after I review your answers and scope.">
               <Chips {...cbind} name="duration" options={["2 weeks", "3 weeks", "4 weeks", "Flexible — advise me"]} />
             </Field>
-            <Field>
-              <Label text="Preferred communication channels" />
+            <Field label="Preferred communication channels">
               <Chips {...cbind} name="comm" multi options={["WhatsApp", "Phone calls", "Email", "Video calls"]} />
             </Field>
-            <Field>
-              <Label text="How often would you like progress updates?" />
+            <Field label="How often would you like progress updates?">
               <Chips {...cbind} name="updates" options={["Daily", "Every 2–3 days", "At each milestone"]} />
             </Field>
-            <Field><Label text="Who will review work and give approvals on your end?" /><Input {...bind} name="approver" placeholder="e.g. Myself" /></Field>
-            <Field><Label text="Anything else I should know before we begin?" /><Area {...bind} name="anything_else" /></Field>
+            <Field label="Who will review work and give approvals on your end?"><FormInput {...bind} name="approver" placeholder="e.g. Myself" /></Field>
+            <Field label="Anything else I should know before we begin?"><FormArea {...bind} name="anything_else" /></Field>
           </div>
         )}
 
@@ -790,16 +756,15 @@ const BookPlan = () => {
                   <div className="mt-1 border-t border-dashed border-white/10 pt-3">
                     <div className="mb-1.5 text-xs text-neutral-400">Have a discount code?</div>
                     <div className="flex gap-2">
-                      <input
+                      <Input
                         value={discountCode}
                         onChange={(e) => { setDiscountCode(e.target.value.toUpperCase()); setDiscountInfo(null); }}
                         placeholder="e.g. GRACE10"
-                        className="w-40 rounded-lg border border-white/15 bg-[#0c0e12] px-3 py-2 text-xs uppercase tracking-wide text-white outline-none focus:border-lime-400/60"
+                        className="w-40 !text-xs !px-3 !py-2 uppercase tracking-wide"
                       />
-                      <button type="button" onClick={applyCode} disabled={!discountCode.trim()}
-                        className="rounded-lg border border-lime-400/40 px-3.5 py-2 text-xs text-lime-400 hover:bg-lime-400/10 disabled:opacity-40">
+                      <Button type="button" variant="secondary" size="sm" onClick={applyCode} disabled={!discountCode.trim()}>
                         Apply
-                      </button>
+                      </Button>
                     </div>
                     {discountInfo?.ok && (
                       <div className="mt-2 text-xs text-lime-300">✓ {discountInfo.label} — you save {N(discountInfo.amount)}. New total: {N(discountInfo.finalPrice)}.</div>
@@ -835,12 +800,12 @@ const BookPlan = () => {
 
         {/* ---------- nav ---------- */}
         <div className="mt-7 flex items-center justify-between">
-          <button type="button" onClick={() => stepIdx > 0 && setStepIdx(stepIdx - 1)} className={btnBack} style={{ visibility: stepIdx === 0 ? "hidden" : "visible" }}>
+          <Button type="button" variant="secondary" size="md" onClick={() => stepIdx > 0 && setStepIdx(stepIdx - 1)} style={{ visibility: stepIdx === 0 ? "hidden" : "visible" }}>
             ← Back
-          </button>
-          <button type="button" onClick={next} disabled={submitting} className={btnPrimary}>
+          </Button>
+          <Button type="button" variant="primary" size="md" onClick={next} disabled={submitting}>
             {submitting ? "Sending…" : stepIdx === flow.length - 1 ? "Submit ✓" : "Continue →"}
-          </button>
+          </Button>
         </div>
 
         <div className="mt-10 text-center text-xs text-zinc-600">
@@ -897,9 +862,9 @@ const BookPlan = () => {
               </ol>
             </div>
             <div className="flex flex-wrap justify-center gap-3">
-              <button type="button" onClick={() => navigate("/")} className={btnPrimary}>Back to home →</button>
-              <button type="button" onClick={() => downloadResponses("txt")} className={btnGhost}>Download responses (.txt)</button>
-              <button type="button" onClick={() => downloadResponses("json")} className={btnGhost}>Download .json</button>
+              <Button type="button" variant="primary" size="md" onClick={() => navigate("/")}>Back to home →</Button>
+              <Button type="button" variant="ghost" size="md" onClick={() => downloadResponses("txt")}>Download responses (.txt)</Button>
+              <Button type="button" variant="ghost" size="md" onClick={() => downloadResponses("json")}>Download .json</Button>
             </div>
             <div className={`mt-3.5 text-xs ${result.ok ? "text-lime-400" : "text-orange-300"}`}>
               {result.ok ? "✓ Submission received" : "Submission hit a snag — please use the download button so nothing is lost."}

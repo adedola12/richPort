@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import TypingText from "../common/TypingText";
+import Button from "../ui/Button";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 32 },
@@ -82,23 +83,14 @@ const BuildSection = () => {
             </p>
 
             {/* CTA button – navigates to /rate-details */}
-            <button
-              type="button"
+            <Button
+              variant="primary"
+              size="md"
+              className="mt-2"
               onClick={() => navigate("/contact")}
-              className="
-                mt-2 inline-flex items-center justify-center
-                rounded-lg
-                bg-gradient-to-b from-lime-400 to-lime-600
-                px-8 py-3
-                text-sm sm:text-base font-bold
-                text-zinc-900
-                shadow-[0_0_22px_rgba(190,242,100,0.6)]
-                transition
-                hover:brightness-110 hover:shadow-[0_0_30px_rgba(190,242,100,0.8)]
-              "
             >
               Send a Message
-            </button>
+            </Button>
           </div>
         </motion.div>
       </div>

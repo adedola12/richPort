@@ -6,7 +6,7 @@ const headerItem = {
   hidden: { opacity: 0, y: 22 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 0.61, 0.36, 1] } },
 };
-import { LuChevronLeft, LuChevronRight, LuX } from "react-icons/lu";
+import { ArrowLeft01Icon, ArrowRight01Icon, Cancel01Icon } from "hugeicons-react";
 
 import gimg1 from "../../assets/Bookrion/g1.jpg";
 import gimg2 from "../../assets/Bookrion/g2.jpg";
@@ -211,7 +211,7 @@ const DiscoverImg = ({ project }) => {
               }}
               className="absolute top-5 right-5 inline-flex items-center justify-center rounded-full border border-white/30 bg-black/60 p-2 text-white hover:bg-white/10"
             >
-              <LuX className="h-5 w-5" />
+              <Cancel01Icon size={20} />
             </button>
 
             <button
@@ -219,7 +219,7 @@ const DiscoverImg = ({ project }) => {
               onClick={showPrev}
               className="absolute left-5 md:left-10 inline-flex items-center justify-center rounded-full border border-white/40 bg-black/70 p-2 md:p-3 text-white hover:bg-white/10"
             >
-              <LuChevronLeft className="h-6 w-6 md:h-7 md:w-7" />
+              <ArrowLeft01Icon size={24} />
             </button>
 
             <button
@@ -227,7 +227,7 @@ const DiscoverImg = ({ project }) => {
               onClick={showNext}
               className="absolute right-5 md:right-10 inline-flex items-center justify-center rounded-full border border-white/40 bg-black/70 p-2 md:p-3 text-white hover:bg-white/10"
             >
-              <LuChevronRight className="h-6 w-6 md:h-7 md:w-7" />
+              <ArrowRight01Icon size={24} />
             </button>
 
             <motion.img

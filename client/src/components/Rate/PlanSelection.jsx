@@ -1,9 +1,9 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { HiFire } from "react-icons/hi";
+import { Fire02Icon } from "hugeicons-react";
 import { planKeyFromName } from "../../config/plans";
-import GlowButton from "../common/GlowButton";
+import { Button } from "../ui";
 import goldBadge    from "../../assets/Gold.png";
 import silverBadge  from "../../assets/Silver.png";
 import platinumBadge from "../../assets/Platinum.png";
@@ -144,7 +144,7 @@ const PlanSelection = ({
                       <img src={badge.src} alt={plan.name} className={`${badge.h} w-auto object-contain`} />
                       {badgeType === "recommended" && (
                         <div className="inline-flex items-center rounded-full bg-gradient-to-b from-lime-500 to-lime-700 px-3 py-1 text-[11px] font-semibold text-white">
-                          <HiFire className="mr-1 h-3 w-3" />
+                          <Fire02Icon size={12} className="mr-1" />
                           {badgeLabel}
                         </div>
                       )}
@@ -165,13 +165,15 @@ const PlanSelection = ({
 
                     {/* CTA */}
                     <div className="mt-auto pt-6">
-                      <GlowButton
+                      <Button
                         type="button"
                         onClick={() => bookPlan(plan)}
-                        className="inline-flex w-full items-center justify-center px-4 py-3 text-sm"
+                        variant="primary"
+                        size="md"
+                        className="w-full"
                       >
                         Book this plan
-                      </GlowButton>
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -221,13 +223,15 @@ const PlanSelection = ({
 
                 {/* CTA */}
                 <div className="mt-auto pt-6">
-                  <GlowButton
+                  <Button
                     type="button"
                     onClick={() => bookPlan(plan)}
-                    className="inline-flex w-full items-center justify-center px-4 py-3 text-sm"
+                    variant="primary"
+                    size="md"
+                    className="w-full"
                   >
                     Book this plan
-                  </GlowButton>
+                  </Button>
                 </div>
               </div>
             </motion.div>
@@ -237,22 +241,18 @@ const PlanSelection = ({
 
       {/* ── VIEW DELIVERABLES CTA ── */}
       <div className="mt-12 flex flex-col items-center gap-3">
-        <button
+        <Button
           type="button"
           onClick={handleViewDeliverables}
-          className="
-            inline-flex items-center justify-center gap-2
-            rounded-2xl bg-gradient-to-b from-lime-400 to-lime-600
-            px-10 py-3 text-sm sm:text-base font-bold text-black
-            shadow-[0_0_22px_rgba(132,204,22,0.5)]
-            transition hover:from-lime-300 hover:to-lime-500 hover:-translate-y-[1px] active:scale-[0.97]
-          "
+          variant="primary"
+          size="md"
+          className="gap-2"
         >
           {detailsOpen ? "Hide Deliverables" : "View Deliverables"}
           <span className={`transition-transform duration-300 ${detailsOpen ? "rotate-180" : ""}`}>
             ↓
           </span>
-        </button>
+        </Button>
 
         <Link
           to="/projects"

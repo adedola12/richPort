@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import TypingText from "../common/TypingText";
-import { LuCheckCheck } from "react-icons/lu";
+import { CheckmarkCircle02Icon } from "hugeicons-react";
 import concImg from "../../assets/Bookrion/concImg.jpg";
 
 const SILVER_WORD = {
@@ -63,7 +63,7 @@ const ProjectConc = ({ project }) => {
           >
             <motion.div className="flex flex-col gap-1" variants={fadeLeft}>
               <div className="inline-flex max-w-max items-center gap-2 rounded-full bg-lime-500/10 border border-lime-500/25 px-3 py-1.5">
-                <LuCheckCheck className="h-3 w-3 text-lime-400 shrink-0" />
+                <CheckmarkCircle02Icon size={12} className="text-lime-400 shrink-0" />
                 <span className="text-[10px] font-bold text-lime-400 leading-none uppercase tracking-widest whitespace-nowrap">
                   Results
                 </span>

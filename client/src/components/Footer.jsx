@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 import abtImg from "../assets/abtImg.jpg";
+import { buttonClasses } from "./ui";
 
 const VIDEO_SRC =
   "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260503_144509_89e2d612-8af2-45c3-90f4-4831bc60715d.mp4";
@@ -487,11 +488,7 @@ const Footer = () => {
               >
                 <Link
                   to="/contact"
-                  style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "13px 28px", background: "#a3e635", color: "#000", fontFamily: "'DM Sans', sans-serif", fontSize: 13.5, fontWeight: 700, borderRadius: 10, textDecoration: "none", boxShadow: "0 6px 20px rgba(132,204,22,0.35)", transition: "background 0.2s, transform 0.15s" }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = "#bef264"; e.currentTarget.style.transform = "translateY(-1px)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = "#a3e635"; e.currentTarget.style.transform = "translateY(0)"; }}
-                  onTouchStart={(e) => { e.currentTarget.style.background = "#bef264"; }}
-                  onTouchEnd={(e) => { e.currentTarget.style.background = "#a3e635"; }}
+                  className={buttonClasses("primary", "md")}
                 >
                   {easterEgg ? "Yes, let's go →" : "Get in Touch"}
                 </Link>

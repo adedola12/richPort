@@ -1,7 +1,9 @@
 ﻿// src/components/admin/GraphicProjectsTab.jsx
 import React from "react";
 import { createPortal } from "react-dom";
+import { Delete02Icon } from "hugeicons-react";
 import { graphicProjectsApi } from "../../api/graphicProjectsApi";
+import { Button, Input, Textarea, Select, Label } from "../ui";
 
 /* -------------------- small UI bits -------------------- */
 function Toggle({ checked, onChange, label = "Toggle" }) {
@@ -37,19 +39,11 @@ function Toggle({ checked, onChange, label = "Toggle" }) {
 function TextField({ label, value, onChange, placeholder = "" }) {
   return (
     <div className="w-full">
-      <label className="block text-[10px] font-semibold text-white/70 mb-2">
-        {label}
-      </label>
-      <input
+      <Label>{label}</Label>
+      <Input
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className={[
-          "w-full h-10 rounded-lg px-3",
-          "bg-white/5 border border-white/10 text-white/80",
-          "text-[12px]",
-          "outline-none focus:ring-2 focus:ring-lime-400/25",
-        ].join(" ")}
       />
     </div>
   );
@@ -66,35 +60,6 @@ function ToolBtn({ children }) {
         "hover:bg-white/10 transition-colors",
         "focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/30",
       ].join(" ")}
-    >
-      {children}
-    </button>
-  );
-}
-
-function SmallBtn({ children, onClick, disabled, title, variant = "ghost" }) {
-  const base = [
-    "h-9 px-4 rounded-md",
-    "text-[11px] font-bold",
-    "transition-colors",
-    "focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/30",
-    disabled ? "opacity-60 cursor-not-allowed" : "",
-  ];
-
-  const styles =
-    variant === "primary"
-      ? "bg-lime-500/90 text-black hover:bg-lime-400"
-      : variant === "danger"
-        ? "bg-red-500/20 text-red-100 border border-red-500/30 hover:bg-red-500/25"
-        : "border border-white/12 bg-white/5 text-white/80 hover:bg-white/10";
-
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      title={title}
-      className={[...base, styles].join(" ")}
     >
       {children}
     </button>
@@ -315,25 +280,25 @@ function MoreImagesModal({
               </div>
 
               <div className="flex flex-wrap items-center gap-2">
-                <SmallBtn onClick={onClose} disabled={cloudBusy} title="Close">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={onClose}
+                  disabled={cloudBusy}
+                  title="Close"
+                >
                   Close
-                </SmallBtn>
+                </Button>
               </div>
             </div>
 
             {/* Search + Actions */}
             <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex-1">
-                <input
+                <Input
                   value={q}
                   onChange={(e) => setQ(e.target.value)}
                   placeholder="Search by publicId (or URL)…"
-                  className={[
-                    "w-full h-10 rounded-lg px-3",
-                    "bg-white/5 border border-white/10 text-white/80",
-                    "text-[12px]",
-                    "outline-none focus:ring-2 focus:ring-lime-400/25",
-                  ].join(" ")}
                   disabled={cloudBusy}
                 />
                 {query && (
@@ -345,7 +310,9 @@ function MoreImagesModal({
               </div>
 
               <div className="flex flex-wrap items-center gap-2">
-                <SmallBtn
+                <Button
+                  variant="secondary"
+                  size="sm"
                   onClick={() =>
                     allVisibleSelected
                       ? deselectAllVisible()
@@ -355,32 +322,37 @@ function MoreImagesModal({
                   title="Select all results"
                 >
                   {allVisibleSelected ? "Unselect visible" : "Select visible"}
-                </SmallBtn>
+                </Button>
 
-                <SmallBtn
+                <Button
+                  variant="secondary"
+                  size="sm"
                   onClick={clearSelection}
                   disabled={cloudBusy || selectedCount === 0}
                   title="Clear selection"
                 >
                   Clear selection
-                </SmallBtn>
+                </Button>
 
-                <SmallBtn
+                <Button
                   variant="danger"
+                  size="sm"
                   onClick={doRemoveSelected}
                   disabled={cloudBusy || selectedCount === 0}
                   title="Remove selected from project list"
                 >
                   Remove selected ({selectedCount})
-                </SmallBtn>
+                </Button>
 
-                <SmallBtn
+                <Button
+                  variant="secondary"
+                  size="sm"
                   onClick={doCloudDeleteSelected}
                   disabled={cloudBusy || selectedCount === 0}
                   title="Delete selected from Cloudinary and remove"
                 >
                   Cloud delete selected
-                </SmallBtn>
+                </Button>
               </div>
             </div>
 
@@ -472,7 +444,7 @@ function MoreImagesModal({
                         ].join(" ")}
                         title="Remove from project list"
                       >
-                        ✕
+                        <Delete02Icon size={14} />
                       </button>
 
                       {/* Delete from Cloud */}
@@ -953,36 +925,26 @@ export default function GraphicProjectsTab() {
             <div className="flex flex-wrap items-center gap-2">
               {existingProject?._id && (
                 <>
-                  <button
-                    type="button"
+                  <Button
+                    variant="secondary"
+                    size="sm"
                     onClick={() => loadIntoForm(existingProject)}
-                    className={[
-                      "h-9 px-4 rounded-md",
-                      "border border-white/12 bg-white/5 text-white/80",
-                      "text-[11px] font-bold",
-                      "hover:bg-white/10 transition-colors",
-                    ].join(" ")}
                   >
                     Load for Editing
-                  </button>
+                  </Button>
 
-                  <button
-                    type="button"
+                  <Button
+                    variant="secondary"
+                    size="sm"
                     onClick={() => {
                       resetEditor();
                       setOkMsg(
                         "Editor cleared. Enable Override/Edit mode and save to replace the existing project.",
                       );
                     }}
-                    className={[
-                      "h-9 px-4 rounded-md",
-                      "border border-white/12 bg-white/5 text-white/70",
-                      "text-[11px] font-bold",
-                      "hover:bg-white/10 transition-colors",
-                    ].join(" ")}
                   >
                     Clear Editor
-                  </button>
+                  </Button>
 
                   <div className="flex items-center gap-2 ml-1">
                     <span className="text-[10px] text-white/60">
@@ -998,18 +960,13 @@ export default function GraphicProjectsTab() {
               )}
 
               {!existingProject?._id && (
-                <button
-                  type="button"
+                <Button
+                  variant="secondary"
+                  size="sm"
                   onClick={() => refreshAdminRead({ autoLoad: true })}
-                  className={[
-                    "h-9 px-4 rounded-md",
-                    "border border-white/12 bg-white/5 text-white/80",
-                    "text-[11px] font-bold",
-                    "hover:bg-white/10 transition-colors",
-                  ].join(" ")}
                 >
                   Refresh
-                </button>
+                </Button>
               )}
             </div>
           </div>
@@ -1086,18 +1043,12 @@ export default function GraphicProjectsTab() {
               />
             </div>
 
-            <input
+            <Input
               value={headline}
               onChange={(e) => setHeadline(e.target.value)}
               placeholder="Headline"
               disabled={!headlineEnabled}
-              className={[
-                "mt-2 w-full h-10 rounded-lg px-3",
-                "bg-white/5 border border-white/10 text-white/80",
-                "text-[12px]",
-                "outline-none focus:ring-2 focus:ring-lime-400/25",
-                !headlineEnabled ? "opacity-50 cursor-not-allowed" : "",
-              ].join(" ")}
+              className="mt-2"
             />
           </div>
 
@@ -1120,18 +1071,12 @@ export default function GraphicProjectsTab() {
                 !bodyEnabled ? "opacity-50" : "",
               ].join(" ")}
             >
-              <textarea
+              <Textarea
                 value={bodyText}
                 onChange={(e) => setBodyText(e.target.value)}
                 placeholder="Write here..."
                 disabled={!bodyEnabled}
-                className={[
-                  "w-full h-[180px] resize-none p-3",
-                  "bg-transparent text-white/80",
-                  "text-[12px]",
-                  "outline-none",
-                  !bodyEnabled ? "cursor-not-allowed" : "",
-                ].join(" ")}
+                className="h-[180px]"
               />
 
               <div className="flex items-center gap-2 px-2 py-2 border-t border-white/10 bg-black/20">
@@ -1150,24 +1095,19 @@ export default function GraphicProjectsTab() {
 
           {/* Headline image upload */}
           <div className="mt-5 flex items-center gap-3">
-            <button
-              type="button"
+            <Button
+              variant="primary"
+              size="md"
               onClick={triggerMainUpload}
-              className={[
-                "flex-1 h-10 rounded-lg",
-                "border border-lime-400/45 bg-white/5",
-                "text-[11px] font-semibold text-white/75",
-                "hover:bg-white/10 transition-colors",
-                "focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/30",
-              ].join(" ")}
               disabled={uploadingMain}
+              className="flex-1"
             >
               {uploadingMain
                 ? "Uploading..."
                 : headlineImage
                   ? "Replace Image ✓"
                   : "Upload Image"}
-            </button>
+            </Button>
 
             <input
               ref={mainImageInputRef}
@@ -1196,13 +1136,13 @@ export default function GraphicProjectsTab() {
                 </div>
               </div>
 
-              <button
-                type="button"
+              <Button
+                variant="danger"
+                size="sm"
                 onClick={removeHeadline}
-                className="text-[10px] font-semibold text-white/65 hover:text-white"
               >
                 Remove
-              </button>
+              </Button>
             </div>
           )}
 
@@ -1225,18 +1165,12 @@ export default function GraphicProjectsTab() {
               />
             </div>
 
-            <button
-              type="button"
+            <Button
+              variant="secondary"
+              size="md"
               onClick={triggerOtherUpload}
               disabled={!otherImagesEnabled || uploadingOthers}
-              className={[
-                "mt-4 w-full h-[110px] rounded-xl",
-                "border border-dashed border-white/15 bg-white/5",
-                "grid place-items-center",
-                "hover:bg-white/10 transition-colors",
-                "focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/25",
-                !otherImagesEnabled ? "opacity-50 cursor-not-allowed" : "",
-              ].join(" ")}
+              className="mt-4 w-full h-[110px] flex flex-col items-center justify-center"
             >
               <div className="flex flex-col items-center gap-2">
                 <span className="text-[11px] font-semibold text-white/70">
@@ -1246,7 +1180,7 @@ export default function GraphicProjectsTab() {
                   Uploaded: {otherImages.length} (min 16, max 50)
                 </span>
               </div>
-            </button>
+            </Button>
 
             <input
               ref={otherImagesInputRef}
@@ -1266,21 +1200,21 @@ export default function GraphicProjectsTab() {
                   </p>
 
                   <div className="flex items-center gap-3">
-                    <button
-                      type="button"
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={() => setMoreOpen(true)}
-                      className="text-[10px] font-semibold text-white/70 hover:text-white"
                     >
                       Open full gallery →
-                    </button>
+                    </Button>
 
-                    <button
-                      type="button"
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={clearAllOther}
-                      className="text-[10px] font-semibold text-white/60 hover:text-white"
                     >
                       Clear all
-                    </button>
+                    </Button>
                   </div>
                 </div>
 
@@ -1299,24 +1233,20 @@ export default function GraphicProjectsTab() {
                       <button
                         type="button"
                         onClick={() => removeOtherAt(idx)}
-                        className="absolute right-1 top-1 rounded-md bg-black/60 px-1.5 py-0.5 text-[9px] font-semibold text-white/85 hover:bg-black/80"
+                        className="absolute right-1 top-1 rounded-md bg-black/60 p-1 text-white/85 hover:bg-black/80"
                         title="Remove"
                       >
-                        ✕
+                        <Delete02Icon size={12} />
                       </button>
                     </div>
                   ))}
 
                   {otherImages.length > 18 && (
-                    <button
-                      type="button"
+                    <Button
+                      variant="secondary"
+                      size="md"
                       onClick={() => setMoreOpen(true)}
-                      className={[
-                        "h-16 rounded-lg border border-white/10 bg-white/5",
-                        "grid place-items-center",
-                        "hover:bg-white/10 transition-colors",
-                        "focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/25",
-                      ].join(" ")}
+                      className="h-16 flex flex-col items-center justify-center"
                       aria-label="Show all other images"
                       title="Show all other images"
                     >
@@ -1326,7 +1256,7 @@ export default function GraphicProjectsTab() {
                       <span className="text-[9px] text-white/45">
                         Click
                       </span>
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
@@ -1350,22 +1280,11 @@ export default function GraphicProjectsTab() {
         )}
 
         <div className="mt-6">
-          <button
-            type="button"
+          <Button
+            variant="primary"
+            size="md"
             onClick={onSave}
             disabled={saving || (!canCreate && !overrideExisting)}
-            className={[
-              "h-9 px-5 rounded-md",
-              "bg-lime-500/90 text-black",
-              "text-[11px] font-bold",
-              "shadow-[0_10px_30px_rgba(132,204,22,0.18)]",
-              "hover:bg-lime-400 transition-colors",
-              "focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/35",
-              saving ? "opacity-70 cursor-not-allowed" : "",
-              !canCreate && !overrideExisting
-                ? "opacity-60 cursor-not-allowed"
-                : "",
-            ].join(" ")}
             title={
               !canCreate && !overrideExisting
                 ? "Enable Override/Edit to update the existing project."
@@ -1377,7 +1296,7 @@ export default function GraphicProjectsTab() {
               : canCreate
                 ? "Create Project"
                 : "Save Changes (Override)"}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 ﻿// src/components/Rate/RateForm.jsx
 import React, { useState } from "react";
-import { FiCheck } from "react-icons/fi";
+import { Tick02Icon } from "hugeicons-react";
+import { Button, Input, Textarea, Label, Field } from "../ui";
 
 const API_URL = import.meta.env.VITE_AUTH_ENDPOINT || "";
 
@@ -103,12 +104,6 @@ const RateForm = () => {
     "shadow-[0_24px_80px_rgba(0,0,0,0.9)] px-6 py-6 sm:px-8 sm:py-7 " +
     "transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[0_30px_100px_rgba(0,0,0,1)]";
 
-  const underlineWrapper =
-    "mt-3 border-b border-[#242424] pb-2 transition-colors duration-150 focus-within:border-lime-400";
-
-  const underlineInput =
-    "w-full bg-transparent text-sm text-white placeholder:text-zinc-500 focus:outline-none";
-
   return (
     <section
       id="rate-form"
@@ -122,48 +117,30 @@ const RateForm = () => {
             <div className={cardBase}>
               <div className="grid gap-8 md:grid-cols-2">
                 {/* Full Name */}
-                <div>
-                  <label
-                    htmlFor="fullName"
-                    className="block text-sm font-semibold text-white"
-                  >
-                    Full Name
-                  </label>
-                  <div className={underlineWrapper}>
-                    <input
-                      id="fullName"
-                      type="text"
-                      name="fullName"
-                      value={form.fullName}
-                      onChange={handleChange}
-                      placeholder="Type here"
-                      required
-                      className={underlineInput}
-                    />
-                  </div>
-                </div>
+                <Field label="Full Name">
+                  <Input
+                    id="fullName"
+                    type="text"
+                    name="fullName"
+                    value={form.fullName}
+                    onChange={handleChange}
+                    placeholder="Type here"
+                    required
+                  />
+                </Field>
 
                 {/* Email */}
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-semibold text-white"
-                  >
-                    Email
-                  </label>
-                  <div className={underlineWrapper}>
-                    <input
-                      id="email"
-                      type="email"
-                      name="email"
-                      value={form.email}
-                      onChange={handleChange}
-                      placeholder="Type here"
-                      required
-                      className={underlineInput}
-                    />
-                  </div>
-                </div>
+                <Field label="Email">
+                  <Input
+                    id="email"
+                    type="email"
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder="Type here"
+                    required
+                  />
+                </Field>
               </div>
             </div>
 
@@ -198,9 +175,10 @@ const RateForm = () => {
                           peer-checked:shadow-[0_0_14px_rgba(190,242,100,0.7)]
                         "
                       >
-                        <FiCheck
+                        <Tick02Icon
+                          size={16}
                           className={`
-                            h-4 w-4 text-lime-400
+                            text-lime-400
                             transition-opacity duration-150
                             ${checked ? "opacity-100" : "opacity-0"}
                           `}
@@ -265,44 +243,29 @@ const RateForm = () => {
 
             {/* Row 4: Message */}
             <div className={cardBase}>
-              <label
-                htmlFor="message"
-                className="block text-sm font-semibold text-white"
-              >
-                Your Message
-              </label>
-              <div className={`${underlineWrapper} mt-4`}>
-                <textarea
+              <Field label="Your Message">
+                <Textarea
                   id="message"
                   name="message"
                   value={form.message}
                   onChange={handleChange}
                   placeholder="Type here"
                   rows={4}
-                  className={`${underlineInput} resize-none`}
                 />
-              </div>
+              </Field>
             </div>
 
             {/* Submit */}
             <div className="flex justify-center pt-2">
-              <button
+              <Button
                 type="submit"
                 disabled={status.type === "loading"}
-                className="
-                  inline-flex min-w-[160px] items-center justify-center
-                  rounded-md
-                  bg-gradient-to-b from-lime-400 to-lime-600
-                  px-10 py-3
-                  text-sm font-semibold text-black
-                  shadow-[0_18px_60px_rgba(132,204,22,0.7)]
-                  transition-transform duration-200
-                  hover:-translate-y-[1px] hover:brightness-110
-                  disabled:cursor-not-allowed disabled:opacity-70
-                "
+                variant="primary"
+                size="md"
+                className="min-w-[160px]"
               >
                 {status.type === "loading" ? "Submitting..." : "Submit"}
-              </button>
+              </Button>
             </div>
 
             {status.type !== "idle" && (

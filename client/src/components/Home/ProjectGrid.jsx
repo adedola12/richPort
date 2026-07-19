@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { fetchJson } from "../../api/http";
+import Button from "../ui/Button";
 
 import GraphicHeroImg from "../../assets/Graphics/HeroImg.webp";
 import ydpayThumb from "../../assets/YDpay/iphone15pro.webp";
@@ -250,13 +251,14 @@ function WebsiteDesignHeroCard({ onView }) {
             <p className="mt-3 max-w-[520px] text-[12px] sm:text-[13px] leading-5 text-white/55">
               Five live website projects — interactive browser previews, client comments, and full case details.
             </p>
-            <button
-              type="button"
+            <Button
+              variant="primary"
+              size="sm"
+              className="mt-5"
               onClick={(e) => { e.stopPropagation(); onView(); }}
-              className="mt-5 inline-flex items-center justify-center h-9 rounded-md px-4 bg-gradient-to-b from-lime-400 to-lime-600 text-[11px] font-bold text-black shadow-[0_0_16px_rgba(132,204,22,0.45)] hover:from-lime-300 hover:to-lime-500 active:scale-95 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-lime-400/40"
             >
               View Projects
-            </button>
+            </Button>
           </div>
         </div>
       </div>

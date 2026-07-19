@@ -1,11 +1,12 @@
 ﻿import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { CheckmarkCircle04Icon } from "hugeicons-react";
 import { planKeyFromName } from "../../config/plans";
+import { Button } from "../ui";
 import goldBadge    from "../../assets/Gold.png";
 import silverBadge  from "../../assets/Silver.png";
 import platinumBadge from "../../assets/Platinum.png";
-import { BsCheckCircle } from "react-icons/bs";
 
 const BADGES = [
   { src: goldBadge,     h: "h-18" },
@@ -23,7 +24,7 @@ const nameSx = {
 
 // Outline circular check with subtle glow
 const PlanCheck = () => (
-  <BsCheckCircle className="h-5 w-5 text-lime-400 drop-shadow-[0_0_10px_rgba(190,242,100,0.6)]" />
+  <CheckmarkCircle04Icon size={20} className="text-lime-400 drop-shadow-[0_0_10px_rgba(190,242,100,0.6)]" />
 );
 
 // Fallback rows if no deliverables are defined in DB
@@ -190,21 +191,15 @@ const PlanDetails = ({ plans = [], deliverables = [], isOpen = false }) => {
 
                   {/* CTA */}
                   <div className="mt-auto pt-4 w-full">
-                    <button
+                    <Button
                       type="button"
                       onClick={() => bookPlan(plan)}
-                      className="
-                        w-full rounded-xl
-                        bg-gradient-to-b from-lime-400 to-lime-600
-                        px-4 py-2 text-xs font-bold text-black
-                        shadow-[0_0_18px_rgba(132,204,22,0.5)]
-                        transition-all duration-300 transform
-                        hover:-translate-y-[2px] hover:from-lime-300 hover:to-lime-500 active:scale-[0.97]
-                        hover:shadow-[0_0_28px_rgba(132,204,22,0.65)]
-                      "
+                      variant="primary"
+                      size="sm"
+                      className="w-full"
                     >
                       Book this plan
-                    </button>
+                    </Button>
                   </div>
                 </div>
               );
@@ -314,20 +309,15 @@ const PlanDetails = ({ plans = [], deliverables = [], isOpen = false }) => {
                 </div>
 
                 {/* CTA */}
-                <button
+                <Button
                   type="button"
                   onClick={() => bookPlan(plan)}
-                  className="
-                    mt-4 w-full rounded-xl
-                    bg-gradient-to-b from-lime-400 to-lime-600
-                    px-4 py-2 text-xs sm:text-sm font-bold text-black
-                    shadow-[0_0_18px_rgba(132,204,22,0.5)]
-                    transition-all duration-300
-                    hover:-translate-y-[1px] hover:from-lime-300 hover:to-lime-500 active:scale-[0.97]
-                  "
+                  variant="primary"
+                  size="sm"
+                  className="mt-4 w-full"
                 >
                   Book this plan
-                </button>
+                </Button>
 
                 {/* Deliverables list for this plan */}
                 <div className="mt-4 space-y-2">

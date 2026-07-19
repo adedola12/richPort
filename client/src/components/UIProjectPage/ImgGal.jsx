@@ -1,7 +1,7 @@
 ﻿// src/components/UIProjectPage/ImgGal.jsx
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LuChevronLeft, LuChevronRight, LuX } from "react-icons/lu";
+import { ArrowLeft01Icon, ArrowRight01Icon, Cancel01Icon } from "hugeicons-react";
 
 /* ----------------- styles / constants ----------------- */
 const tileBase =
@@ -561,7 +561,7 @@ const ImgGal = ({ project: projectProp, slug, apiBase = "" }) => {
               }}
               className="absolute top-5 right-5 inline-flex items-center justify-center rounded-full border border-white/30 bg-black/60 p-2 text-white hover:bg-white/10"
             >
-              <LuX className="h-5 w-5" />
+              <Cancel01Icon size={20} />
             </button>
 
             <button
@@ -569,7 +569,7 @@ const ImgGal = ({ project: projectProp, slug, apiBase = "" }) => {
               onClick={showPrev}
               className="absolute left-5 md:left-10 inline-flex items-center justify-center rounded-full border border-white/40 bg-black/70 p-2 md:p-3 text-white hover:bg-white/10"
             >
-              <LuChevronLeft className="h-6 w-6 md:h-7 md:w-7" />
+              <ArrowLeft01Icon size={24} />
             </button>
 
             <button
@@ -577,7 +577,7 @@ const ImgGal = ({ project: projectProp, slug, apiBase = "" }) => {
               onClick={showNext}
               className="absolute right-5 md:right-10 inline-flex items-center justify-center rounded-full border border-white/40 bg-black/70 p-2 md:p-3 text-white hover:bg-white/10"
             >
-              <LuChevronRight className="h-6 w-6 md:h-7 md:w-7" />
+              <ArrowRight01Icon size={24} />
             </button>
 
             <motion.img

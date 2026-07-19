@@ -2,9 +2,9 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { Button, Input, Label } from "../../components/ui";
 
 const AdminAuthPage = () => {
-  const [mode] = useState("signin");
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [status, setStatus] = useState({ type: "idle", message: "" });
 
@@ -50,49 +50,38 @@ const AdminAuthPage = () => {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold mb-1">
-                Email
-              </label>
-              <input
+              <Label>Email</Label>
+              <Input
                 name="email"
                 type="email"
                 value={form.email}
                 onChange={handleChange}
                 required
-                className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
                 placeholder="admin@example.com"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold mb-1">
-                Password
-              </label>
-              <input
+              <Label>Password</Label>
+              <Input
                 name="password"
                 type="password"
                 value={form.password}
                 onChange={handleChange}
                 required
-                className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
                 placeholder="••••••••"
               />
             </div>
 
-            <button
+            <Button
               type="submit"
               disabled={status.type === "loading"}
-              className="
-                mt-2 w-full rounded-md
-                bg-gradient-to-b from-lime-400 to-lime-600
-                py-2.5 text-sm font-semibold text-black
-                shadow-[0_18px_60px_rgba(132,204,22,0.7)]
-                hover:brightness-110
-                disabled:opacity-60 disabled:cursor-not-allowed
-              "
+              variant="primary"
+              size="md"
+              className="w-full mt-2"
             >
               {status.type === "loading" ? "Please wait..." : "Sign In"}
-            </button>
+            </Button>
           </form>
 
           {status.type !== "idle" && (

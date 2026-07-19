@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
+import { buttonClasses } from "./ui";
 
 const PROJECT_CATEGORIES = [
   { label: "Brand Identity Designs", icon: "✦" },
@@ -151,13 +152,13 @@ const Nav = () => {
         <div className="hidden sm:flex items-center gap-3">
           <Link
             to="/projects"
-            className="px-4 py-2 rounded-lg bg-gradient-to-b from-lime-400 to-lime-600 text-xs font-bold text-black shadow-[0_0_18px_rgba(132,204,22,0.5)] hover:from-lime-300 hover:to-lime-500 hover:-translate-y-[1px] active:scale-95 transition"
+            className={buttonClasses("primary", "sm")}
           >
             View Works
           </Link>
           <Link
             to="/contact"
-            className="px-4 py-2 rounded-lg bg-gradient-to-b from-lime-400 to-lime-600 text-xs font-bold text-black shadow-[0_0_18px_rgba(132,204,22,0.5)] hover:from-lime-300 hover:to-lime-500 transition"
+            className={buttonClasses("primary", "sm")}
           >
             Contact
           </Link>
@@ -169,7 +170,7 @@ const Nav = () => {
             <Link
               to="/contact"
               onClick={closeMenu}
-              className="px-3 py-1.5 rounded-lg bg-gradient-to-b from-lime-400 to-lime-600 text-[11px] font-semibold text-black shadow-[0_0_14px_rgba(132,204,22,0.55)]"
+              className={buttonClasses("primary", "sm")}
             >
               Contact
             </Link>
@@ -286,14 +287,14 @@ const Nav = () => {
                 <Link
                   to="/projects"
                   onClick={closeMenu}
-                  className="flex-1 text-center px-4 py-2.5 rounded-lg bg-gradient-to-b from-lime-400 to-lime-600 text-xs font-bold text-black shadow-[0_0_16px_rgba(132,204,22,0.45)] hover:from-lime-300 hover:to-lime-500 active:scale-95 transition"
+                  className={buttonClasses("primary", "sm", "flex-1 text-center")}
                 >
                   View Works
                 </Link>
                 <Link
                   to="/contact"
                   onClick={closeMenu}
-                  className="flex-1 text-center px-4 py-2.5 rounded-lg bg-gradient-to-b from-lime-400 to-lime-600 text-xs font-bold text-black shadow-[0_0_16px_rgba(132,204,22,0.45)] hover:from-lime-300 hover:to-lime-500 transition"
+                  className={buttonClasses("primary", "sm", "flex-1 text-center")}
                 >
                   Contact
                 </Link>

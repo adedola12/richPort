@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { uploadImage, MAX_IMAGE_MB } from "../../utils/uploadImage";
 import { useAuth } from "../../context/AuthContext";
-import { FaTrash } from "react-icons/fa";
+import { Delete02Icon } from "hugeicons-react";
+import { Button, Input, Textarea, Label } from "../ui";
 
 const API_BASE = import.meta.env.VITE_AUTH_ENDPOINT || "";
 const JOURNEY_API = API_BASE ? `${API_BASE}/api/journey/admin` : "";
@@ -231,30 +232,26 @@ const JourneyTab = () => {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid gap-4 md:grid-cols-2">
           <div>
-            <label className="block text-xs mb-1 font-semibold">
-              Year
-            </label>
-            <input
+            <Label htmlFor="year">Year</Label>
+            <Input
+              id="year"
               name="year"
               type="number"
               inputMode="numeric"
               pattern="\d*"
               value={form.year}
               onChange={handleChange}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
               placeholder="2024"
               required
             />
           </div>
           <div>
-            <label className="block text-xs mb-1 font-semibold">
-              Title
-            </label>
-            <input
+            <Label htmlFor="title">Title</Label>
+            <Input
+              id="title"
               name="title"
               value={form.title}
               onChange={handleChange}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
               placeholder="Design systems & documentation"
               required
             />
@@ -262,27 +259,26 @@ const JourneyTab = () => {
         </div>
 
         <div>
-          <label className="block text-xs mb-1 font-semibold">
-            Description (one paragraph per line)
-          </label>
-          <textarea
+          <Label htmlFor="description">Description (one paragraph per line)</Label>
+          <Textarea
+            id="description"
             name="description"
             value={form.description}
             onChange={handleChange}
             rows={4}
-            className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
           />
         </div>
 
         {/* Image upload */}
         <div>
-          <label className="block text-xs mb-1 font-semibold">
+          <Label htmlFor="image">
             Image (optional)
             <span className="ml-1 text-[10px] font-normal text-neutral-400">
               (max {MAX_IMAGE_MB}MB)
             </span>
-          </label>
+          </Label>
           <input
+            id="image"
             type="file"
             accept="image/*"
             onChange={handleImageChange}
@@ -315,29 +311,25 @@ const JourneyTab = () => {
       "
                 title="Delete image"
               >
-                <FaTrash className="h-3 w-3" />
+                <Delete02Icon size={16} />
               </button>
             </div>
           )}
         </div>
 
-        <button
+        <Button
           type="submit"
+          variant="primary"
+          size="md"
           disabled={status.type === "loading"}
-          className="
-            mt-2 inline-flex items-center justify-center rounded-md
-            bg-gradient-to-b from-lime-400 to-lime-600
-            px-6 py-2.5 text-sm font-semibold text-black
-            shadow-[0_18px_60px_rgba(132,204,22,0.7)]
-            hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed
-          "
+          className="mt-2"
         >
           {status.type === "loading"
             ? "Saving..."
             : editingId
             ? "Update Journey Item"
             : "Save Journey Item"}
-        </button>
+        </Button>
 
         {status.type !== "idle" && (
           <p
@@ -401,22 +393,24 @@ const JourneyTab = () => {
                     </td>
                     <td className="px-3 py-2">
                       <div className="flex items-center gap-2">
-                        <button
+                        <Button
                           type="button"
+                          variant="secondary"
+                          size="sm"
                           onClick={() => startEditing(item)}
-                          className="text-[11px] px-3 py-1 rounded-md bg-white/10 border border-white/20 hover:bg-white/20"
                         >
                           Edit
-                        </button>
+                        </Button>
 
-                        <button
+                        <Button
                           type="button"
+                          variant="danger"
+                          size="sm"
                           onClick={() => handleDelete(item.id || item._id)}
-                          className="p-1.5 rounded-md border border-red-500/40 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition"
                           title="Delete"
                         >
-                          <FaTrash className="h-3 w-3" />
-                        </button>
+                          <Delete02Icon size={16} />
+                        </Button>
                       </div>
                     </td>
                   </tr>

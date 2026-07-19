@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import TypingText from "../common/TypingText";
 import myImg from "../../assets/myImg.jpg";
 import {
-  FaDownload,
-  FaLinkedinIn,
-  FaTwitter,
-  FaInstagram,
-} from "react-icons/fa";
+  Download01Icon,
+  Linkedin01Icon,
+  TwitterIcon,
+  InstagramIcon,
+} from "hugeicons-react";
 
 const AboutMe = () => {
   const [nameReady, setNameReady] = useState(false);
@@ -140,7 +140,7 @@ const AboutMe = () => {
                   hover:-translate-y-0.5 active:translate-y-0
                 "
               >
-                <FaDownload className="text-[11px] text-lime-400 transition-colors group-hover:text-black" />
+                <Download01Icon size={14} className="text-lime-400 transition-colors group-hover:text-black" />
                 View Resume
               </a>
 
@@ -149,17 +149,17 @@ const AboutMe = () => {
                 {
                   href: "https://www.linkedin.com/in/richardenoch/",
                   label: "LinkedIn",
-                  Icon: FaLinkedinIn,
+                  Icon: Linkedin01Icon,
                 },
                 {
                   href: "https://x.com/richardenoch_",
                   label: "Twitter",
-                  Icon: FaTwitter,
+                  Icon: TwitterIcon,
                 },
                 {
                   href: "https://www.instagram.com/therichardenoch",
                   label: "Instagram",
-                  Icon: FaInstagram,
+                  Icon: InstagramIcon,
                 },
               ].map(({ href, label, Icon }) => (
                 <a
@@ -178,7 +178,7 @@ const AboutMe = () => {
                     hover:-translate-y-0.5
                   "
                 >
-                  <Icon className="text-black text-[15px]" />
+                  <Icon size={16} className="text-black" />
                 </a>
               ))}
             </div>

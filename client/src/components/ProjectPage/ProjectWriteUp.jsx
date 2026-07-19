@@ -2,7 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import TypingText from "../common/TypingText";
-import { LuSearch, LuLightbulb, LuPenTool, LuCheckCheck } from "react-icons/lu";
+import { Search01Icon, BulbIcon, PencilEdit01Icon, CheckmarkCircle02Icon } from "hugeicons-react";
 import writeImg from "../../assets/Bookrion/img1.jpg";
 
 const SILVER_WORD = {
@@ -83,7 +83,7 @@ Each iteration made the visual experience more coherent and engaging.`,
   },
 ];
 
-const stepIcons = [LuSearch, LuLightbulb, LuPenTool, LuCheckCheck];
+const stepIcons = [Search01Icon, BulbIcon, PencilEdit01Icon, CheckmarkCircle02Icon];
 
 // ------- STEP BLOCK -------
 const StepBlock = ({ pillLabel, Icon, title, body, slideVariant = fadeLeft }) => (
@@ -93,7 +93,7 @@ const StepBlock = ({ pillLabel, Icon, title, body, slideVariant = fadeLeft }) =>
   >
     <div className="flex flex-col gap-2">
       <div className="inline-flex max-w-max items-center gap-2 rounded-full bg-lime-500/10 border border-lime-500/25 px-3 py-1.5">
-        <Icon className="h-3 w-3 text-lime-400 shrink-0" />
+        <Icon size={12} className="text-lime-400 shrink-0" />
         <span className="text-[10px] font-bold text-lime-400 leading-none uppercase tracking-widest whitespace-nowrap">
           {pillLabel}
         </span>
@@ -121,7 +121,7 @@ const ProjectWriteUp = ({ project }) => {
   const steps = defaultSteps.map((fallback, idx) => ({
     ...fallback,
     ...(rawSteps[idx] || {}),
-    Icon: stepIcons[idx] || LuSearch,
+    Icon: stepIcons[idx] || Search01Icon,
   }));
 
   const caseStudyImage = project?.caseStudyImage || writeImg;

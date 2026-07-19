@@ -4,11 +4,9 @@
 // the negotiated price — the invoice and the Reni Studio job both honor it.
 import React, { useEffect, useState } from "react";
 import { fetchJson } from "../../api/http";
+import { Button, Input, Select } from "../ui";
 
 const N = (n) => "₦" + Number(n || 0).toLocaleString("en-NG");
-const input = "w-full rounded-lg border border-white/15 bg-black/30 px-3 py-2 text-sm text-white outline-none focus:border-lime-400/60";
-const btn = "rounded-lg border border-lime-400/40 px-4 py-2 text-sm text-lime-400 hover:bg-lime-400/10 disabled:opacity-40";
-const btnDanger = "rounded-lg border border-red-400/40 px-3 py-1.5 text-xs text-red-400 hover:bg-red-400/10";
 
 const SERVICES = [
   { id: "any", label: "Any service" },
@@ -93,18 +91,18 @@ export default function DiscountsTab() {
         <h2 className="mb-1 text-lg font-semibold">Discount codes</h2>
         <p className="mb-4 text-sm text-white/50">Create the code first, send it to the client, and they type it at booking. The invoice shows list price → discount → total.</p>
         <div className="mb-4 grid gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-4 sm:grid-cols-3 lg:grid-cols-7">
-          <input className={input} placeholder="CODE" value={codeForm.code} onChange={(e) => setCodeForm({ ...codeForm, code: e.target.value.toUpperCase() })} />
-          <select className={input} value={codeForm.type} onChange={(e) => setCodeForm({ ...codeForm, type: e.target.value })}>
+          <Input placeholder="CODE" value={codeForm.code} onChange={(e) => setCodeForm({ ...codeForm, code: e.target.value.toUpperCase() })} />
+          <Select value={codeForm.type} onChange={(e) => setCodeForm({ ...codeForm, type: e.target.value })}>
             <option value="percent">% off</option>
             <option value="fixed">₦ off</option>
-          </select>
-          <input className={input} type="number" placeholder={codeForm.type === "percent" ? "e.g. 10" : "e.g. 50000"} value={codeForm.value} onChange={(e) => setCodeForm({ ...codeForm, value: e.target.value })} />
-          <select className={input} value={codeForm.service} onChange={(e) => setCodeForm({ ...codeForm, service: e.target.value })}>
+          </Select>
+          <Input type="number" placeholder={codeForm.type === "percent" ? "e.g. 10" : "e.g. 50000"} value={codeForm.value} onChange={(e) => setCodeForm({ ...codeForm, value: e.target.value })} />
+          <Select value={codeForm.service} onChange={(e) => setCodeForm({ ...codeForm, service: e.target.value })}>
             {SERVICES.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}
-          </select>
-          <input className={input} type="date" value={codeForm.expiresAt} onChange={(e) => setCodeForm({ ...codeForm, expiresAt: e.target.value })} title="Expiry (optional)" />
-          <input className={input} type="number" placeholder="Max uses" value={codeForm.maxUses} onChange={(e) => setCodeForm({ ...codeForm, maxUses: e.target.value })} />
-          <button className={btn} onClick={createCode} disabled={busy || !codeForm.code || !(Number(codeForm.value) > 0)}>{busy ? "…" : "Create"}</button>
+          </Select>
+          <Input type="date" value={codeForm.expiresAt} onChange={(e) => setCodeForm({ ...codeForm, expiresAt: e.target.value })} title="Expiry (optional)" />
+          <Input type="number" placeholder="Max uses" value={codeForm.maxUses} onChange={(e) => setCodeForm({ ...codeForm, maxUses: e.target.value })} />
+          <Button variant="primary" size="sm" onClick={createCode} disabled={busy || !codeForm.code || !(Number(codeForm.value) > 0)}>{busy ? "…" : "Create"}</Button>
         </div>
         <div className="overflow-x-auto rounded-xl border border-white/10">
           <table className="w-full text-left text-sm">
@@ -125,7 +123,7 @@ export default function DiscountsTab() {
                       {c.active ? "Active" : "Off"}
                     </button>
                   </td>
-                  <td className="px-4 py-2.5 text-right"><button className={btnDanger} onClick={() => deleteCode(c)}>Delete</button></td>
+                  <td className="px-4 py-2.5 text-right"><Button variant="danger" size="sm" onClick={() => deleteCode(c)}>Delete</Button></td>
                 </tr>
               ))}
             </tbody>
@@ -141,21 +139,21 @@ export default function DiscountsTab() {
         </p>
         <div className="mb-4 space-y-3 rounded-xl border border-white/10 bg-white/[0.03] p-4">
           <div className="grid gap-3 sm:grid-cols-3">
-            <input className={input} placeholder="Client name" value={offerForm.clientName} onChange={(e) => setOfferForm({ ...offerForm, clientName: e.target.value })} />
-            <input className={input} placeholder="Client email (optional)" value={offerForm.clientEmail} onChange={(e) => setOfferForm({ ...offerForm, clientEmail: e.target.value })} />
-            <input className={input} type="date" value={offerForm.expiresAt} onChange={(e) => setOfferForm({ ...offerForm, expiresAt: e.target.value })} title="Expiry (optional)" />
+            <Input placeholder="Client name" value={offerForm.clientName} onChange={(e) => setOfferForm({ ...offerForm, clientName: e.target.value })} />
+            <Input placeholder="Client email (optional)" value={offerForm.clientEmail} onChange={(e) => setOfferForm({ ...offerForm, clientEmail: e.target.value })} />
+            <Input type="date" value={offerForm.expiresAt} onChange={(e) => setOfferForm({ ...offerForm, expiresAt: e.target.value })} title="Expiry (optional)" />
           </div>
           {offerForm.items.map((it, i) => (
             <div key={i} className="grid gap-3 sm:grid-cols-4">
-              <select className={input} value={it.service} onChange={(e) => setItem(i, { service: e.target.value, planKey: PLAN_KEYS[e.target.value][0] })}>
+              <Select value={it.service} onChange={(e) => setItem(i, { service: e.target.value, planKey: PLAN_KEYS[e.target.value][0] })}>
                 {OFFER_SERVICES.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}
-              </select>
-              <select className={input} value={it.planKey} onChange={(e) => setItem(i, { planKey: e.target.value })}>
+              </Select>
+              <Select value={it.planKey} onChange={(e) => setItem(i, { planKey: e.target.value })}>
                 {(PLAN_KEYS[it.service] || []).map((k) => <option key={k} value={k}>{k}</option>)}
-              </select>
-              <input className={input} type="number" placeholder="Agreed price (₦)" value={it.price} onChange={(e) => setItem(i, { price: e.target.value })} />
+              </Select>
+              <Input type="number" placeholder="Agreed price (₦)" value={it.price} onChange={(e) => setItem(i, { price: e.target.value })} />
               {offerForm.items.length > 1 && (
-                <button className={btnDanger} onClick={() => setOfferForm((f) => ({ ...f, items: f.items.filter((_, j) => j !== i) }))}>Remove</button>
+                <Button variant="danger" size="sm" onClick={() => setOfferForm((f) => ({ ...f, items: f.items.filter((_, j) => j !== i) }))}>Remove</Button>
               )}
             </div>
           ))}
@@ -166,7 +164,7 @@ export default function DiscountsTab() {
             <span className="text-xs text-white/35">
               Bundle total: {N(offerForm.items.reduce((s, i) => s + (Number(i.price) || 0), 0))}
             </span>
-            <button className={btn} onClick={createOffer} disabled={busy}>{busy ? "…" : "Create offer"}</button>
+            <Button variant="primary" size="sm" onClick={createOffer} disabled={busy}>{busy ? "…" : "Create offer"}</Button>
           </div>
         </div>
         <div className="space-y-2.5">
@@ -181,8 +179,8 @@ export default function DiscountsTab() {
                   {!o.active ? " · fully used" : ""}
                 </div>
               </div>
-              <button className={btn} onClick={() => copyLink(o)}>Copy link</button>
-              <button className={btnDanger} onClick={() => deleteOffer(o)}>Delete</button>
+              <Button variant="primary" size="sm" onClick={() => copyLink(o)}>Copy link</Button>
+              <Button variant="danger" size="sm" onClick={() => deleteOffer(o)}>Delete</Button>
             </div>
           ))}
         </div>

@@ -11,6 +11,7 @@ import GuidelineCarousel from "../components/ProjectPage/GuidelineCarousel";
 import OtherProj from "../components/ProjectPage/OtherProj";
 import BuildSection from "../components/Home/BuildSection";
 import PageMeta from "../components/common/PageMeta";
+import { buttonClasses } from "../components/ui";
 
 /* ── artwork ── */
 import imgHero from "../assets/VerdeLuxe/hero.webp";
@@ -473,7 +474,7 @@ const VerdeLuxeProject = () => (
               <p className="text-[14px] text-white/50 mb-6">Every project like this starts the same way: pick a plan, answer a short questionnaire, and we begin.</p>
               <Link
                 to="/rate-details"
-                className="inline-block rounded-xl bg-gradient-to-b from-lime-400 to-lime-600 px-7 py-3 text-[14px] font-bold text-black shadow-[0_0_18px_rgba(132,204,22,0.5)] transition hover:from-lime-300 hover:to-lime-500 hover:-translate-y-0.5 active:scale-95"
+                className={buttonClasses("primary", "md")}
               >
                 See the plans
               </Link>

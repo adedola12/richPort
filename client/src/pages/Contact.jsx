@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
-import { FiClock, FiGlobe, FiZap } from "react-icons/fi";
+import { Clock01Icon, Globe02Icon, ZapIcon } from "hugeicons-react";
 import confetti from "canvas-confetti";
 import PageMeta from "../components/common/PageMeta";
+import { Button, Input, Textarea, Label, Field } from "../components/ui";
 
 const SERVICE_OPTIONS = [
   "UI / UX Design",
@@ -161,9 +162,9 @@ const SERVICE_PLANS = {
 };
 
 const INFO_ITEMS = [
-  { icon: FiClock, text: "Usually responds within 24 hours" },
-  { icon: FiZap,   text: "Available for new projects" },
-  { icon: FiGlobe, text: "Open to remote collaboration" },
+  { icon: Clock01Icon, text: "Usually responds within 24 hours" },
+  { icon: ZapIcon,   text: "Available for new projects" },
+  { icon: Globe02Icon, text: "Open to remote collaboration" },
 ];
 
 // ─── Background Video ─────────────────────────────────────────────────────────
@@ -179,13 +180,13 @@ const BgVideo = ({ className }) => (
 );
 
 // ─── Info item ────────────────────────────────────────────────────────────────
-const InfoItem = ({ icon: Icon, text }) => (
+const InfoItem = ({ icon: IconComp, text }) => (
   <motion.div
     variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
     className="flex items-center gap-3"
   >
     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/10">
-      <Icon size={13} className="text-lime-400" />
+      <IconComp size={18} className="text-lime-400" />
     </span>
     <span className="text-sm text-white/65">{text}</span>
   </motion.div>
@@ -401,33 +402,21 @@ const SuccessScreen = ({ onDiveBack }) => {
           I&apos;ll review your message and get back to you within 24 hours. Good things are coming.
         </p>
       </div>
-      <motion.button
+      <Button
         onClick={onDiveBack}
-        className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-b from-lime-400 to-lime-600 px-8 py-3.5 text-sm font-bold text-black shadow-[0_0_18px_rgba(132,204,22,0.5)] transition hover:from-lime-300 hover:to-lime-500 active:scale-[0.97]"
-        whileHover={{ y: -1 }}
-        whileTap={{ scale: 0.97 }}
+        variant="primary"
+        size="lg"
+        className="inline-flex gap-2"
       >
         Dive back in
         <svg viewBox="0 0 16 16" fill="currentColor" className="h-3.5 w-3.5">
           <path d="M6.22 3.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L9.94 8 6.22 4.28a.75.75 0 0 1 0-1.06Z" />
         </svg>
-      </motion.button>
+      </Button>
     </motion.div>
   );
 };
 
-// ─── Field wrapper ────────────────────────────────────────────────────────────
-const Field = ({ label, children }) => (
-  <div className="space-y-1.5">
-    <label className="block text-xs font-semibold uppercase tracking-widest text-white/40">
-      {label}
-    </label>
-    {children}
-  </div>
-);
-
-const inputCls =
-  "w-full rounded-xl bg-white/5 border border-white/[0.08] px-4 py-3 text-sm text-white placeholder:text-white/20 focus:outline-none focus:ring-2 focus:ring-lime-400/35 transition";
 
 // ─── Contact Page ─────────────────────────────────────────────────────────────
 const Contact = () => {
@@ -578,12 +567,12 @@ const Contact = () => {
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                     <Field label="Full Name">
-                      <input name="fullName" value={form.fullName} onChange={handleChange}
-                        placeholder="ex. Alex Johnson" required className={inputCls} />
+                      <Input name="fullName" value={form.fullName} onChange={handleChange}
+                        placeholder="ex. Alex Johnson" required />
                     </Field>
                     <Field label="Email">
-                      <input name="email" type="email" value={form.email} onChange={handleChange}
-                        placeholder="ex. alex@email.com" required className={inputCls} />
+                      <Input name="email" type="email" value={form.email} onChange={handleChange}
+                        placeholder="ex. alex@email.com" required />
                     </Field>
                   </div>
 
@@ -629,18 +618,19 @@ const Contact = () => {
                   )}
 
                   <Field label="Message">
-                    <textarea name="message" value={form.message} onChange={handleChange}
-                      placeholder="Tell me about your project..." rows={4} required
-                      className={`${inputCls} resize-none`} />
+                    <Textarea name="message" value={form.message} onChange={handleChange}
+                      placeholder="Tell me about your project..." rows={4} required />
                   </Field>
 
-                  <button
+                  <Button
                     type="submit"
                     disabled={status === "loading"}
-                    className="w-full rounded-xl bg-gradient-to-b from-lime-400 to-lime-600 py-3.5 text-sm font-bold text-black shadow-[0_0_18px_rgba(132,204,22,0.5)] transition hover:from-lime-300 hover:to-lime-500 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
+                    variant="primary"
+                    size="lg"
+                    className="w-full"
                   >
                     {status === "loading" ? "Sending…" : "Send Message"}
-                  </button>
+                  </Button>
                 </form>
 
                 <p className="text-center text-xs text-white/25">

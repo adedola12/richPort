@@ -1,7 +1,8 @@
 ﻿// src/components/admin/RatesTab.jsx
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { FaTrash } from "react-icons/fa";
+import { Delete02Icon } from "hugeicons-react";
+import { Button, Input, Textarea, Select, Label } from "../ui";
 
 const API_BASE = import.meta.env.VITE_AUTH_ENDPOINT || "";
 const RATES_API = API_BASE ? `${API_BASE}/api/rates/admin` : "";
@@ -348,66 +349,51 @@ setDeliverables(
         <div className="space-y-3">
           <div className="grid gap-4 md:grid-cols-2">
             <div>
-              <label className="block text-xs mb-1 font-semibold">
-                Category ID
-              </label>
-              <input
+              <Label>Category ID</Label>
+              <Input
                 name="categoryId"
                 value={category.categoryId}
                 onChange={handleCatChange}
-                className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
                 placeholder="brand-identity"
               />
             </div>
             <div>
-              <label className="block text-xs mb-1 font-semibold">
-                Label
-              </label>
-              <input
+              <Label>Label</Label>
+              <Input
                 name="label"
                 value={category.label}
                 onChange={handleCatChange}
-                className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
                 placeholder="Brand Identity"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs mb-1 font-semibold">
-              Heading
-            </label>
-            <input
+            <Label>Heading</Label>
+            <Input
               name="heading"
               value={category.heading}
               onChange={handleCatChange}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
               placeholder="Brand Identity"
             />
           </div>
 
           <div>
-            <label className="block text-xs mb-1 font-semibold">
-              Description
-            </label>
-            <textarea
+            <Label>Description</Label>
+            <Textarea
               name="description"
               value={category.description}
               onChange={handleCatChange}
               rows={3}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70 resize-none"
             />
           </div>
 
           <div>
-            <label className="block text-xs mb-1 font-semibold">
-              Tags (optional, comma separated)
-            </label>
-            <input
+            <Label>Tags (optional, comma separated)</Label>
+            <Input
               name="tags"
               value={category.tags}
               onChange={handleCatChange}
-              className="w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-lime-400/70"
               placeholder="Brand, Identity, Logo"
             />
           </div>
@@ -417,13 +403,14 @@ setDeliverables(
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-semibold">Plans</h3>
-            <button
+            <Button
               type="button"
               onClick={addPlan}
-              className="text-xs px-3 py-1 rounded-md bg-white/5 border border-white/15 hover:bg-white/10 transition"
+              variant="secondary"
+              size="sm"
             >
               + Add Plan
-            </button>
+            </Button>
           </div>
 
           <div className="space-y-3">
@@ -448,32 +435,32 @@ setDeliverables(
                 </div>
 
                 <div className="grid gap-2 md:grid-cols-4">
-                  <input
+                  <Input
                     value={plan.id}
                     onChange={(e) =>
                       updatePlan(idx, "id", e.target.value.trim())
                     }
-                    className="rounded-md bg-black/70 border border-white/10 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-lime-400/70"
+                    className="px-3 py-2 text-sm rounded-lg"
                     placeholder="ID (gold)"
                   />
-                  <input
+                  <Input
                     value={plan.name}
                     onChange={(e) => updatePlan(idx, "name", e.target.value)}
-                    className="rounded-md bg-black/70 border border-white/10 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-lime-400/70"
+                    className="px-3 py-2 text-sm rounded-lg"
                     placeholder="Name (Gold)"
                   />
-                  <input
+                  <Input
                     value={plan.price}
                     onChange={(e) => updatePlan(idx, "price", e.target.value)}
-                    className="rounded-md bg-black/70 border border-white/10 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-lime-400/70"
+                    className="px-3 py-2 text-sm rounded-lg"
                     placeholder="Price (e.g. 299)"
                   />
-                  <input
+                  <Input
                     value={plan.description}
                     onChange={(e) =>
                       updatePlan(idx, "description", e.target.value)
                     }
-                    className="rounded-md bg-black/70 border border-white/10 px-2 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-lime-400/70"
+                    className="px-3 py-2 text-sm rounded-lg"
                     placeholder="Short description"
                   />
                 </div>
@@ -488,13 +475,14 @@ setDeliverables(
             <h3 className="text-sm font-semibold">
               Deliverables per Plan
             </h3>
-            <button
+            <Button
               type="button"
               onClick={addDeliverable}
-              className="text-xs px-3 py-1 rounded-md bg-white/5 border border-white/15 hover:bg-white/10 transition"
+              variant="secondary"
+              size="sm"
             >
               + Add Deliverable
-            </button>
+            </Button>
           </div>
 
           <div className="space-y-3">
@@ -504,12 +492,12 @@ setDeliverables(
                 className="rounded-lg border border-white/10 bg-black/50 px-3 py-3 space-y-2"
               >
                 {/* Deliverable label */}
-                <input
+                <Input
                   value={d.label}
                   onChange={(e) =>
                     updateDeliverableLabel(dIndex, e.target.value)
                   }
-                  className="w-full rounded-md bg-black/70 border border-white/10 px-2 py-1.5 text-xs mb-2 focus:outline-none focus:ring-1 focus:ring-lime-400/70"
+                  className="px-3 py-2 text-sm rounded-lg mb-2"
                   placeholder="Deliverable name (e.g. Brand Guideline)"
                 />
 
@@ -518,16 +506,16 @@ setDeliverables(
                   <span className="text-[11px] text-neutral-300">
                     Value type:
                   </span>
-                  <select
+                  <Select
                     value={d.mode || "boolean"}
                     onChange={(e) =>
                       updateDeliverableMode(dIndex, e.target.value)
                     }
-                    className="rounded-md bg-black/70 border border-white/15 px-2 py-1 text-[11px] focus:outline-none focus:ring-1 focus:ring-lime-400/70"
+                    className="w-auto px-3 py-2 text-sm rounded-lg"
                   >
                     <option value="boolean">Checkbox (included / not)</option>
                     <option value="text">Text per plan</option>
-                  </select>
+                  </Select>
                 </div>
 
                 {/* Per-plan values */}
@@ -569,9 +557,9 @@ setDeliverables(
                                 </label>
                               ) : (
                                 // Text mode
-                                <input
+                                <Input
                                   type="text"
-                                  className="w-full rounded-md bg-black/70 border border-white/15 px-2 py-1 text-[11px] focus:outline-none focus:ring-1 focus:ring-lime-400/70"
+                                  className="w-full px-2 py-1 text-xs rounded-lg"
                                   placeholder="-"
                                   value={d.perPlan[p.id] || ""}
                                   onChange={(e) =>
@@ -595,23 +583,19 @@ setDeliverables(
           </div>
         </div>
 
-        <button
+        <Button
           type="submit"
           disabled={status.type === "loading"}
-          className="
-            mt-2 inline-flex items-center justify-center rounded-md
-            bg-gradient-to-b from-lime-400 to-lime-600
-            px-6 py-2.5 text-sm font-semibold text-black
-            shadow-[0_18px_60px_rgba(132,204,22,0.7)]
-            hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed
-          "
+          variant="primary"
+          size="md"
+          className="mt-2"
         >
           {status.type === "loading"
             ? "Saving..."
             : editingId
             ? "Update Rate Category"
             : "Save Rate Category"}
-        </button>
+        </Button>
 
         {status.type !== "idle" && (
           <p
@@ -677,24 +661,26 @@ setDeliverables(
                     </td>
                     <td className="px-3 py-2">
                       <div className="flex items-center gap-2">
-                        <button
+                        <Button
                           type="button"
                           onClick={() => startEditing(cat)}
-                          className="text-[11px] px-3 py-1 rounded-md bg-white/10 border border-white/20 hover:bg-white/20"
+                          variant="secondary"
+                          size="sm"
                         >
                           Edit
-                        </button>
+                        </Button>
 
-                        <button
+                        <Button
                           type="button"
                           onClick={() =>
                             handleDeleteRateCategory(cat.mongoId || cat.id)
                           }
-                          className="p-1.5 rounded-md border border-red-500/40 bg-red-500/10 text-red-400 hover:bg-red-500/20 transition"
+                          variant="danger"
+                          size="sm"
                           title="Delete"
                         >
-                          <FaTrash className="h-3 w-3" />
-                        </button>
+                          <Delete02Icon size={16} />
+                        </Button>
                       </div>
                     </td>
                   </tr>
