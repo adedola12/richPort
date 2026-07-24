@@ -25,7 +25,7 @@ const Hero = () => (
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.95) 40%, rgba(0,0,0,1) 70%)",
+            "linear-gradient(to bottom, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.80) 40%, rgba(0,0,0,1) 70%)",
         }}
       />
       <div className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-10 h-56 w-[55%] max-w-[600px] rounded-full bg-lime-500/15 blur-[120px]" />

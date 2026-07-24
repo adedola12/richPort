@@ -3,11 +3,16 @@ import { motion, useScroll, useTransform, useSpring, useMotionValue } from "fram
 import { Link } from "react-router-dom";
 
 import ydpayThumb    from "../../assets/YDpay/iphone15pro.webp";
-import bookrionThumb from "../../assets/Bookrion/mainSign.jpg";
-import wi1           from "../../assets/workImg/WI1.png";
-import wi2           from "../../assets/workImg/WI2.jpg";
-import wi3           from "../../assets/workImg/WI3.jpg";
+import tabStudioThumb from "../../assets/bento/ts-sweat.webp";
+import adlmThumb      from "../../assets/pickcard/adlm-deck.webp";
+import socialThumb    from "../../assets/pickcard/social-mockup.webp";
+import oluwatosinThumb from "../../assets/pickcard/oluwatosin.webp";
+import editorialThumb from "../../assets/workImg/WI2.jpg";
 
+// One card per service category, each mapped to that project's own image and
+// page. Publication (Editorial) stays last. Individual pieces that live inside
+// a collection page (Oluwatosin, the ADLM deck, the social set) link to that
+// collection.
 const CARDS = [
   {
     id: "uiux",
@@ -21,23 +26,43 @@ const CARDS = [
   },
   {
     id: "brand",
-    tag: "Brand Design",
+    tag: "Brand Identity",
     title: "Tab Studio",
     subtitle: "Identity System",
-    href: "/projects/tab-studio",
-    accent: "#818cf8",
-    img: bookrionThumb,
+    href: "/projects/tabstudio",
+    accent: "#7BF003",
+    img: tabStudioThumb,
     imgPos: "center center",
   },
   {
-    id: "niqs",
-    tag: "Brand & Digital",
-    title: "NIQS",
-    subtitle: "Institutional Redesign",
-    href: "/ui-projects/niqs",
-    accent: "#D9B650",
-    img: "/NIQSEmblemDark.png",
+    id: "presentation",
+    tag: "Presentation Design",
+    title: "ADLM Pitch Deck",
+    subtitle: "Investor Deck · Slides",
+    href: "/presentation-design",
+    accent: "#f97316",
+    img: adlmThumb,
     imgPos: "center center",
+  },
+  {
+    id: "graphic",
+    tag: "Graphic Design",
+    title: "Social Media Design",
+    subtitle: "Campaign Mockups",
+    href: "/graphic-design",
+    accent: "#f472b6",
+    img: socialThumb,
+    imgPos: "center top",
+  },
+  {
+    id: "website",
+    tag: "Website Design",
+    title: "Oluwatosin",
+    subtitle: "Personal Brand Site",
+    href: "/website-design",
+    accent: "#22d3ee",
+    img: oluwatosinThumb,
+    imgPos: "center top",
   },
   {
     id: "publication",
@@ -45,28 +70,8 @@ const CARDS = [
     title: "Editorial Works",
     subtitle: "Digital Illustrations & Editorial",
     href: "/projects",
-    accent: "#e879f9",
-    img: wi2,
-    imgPos: "center center",
-  },
-  {
-    id: "website",
-    tag: "Website Design",
-    title: "Web Projects",
-    subtitle: "Live & Interactive",
-    href: "/website-design",
-    accent: "#22d3ee",
-    img: wi1,
-    imgPos: "center center",
-  },
-  {
-    id: "presentation",
-    tag: "Presentation Design",
-    title: "Deck Design",
-    subtitle: "Pitch Decks · Slide Design",
-    href: "/presentation-design",
-    accent: "#f97316",
-    img: wi3,
+    accent: "#a78bfa",
+    img: editorialThumb,
     imgPos: "center center",
   },
 ];

@@ -37,6 +37,22 @@ const nameSx = {
   backgroundClip: "text",
 };
 
+// Delivery timelines for the brand tiers. Server plans don't carry this, so
+// we resolve it client-side by tier name; other categories return "" (no line).
+const PLAN_DURATION = { gold: "14 days", silver: "21 days", platinum: "4–6 weeks" };
+const planDuration = (plan) => {
+  const n = String(plan?.name || "").toLowerCase();
+  const key = Object.keys(PLAN_DURATION).find((k) => n.includes(k));
+  return key ? PLAN_DURATION[key] : "";
+};
+
+const DurationLine = ({ plan }) =>
+  planDuration(plan) ? (
+    <p className="mt-2 text-xs font-medium text-lime-300/85">
+      <span className="text-white/40">Delivery</span> · {planDuration(plan)}
+    </p>
+  ) : null;
+
 // Tilt directions: Gold tilts left, Silver straight up, Platinum tilts right
 const TILT = [-2, 0, 2];
 
@@ -163,6 +179,9 @@ const PlanSelection = ({
                       {plan.currency === "USD" ? "$" : ""}{plan.price}
                     </div>
 
+                    {/* delivery timeline */}
+                    <DurationLine plan={plan} />
+
                     {/* CTA */}
                     <div className="mt-auto pt-6">
                       <Button
@@ -220,6 +239,9 @@ const PlanSelection = ({
                 <div className="mt-5 text-4xl sm:text-5xl font-extrabold text-white">
                   {plan.currency === "USD" ? "$" : ""}{plan.price}
                 </div>
+
+                {/* delivery timeline */}
+                <DurationLine plan={plan} />
 
                 {/* CTA */}
                 <div className="mt-auto pt-6">

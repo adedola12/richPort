@@ -28,31 +28,32 @@ const HERO_BG_TWEAK = {
   translateX: 0, translateY: 0, opacity: 0.99,
 };
 
-/* ── flyer samples gallery ── */
-const FLYER_ASSETS = import.meta.glob(
-  "../assets/FlyerSamples/*.{png,jpg,jpeg,webp}",
-  { eager: true, import: "default" },
-);
+/* ── gallery: a randomised mix of graphic work — flyers, social campaigns,
+   carousels and product/card mockups — pulled from every graphic collection so
+   the page reads as a varied body of work, not one folder in a fixed order. ── */
+const GALLERY_ASSETS = {
+  ...import.meta.glob("../assets/FlyerSamples/*.{png,jpg,jpeg,webp}", { eager: true, import: "default" }),
+  ...import.meta.glob("../assets/ADLMStudio/*.{png,jpg,jpeg,webp}", { eager: true, import: "default" }),
+  ...import.meta.glob("../assets/Whitespace/*.{png,jpg,jpeg,webp}", { eager: true, import: "default" }),
+  ...import.meta.glob("../assets/YDpayDesigns/*.{png,jpg,jpeg,webp}", { eager: true, import: "default" }),
+};
 
-// These two always appear first, in this order
-const PRIORITY = [
-  "happy birthday minister olabisi obayomi",
-  "happy birthday pastor tito 1",
-];
+// Fisher–Yates shuffle (runs once at load → random per visit, stable per session)
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
 function buildGallery() {
-  return Object.entries(FLYER_ASSETS)
-    .map(([path, src], idx) => {
-      const name = path.split("/").pop().toLowerCase().replace(/\.[^.]+$/, "");
-      const pi = PRIORITY.findIndex((p) => name.includes(p));
-      return { id: `flyer-${idx}`, src, pi };
-    })
-    .sort((a, b) => {
-      const ai = a.pi >= 0 ? a.pi : 999;
-      const bi = b.pi >= 0 ? b.pi : 999;
-      return ai - bi;
-    })
-    .map(({ id, src }) => ({ id, src }));
+  const all = Object.entries(GALLERY_ASSETS).map(([path, src], idx) => ({
+    id: `gfx-${idx}`,
+    src,
+  }));
+  return shuffle(all).slice(0, 48);
 }
 
 const DATA = {

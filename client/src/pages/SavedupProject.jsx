@@ -8,16 +8,39 @@ import PageMeta from "../components/common/PageMeta";
 
 const GR = "#a3e635"; // lime-400 — portfolio accent
 
+/* ─── reveal hook ───
+   Reveals content when scrolled into view. Guards against the SPA-navigation
+   race (AnimatePresence mode="wait" + Lenis) where the IntersectionObserver
+   can miss already-on-screen content on mount, leaving this tall page stuck at
+   opacity:0 until a manual refresh. Shortly after mount we re-check the rect
+   and reveal anything genuinely in the viewport; below-the-fold content still
+   waits for a real scroll, so scroll-triggered animations are preserved. */
+const useReveal = (amount = 0) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount });
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    if (isInView || shown) return;
+    const t = setTimeout(() => {
+      const el = ref.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) setShown(true);
+    }, 250);
+    return () => clearTimeout(t);
+  }, [isInView, shown]);
+  return [ref, isInView || shown];
+};
+
 /* ─── animation primitives (same pattern as YDpay) ─── */
 const FadeUp = ({ children, delay = 0, className = "" }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0 });
+  const [ref, show] = useReveal(0);
   return (
     <motion.div
       ref={ref}
       className={className}
       initial={{ opacity: 0, y: 32 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 }}
+      animate={show ? { opacity: 1, y: 0 } : { opacity: 0, y: 32 }}
       transition={{ duration: 0.7, ease: [0.22, 0.61, 0.36, 1], delay }}
     >
       {children}
@@ -26,14 +49,13 @@ const FadeUp = ({ children, delay = 0, className = "" }) => {
 };
 
 const SlideIn = ({ children, direction = "left", delay = 0, className = "" }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0 });
+  const [ref, show] = useReveal(0);
   return (
     <motion.div
       ref={ref}
       className={className}
       initial={{ opacity: 0, x: direction === "left" ? -40 : 40 }}
-      animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: direction === "left" ? -40 : 40 }}
+      animate={show ? { opacity: 1, x: 0 } : { opacity: 0, x: direction === "left" ? -40 : 40 }}
       transition={{ duration: 0.75, ease: [0.22, 0.61, 0.36, 1], delay }}
     >
       {children}
@@ -42,14 +64,13 @@ const SlideIn = ({ children, direction = "left", delay = 0, className = "" }) =>
 };
 
 const StaggerGrid = ({ children, className = "" }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0 });
+  const [ref, show] = useReveal(0);
   return (
     <motion.div
       ref={ref}
       className={className}
       initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
+      animate={show ? "visible" : "hidden"}
       variants={{ visible: { transition: { staggerChildren: 0.08 } } }}
     >
       {children}

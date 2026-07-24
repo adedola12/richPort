@@ -38,6 +38,12 @@ const FLYER_FALLBACK = {
 const FLYER_ORDER = ["single", "triple", "five", "event"];
 const NGN = (v) => `₦${Number(v).toLocaleString("en-NG")}`;
 
+/* Delivery timelines — resolved client-side so they always display even when
+   the server plan payload omits a timeline. These take priority over any
+   server-provided value. */
+const FLYER_DURATION = { single: "2 days", triple: "8 days", five: "15 days", event: "Scoped" };
+const WEBSITE_DURATION = { starter: "7 days", business: "14 days", premium: "21 days" };
+
 const FlyerPlans = () => {
   const navigate = useNavigate();
   const [plans, setPlans] = useState(FLYER_FALLBACK);
@@ -77,6 +83,9 @@ const FlyerPlans = () => {
               </p>
               <p className="mt-1 text-xs text-neutral-500">
                 {p.priceNGN != null ? `${NGN(p.perDesign)} per design` : `from ${NGN(p.perDesign)} per design`}
+              </p>
+              <p className="mt-1 text-xs font-medium text-lime-300/85">
+                <span className="text-neutral-500">Delivery</span> · {FLYER_DURATION[key]}
               </p>
               <ul className="mt-5 mb-6 space-y-1.5 text-[13px] text-neutral-300 flex-1">
                 <li>• {p.designs ? `${p.designs} flyer / social design${p.designs > 1 ? "s" : ""}` : "6+ designs — full event set"}</li>
@@ -148,7 +157,9 @@ const WebsitePlans = () => {
               <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-neutral-400">{p.label}</p>
               <p className="text-xs text-neutral-500 mb-3">{p.pages}</p>
               <p className="text-3xl font-extrabold text-white">{p.from ? "From " : ""}{NGN(p.priceNGN)}</p>
-              <p className="mt-1 text-xs text-neutral-500">{p.timeline}</p>
+              <p className="mt-1 text-xs font-medium text-lime-300/85">
+                <span className="text-neutral-500">Delivery</span> · {WEBSITE_DURATION[key] || p.timeline}
+              </p>
               <ul className="mt-5 mb-6 space-y-1.5 text-[13px] text-neutral-300 flex-1">
                 {(p.deliverables || []).slice(0, 5).map((d) => <li key={d}>• {d}</li>)}
               </ul>

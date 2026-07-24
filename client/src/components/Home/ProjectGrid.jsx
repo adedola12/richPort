@@ -13,6 +13,10 @@ import adlmThumb from "../../assets/ADLMStudio/ADLM Studio -  Discount.jpg";
 import wsThumb from "../../assets/Whitespace/Colours and their meanings - Cover.jpg";
 import ydpayGfxThumb from "../../assets/YDpayDesigns/Card Design 1.webp";
 import presThumb from "../../assets/PresentationDesigns/1.webp";
+import webOluwatosin from "../../assets/websiteThumbs/oluwatosin.webp";
+import webNiqs from "../../assets/websiteThumbs/niqs.webp";
+import webAdlm from "../../assets/websiteThumbs/adlm.webp";
+import webBookrion from "../../assets/websiteThumbs/bookrion.webp";
 
 const STATIC_GFX_PROJECTS = [
   {
@@ -263,6 +267,78 @@ function WebsiteDesignHeroCard({ onView }) {
         </div>
       </div>
     </motion.div>
+  );
+}
+
+/* ---- Website projects grid (live-site screenshots) ---- */
+const WEB_PROJECTS = [
+  { id: "oluwatosin", name: "Oluwatosin", category: "Personal Brand · Portfolio", thumb: webOluwatosin, live: "https://oluwatosin-website.vercel.app/" },
+  { id: "niqs", name: "NIQS", category: "Professional Body · Government", thumb: webNiqs, live: "https://niqs-website.vercel.app/" },
+  { id: "adlm", name: "ADLM Studio", category: "Creative Agency · ConTech", thumb: webAdlm, live: "https://www.adlmstudio.net/" },
+  { id: "bookrion", name: "Book Rion", category: "EdTech · Reading Platform", thumb: webBookrion, live: "https://www.bookrion.com/" },
+];
+
+function WebsiteGrid({ onOpen }) {
+  return (
+    <div className="grid gap-[35px] md:grid-cols-2">
+      {WEB_PROJECTS.map((p, i) => (
+        <motion.article
+          key={p.id}
+          onClick={onOpen}
+          className="
+            group flex cursor-pointer flex-col overflow-hidden
+            rounded-[24px] border border-neutral-700 bg-black/40
+            transition duration-300 hover:-translate-y-1
+            hover:border-[#89ff00] hover:shadow-[0_0_35px_rgba(137,255,0,0.12)]
+          "
+          variants={cardVariants}
+          custom={i}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.25 }}
+        >
+          {/* browser chrome bar */}
+          <div className="flex items-center gap-1.5 border-b border-white/[0.06] bg-white/[0.03] px-4 py-3">
+            <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+            <span className="ml-3 truncate text-[11px] text-white/40">
+              {p.live.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+            </span>
+          </div>
+
+          {/* live-site screenshot */}
+          <div className="relative overflow-hidden" style={{ aspectRatio: "16 / 10" }}>
+            <img
+              src={p.thumb}
+              alt={`${p.name} website`}
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+            />
+          </div>
+
+          {/* footer */}
+          <div className="flex items-center justify-between gap-4 px-5 py-4">
+            <div className="min-w-0">
+              <h3 className="truncate font-['Outfit'] text-[20px] font-semibold text-white">{p.name}</h3>
+              <p className="truncate text-[12px] text-white/45">{p.category}</p>
+            </div>
+            <a
+              href={p.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="
+                shrink-0 whitespace-nowrap rounded-[10px] border border-white/20 bg-white/10
+                px-3.5 py-2 text-[13px] font-medium text-white transition hover:bg-white/20
+              "
+            >
+              Visit ↗
+            </a>
+          </div>
+        </motion.article>
+      ))}
+    </div>
   );
 }
 
@@ -563,7 +639,7 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
       {/* ---- CONTENT ---- */}
       <div className="mt-10">
         {isWebTab ? (
-          <WebsiteDesignHeroCard onView={() => navigate("/website-design")} />
+          <WebsiteGrid onOpen={() => navigate("/website-design")} />
         ) : gridLoading ? (
           <p className="text-sm text-neutral-300">
             Loading projects…
