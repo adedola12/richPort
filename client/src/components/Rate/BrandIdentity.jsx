@@ -1,9 +1,16 @@
 // src/components/Rate/BrandIdentity.jsx
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PlanSelection from "./PlanSelection";
 import PlanDetails from "./PlanDetails";
 import { Button } from "../ui";
+import {
+  getFxRate,
+  FALLBACK_RATE,
+  buildBrandPlans,
+  BRAND_DELIVERABLE_ROWS,
+  QUOTE_ON_REQUEST,
+} from "../../data/ratePlans";
 
 
 // Temporary design overrides — remove once admin is updated to match
@@ -159,7 +166,25 @@ const WebsitePlans = () => {
 };
 
 const BrandIdentity = () => {
-  const [rateCategories] = useState(FALLBACK_CATEGORIES);
+  const navigate = useNavigate();
+
+  /* Prices are quoted in USD and shown in naira at the live rate. */
+  const [fxRate, setFxRate] = useState(FALLBACK_RATE);
+  useEffect(() => {
+    let alive = true;
+    getFxRate().then((r) => { if (alive) setFxRate(r); });
+    return () => { alive = false; };
+  }, []);
+
+  const rateCategories = useMemo(
+    () =>
+      FALLBACK_CATEGORIES.map((c) =>
+        c.id === "brand-identity"
+          ? { ...c, plans: buildBrandPlans(fxRate), deliverables: BRAND_DELIVERABLE_ROWS }
+          : c
+      ),
+    [fxRate]
+  );
   const [loading] = useState(false);
   const [error] = useState("");
   const [activeCategoryId, setActiveCategoryId] = useState(FALLBACK_CATEGORIES[0].id);
@@ -260,6 +285,24 @@ const BrandIdentity = () => {
         ) : activeCategory.id === "websites" ? (
           /* Website packages tiered by page count — server-priced */
           <WebsitePlans />
+        ) : QUOTE_ON_REQUEST.has(activeCategory.id) || !activeCategory.plans?.length ? (
+          /* Scoped per project rather than sold in fixed tiers. */
+          <div className="mx-auto max-w-[560px] rounded-[24px] border border-lime-500/25 bg-[#0b0b0e] p-8 text-center sm:p-10">
+            <p className="text-lg font-semibold text-white">Priced per project</p>
+            <p className="mt-3 text-sm leading-relaxed text-neutral-400">
+              {activeCategory.heading} work varies too much in scope for a fixed package.
+              Tell me what you have in mind and you will get a quote and a timeline back.
+            </p>
+            <Button
+              type="button"
+              onClick={() => navigate("/contact")}
+              variant="primary"
+              size="md"
+              className="mt-6"
+            >
+              Request a quote
+            </Button>
+          </div>
         ) : (
           <>
             <PlanSelection
