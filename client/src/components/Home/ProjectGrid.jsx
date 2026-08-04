@@ -2,7 +2,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { fetchJson } from "../../api/http";
 import Button from "../ui/Button";
 
 import GraphicHeroImg from "../../assets/Graphics/HeroImg.webp";
@@ -17,6 +16,13 @@ import webOluwatosin from "../../assets/websiteThumbs/oluwatosin.webp";
 import webNiqs from "../../assets/websiteThumbs/niqs.webp";
 import webAdlm from "../../assets/websiteThumbs/adlm.webp";
 import webBookrion from "../../assets/websiteThumbs/bookrion.webp";
+
+/* Brand case-study thumbnails. These four projects are hardcoded pages with
+   local assets, so they must not depend on the API to be discoverable. */
+import tabstudioThumb from "../../assets/TabStudio/stationery-dark.webp";
+import verdeLuxeThumb from "../../assets/VerdeLuxe/hero.webp";
+import bookRionThumb from "../../assets/Bookrion/mainSign.jpg";
+import cleansteadThumb from "../../assets/Cleanstead/signage.webp";
 
 const STATIC_GFX_PROJECTS = [
   {
@@ -145,6 +151,11 @@ const STATIC_UI_PROJECTS = [
   */
 ];
 
+/* Every brand case study is a hardcoded page under src/pages with its own
+   local assets, so each one is listed here rather than fetched. The API used
+   to be the only thing that made these cards appear, which meant a backend
+   outage silently removed finished work from the portfolio. Order here is the
+   display order. */
 const STATIC_BRAND_PROJECTS = [
   {
     kind: "default",
@@ -159,9 +170,64 @@ const STATIC_BRAND_PROJECTS = [
     categories: ["Brand Identity Designs"],
     id: "static-ydpay-brand",
   },
+  {
+    kind: "default",
+    slug: "tabstudio",
+    route: "/projects/tabstudio",
+    name: "Tabstudio",
+    description: "One mark that reads as a play button on the surface and spells T, A and B underneath — a full identity system for a video media agency, documented across 48 pages.",
+    url: "",
+    tags: ["Brand Identity", "Video & Motion"],
+    images: { main: tabstudioThumb },
+    pageImg: tabstudioThumb,
+    categories: ["Brand Identity Designs"],
+    id: "static-tabstudio",
+  },
+  {
+    kind: "default",
+    slug: "verde-luxe",
+    route: "/projects/verde-luxe",
+    name: "Verde Luxe",
+    description: "An interior design company selling luxury on two fronts. A mark drawn like a floor plan, a doorway you are invited through, and a deep emerald system built on quiet money.",
+    url: "",
+    tags: ["Brand Identity", "Interiors"],
+    images: { main: verdeLuxeThumb },
+    pageImg: verdeLuxeThumb,
+    categories: ["Brand Identity Designs"],
+    id: "static-verde-luxe",
+  },
+  {
+    kind: "default",
+    slug: "book-rion",
+    route: "/projects/book-rion",
+    name: "BookRion",
+    description: "A platform connecting Nigeria's whole book world. A crowned B built from stacked books with eyes folded into the letters, and a research-backed move from brown to blue.",
+    url: "",
+    tags: ["Brand Identity", "Product Design"],
+    images: { main: bookRionThumb },
+    pageImg: bookRionThumb,
+    categories: ["Brand Identity Designs"],
+    id: "static-book-rion",
+  },
+  {
+    kind: "default",
+    slug: "cleanstead",
+    route: "/projects/cleanstead",
+    name: "Cleanstead",
+    description: "A cleaning and property care service in Lagos. A well-made wordmark, two blues and a lot of white — the restraint is the idea.",
+    url: "",
+    tags: ["Brand Identity", "Services"],
+    images: { main: cleansteadThumb },
+    pageImg: cleansteadThumb,
+    categories: ["Brand Identity Designs"],
+    id: "static-cleanstead",
+  },
 ];
 
-// Desired display order for brand identity projects from DB
+/* NIQS (a UI case study) sits after Tabstudio in the Brand Identity tab. */
+const BRAND_STATIC_LEAD_COUNT = 2;
+
+// Desired display order for any additional brand projects coming from the API
 const BRAND_SLUG_ORDER = ["tabstudio", "verde-luxe", "book-rion", "cleanstead"];
 
 const TAB_CONFIG = [
@@ -351,10 +417,10 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
   const [activeTab, setActiveTab] = useState(initialTab);
   const [tabDropdownOpen, setTabDropdownOpen] = useState(false);
   const tabDropdownRef = useRef(null);
-  const [projects, setProjects] = useState([]);
-  const [status, setStatus] = useState({ loading: true, error: "" });
-  const [uiProjects, setUiProjects] = useState([]);
-  const [uiStatus, setUiStatus] = useState({ loading: false, error: "" });
+  const [projects] = useState([]);
+  const [status] = useState({ loading: false, error: "" });
+  const [uiProjects] = useState([]);
+  const [uiStatus] = useState({ loading: false, error: "" });
   const [visibleCount, setVisibleCount] = useState(4);
   const navigate = useNavigate();
 
@@ -370,68 +436,9 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
   const needsUi = isAllTab || isUiTab;
 
   // Close tab dropdown on outside click
-  useEffect(() => {
-    if (!tabDropdownOpen) return;
-    const handler = (e) => {
-      if (tabDropdownRef.current && !tabDropdownRef.current.contains(e.target)) {
-        setTabDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    document.addEventListener("touchstart", handler);
-    return () => {
-      document.removeEventListener("mousedown", handler);
-      document.removeEventListener("touchstart", handler);
-    };
-  }, [tabDropdownOpen]);
-
-  // Fetch default projects
-  useEffect(() => {
-    let mounted = true;
-    (async () => {
-      try {
-        setStatus({ loading: true, error: "" });
-        const data = await fetchJson("/api/projects");
-        if (!mounted) return;
-        setProjects(Array.isArray(data) ? data : []);
-        setStatus({ loading: false, error: "" });
-      } catch (err) {
-        console.error("ProjectGrid fetch error:", err);
-        if (!mounted) return;
-        setProjects([]);
-        setStatus({
-          loading: false,
-          error: "Unable to load projects right now.",
-        });
-      }
-    })();
-    return () => {
-      mounted = false;
-    };
-  }, []);
 
   // Fetch UI projects
-  useEffect(() => {
-    if (!needsUi) return;
-    let mounted = true;
-    (async () => {
-      try {
-        setUiStatus({ loading: true, error: "" });
-        const data = await fetchJson("/api/ui-projects/main-images");
-        if (!mounted) return;
-        setUiProjects(Array.isArray(data) ? data : []);
-        setUiStatus({ loading: false, error: "" });
-      } catch (e) {
-        console.error("UI projects fetch error:", e);
-        if (!mounted) return;
-        setUiProjects([]);
-        setUiStatus({ loading: false, error: "Unable to load UI projects." });
-      }
-    })();
-    return () => {
-      mounted = false;
-    };
-  }, [needsUi]);
+  /* No API: every project is listed statically above. */
 
   useEffect(() => {
     setVisibleCount(4);
@@ -478,9 +485,20 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
       }));
   }, [uiProjects]);
 
+  const staticBrandSlugs = useMemo(() => new Set(STATIC_BRAND_PROJECTS.map((p) => p.slug.toLowerCase())), []);
+  const staticBrandNameKeys = useMemo(() => new Set(STATIC_BRAND_PROJECTS.map((p) => p.name.toLowerCase().replace(/[^a-z0-9]/g, ""))), []);
+
+  /* Drop any API copy of a project that is already listed statically, so the
+     grid never shows the same case study twice. */
   const mappedDefaultProjects = useMemo(() => {
-    return visibleDefaultProjects.map((p) => ({ ...p, kind: "default" }));
-  }, [visibleDefaultProjects]);
+    return visibleDefaultProjects
+      .filter((p) => {
+        const slug = (p.slug || "").toLowerCase();
+        const nameKey = (p.name || p.title || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+        return !staticBrandSlugs.has(slug) && !staticBrandNameKeys.has(nameKey);
+      })
+      .map((p) => ({ ...p, kind: "default" }));
+  }, [visibleDefaultProjects, staticBrandSlugs, staticBrandNameKeys]);
 
   const combined = useMemo(() => {
     // Sort brand DB projects into the desired display order
@@ -492,13 +510,15 @@ const ProjectGrid = ({ contained = true, excludeSlug, excludeKind }) => {
       if (bi === -1) return -1;
       return ai - bi;
     });
-    // Place NIQS UI after TabStudio (index 0) for Brand Identity tab ordering
-    const [firstBrand, ...restBrand] = brandSorted;
+    // Place the static UI projects (NIQS first) after Tabstudio, keeping the
+    // original Brand Identity tab rhythm now that the brand list is local.
+    const leadBrand = STATIC_BRAND_PROJECTS.slice(0, BRAND_STATIC_LEAD_COUNT);
+    const restStaticBrand = STATIC_BRAND_PROJECTS.slice(BRAND_STATIC_LEAD_COUNT);
     return [
-      ...STATIC_BRAND_PROJECTS,
-      ...(firstBrand ? [firstBrand] : []),
+      ...leadBrand,
       ...STATIC_UI_PROJECTS,
-      ...restBrand,
+      ...restStaticBrand,
+      ...brandSorted,
       ...mappedUiProjects,
       ...STATIC_GFX_PROJECTS,
     ];

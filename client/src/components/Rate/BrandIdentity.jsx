@@ -1,11 +1,10 @@
 // src/components/Rate/BrandIdentity.jsx
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import PlanSelection from "./PlanSelection";
 import PlanDetails from "./PlanDetails";
 import { Button } from "../ui";
 
-const PUBLIC_RATES_API = import.meta.env.VITE_AUTH_ENDPOINT || "";
 
 // Temporary design overrides — remove once admin is updated to match
 const DESCRIPTION_OVERRIDES = {
@@ -46,21 +45,9 @@ const WEBSITE_DURATION = { starter: "7 days", business: "14 days", premium: "21 
 
 const FlyerPlans = () => {
   const navigate = useNavigate();
-  const [plans, setPlans] = useState(FLYER_FALLBACK);
+  const [plans] = useState(FLYER_FALLBACK);
 
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await fetch(`${PUBLIC_RATES_API}/api/flyer-requests/plans`);
-        if (!res.ok) return;
-        const data = await res.json();
-        if (data && data.single) setPlans(data);
-      } catch {
-        /* keep fallback */
-      }
-    };
-    load();
-  }, []);
+  /* Plans ship with the build — edit FLYER_FALLBACK above. */
 
   return (
     <div className="mt-16">
@@ -123,21 +110,9 @@ const WEBSITE_ORDER = ["starter", "business", "premium"];
 
 const WebsitePlans = () => {
   const navigate = useNavigate();
-  const [plans, setPlans] = useState(WEBSITE_FALLBACK);
+  const [plans] = useState(WEBSITE_FALLBACK);
 
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await fetch(`${PUBLIC_RATES_API}/api/website-requests/plans`);
-        if (!res.ok) return;
-        const data = await res.json();
-        if (data && data.starter) setPlans(data);
-      } catch {
-        /* keep fallback */
-      }
-    };
-    load();
-  }, []);
+  /* Plans ship with the build — edit WEBSITE_FALLBACK above. */
 
   return (
     <div className="mt-16">
@@ -184,53 +159,13 @@ const WebsitePlans = () => {
 };
 
 const BrandIdentity = () => {
-  const [rateCategories, setRateCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [activeCategoryId, setActiveCategoryId] = useState(null);
+  const [rateCategories] = useState(FALLBACK_CATEGORIES);
+  const [loading] = useState(false);
+  const [error] = useState("");
+  const [activeCategoryId, setActiveCategoryId] = useState(FALLBACK_CATEGORIES[0].id);
   const [showDetails, setShowDetails] = useState(false);
 
-  useEffect(() => {
-    const fetchRates = async () => {
-      try {
-        const res = await fetch(`${PUBLIC_RATES_API}/api/rates`);
-        if (!res.ok) throw new Error("Failed to fetch rate categories");
-        const data = await res.json();
-        const array = Array.isArray(data) ? data : [];
-        // Merge: backend data takes priority, fallbacks fill in missing
-        // categories. Match by id first, then label (case-insensitive),
-        // so admin edits always land on the right tab.
-        const eq = (a, b) => String(a || "").trim().toLowerCase() === String(b || "").trim().toLowerCase();
-        const merged = FALLBACK_CATEGORIES.map((fallback) => {
-          const fromBackend = array.find(
-            (c) =>
-              eq(c.id, fallback.id) ||
-              eq(c.label, fallback.label) ||
-              fallback.altLabels.some((l) => eq(c.label, l))
-          );
-          return fromBackend ? { ...fromBackend, id: fallback.id, label: fallback.label } : fallback;
-        });
-        // Admin-created categories that don't map to a known tab still show.
-        const usedMongoIds = new Set(merged.map((m) => m.mongoId).filter(Boolean));
-        const extras = array
-          .filter((c) => c.mongoId && !usedMongoIds.has(c.mongoId))
-          .map((c) => ({ plans: [], deliverables: [], ...c }));
-        const all = [...merged, ...extras];
-        setRateCategories(all);
-        if (all.length > 0 && !activeCategoryId) {
-          setActiveCategoryId(all[0].id);
-        }
-      } catch (err) {
-        console.error(err);
-        setError("Could not load rate categories. Please try again later.");
-        setRateCategories(FALLBACK_CATEGORIES);
-        setActiveCategoryId(FALLBACK_CATEGORIES[0].id);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchRates();
-  }, []);
+  /* Rate cards ship with the build — edit FALLBACK_CATEGORIES above. */
 
   const hasCategories = Array.isArray(rateCategories) && rateCategories.length > 0;
 

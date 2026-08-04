@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { useAuth } from "../context/AuthContext";
 import { buttonClasses } from "./ui";
 
 const PROJECT_CATEGORIES = [
@@ -13,7 +12,6 @@ const PROJECT_CATEGORIES = [
 ];
 
 const Nav = () => {
-  const { user } = useAuth() || {};
   const [menuOpen, setMenuOpen] = useState(false);
   const [projectsOpen, setProjectsOpen] = useState(false);
   const [mobileProjectsOpen, setMobileProjectsOpen] = useState(false);

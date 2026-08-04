@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@200..700&display=swap');
 /* @tailwind base;
 @tailwind components;
 @tailwind utilities; */
@@ -39,6 +40,13 @@ a.active hr{
 
 *{
     font-family: Outfit;
+}
+
+/* Pages that opt into Lexend. Scoped, because the `*` rule above targets
+   every element and would otherwise beat plain inheritance from the wrapper. */
+.page-lexend,
+.page-lexend * {
+    font-family: 'Lexend', sans-serif;
 }
 
   @media (max-width:640px){

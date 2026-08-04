@@ -1,8 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { fetchJson } from "../../api/http";
-import { serviceColor } from "../../data/testimonialOptions";
 
 /* ─── Data ─── */
 const TESTIMONIALS = [
@@ -153,35 +151,9 @@ const TCard = ({ data, range, resting, zIndex, scrollProgress }) => {
    ════════════════════════════════════════════════════════ */
 const Testimonials = () => {
   const wrapperRef = useRef(null);
-  const [items, setItems] = useState(TESTIMONIALS);
+  const items = TESTIMONIALS;
 
-  /* Live testimonials (4★+, admin-approved) replace the placeholders
-     the moment any exist. */
-  useEffect(() => {
-    let alive = true;
-    (async () => {
-      try {
-        const data = await fetchJson("/api/testimonials/public");
-        if (alive && Array.isArray(data) && data.length > 0) {
-          setItems(
-            data.map((t) => ({
-              id: t.mongoId,
-              name: t.name || t.initials,
-              initials: t.initials,
-              title: "",
-              tag: t.service,
-              tagColor: serviceColor(t.service),
-              stars: t.rating,
-              text: t.feedback,
-            }))
-          );
-        }
-      } catch {
-        /* keep placeholders */
-      }
-    })();
-    return () => { alive = false; };
-  }, []);
+  /* Testimonials ship with the build — edit TESTIMONIALS above. */
 
   const ranges = cardRanges(items.length);
   const resting = restingFor(items.length);

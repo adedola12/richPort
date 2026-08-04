@@ -1,11 +1,7 @@
 ﻿import React, { useEffect, useRef, useState } from "react";
 import TypingText from "../common/TypingText";
 import JImg from "../../assets/journey/JImg.jpg"; // fallback placeholder
-
-const MAX_JOURNEY_ITEMS = 5;
-
-const API_BASE = import.meta.env.VITE_AUTH_ENDPOINT || "";
-const PUBLIC_JOURNEY_URL = API_BASE ? `${API_BASE}/api/journey` : "";
+import journey, { MAX_JOURNEY_ITEMS } from "../../data/journey";
 
 /* ===== Single timeline item ===== */
 const JourneyItem = ({ item, index }) => {
@@ -148,48 +144,8 @@ const JourneyItem = ({ item, index }) => {
 
 /* ===== Wrapper ===== */
 const Journey = () => {
-  const [items, setItems] = useState([]);
-  const [status, setStatus] = useState({ loading: true, error: "" });
-
-  useEffect(() => {
-    const fetchJourney = async () => {
-      if (!PUBLIC_JOURNEY_URL) {
-        setItems([]);
-        setStatus({ loading: false, error: "" });
-        return;
-      }
-
-      try {
-        setStatus({ loading: true, error: "" });
-        const res = await fetch(PUBLIC_JOURNEY_URL, { credentials: "include" });
-        if (!res.ok) throw new Error("Failed to fetch journey entries");
-        const data = await res.json();
-
-        const normalized = (Array.isArray(data) ? data : []).map((item) => ({
-          id: item.id || item._id,
-          year: item.year,
-          title: item.title,
-          description: Array.isArray(item.description)
-            ? item.description
-            : typeof item.description === "string"
-            ? item.description.split(/\r?\n/).filter(Boolean)
-            : [],
-          imageUrl: item.imageUrl || null,
-        }));
-
-        setItems(normalized.slice(0, MAX_JOURNEY_ITEMS));
-        setStatus({ loading: false, error: "" });
-      } catch (err) {
-        console.error("Journey fetch error:", err);
-        setStatus({
-          loading: false,
-          error: "Unable to load journey timeline at the moment.",
-        });
-      }
-    };
-
-    fetchJourney();
-  }, []);
+  /* Content ships with the build — see src/data/journey.js. */
+  const items = journey.slice(0, MAX_JOURNEY_ITEMS);
 
   return (
     <section className="relative w-full bg-[#050505] py-16 lg:py-24">
@@ -205,15 +161,7 @@ const Journey = () => {
           {/* Central vertical timeline */}
           <div className="pointer-events-none absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-gradient-to-b from-white/40 via-white/15 to-transparent md:block" />
 
-          {status.loading ? (
-            <p className="text-center text-sm text-neutral-300">
-              Loading journey…
-            </p>
-          ) : status.error ? (
-            <p className="text-center text-sm text-red-400">
-              {status.error}
-            </p>
-          ) : items.length === 0 ? (
+          {items.length === 0 ? (
             <p className="text-center text-sm text-neutral-300">
               Journey entries coming soon.
             </p>

@@ -1,8 +1,7 @@
-// src/components/Home/FaqSection.jsx — accordion FAQ, admin-manageable via /api/faqs
-import React, { useEffect, useState } from "react";
+// src/components/Home/FaqSection.jsx — accordion FAQ. Content is DEFAULT_FAQS below.
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { fetchJson } from "../../api/http";
 
 /* Shown until FAQs are managed from the admin panel — the API list,
    when non-empty, replaces these. */
@@ -75,23 +74,9 @@ const FaqItem = ({ q, a, open, onToggle }) => (
 );
 
 const FaqSection = () => {
-  const [faqs, setFaqs] = useState(DEFAULT_FAQS);
+  /* Edit the questions in DEFAULT_FAQS above and redeploy. */
+  const faqs = DEFAULT_FAQS;
   const [openIdx, setOpenIdx] = useState(0);
-
-  useEffect(() => {
-    let alive = true;
-    (async () => {
-      try {
-        const data = await fetchJson("/api/faqs");
-        if (alive && Array.isArray(data) && data.length > 0) {
-          setFaqs(data.map((f) => ({ q: f.question, a: f.answer })));
-        }
-      } catch {
-        /* keep defaults */
-      }
-    })();
-    return () => { alive = false; };
-  }, []);
 
   return (
     <section className="bg-[#050505] py-20 sm:py-28 px-4 sm:px-8">

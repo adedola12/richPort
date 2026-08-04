@@ -15,14 +15,7 @@ import About from "./pages/About.jsx";
 
 import Projects from "./pages/Projects.jsx";
 import RateDetails from "./pages/RateDetails.jsx";
-import ProjectPage from "./components/ProjectPage.jsx";
 import GraphicDesignPage from "./pages/GraphicDesignPage";
-import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
-import ProtectedRoute from "./components/auth/ProtectedRoute.jsx";
-import AdminAuthPage from "./pages/admin/AdminAuthPage.jsx";
-
-import { AuthProvider } from "./context/AuthContext.jsx";
-import UIProjectPage from "./components/UIProjectPage.jsx";
 import WebsiteDesignPage from "./pages/WebsiteDesignPage.jsx";
 import YDpayPage from "./pages/YDpayPage.jsx";
 import SavedupProject from "./pages/SavedupProject.jsx";
@@ -79,17 +72,19 @@ const router = createBrowserRouter([
       { path: "contact", element: <Contact /> },
       { path: "testimonial", element: <TestimonialPage /> },
       { path: "presentation-design", element: <PresentationDesignPage /> },
-      { path: "projects/:slug", element: <ProjectPage /> },
+      // Every case study now has its own route above. Anything else that used
+      // to be served from the database falls back to the projects index.
+      { path: "projects/:slug", element: <Navigate to="/projects" replace /> },
 
       // ✅ UI Projects (plural) — matches your navigate(`/ui-projects/${slug}`)
-      { path: "ui-projects", element: <UIProjectPage /> },
+      { path: "ui-projects", element: <Navigate to="/projects" replace /> },
       { path: "ui-projects/ydpay-mobile-redesign", element: <YDpayPage /> },
       { path: "ui-projects/savedup", element: <SavedupProject /> },
       { path: "ui-projects/niqs", element: <NiqsUIProject /> },
       { path: "ui-projects/snotes", element: <SnotesProject /> },
       // Quiv deactivated until real screens exist — redirect to the projects index
       { path: "ui-projects/quiv", element: <Navigate to="/ui-projects" replace /> },
-      { path: "ui-projects/:slug", element: <UIProjectPage /> },
+      { path: "ui-projects/:slug", element: <Navigate to="/projects" replace /> },
 
       // keep old links working by redirecting (preserving slug)
       { path: "ui-project", element: <Navigate to="/ui-projects" replace /> },
@@ -98,15 +93,6 @@ const router = createBrowserRouter([
         element: <RedirectWithSlug basePath="/ui-projects" />,
       },
 
-      { path: "admin-auth", element: <AdminAuthPage /> },
-      {
-        path: "admin",
-        element: (
-          <ProtectedRoute>
-            <AdminDashboard />
-          </ProtectedRoute>
-        ),
-      },
 
       // 404 catch-all
       {
@@ -126,9 +112,7 @@ const router = createBrowserRouter([
 ReactDom.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <HelmetProvider>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
+      <RouterProvider router={router} />
     </HelmetProvider>
   </React.StrictMode>,
 );

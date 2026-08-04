@@ -439,14 +439,6 @@ const Footer = () => {
               <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12.5, fontWeight: 500, color: "#4b5563", margin: 0 }}>
                 © {new Date().getFullYear()} Richard Enoch. All rights reserved.
               </p>
-              <Link
-                to="/admin"
-                style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, fontWeight: 500, color: "#2d3039", textDecoration: "none", letterSpacing: "0.04em", transition: "color 0.2s" }}
-                onMouseEnter={(e) => e.currentTarget.style.color = "#4b5563"}
-                onMouseLeave={(e) => e.currentTarget.style.color = "#2d3039"}
-              >
-                Admin
-              </Link>
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 14, alignItems: "flex-start" }}>
