@@ -6,7 +6,6 @@ import DesignProcess from "../components/Home/DesignProcess";
 import BuildSection from "../components/Home/BuildSection";
 import ShortIntro from "../components/About/ShortIntro";
 import WorkExp from "../components/About/WorkExp";
-import Journey from "../components/About/Journey";
 import PageMeta from "../components/common/PageMeta";
 
 const About = () => {
@@ -20,7 +19,6 @@ const About = () => {
       <AboutHero />
       <ShortIntro />
       <WorkExp />
-      <Journey />
       <Tools />
       <DesignProcess />
       <BuildSection />
