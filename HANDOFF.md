@@ -29,7 +29,7 @@ There is also an admin dashboard (password-protected) for creating, editing, and
 | Database | MongoDB (via Mongoose 9) |
 | Authentication | JWT (stored in localStorage + httpOnly cookie) |
 | Image storage | Cloudinary |
-| Client hosting | Vercel (`rich-port.vercel.app`) |
+| Client hosting | Vercel (`richardenoch.vercel.app`) |
 | Server hosting | Render (`https://richport-1oer.onrender.com`) |
 
 ### Repo structure
@@ -398,7 +398,9 @@ export default {
 VITE_AUTH_ENDPOINT=https://richport-1oer.onrender.com
 ```
 
-This is the only env var the client needs. It is currently pointing at the live Render server even in the `.env` file, meaning local dev also hits the production database unless changed.
+This is the only env var the client needs — `VITE_API_BASE` is no longer read anywhere (the unused `src/config.js` that referenced it has been removed). Set the value above in Vercel for production; note that `VITE_*` vars are inlined at build time, so changing it requires a redeploy to take effect.
+
+Locally, `client/.env` points at `http://localhost:4000` so dev work never writes to the production database. Point it at `https://richport-1oer.onrender.com` only when you deliberately want to work against live data.
 
 ---
 
@@ -920,23 +922,26 @@ There is **no Vite proxy**. The client talks directly to the server via the `VIT
 
 The current `client/.env` is:
 ```
-VITE_AUTH_ENDPOINT=https://richport-1oer.onrender.com
-```
-
-This means **local dev currently hits the live production database on Render**. To use a local server instead, change it to:
-```
 VITE_AUTH_ENDPOINT=http://localhost:4000
 ```
+
+This points local dev at a **local** server, so nothing you create or delete touches live data. To work against the live API instead, change it to:
+```
+VITE_AUTH_ENDPOINT=https://richport-1oer.onrender.com
+```
+Be aware that this writes to the production database.
 
 The server's CORS config allows any `localhost:<port>` origin, so this works without changes.
 
 ### In production
 
 The client (Vercel) and server (Render) are **separate deployments on separate domains**:
-- Client: `https://rich-port.vercel.app`
+- Client: `https://richardenoch.vercel.app`
 - Server: `https://richport-1oer.onrender.com`
 
-The client talks to the server via absolute URL. There are no rewrites or proxies in production — the browser makes cross-origin requests, and the server's CORS whitelist allows `rich-port.vercel.app`.
+The client talks to the server via absolute URL. There are no rewrites or proxies in production — the browser makes cross-origin requests, and the server's CORS whitelist allows `richardenoch.vercel.app` (plus its `*-richardenoch.vercel.app` preview deploys) and the legacy `rich-port.vercel.app`.
+
+`richardenoch.com` and `www.richardenoch.com` are **already whitelisted** in `server/index.js` ahead of the domain being registered, so no server change is needed at cutover — only `VITE_AUTH_ENDPOINT` on Vercel and the custom domain on Render.
 
 The `client/vercel.json` only handles client-side routing (SPA fallback):
 ```json
@@ -992,7 +997,7 @@ The `client/vercel.json` only handles client-side routing (SPA fallback):
 
 | Part | Platform | URL |
 |---|---|---|
-| Frontend | Vercel | `https://rich-port.vercel.app` |
+| Frontend | Vercel | `https://richardenoch.vercel.app` |
 | Backend | Render | `https://richport-1oer.onrender.com` |
 | Database | MongoDB Atlas (inferred from MONGO_URI) | — |
 | Images | Cloudinary | folder: `richard_portfolio/` |
@@ -1037,7 +1042,7 @@ In non-production environments, `GET https://richport-1oer.onrender.com/__debug/
 - NIQS page structural rework (strategy documented in `SESSION_PROGRESS.html`)
 - About page hero headline review
 - "I built this portfolio" credit in footer or About page
-- Load time optimisations: `loading="lazy"` sweep, Cloudinary `q_auto,f_auto`, `React.lazy()` for heavy pages
+- Load time optimisations: `loading="lazy"` sweep, Cloudinary `q_auto,f_auto` (route-level `React.lazy()` is now done: every page except `Home` is a separate chunk, loaded through the `Suspense` boundary in `App.jsx`)
 - LinkedIn bio and CV summary line (copy direction is confirmed, just not written)
 
 ### Technical debt
@@ -1273,7 +1278,7 @@ This section tracks UI/design edits made across coding sessions. For full detail
 
 ## 10. KNOWN GOTCHAS
 
-1. **Dev hits production DB by default.** `client/.env` points `VITE_AUTH_ENDPOINT` at the live Render server. If you run local dev without changing this, any data you create or delete goes to the live database. Change it to `http://localhost:4000` for local work.
+1. **Check which API `client/.env` points at.** It now ships pointing at `http://localhost:4000`, so local dev is isolated from live data by default. If you repoint it at `https://richport-1oer.onrender.com`, remember that anything you create or delete goes straight to the production database.
 
 2. **Render cold starts.** Render's free tier spins down after inactivity. The first request after sleep takes 30–60 seconds. The `AuthContext` handles this gracefully (keeps the cached session alive on network error), but it can make the site appear broken on first load.
 

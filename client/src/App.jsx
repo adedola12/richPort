@@ -1,5 +1,5 @@
 // src/App.jsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Lenis from "lenis";
@@ -12,6 +12,14 @@ import Preloader from "./components/common/Preloader.jsx";
 
 const MIN_MS = 1800;
 const MAX_MS = 3200;
+
+/* Shown while a route's lazy chunk downloads. Holds roughly a viewport of
+   height so the footer doesn't jump up during the swap. */
+const RouteFallback = () => (
+  <div className="flex min-h-[70vh] items-center justify-center">
+    <div className="h-8 w-8 animate-spin rounded-full border-2 border-neutral-700 border-t-lime-400" />
+  </div>
+);
 
 function App() {
   const location = useLocation();
@@ -79,7 +87,9 @@ function App() {
               ease: [0.22, 0.61, 0.36, 1],
             }}
           >
-            <Outlet />
+            <Suspense fallback={<RouteFallback />}>
+              <Outlet />
+            </Suspense>
           </motion.div>
         </AnimatePresence>
       </main>

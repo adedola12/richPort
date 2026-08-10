@@ -1,6 +1,6 @@
 # RichPort — Design System
 
-A design system distilled from **Richard Enoch's portfolio website** ([rich-port.vercel.app](https://rich-port.vercel.app)). It documents the tokens, components, type system, iconography, and content voice used across the live product so design agents can produce on-brand artifacts — landing pages, case studies, decks, prototypes — without reinventing the look each time.
+A design system distilled from **Richard Enoch's portfolio website** ([richardenoch.vercel.app](https://richardenoch.vercel.app)). It documents the tokens, components, type system, iconography, and content voice used across the live product so design agents can produce on-brand artifacts — landing pages, case studies, decks, prototypes — without reinventing the look each time.
 
 ## Sources
 
@@ -8,7 +8,7 @@ A design system distilled from **Richard Enoch's portfolio website** ([rich-port
 |---|---|---|
 | Codebase | `richPort-main/` (read-only, mounted) | Vite + React 19 + Tailwind v4 + Framer Motion. Live data fetched from an Express/Mongo backend on Render. |
 | GitHub | <https://github.com/adedola12/richPort> | Same repo, public. Explore further if more depth is needed. |
-| Live site | <https://rich-port.vercel.app> | Production frontend. |
+| Live site | <https://richardenoch.vercel.app> | Production frontend. |
 | Backend | <https://richport-1oer.onrender.com> | Express API, mostly powers admin CMS and the rate enquiry form. |
 | Internal docs | `richPort-main/CLAUDE.md`, `richPort-main/HANDOFF.md` | Engineering-side handoff. The 1000-line HANDOFF.md is the single richest reference. |
 

@@ -3,6 +3,9 @@ import { Helmet } from "react-helmet-async";
 const SITE = "Richard Enoch — Multidisciplinary Designer";
 const DEFAULT_DESC =
   "Portfolio of Richard Enoch — brand identity, UI/UX, graphic design, and web design.";
+/* Canonical host. Flip both to https://richardenoch.com once that domain is
+   registered and live on Vercel — until then it would point search engines
+   and social scrapers at a hostname that doesn't resolve. */
 const DEFAULT_IMG = "https://richardenoch.vercel.app/og-default.jpg";
 const BASE_URL = "https://richardenoch.vercel.app";
 
