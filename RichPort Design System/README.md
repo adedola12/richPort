@@ -6,10 +6,10 @@ A design system distilled from **Richard Enoch's portfolio website** ([richarden
 
 | Source | Location | Notes |
 |---|---|---|
-| Codebase | `richPort-main/` (read-only, mounted) | Vite + React 19 + Tailwind v4 + Framer Motion. Live data fetched from an Express/Mongo backend on Render. |
+| Codebase | `richPort-main/` (read-only, mounted) | Vite + React 19 + Tailwind v4 + Framer Motion. Live data fetched from an Express/Mongo backend on AWS ECS Fargate. |
 | GitHub | <https://github.com/adedola12/richPort> | Same repo, public. Explore further if more depth is needed. |
 | Live site | <https://richardenoch.vercel.app> | Production frontend. |
-| Backend | <https://richport-1oer.onrender.com> | Express API, mostly powers admin CMS and the rate enquiry form. |
+| Backend | <https://ri-b99dc6d19c814e1b834b686310f73be9.ecs.eu-west-3.on.aws> | Express API on AWS ECS Fargate (eu-west-3). Powers admin CMS and the rate enquiry form. |
 | Internal docs | `richPort-main/CLAUDE.md`, `richPort-main/HANDOFF.md` | Engineering-side handoff. The 1000-line HANDOFF.md is the single richest reference. |
 
 > The reader is **not assumed** to have access to those paths — everything that mattered visually has been distilled into this folder. Pointers are kept in case deeper investigation is useful.

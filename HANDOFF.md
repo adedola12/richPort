@@ -30,7 +30,7 @@ There is also an admin dashboard (password-protected) for creating, editing, and
 | Authentication | JWT (stored in localStorage + httpOnly cookie) |
 | Image storage | Cloudinary |
 | Client hosting | Vercel (`richardenoch.vercel.app`) |
-| Server hosting | Render (`https://richport-1oer.onrender.com`) |
+| Server hosting | AWS ECS Express Mode, Fargate, eu-west-3 (`https://ri-b99dc6d19c814e1b834b686310f73be9.ecs.eu-west-3.on.aws`) |
 
 ### Repo structure
 
@@ -395,12 +395,12 @@ export default {
 ### Client environment variables
 
 ```
-VITE_AUTH_ENDPOINT=https://richport-1oer.onrender.com
+VITE_AUTH_ENDPOINT=https://ri-b99dc6d19c814e1b834b686310f73be9.ecs.eu-west-3.on.aws
 ```
 
 This is the only env var the client needs — `VITE_API_BASE` is no longer read anywhere (the unused `src/config.js` that referenced it has been removed). Set the value above in Vercel for production; note that `VITE_*` vars are inlined at build time, so changing it requires a redeploy to take effect.
 
-Locally, `client/.env` points at `http://localhost:4000` so dev work never writes to the production database. Point it at `https://richport-1oer.onrender.com` only when you deliberately want to work against live data.
+Locally, `client/.env` points at `http://localhost:4000` so dev work never writes to the production database. Point it at `https://ri-b99dc6d19c814e1b834b686310f73be9.ecs.eu-west-3.on.aws` only when you deliberately want to work against live data.
 
 ---
 
@@ -927,7 +927,7 @@ VITE_AUTH_ENDPOINT=http://localhost:4000
 
 This points local dev at a **local** server, so nothing you create or delete touches live data. To work against the live API instead, change it to:
 ```
-VITE_AUTH_ENDPOINT=https://richport-1oer.onrender.com
+VITE_AUTH_ENDPOINT=https://ri-b99dc6d19c814e1b834b686310f73be9.ecs.eu-west-3.on.aws
 ```
 Be aware that this writes to the production database.
 
@@ -937,7 +937,7 @@ The server's CORS config allows any `localhost:<port>` origin, so this works wit
 
 The client (Vercel) and server (Render) are **separate deployments on separate domains**:
 - Client: `https://richardenoch.vercel.app`
-- Server: `https://richport-1oer.onrender.com`
+- Server: `https://ri-b99dc6d19c814e1b834b686310f73be9.ecs.eu-west-3.on.aws`
 
 The client talks to the server via absolute URL. There are no rewrites or proxies in production — the browser makes cross-origin requests, and the server's CORS whitelist allows `richardenoch.vercel.app` (plus its `*-richardenoch.vercel.app` preview deploys) and the legacy `rich-port.vercel.app`.
 
@@ -998,7 +998,7 @@ The `client/vercel.json` only handles client-side routing (SPA fallback):
 | Part | Platform | URL |
 |---|---|---|
 | Frontend | Vercel | `https://richardenoch.vercel.app` |
-| Backend | Render | `https://richport-1oer.onrender.com` |
+| Backend | AWS ECS Express Mode (Fargate, eu-west-3) | `https://ri-b99dc6d19c814e1b834b686310f73be9.ecs.eu-west-3.on.aws` |
 | Database | MongoDB Atlas (inferred from MONGO_URI) | — |
 | Images | Cloudinary | folder: `richard_portfolio/` |
 
@@ -1006,7 +1006,7 @@ The Vercel project deploys from the `client/` subfolder. The Render service runs
 
 ### Debug endpoint
 
-In non-production environments, `GET https://richport-1oer.onrender.com/__debug/db` returns:
+In non-production environments, `GET https://ri-b99dc6d19c814e1b834b686310f73be9.ecs.eu-west-3.on.aws/__debug/db` returns:
 ```json
 { "dbName": "<db name>", "host": "<host>", "ok": true }
 ```
@@ -1278,7 +1278,7 @@ This section tracks UI/design edits made across coding sessions. For full detail
 
 ## 10. KNOWN GOTCHAS
 
-1. **Check which API `client/.env` points at.** It now ships pointing at `http://localhost:4000`, so local dev is isolated from live data by default. If you repoint it at `https://richport-1oer.onrender.com`, remember that anything you create or delete goes straight to the production database.
+1. **Check which API `client/.env` points at.** It now ships pointing at `http://localhost:4000`, so local dev is isolated from live data by default. If you repoint it at `https://ri-b99dc6d19c814e1b834b686310f73be9.ecs.eu-west-3.on.aws`, remember that anything you create or delete goes straight to the production database.
 
 2. **Render cold starts.** Render's free tier spins down after inactivity. The first request after sleep takes 30–60 seconds. The `AuthContext` handles this gracefully (keeps the cached session alive on network error), but it can make the site appear broken on first load.
 
